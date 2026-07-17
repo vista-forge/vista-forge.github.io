@@ -1,0 +1,29 @@
+# The site's drift gate — the generated repo tables in index.html must match the
+# committed registry snapshot (data/repos.json).
+#
+# Deliberately OFFLINE and secret-less. The ecosystem registry and the repo
+# roles live in PRIVATE repos, so a live re-harvest needs a PAT with org-wide
+# contents:read — and THIS REPO IS PUBLIC, where that token's blast radius is
+# far larger than the gate is worth. So CI checks only what it can check
+# honestly without one: that nobody hand-edited a generated block.
+#
+# The other half — is the snapshot itself stale? — is `make site-freshness`,
+# run host-side where `gh` is already authenticated (see scripts/site-gen.py).
+name: site-check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  site-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generated blocks vs committed snapshot
+        run: make site-check

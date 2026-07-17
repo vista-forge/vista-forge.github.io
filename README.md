@@ -10,7 +10,17 @@ serves this repo's `main` branch at root, so a push to `main` is a deploy. The
 index.html            the whole site — one page
 assets/css/site.css   all styling; no framework, no CDN
 assets/img/logo.png   the org mark (see "The logo" below)
+scripts/site-gen.py   generates the m/v repo tables from the ecosystem registry
+data/repos.json       the committed registry snapshot the tables render from
 .nojekyll             serve files as-is
+```
+
+## Gates
+
+```
+make site-check       offline, no secrets — the CI gate on every push
+make site-sync        HOST-ONLY — re-harvest the org and rewrite the tables
+make site-freshness   HOST-ONLY — is the snapshot stale vs the live org?
 ```
 
 ## Editing
@@ -30,23 +40,49 @@ sections:
 Both light and dark themes are supported via `prefers-color-scheme`; a change to
 one needs a check against the other.
 
-## The content is a hand-maintained copy
+## What is generated, and what is not
 
-The page was written from the org profile README (`.github/profile/README.md`) and
-**duplicates it by hand**. The profile's repo tables are generated and drift-gated
-(`readme-gen.py` against `ecosystem.json`); **this page is not**. When the
-profile's repo tables or the by-the-numbers figures change, this page must be
-updated to match — nothing checks it for you.
+**Generated — do not hand-edit.** The `m` and `v` repo tables live between
+`<!-- gen:begin block=repos-m -->` / `<!-- gen:end -->` markers and are owned by
+`scripts/site-gen.py`. They are a projection of the same source the org profile
+README projects: `ecosystem.json` (registry membership + layer) + each repo's
+committed `repo.meta.json` `role` + its latest version tag + **its visibility**.
+Editing a block by hand is drift, and `make site-check` red-gates it.
 
-## Repo links: public only
+**Hand-written — keep it honest yourself.** Everything else: the prose, the
+by-the-numbers figures, and the "M standard & corpora" / "Editor extensions" /
+"Shared foundations" tables (those repos are not in the registry, so there is
+nothing to project them from — the same boundary `readme-gen.py` draws for the
+profile README).
 
-Most of the org is private. The page **links only repos that are actually public**
-and lists the rest as plain text, so a visitor never hits a 404. When a repo goes
-public, turn its name into a link.
+### Why two tiers of gate
+
+The registry and the roles are in **private** repos, so harvesting them needs a
+token with org-wide `contents:read`. `.github` can hold one (`META_GATE_TOKEN`)
+because `.github` is private. **This repo is public**, where that token's blast
+radius is far larger than the gate is worth. So:
+
+| Tier | Command | Network | Catches |
+|---|---|---|---|
+| 1 | `make site-check` | none — **runs in CI** | a hand-edited generated block |
+| 2 | `make site-freshness` | live `gh` — **host-only** | a stale snapshot (new tag, repo gone public) |
+
+Tier 1 alone would let `data/repos.json` rot; tier 2 alone can't run in a public
+repo's CI. Together, the HTML can't drift from the snapshot and the snapshot can't
+drift from the org for longer than it takes to run `make site-sync`.
+
+## Repo links: public only, mechanically
+
+Most of the org is private, and a link to a private repo is a **public 404**. So a
+repo's name is emitted as a link **only when it is actually public**, and as plain
+text otherwise. This is not a rule to remember — `site-gen.py` harvests visibility,
+so a re-harvest links a repo the moment it goes public, and nothing links it
+before. Run `make site-sync` after any repo flips.
 
 Public today: `tree-sitter-m`, `vista-atlas`, `vista-compass`, and the
 `ghcr.io/vista-forge/vista-iris` container image (the image is public even though
-its build repo is not).
+its build repo is not). Every repo in the registry is currently private, so the
+generated tables emit no links at all.
 
 ## The logo
 

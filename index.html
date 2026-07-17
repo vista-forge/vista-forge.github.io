@@ -489,13 +489,15 @@
       <table>
         <thead><tr><th scope="col">Repo</th><th scope="col">Delivers</th><th scope="col">Latest</th></tr></thead>
         <tbody>
+<!-- gen:begin block=repos-m -->
           <tr><td><strong>m-cli</strong></td><td>Cross-engine M toolchain — the <code>m</code> busybox (fmt/lint/lsp/test/coverage/watch/vista/arch)</td><td class="tag tag--has">v0.1.0</td></tr>
-          <tr><td><strong>m-stdlib</strong></td><td>Pure-M runtime standard library — <code>STD*</code> modules</td><td class="tag tag--has">v0.13.0</td></tr>
-          <tr><td><strong>m-driver-sdk</strong></td><td>M engine-driver SDK — the seam contract + reference engine Client</td><td class="tag tag--has">v0.9.0</td></tr>
-          <tr><td><strong>m-ydb</strong></td><td>YottaDB engine driver — the binary producing the driver envelope</td><td class="tag">—</td></tr>
-          <tr><td><strong>m-iris</strong></td><td>InterSystems IRIS engine driver — the binary producing the driver envelope</td><td class="tag tag--has">v0.1.0</td></tr>
-          <tr><td><strong>m-parse</strong></td><td>Engine-neutral M parse substrate — tree-sitter-m over wazero; the foundation fmt/lint/lsp sit on</td><td class="tag tag--has">v0.1.0</td></tr>
-          <tr><td><strong>clikit</strong></td><td>Shared CLI convention layer — Kong grammar, JSON envelope, exit-code ladder</td><td class="tag tag--has">v0.9.0</td></tr>
+          <tr><td><strong>m-stdlib</strong></td><td>Pure-M runtime standard library — STD* modules</td><td class="tag tag--has">v0.13.0</td></tr>
+          <tr><td><strong>m-driver-sdk</strong></td><td>M engine-driver SDK — the seam contract + reference engine Client (mdriver.Client)</td><td class="tag tag--has">v0.11.0</td></tr>
+          <tr><td><strong>m-ydb</strong></td><td>YottaDB engine driver — the m-ydb binary producing the driver envelope</td><td class="tag">—</td></tr>
+          <tr><td><strong>m-iris</strong></td><td>InterSystems IRIS engine driver — the m-iris binary producing the driver envelope</td><td class="tag tag--has">v0.1.0</td></tr>
+          <tr><td><strong>m-parse</strong></td><td>Engine-neutral M parse substrate — tree-sitter-m over wazero; the foundation fmt/lint/lsp sit on (spec §4)</td><td class="tag tag--has">v0.1.0</td></tr>
+          <tr><td><strong>clikit</strong></td><td>Shared CLI convention layer — Kong grammar, JSON envelope, exit-code ladder — for the m-* / v-* Go toolchain (engine-neutral; no engine transport)</td><td class="tag tag--has">v0.9.0</td></tr>
+<!-- gen:end -->
         </tbody>
       </table>
     </div>
@@ -505,14 +507,16 @@
       <table>
         <thead><tr><th scope="col">Repo</th><th scope="col">Delivers</th><th scope="col">Latest</th></tr></thead>
         <tbody>
+<!-- gen:begin block=repos-v -->
           <tr><td><strong>v-pkg</strong></td><td>VistA KIDS packaging — the <code>v pkg</code> domain (build/install/verify/uninstall over the m engine seam)</td><td class="tag tag--has">v0.7.0</td></tr>
-          <tr><td><strong>v-cli</strong></td><td>The <code>v</code> CLI umbrella — VistA developer tooling aggregated under one binary</td><td class="tag">—</td></tr>
-          <tr><td><strong>v-stdlib</strong></td><td>VistA Standard Library — <code>VSL*</code> routines (consumes the engine-neutral <code>STD*</code> base upward)</td><td class="tag tag--has">v1.0.25</td></tr>
-          <tr><td><strong>v-base</strong></td><td>Host base library for v-domain CLIs — VSLAPI dispatch client + the <code>vslgen</code> binding generator</td><td class="tag tag--has">v0.4.0</td></tr>
-          <tr><td><strong>v-db</strong></td><td>VistA FileMan data-dictionary / PIKS profiler — the <code>v db</code> domain (read-only)</td><td class="tag">—</td></tr>
-          <tr><td><strong>v-web</strong></td><td>VistA Web Services — <code>VWEB*</code> routines: the inbound socket adapter driving the STDHTTPD server framework</td><td class="tag">—</td></tr>
+          <tr><td><strong>v-cli</strong></td><td>The <code>v</code> CLI umbrella — VistA developer tooling (v pkg/db/config/…) aggregated under one binary</td><td class="tag">—</td></tr>
+          <tr><td><strong>v-stdlib</strong></td><td>VistA Standard Library — VSL* routines (VistA-specific; consumes the engine-neutral STD* base upward)</td><td class="tag tag--has">v1.0.25</td></tr>
+          <tr><td><strong>v-base</strong></td><td>Host base library for v-&lt;domain&gt; CLIs — VSLAPI dispatch client (envelope codec, engine profiles, pagination, attribution/--yes) + the vslgen binding generator (vista-sysadmin-base §5)</td><td class="tag tag--has">v0.4.0</td></tr>
+          <tr><td><strong>v-db</strong></td><td>VistA FileMan data-dictionary / PIKS profiler — the <code>v db</code> domain (read-only inspect/profile over the m engine seam via v-base)</td><td class="tag">—</td></tr>
+          <tr><td><strong>v-web</strong></td><td>VistA Web Services — VWEB* routines: the inbound socket adapter (listener + device/TLS adapter) that drives the m-stdlib STDHTTPD server framework over a real socket</td><td class="tag">—</td></tr>
           <tr><td><strong>v-rpc-debug</strong></td><td>VistA RPC developer tools — the <code>v rpc-debug</code> domain</td><td class="tag tag--has">v0.4.0</td></tr>
           <tr><td><strong>v-rpc-tap</strong></td><td>VistA scalable RPC tap — the <code>v rpc-tap</code> domain</td><td class="tag">—</td></tr>
+<!-- gen:end -->
         </tbody>
       </table>
     </div>

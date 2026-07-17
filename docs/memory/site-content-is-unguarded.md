@@ -1,48 +1,63 @@
 ---
 name: site-content-is-unguarded
-description: The landing page hand-duplicates the generated org-profile README and links only public repos — both facts drift silently, with no gate.
+description: The site's m/v repo tables are generated + drift-gated from ecosystem.json; the prose and the by-the-numbers figures are still hand-written and ungated. Know which half you're editing.
 metadata:
   type: project
 ---
 
-# The site's content is a hand-copy, and nothing gates it
+# Half the landing page is gated. Know which half.
 
-Two standing hazards in `index.html`, both invisible until someone notices the
-site is wrong.
+## Generated — `scripts/site-gen.py` owns it
 
-## 1. The repo tables and the numbers are duplicated by hand
+The `m` and `v` repo tables in `index.html` sit between
+`<!-- gen:begin block=repos-m -->` / `<!-- gen:end -->` and are a projection of
+the same source the org profile README projects: `ecosystem.json` (membership +
+layer) + each repo's committed `repo.meta.json` `role` + latest version tag +
+**visibility**. Hand-editing a block is drift; `make site-check` red-gates it.
 
-`.github/profile/README.md` is the source the page was written from. Its repo
-tables are **generated and drift-gated** — `scripts/readme-gen.py --check` renders
-them from `ecosystem.json` + each repo's `repo.meta.json` `role` + latest tag, and
-red-gates staleness (`make profile-check`, plus the scheduled meta-gate).
+**Visibility is part of the projection on purpose.** The site is public and most
+of the org is not, so a link to a private repo is a public 404. The generator
+emits a link only for a public repo and plain text otherwise — so "link it when it
+goes public" is mechanical, not a thing anyone has to remember. Run
+`make site-sync` after a repo flips.
 
-**The site gets none of that.** Its tables, the by-the-numbers figures (64 suites ·
-1,400+ cases · 3,200+ assertions · 1,300+ Go tests · 21 gated repos · 24 VSL drift
-gates), and the version tags are hand-typed. When the profile regenerates, the site
-does not, and no gate says so.
+## The two-tier gate — and why it is two
 
-If the copy becomes a maintenance problem, the org's own discipline is the answer —
-`source-tag → generate → registry → red-gate`: render the site's tables from
-`ecosystem.json` into `gen:begin/gen:end` blocks with a `--check` mode, the same
-shape `readme-gen.py` already implements. That was considered and deliberately
-deferred at build time (2026-07-16) to keep the first pass simple.
+The registry and the roles live in **private** repos; harvesting them needs
+org-wide `contents:read`. `.github` holds such a PAT (`META_GATE_TOKEN`) because
+`.github` is private. **This repo is public** — an org-wide read token in its
+Actions secrets is a far bigger blast radius than the gate is worth. So the
+harvest and the check are split:
 
-## 2. Links are public-only, on purpose
+| Tier | Command | Network | Catches |
+|---|---|---|---|
+| 1 | `make site-check` | none — runs in CI | a hand-edited generated block |
+| 2 | `make site-freshness` | live `gh` — host-only | a stale snapshot (new tag, repo gone public) |
 
-At build time **23 of the 27 repos the profile README links were private**; the org
-is on a free plan. A public site that links them serves 404s. So the page links
-**only** what is actually public and lists everything else as plain text.
+Tier 1 alone lets `data/repos.json` rot; tier 2 alone can't run here. **If the site
+repo ever goes private, collapse them** — a single live `--check` in CI is simpler
+and strictly better once the token is safe to hold.
 
-Public then: `tree-sitter-m`, `vista-atlas`, `vista-compass`, and — note the
-asymmetry — the **`ghcr.io/vista-forge/vista-iris` container image is public even
-though its build repo is private**, which is why the hero can offer a working
-`docker pull` at all.
+The snapshot deliberately carries **no harvest timestamp**: a timestamp would churn
+every run and make a real diff invisible among the noise.
 
-**When a repo goes public, link it.** Don't link ahead of the flip: an
-optimistically-added link is a public 404. Check with
-`gh api repos/vista-forge/<name> --jq .visibility` rather than assuming.
+## Still ungated — the hand-written half
 
-Related: the page deliberately makes **no licensing claim** while the open-core
-split (decided 2026-07-08) is pending attorney review — see
+The prose, and the by-the-numbers figures (64 suites · 1,400+ cases · 3,200+
+assertions · 1,300+ Go tests · 21 gated repos · 24 VSL drift gates), are typed by
+hand from the profile README and **nothing checks them**. Same for the "M standard
+& corpora" / "Editor extensions" / "Shared foundations" tables — those repos aren't
+in `ecosystem.json`, so there is nothing to project them from (the same boundary
+`readme-gen.py` draws for the profile README's own Shared-foundations table).
+
+## Proof the generation was worth it
+
+The first live harvest (2026-07-16) immediately caught real drift: **m-driver-sdk
+was `v0.11.0` live while both the hand-copy and `profile/README.md` said
+`v0.9.0`.** The profile's own generated block was stale — i.e. `make profile-sync`
+had not been run in `.github` since the tag. If the site's tables and the profile's
+disagree, suspect the profile is stale before assuming the site is.
+
+Related: the page makes **no licensing claim** while the open-core split (decided
+2026-07-08) is pending attorney review — see
 `docs/licensing/open-core-relicense-rollout-tracker.md` in the `docs` repo.
