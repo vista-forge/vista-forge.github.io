@@ -196,41 +196,6 @@ p code, li code, td code {
     radial-gradient(52rem 24rem at 92% 4%, var(--cyan-wash), transparent 66%);
 }
 
-/* mark left, copy right — DOM order matches, so no `order` override is needed
-   and the stacked layout falls out for free. */
-.hero__grid {
-  display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
-  gap: 3rem;
-  align-items: center;
-}
-@media (max-width: 940px) {
-  .hero__grid { grid-template-columns: 1fr; gap: 2.75rem; }
-}
-
-.hero__art { text-align: center; }
-
-.logo-tile {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: 200px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow:
-    0 0 0 1px var(--border-bright),
-    0 14px 38px -12px rgba(0, 0, 0, 0.55);
-}
-@media (prefers-color-scheme: light) {
-  .logo-tile { box-shadow: 0 0 0 1px var(--border), 0 12px 32px -14px rgba(0, 0, 0, 0.28); }
-}
-/* stacked: sit the mark flush left over the copy, not centred above it
-   (margin-left beats the `margin: 0 auto` above — text-align alone can't move it) */
-@media (max-width: 940px) {
-  .logo-tile--hero { max-width: 140px; margin-left: 0; }
-}
-
 .hero__note {
   margin: 1.6rem 0 0;
   font-size: 0.85rem;
