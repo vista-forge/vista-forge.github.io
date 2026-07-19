@@ -357,6 +357,21 @@ h3 {
 .claim--v { border-top: 2px solid var(--ember); }
 .claim--m { border-top: 2px solid var(--cyan); }
 
+/* Portable spans the whole org — both layers — so it runs full-width with an
+   ember→cyan accent rather than a single-layer color. */
+.claim--o {
+  grid-column: 1 / -1;
+  position: relative;
+  overflow: hidden;
+}
+.claim--o::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--ember), var(--cyan));
+}
+
 .claim__eyebrow {
   font-family: var(--mono);
   font-size: 0.73rem;
@@ -366,6 +381,12 @@ h3 {
 }
 .claim--v .claim__eyebrow { color: var(--ember); }
 .claim--m .claim__eyebrow { color: var(--cyan); }
+.claim--o .claim__eyebrow {
+  background: linear-gradient(90deg, var(--ember), var(--cyan-bright));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 
 .claim h3 { font-size: 1.3rem; margin-bottom: 0.6rem; }
 
@@ -402,6 +423,16 @@ h3 {
 .claim--v li::before { background: var(--ember-line); }
 .claim--m li::before { background: var(--cyan-line); }
 .claim li strong { color: var(--text); font-weight: 600; }
+
+/* full-width Portable card: two columns of bullets on wide screens */
+.claim--o ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem 1.6rem;
+}
+@media (max-width: 820px) {
+  .claim--o ul { grid-template-columns: 1fr; }
+}
 
 /* ---------- numbers ---------- */
 

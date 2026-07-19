@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VistA Forge — the hardened, industry-standard VistA/M toolchain</title>
-<meta name="description" content="VistA Forge gives M the developer experience every other language takes for granted: format, lint, an LSP language server, unit tests with coverage against a live engine, a 40-module standard library, and VistA patches that provably install and provably back out. Identical on YottaDB and InterSystems IRIS.">
+<title>VistA Forge — the hardened, industry-standard, fully portable VistA/M toolchain</title>
+<meta name="description" content="VistA Forge gives M the developer experience every other language takes for granted: format, lint, an LSP language server, unit tests with coverage against a live engine, a 40-module standard library, and VistA patches that provably install and provably back out. Identical on YottaDB and InterSystems IRIS — and fully portable: every gate runs offline, on any machine, on any git host.">
 <link rel="canonical" href="https://vista-forge.github.io/">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://vista-forge.github.io/">
-<meta property="og:title" content="VistA Forge — the hardened, industry-standard VistA/M toolchain">
-<meta property="og:description" content="Work on VistA like it's 2026, not 1985. Format, lint, navigate, test with coverage against a live engine, and ship patches that provably back out — on YottaDB and IRIS alike.">
+<meta property="og:title" content="VistA Forge — the hardened, industry-standard, fully portable VistA/M toolchain">
+<meta property="og:description" content="Work on VistA like it's 2026, not 1985. Format, lint, navigate, test with coverage against a live engine, and ship patches that provably back out — on YottaDB and IRIS alike, with every gate running offline on any machine.">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
@@ -50,7 +50,7 @@
     </div>
 
     <h1>VistA <span class="forge">Forge</span></h1>
-    <p class="hero__tag">The hardened, industry-standard VistA/M toolchain.</p>
+    <p class="hero__tag">The hardened, industry-standard, fully portable VistA/M toolchain.</p>
 
     <p class="hero__lead">
       Work on VistA like it's 2026, not 1985. VistA Forge gives <strong>M</strong> the
@@ -84,8 +84,8 @@
 <!-- ══════════════ the two claims ══════════════ -->
 <section class="section" id="why">
   <div class="wrap">
-    <p class="section__kicker">Hardened. Industry-standard.</p>
-    <h2>The tagline makes two claims, and both are load-bearing.</h2>
+    <p class="section__kicker">Hardened. Industry-standard. Portable.</p>
+    <h2>The tagline makes three claims, and each is load-bearing.</h2>
     <p class="section__intro">
       <strong>VistA</strong> — the VA's public-domain hospital information system — has run real
       hospitals for over four decades and is one of the largest working bodies of
@@ -120,6 +120,18 @@
           <li><strong>Validated beyond VistA.</strong> <code>m-modern-corpus</code> snapshots ~4,000 routines of modern open-source M as a second validation corpus — proving the rules hold on today's idioms, not just VA legacy style.</li>
           <li><strong>The M Standard Library.</strong> 40 <code>STD*</code> modules — JSON, HTTP(S), JWT, crypto, UUIDs, regex, S3, testing — conformance-tested against vendored RFC/NIST corpuses, identical on both engines.</li>
           <li><strong>Mainstream delivery.</strong> Git-canonical <code>.m</code> source, static Go binaries, Docker engines, and CI on every push.</li>
+        </ul>
+      </div>
+
+      <div class="claim claim--o">
+        <p class="claim__eyebrow">Portable — the whole org</p>
+        <h3>No cloud, no vendor, no single machine — proven by drill, not asserted</h3>
+        <p>Portability here is a standing acceptance test, not a promise: the whole org clones, provisions, and gates to green with the network severed.</p>
+        <ul>
+          <li><strong>Every quality/safety gate runs offline.</strong> <code>make check</code> in every repo — lint, tests against live engines, vulnerability scans against local OSV databases, docs gates — needs zero network and zero tokens; CI is a git pre-push hook plus a local org sweep, portable to any git host.</li>
+          <li><strong>Clone the org, get everything.</strong> Rules, committed per-repo memory, domain skills, guard-rails, and editor config all travel with the repos; idempotent installers wire a fresh machine, and a liveness gate watches every wire.</li>
+          <li><strong>Drill-proven.</strong> A standing acceptance drill clones the full org from a throwaway non-GitHub forge into a fresh <code>$HOME</code>, provisions every repo offline from a cold-start bundle, and runs the entire gate suite — engines included — to green under a severed network.</li>
+          <li><strong>The engine layer is archive-backed.</strong> Every load-bearing engine image is captured by a daily change-detected archive; recovery never depends on an external registry.</li>
         </ul>
       </div>
     </div>
@@ -581,7 +593,7 @@
           <img class="brand__mark" src="assets/img/logo.png" alt="" width="28" height="28" loading="lazy" decoding="async">
           VistA Forge
         </a>
-        <div>The hardened, industry-standard VistA/M toolchain.</div>
+        <div>The hardened, industry-standard, fully portable VistA/M toolchain.</div>
       </div>
       <nav class="footer-links" aria-label="Footer">
         <a href="https://github.com/vista-forge">GitHub</a>
