@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Licensing — VistA Forge</title>
+<meta name="description" content="VistA Forge is dual-licensed: free under the GNU AGPL-3.0-or-later, or under a commercial license for proprietary, closed, hosted, or federal environments that cannot accept the AGPL's network source-disclosure obligation.">
+<link rel="canonical" href="https://vista-forge.github.io/licensing.html">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<main class="wrap">
+
+  <p class="section__kicker">Licensing</p>
+  <h1>Dual-licensed: AGPL-3.0, or commercial.</h1>
+
+  <p class="section__intro">
+    The VistA Forge toolchain is <strong>dual-licensed</strong>. You may use it under
+    <strong>either</strong> the GNU Affero General Public License v3.0 (or, at your option,
+    any later version), <strong>or</strong> a commercial license.
+  </p>
+
+  <h2>(a) The AGPL-3.0-or-later option</h2>
+  <p>
+    Free, and the default. The full license text ships in the <code>LICENSE</code> file of
+    every repository. In practice, for the command-line tools
+    (<code>m fmt</code>, <code>m lint</code>, <code>m lsp</code>, <code>m test</code>,
+    <code>v pkg</code>, …) the AGPL behaves like the ordinary GPL: its distinguishing
+    clause, <strong>§13</strong>, only applies when someone <em>modifies</em> the program
+    <em>and</em> offers it to users <em>over a network</em>. A CLI does neither.
+  </p>
+  <p>
+    §13 is genuinely load-bearing for <strong>v-web</strong> and <strong>STDHTTPD</strong>,
+    which are network services. If you modify those and serve them to users, the AGPL
+    requires you to offer those users the corresponding source.
+  </p>
+
+  <h2>(b) The commercial option</h2>
+  <p>
+    A commercial license is available for use in proprietary or closed products, hosted
+    services, or environments — including most U.S. federal systems and their integrators —
+    that cannot accept the AGPL's network source-disclosure obligation.
+  </p>
+  <p>
+    <strong>To enquire about a commercial license</strong>, open an issue titled
+    <em>“Commercial license enquiry”</em> on any public VistA Forge repository at
+    <a href="https://github.com/vista-forge">github.com/vista-forge</a>, and a maintainer
+    will follow up. Please do not include confidential terms in a public issue — the first
+    reply will move the conversation to a private channel.
+  </p>
+
+  <h2>What is licensed how</h2>
+  <table>
+    <thead><tr><th>Scope</th><th>License</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>The <code>m-*</code> and <code>v-*</code> toolchain, <code>f-stdlib</code>,
+            and the grammar chain (<code>m-standard</code>, <code>m-vscode</code>,
+            <code>tree-sitter-m</code>)</td>
+        <td><strong>AGPL-3.0-or-later</strong>, or commercial</td>
+      </tr>
+      <tr>
+        <td>VS Code extensions <code>vista-atlas</code>, <code>vista-compass</code></td>
+        <td>MIT</td>
+      </tr>
+      <tr>
+        <td>Shared toolkit and infrastructure — <code>clikit</code>,
+            <code>workspace</code>, <code>go-cli-template</code>,
+            <code>vista-iris</code>, <code>vista-fileman</code></td>
+        <td>Apache-2.0</td>
+      </tr>
+      <tr>
+        <td>Documentation (the <code>docs</code> repository)</td>
+        <td>CC BY-SA 4.0</td>
+      </tr>
+      <tr>
+        <td><code>m-modern-corpus</code></td>
+        <td>Third-party sources under their own licenses — not relicensed</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Contributing</h2>
+  <p>
+    Because the toolchain is dual-licensed, outside contributions require a
+    <strong>Contributor License Agreement</strong>. Offering a commercial license requires
+    that the maintainer hold or control all rights in the codebase; without a CLA, an
+    AGPL-only contribution would foreclose that permanently. The CLA does not take away
+    your rights to your own contribution — you keep them.
+  </p>
+
+  <p class="section__intro">
+    <a href="./">← Back to VistA Forge</a>
+  </p>
+
+</main>
+</body>
+</html>
