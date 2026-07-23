@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VistA Forge — the hardened, industry-standard, fully portable VistA/M toolchain</title>
+<title>VistA Forge — The hardened industry-standard, portable VistA/M toolchain</title>
 <meta name="description" content="VistA Forge gives M the developer experience every other language takes for granted: format, lint, an LSP language server, unit tests with coverage against a live engine, a 40-module standard library, and VistA patches that provably install and provably back out. Identical on YottaDB and InterSystems IRIS — and fully portable: every gate runs offline, on any machine, on any git host.">
 <link rel="canonical" href="https://vista-forge.github.io/">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://vista-forge.github.io/">
-<meta property="og:title" content="VistA Forge — the hardened, industry-standard, fully portable VistA/M toolchain">
+<meta property="og:title" content="VistA Forge — The hardened industry-standard, portable VistA/M toolchain">
 <meta property="og:description" content="Work on VistA like it's 2026, not 1985. Format, lint, navigate, test with coverage against a live engine, and ship patches that provably back out — on YottaDB and IRIS alike, with every gate running offline on any machine.">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -50,7 +50,7 @@
     </div>
 
     <h1>VistA <span class="forge">Forge</span></h1>
-    <p class="hero__tag">The hardened, industry-standard, fully portable VistA/M toolchain.</p>
+    <p class="hero__tag">The hardened industry-standard, portable VistA/M toolchain.</p>
 
     <p class="hero__lead">
       Work on VistA like it's 2026, not 1985. VistA Forge gives <strong>M</strong> the
@@ -216,67 +216,68 @@
 <section class="section" id="stack">
   <div class="wrap">
     <p class="section__kicker">The stack at a glance</p>
-    <h2>Two layers, split by an enforced waterline.</h2>
+    <h2>Three layers, split by enforced waterlines.</h2>
     <p class="section__intro">
-      The <strong>VistA layer</strong> (<code>v-*</code>) is built from one repeating shape — a
-      <strong>v-app</strong>, where <em>app</em> is a VistA functional domain. Each domain ships as a
-      client and a server joined by a client-server API, consolidating an entire category of
-      VistA-specific functionality into one interface the end user actually drives. The
-      <strong>M layer</strong> (<code>m-*</code>) is the engine toolchain, seam, and runtime every
-      domain is built on. Each <em>seam</em> row is itself an enforced contract, held by a generated
-      registry and a red gate rather than convention.
+      The stack reads top to bottom as <strong>v → f → m → engines</strong>, and dependency only ever
+      flows downward. The <strong>VistA layer</strong> (<code>v-*</code>) is the VistA-specific tools
+      and library. Below it the <strong>database layer</strong> (<code>f-*</code>) is
+      <strong>FileMan</strong>, VistA's data engine, wrapped as a standalone library that needs no
+      Kernel. Below that the <strong>M layer</strong> (<code>m-*</code>) is the engine-neutral
+      toolchain, standard library, and seam. Each waterline is an enforced contract, held by a
+      generated registry and a red gate rather than convention — a layer never reaches back up.
     </p>
 
-    <div class="stack">
-      <div class="band band--v">
-        <div class="band__head">VistA layer · v-* <span>— requires Kernel / FileMan / KIDS</span></div>
-        <div class="layer">
-          <div class="layer__name">v-app</div>
-          <div class="layer__desc">End-user client application (Go) for a v-stdlib domain — database, tasks, monitoring — using mainstream interface and naming conventions, with comprehensive quality, safety, and unit tests. VistA-specific terminology modernized to plain terms.</div>
-        </div>
-        <div class="layer layer--seam">
-          <div class="layer__name">v-api</div>
-          <div class="layer__desc">client-server API — carries every client-to-server verb call, audited</div>
-        </div>
-        <div class="layer">
-          <div class="layer__name">v-stdlib</div>
-          <div class="layer__desc">VistA Standard Library (VSL). Wrappers of VistA infrastructure applications (FileMan, Kernel, …) in modern, mainstream formats, naming conventions, and APIs.</div>
-        </div>
+    <div class="vfm">
+      <div class="vfm__layer vfm__layer--v">
+        <span class="vfm__tag">v</span>
+        <span class="vfm__name">vista</span>
+        <span class="vfm__desc">VistA-specific apps and the VistA Standard Library (VSL) — Kernel, KIDS, RPC Broker. Requires a full VistA.</span>
       </div>
 
-      <div class="waterline">
-        <b>the m/v waterline</b>
-        <span>— does this code work on a bare M engine with no VistA installed? Dependency is one-way: v → m, never back.</span>
+      <div class="vfm__line">
+        <span class="vfm__arrow" aria-hidden="true">←</span>
+        <span class="vfm__wl">m/v waterline</span>
       </div>
 
-      <div class="band band--m">
-        <div class="band__head">M layer · m-* <span>— runs on any M engine, VistA or not</span></div>
-        <div class="layer">
-          <div class="layer__name">m-toolchain</div>
-          <div class="layer__desc">The <code>m</code> dev tools — fmt · lint · lsp · test · coverage — all on one shared parser.</div>
-        </div>
-        <div class="layer">
-          <div class="layer__name">m-stdlib</div>
-          <div class="layer__desc">M Standard Library (MSL). A portable, industry-standard M library of 40 <code>STD*</code> runtime modules — JSON, HTTP, crypto, testing, and more.</div>
-        </div>
-        <div class="layer layer--seam">
-          <div class="layer__name">m-driver-sdk</div>
-          <div class="layer__desc">M engine seam — the only path to a live engine</div>
-        </div>
-        <div class="layer">
-          <div class="layer__name">m engines</div>
-          <div class="layer__desc">YottaDB / IRIS — run VistA; vendor specifics contained in the drivers (m-ydb, m-iris).</div>
-        </div>
+      <div class="vfm__layer vfm__layer--f">
+        <span class="vfm__tag">f</span>
+        <span class="vfm__name">database</span>
+        <span class="vfm__desc">FileMan — VistA's database engine — as the FileMan Standard Library (FSL). Runs on a bare M engine, no Kernel needed.</span>
+      </div>
+
+      <div class="vfm__line">
+        <span class="vfm__arrow" aria-hidden="true">←</span>
+        <span class="vfm__wl">m/f waterline</span>
+      </div>
+
+      <div class="vfm__layer vfm__layer--m">
+        <span class="vfm__tag">m</span>
+        <span class="vfm__name">mumps</span>
+        <span class="vfm__desc">Engine-neutral M toolchain, the M Standard Library (MSL) of 40 <code>STD*</code> modules, and the driver seam.</span>
+      </div>
+
+      <div class="vfm__line">
+        <span class="vfm__arrow" aria-hidden="true">←</span>
+        <span class="vfm__wl">m/driver waterline</span>
+      </div>
+
+      <div class="vfm__layer vfm__layer--e">
+        <span class="vfm__tag">∎</span>
+        <span class="vfm__name">m-engines</span>
+        <span class="vfm__desc">YottaDB · InterSystems IRIS — the runtime. Vendor specifics are contained in the drivers (m-ydb, m-iris).</span>
       </div>
     </div>
 
     <div class="callout">
-      <strong>The two standard libraries this stack is built on.</strong>
+      <strong>The three standard libraries this stack is built on.</strong>
       The <strong>VistA Standard Library (VSL)</strong> is a thin wrapper around VistA's bespoke
-      technology — Kernel, FileMan, KIDS — reframed in modern mainstream terms, so working against
-      VistA feels like working against an ordinary, well-typed API. The
-      <strong>M Standard Library (MSL)</strong> is a suite of industry-standard libraries that make
-      <strong>M</strong> a peer of other mainstream languages instead of a special case.
+      technology — Kernel, KIDS, the RPC Broker — reframed in modern mainstream terms, so working
+      against VistA feels like working against an ordinary, well-typed API. The
+      <strong>FileMan Standard Library (FSL)</strong> gives that same treatment to
+      <strong>FileMan</strong>, VistA's data engine, as a standalone database layer that runs on a
+      bare M engine. And the <strong>M Standard Library (MSL)</strong> is a suite of
+      industry-standard libraries that make <strong>M</strong> a peer of other mainstream languages
+      instead of a special case.
     </div>
   </div>
 </section>
@@ -593,7 +594,7 @@
           <img class="brand__mark" src="assets/img/logo.png" alt="" width="28" height="28" loading="lazy" decoding="async">
           VistA Forge
         </a>
-        <div>The hardened, industry-standard, fully portable VistA/M toolchain.</div>
+        <div>The hardened industry-standard, portable VistA/M toolchain.</div>
       </div>
       <nav class="footer-links" aria-label="Footer">
         <a href="https://github.com/vista-forge">GitHub</a>

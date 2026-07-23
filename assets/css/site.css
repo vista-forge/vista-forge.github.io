@@ -1,7 +1,9 @@
 /* VistA Forge — org site
    Palette is semantic, not decorative:
-     ember = the v (VistA-specific) layer
-     cyan  = the m (engine-neutral) layer
+     ember  = the v (VistA-specific) layer
+     violet = the f (FileMan / database) layer
+     cyan   = the m (engine-neutral) layer
+     green  = the m-engines runtime
    Keep that mapping intact when adding sections. */
 
 :root {
@@ -24,6 +26,14 @@
   --cyan-bright: #6fdcf7;
   --cyan-wash: rgba(53, 197, 232, 0.08);
   --cyan-line: rgba(53, 197, 232, 0.3);
+
+  --fm: #b18cff;
+  --fm-wash: rgba(177, 140, 255, 0.10);
+  --fm-line: rgba(177, 140, 255, 0.34);
+
+  --engine: #4ec9a0;
+  --engine-wash: rgba(78, 201, 160, 0.09);
+  --engine-line: rgba(78, 201, 160, 0.30);
 
   --ok: #4ec9a0;
 
@@ -55,6 +65,14 @@
     --cyan-bright: #085f76;
     --cyan-wash: rgba(11, 124, 153, 0.07);
     --cyan-line: rgba(11, 124, 153, 0.28);
+
+    --fm: #6d3fc4;
+    --fm-wash: rgba(109, 63, 196, 0.07);
+    --fm-line: rgba(109, 63, 196, 0.30);
+
+    --engine: #0f7a55;
+    --engine-wash: rgba(15, 122, 85, 0.07);
+    --engine-line: rgba(15, 122, 85, 0.28);
 
     --ok: #0f7a55;
   }
@@ -511,88 +529,88 @@ td strong, td a { font-weight: 600; }
 }
 .tag--has { color: var(--ok); }
 
-/* ---------- the stack ---------- */
+/* ---------- the v-f-m stack (one box, a color per layer) ---------- */
 
-.stack {
+.vfm {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--bg-elev);
 }
 
-.band__head {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  padding: 0.7rem 1.1rem;
-  font-family: var(--mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--border);
-}
-.band--v .band__head { background: var(--ember-wash); color: var(--ember); }
-.band--m .band__head { background: var(--cyan-wash); color: var(--cyan); }
-.band__head span { color: var(--text-faint); letter-spacing: 0.02em; text-transform: none; }
-
-.layer {
+.vfm__layer {
   display: grid;
-  grid-template-columns: 168px 1fr;
-  gap: 1.1rem;
-  padding: 0.95rem 1.1rem;
-  border-bottom: 1px solid var(--border);
+  grid-template-columns: 2rem 118px 1fr;
+  gap: 1rem;
   align-items: baseline;
+  padding: 1.05rem 1.2rem;
+  border-left: 3px solid transparent;
 }
-.layer:last-child { border-bottom: none; }
 @media (max-width: 680px) {
-  .layer { grid-template-columns: 1fr; gap: 0.25rem; }
+  .vfm__layer { grid-template-columns: 2rem 1fr; gap: 0.35rem 1rem; }
+  .vfm__layer .vfm__desc { grid-column: 2 / -1; }
 }
 
-.layer__name {
+.vfm__tag {
   font-family: var(--mono);
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text);
-}
-.layer__desc { font-size: 0.88rem; color: var(--text-dim); }
-
-/* a seam row: dashed + gray — an enforced contract, not a component */
-.layer--seam { background: var(--bg-elev-2); }
-.layer--seam .layer__name {
-  font-style: italic;
-  font-weight: 500;
-  color: var(--text-faint);
-}
-.layer--seam .layer__desc { font-style: italic; color: var(--text-faint); }
-.layer--seam .layer__name::before {
-  content: "seam ";
-  font-style: normal;
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  opacity: 0.6;
-}
-
-.waterline {
-  display: flex;
+  font-weight: 700;
+  font-size: 0.95rem;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
   align-items: center;
-  gap: 0.9rem;
-  padding: 0.75rem 1.1rem;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent, transparent 6px,
-    var(--border) 6px, var(--border) 7px
-  );
-  border-top: 1px solid var(--border-bright);
-  border-bottom: 1px solid var(--border-bright);
-  font-family: var(--mono);
-  font-size: 0.76rem;
-  color: var(--text-dim);
+  justify-content: center;
+  border-radius: 6px;
 }
-.waterline b {
-  color: var(--text);
+.vfm__name {
+  font-family: var(--mono);
   font-weight: 600;
+  font-size: 0.95rem;
+}
+.vfm__desc {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  align-self: center;
+}
+
+/* one wash + accent + label color per layer */
+.vfm__layer--v { background: var(--ember-wash); border-left-color: var(--ember); }
+.vfm__layer--v .vfm__name { color: var(--ember); }
+.vfm__layer--v .vfm__tag { color: var(--ember); box-shadow: inset 0 0 0 1px var(--ember-line); }
+
+.vfm__layer--f { background: var(--fm-wash); border-left-color: var(--fm); }
+.vfm__layer--f .vfm__name { color: var(--fm); }
+.vfm__layer--f .vfm__tag { color: var(--fm); box-shadow: inset 0 0 0 1px var(--fm-line); }
+
+.vfm__layer--m { background: var(--cyan-wash); border-left-color: var(--cyan); }
+.vfm__layer--m .vfm__name { color: var(--cyan); }
+.vfm__layer--m .vfm__tag { color: var(--cyan); box-shadow: inset 0 0 0 1px var(--cyan-line); }
+
+.vfm__layer--e { background: var(--engine-wash); border-left-color: var(--engine); }
+.vfm__layer--e .vfm__name { color: var(--engine); }
+.vfm__layer--e .vfm__tag { color: var(--engine); box-shadow: inset 0 0 0 1px var(--engine-line); }
+
+/* a waterline: a thin dashed rule, with an arrow pointing to it */
+.vfm__line {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1.2rem;
+  border-top: 1px dashed var(--border-bright);
+  border-bottom: 1px dashed var(--border-bright);
+  background: var(--bg);
+}
+.vfm__arrow {
+  color: var(--text-faint);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+.vfm__wl {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: var(--text-dim);
   white-space: nowrap;
 }
 
