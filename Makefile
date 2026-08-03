@@ -11,7 +11,7 @@
 help: ## show this help
 	@grep -E '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
 
-check: site-check ## the CI gate (offline; what runs on every push)
+check: site-check ## THE gate — local and offline (no CI; run before every push)
 
 site-check: ## red-gate index.html's generated blocks against the committed snapshot
 	python3 scripts/site-gen.py --check
