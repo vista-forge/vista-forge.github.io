@@ -10,15 +10,17 @@
    value change; --cyan is the exception and is still literally cyan. */
 
 :root {
-  --bg: #0a0c13;
-  --bg-elev: #111624;
-  --bg-elev-2: #181e30;
-  --border: #262d40;
-  --border-bright: #38415c;
+  color-scheme: dark;
 
-  --text: #e8ecf5;
-  --text-dim: #9aa4bb;
-  --text-faint: #6b748c;
+  --bg: #000000;
+  --bg-elev: #0b0c11;
+  --bg-elev-2: #14161d;
+  --border: #21242e;
+  --border-bright: #343846;
+
+  --text: #f2f4f8;
+  --text-dim: #a2aabd;
+  --text-faint: #6f778a;
 
   --vista: #a78bfa;
   --vista-bright: #c4b5fd;
@@ -47,39 +49,10 @@
   --radius: 10px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #ffffff;
-    --bg-elev: #f7f8fa;
-    --bg-elev-2: #eef1f5;
-    --border: #dfe3ea;
-    --border-bright: #c3cad6;
-
-    --text: #131820;
-    --text-dim: #515c6b;
-    --text-faint: #79838f;
-
-    --vista: #6d28d9;
-    --vista-bright: #5b21b6;
-    --vista-wash: rgba(109, 40, 217, 0.07);
-    --vista-line: rgba(109, 40, 217, 0.30);
-
-    --cyan: #0e7490;
-    --cyan-bright: #155e75;
-    --cyan-wash: rgba(14, 116, 144, 0.07);
-    --cyan-line: rgba(14, 116, 144, 0.28);
-
-    --fm: #1d4ed8;
-    --fm-wash: rgba(29, 78, 216, 0.07);
-    --fm-line: rgba(29, 78, 216, 0.28);
-
-    --engine: #0f766e;
-    --engine-wash: rgba(15, 118, 110, 0.07);
-    --engine-line: rgba(15, 118, 110, 0.28);
-
-    --ok: #0f766e;
-  }
-}
+/* No light-scheme override: this site is black by design (2026-08-14).
+   color-scheme:dark above tells the browser to render form controls,
+   scrollbars and the canvas dark too, so a light-OS visitor still gets the
+   intended page instead of a half-inverted one. */
 
 * { box-sizing: border-box; }
 
@@ -176,16 +149,15 @@ p code, li code, td code {
 }
 .brand:hover { text-decoration: none; }
 
-/* The org mark is a 3D render on a white plate — its brightest chrome facets are
-   the same pure white as its background, so it can't be knocked out without
-   eating the metal. Present it ON the plate: rounded, ringed, like an app icon. */
+/* mark.png is the faceted V, knocked out of its charcoal ground so it floats
+   on the black page — no plate, no ring. (Source art: v-forge-icon.png; the
+   plated square it was cut from is what logo.png / logo-180.png still use,
+   because social cards and iOS icons want an opaque tile.) Shipped at 128px
+   for HiDPI and drawn at 26. */
 .brand__mark {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   flex: none;
-  border-radius: 6px;
-  background: #fff;
-  box-shadow: 0 0 0 1px var(--border-bright);
 }
 
 .nav {
