@@ -1,39 +1,56 @@
 ---
 name: org-logo-treatment
-description: The vista-forge org mark cannot be background-removed — its bright chrome facets are the same pure white as its backdrop — so the site uses it unmodified on its white plate.
+description: The site's mark is the faceted-V art (v-forge-icon.png), knocked out by a saturation key and floating on the black page; the old chromed-anvil render it replaced could not be knocked out at all, which is why the plate treatment existed.
 metadata:
   type: project
 ---
 
-# The org logo — use it on its plate, don't knock it out
+# The site mark — saturation key, no plate
 
-The mark (a chromed **V** with circuit-trace inlay standing on a steel **anvil**
-bearing an **M** — VistA on the anvil) is the GitHub org avatar. Canonical source:
-`https://avatars.githubusercontent.com/u/287217332` — there is **no logo file
-committed anywhere in the org**; the site vendors it at
-`vista-forge.github.io/assets/img/logo.png`.
+**Current mark (since 2026-08-14):** the faceted **V**, cyan→violet, with a crystal
+centre, supplied by Rafael as `assets/img/v-forge-icon.png` (425×355, charcoal ground
+with faint circuit traces). It is the source art; everything else is derived from it:
 
-**Do not try to make it transparent with a threshold/flood-fill.** Measured
-2026-07-16, not guessed:
+| File | What | Ground |
+|---|---|---|
+| `mark.png` | header, 128px drawn at 26 | transparent |
+| `favicon-32.png` | favicon | transparent |
+| `logo-180.png` | apple-touch | opaque black plate |
+| `logo.png` | `og:image`, 512 | opaque black plate |
 
-- The render sits on white paper (254) **plus a soft cast shadow** that reaches
-  ~222 at bottom-left. So there is no single luminance cut: a threshold tight
-  enough to spare the metal leaves the shadow as a gray smudge.
-- The V's **bevels and the anvil's top faces are specular white** — neutral and
-  ≥250, i.e. *identical in value to the paper*, and **connected to it**. Any
-  border-seeded flood fill therefore leaks through the bevel and chews visible
-  notches out of the V's arms. Confirmed at `lum>=240/246/250` with
-  `chroma<=8/6/5`; the leak persists at every setting that also removes the paper.
-- Edge-limited region growing (Sobel gradient < 40, grow only through smooth
-  neutral pixels) *does* kill the shadow cleanly — but still bites the bevels,
-  because the bevel's interior is smooth as well as white.
+**The knockout is a saturation key, not a flood fill.** The V is saturated; the ground
+*and its circuit traces* are not. So: separate the HSL saturation channel, level it, and
+use it as alpha —
 
-**Conclusion: the white background is not separable from the subject by any
-value-based rule.** The site therefore uses the PNG **unmodified**, presented on
-its own plate — `border-radius` + a 1px ring (`.logo-tile` for the hero,
-`.brand__mark` for the header/footer) — which reads as a deliberate app-icon mark
-on both the dark and light themes.
+```
+convert A.png \( +clone -colorspace HSL -channel G -separate +channel -level 12%,32% \) \
+        -alpha off -compose CopyOpacity -composite B.png
+```
 
-If a transparent mark is ever genuinely needed, the fix is upstream: **re-export
-from the original 3D render with an alpha channel**, or have it redrawn as vector.
-Post-processing this PNG is a dead end — don't spend the iterations again.
+A corner-seeded flood fill is the wrong tool here: the traces are not connected to the
+corner, so they survive as grey specks at 26px.
+
+Keep the two plated derivatives plated. iOS composites an apple-touch icon over an
+unknown ground, and social cards do the same — and at 180/512px the circuit traces read
+as texture worth having. Re-encode both at **`-depth 8`**: ImageMagick defaults to 16-bit
+here, which made `logo.png` 1.0 MB instead of 202 KB.
+
+## Why the CSS used to say "present it on a plate"
+
+The mark this replaced was a 3D render — a chromed V with circuit inlay standing on a
+steel anvil bearing an M — and it **could not be background-removed at all**. Measured
+2026-07-16: the V's bevels and the anvil's top faces are specular white, neutral ≥250,
+*identical in value to the paper backdrop and connected to it*, so every border-seeded
+fill leaked through a bevel and chewed notches out of the arms; a soft cast shadow
+reaching ~222 meant no single luminance cut spared both. Edge-limited region growing
+killed the shadow but still bit the bevels. Hence `.brand__mark` carrying
+`background:#fff` + a 1px ring — the plate was a workaround for an unkeyable image, not
+a design choice.
+
+**That constraint is gone with the art.** The header mark now sits directly on the black
+page; the plate and ring are removed. Don't reintroduce them, and don't port the old
+"never try to knock this out" rule to the new mark — it keys cleanly, as above.
+
+The old render remains the **GitHub org avatar**
+(`https://avatars.githubusercontent.com/u/287217332`) and is unaffected by this; if the
+avatar is ever refreshed to match the site, it is an upload, not a file in any repo.
