@@ -1,10 +1,10 @@
 /* VistA Forge — org site
    Palette is semantic, not decorative — one cool spectrum, read top-down in
-   stack order, so a layer's color is the same wherever it appears:
-     violet = the v (VistA-specific) layer   -- also the brand accent
-     blue   = the f (FileMan / database) layer
-     cyan   = the m (engine-neutral) layer
-     teal   = the m-engines runtime
+   the order the landing page's layer cake stacks:
+     violet = you + your agent (the working surface)  -- also the brand accent
+     blue   = the standard-library layer (MSL / FSL / VSL)
+     cyan   = classic VistA (Kernel, FileMan, KIDS, Broker)
+     teal   = the M engines
    Keep that mapping intact when adding sections. Token names are LAYERS, not
    hues (--vista, --fm, --engine) precisely so a re-theme like this one stays a
    value change; --cyan is the exception and is still literally cyan. */
@@ -498,7 +498,10 @@ td strong, td a { font-weight: 600; }
 
 .vfm__layer {
   display: grid;
-  grid-template-columns: 2rem 118px 1fr;
+  /* 178px, not 118: the layer names are phrases ("you + your agent",
+     "standard libraries"), not the old one-word band tags, and wrapping a
+     two-word name mid-row reads as a layout bug. */
+  grid-template-columns: 2rem 178px 1fr;
   gap: 1rem;
   align-items: baseline;
   padding: 1.05rem 1.2rem;

@@ -92,29 +92,30 @@
 
     <div class="claims">
       <div class="claim claim--v">
-        <p class="claim__eyebrow">Hardened — the VistA layer</p>
+        <p class="claim__eyebrow">Hardened — the quality bar</p>
         <h3>VistA, treated the way regulated industries treat production software</h3>
-        <p>Nothing here is enforced by convention or a review note. Every boundary is a generated registry held by a red gate.</p>
+        <p>Hardening here is a measured quality-control regime, not a posture: continuous integration, test-driven design, and tests counted in the thousands.</p>
         <ul>
-          <li><strong>Contract/registry-based seams.</strong> Every cross-layer boundary — the m/f/v waterline, the client-server dispatch seam, the engine seam — is a generated registry held by a red gate.</li>
-          <li><strong>Test-driven development (TDD) for every module.</strong> Each VistA Standard Library (<code>VSL*</code>) module is built test-first against live VistA, with per-module coverage gates; each Go client the same way.</li>
-          <li><strong>Full-corpus, live-system testing.</strong> Suites and executable examples run on every push against <strong>two complete live VistA systems</strong>, each carrying VistA's full ~40k-routine base.</li>
+          <li><strong>Continuous integration on every push.</strong> The full gate — build, lint, tests, coverage — runs before a change can land, and runs <strong>offline, on your machine</strong>, with no cloud service in the loop.</li>
+          <li><strong>Test-driven design, as a rule.</strong> Every module is written test-first: the test must fail before the code exists. <code>m test</code> records proof of that failure, bound to the test's content hash, so weakening a test later cannot fake a pass.</li>
+          <li><strong>Thousands of tests, thousands of assertions.</strong> <strong>84 suites, 1,700+ test cases and 5,400+ assertions</strong> in M, plus <strong>2,800+ Go test functions</strong> — and every suite runs on <strong>both</strong> VistA engines, not one.</li>
+          <li><strong>Measured against real systems, not fixtures.</strong> Those suites and 61 executable example programs run against <strong>two complete live VistA systems</strong>, each carrying VistA's full ~40k-routine base.</li>
+          <li><strong>Coverage with a floor, not a dashboard.</strong> ≥85% per module, enforced — alongside zero lint findings at <code>--error-on=error</code>.</li>
           <li><strong>Provable reversibility.</strong> A release tag can only exist after a build → install → verify → test → uninstall cycle diffs <strong>byte-clean</strong> against baseline on both engines.</li>
-          <li><strong>Declared data ownership.</strong> Modules declare their file footprints, exactly one module may write a given file, and every mutating verb carries fail-closed, host-attributed audit.</li>
-          <li><strong>A red anywhere is a hard stop.</strong> It blocks the commit, the push, or the release tag — and the whole gate runs <strong>offline, on your machine</strong>, with no cloud service in the loop.</li>
+          <li><strong>A red anywhere is a hard stop.</strong> It blocks the commit, the push, or the release tag. Nothing ships around a failing gate.</li>
         </ul>
       </div>
 
       <div class="claim claim--m">
-        <p class="claim__eyebrow">Industry-standardized — the M layer</p>
-        <h3>The tooling every mainstream language takes for granted, built on the M standard itself</h3>
-        <p>And because the <code>m-*</code> half is engine-neutral, none of it is VistA-bound — the same toolchain works on any M system.</p>
+        <p class="claim__eyebrow">Industry-standardized — the layer you work at</p>
+        <h3>The layer developers touch is now ordinary, mainstream technology</h3>
+        <p>Nobody reaches into VistA's internals any more. Work happens against a standard library — and everything in it is something a developer already knows.</p>
         <ul>
-          <li><strong>The M standard, machine-readable.</strong> <code>m-standard</code> reconciles the Annotated M Standard, YottaDB, IRIS, and the VA's own programming rules — its Standards and Conventions (SAC) document and its XINDEX code checker — into one citable reference that parsers, linters, and AI agents consume directly.</li>
-          <li><strong>One grammar, generated from that standard.</strong> <a href="https://github.com/vista-forge/tree-sitter-m">tree-sitter-m</a> parses the full ~39k-routine VistA corpus at over 99% clean and stamps every token with its portability tier — driving the first real formatter, linter, and Language Server Protocol (LSP) server M has ever had.</li>
-          <li><strong>Validated beyond VistA.</strong> <code>m-modern-corpus</code> snapshots ~4,000 routines of modern open-source M as a second validation corpus — proving the rules hold on today's idioms, not just VA legacy style.</li>
-          <li><strong>Three standard libraries, one discipline.</strong> 69 modules and 579 public entry points across the three bands — the <strong>M Standard Library</strong> (MSL: <code>STD*</code>, engine-neutral — JSON, HTTP(S), JWT, crypto, UUIDs, regex, S3, testing), the <strong>FileMan Standard Library</strong> (FSL: <code>FSL*</code>, standalone FileMan), and the <strong>VistA Standard Library</strong> (VSL: <code>VSL*</code>, Kernel/VistA) — conformance-tested against the test vectors published with the standards themselves, from the IETF's RFCs and the National Institute of Standards and Technology, identical on both engines.</li>
-          <li><strong>Mainstream delivery.</strong> Git-canonical <code>.m</code> source, static Go binaries, Docker engines, and a full gate on every push.</li>
+          <li><strong>JSON, HTTP(S), crypto — the ordinary toolkit.</strong> The <strong>M Standard Library</strong> (MSL) gives M what every mainstream language ships: JSON, HTTP(S), JWT, crypto digests, UUIDs, base64, regex, S3, testing — conformance-tested against the test vectors published with the standards themselves, and identical on both engines.</li>
+          <li><strong>VistA in plain nouns.</strong> The <strong>VistA Standard Library</strong> (VSL) overlays the bespoke technology — Kernel, KIDS, the RPC Broker — and the <strong>FileMan Standard Library</strong> (FSL) does the same for the data engine. <strong>69 modules, 579 public entry points.</strong></li>
+          <li><strong>A shallow learning curve, deliberately.</strong> Working against VistA becomes working against an ordinary, well-typed API, with a command surface named in plain language rather than VA insider vocabulary. That is what accelerates <strong>both</strong> AI-driven and human development — the same interface serves both.</li>
+          <li><strong>Standards all the way down.</strong> <code>m-standard</code> reconciles the Annotated M Standard, YottaDB, IRIS and the VA's own rules into one citable, machine-readable reference; <a href="https://github.com/vista-forge/tree-sitter-m">tree-sitter-m</a> is generated from it and parses the full ~39k-routine VistA corpus at over 99% clean, driving the first real formatter, linter and Language Server Protocol (LSP) server M has ever had.</li>
+          <li><strong>Mainstream delivery.</strong> Git-canonical <code>.m</code> source, static Go binaries, container-delivered engines, and a full gate on every push.</li>
         </ul>
       </div>
 
@@ -214,68 +215,70 @@
 <section class="section" id="stack">
   <div class="wrap">
     <p class="section__kicker">The stack at a glance</p>
-    <h2>Three layers, split by enforced waterlines.</h2>
+    <h2>Classic VistA stays put. A standard-library layer goes over the top of it.</h2>
     <p class="section__intro">
-      The stack reads top to bottom as <strong>v → f → m → engines</strong>, and dependency only ever
-      flows downward. The <strong>VistA layer</strong> (<code>v-*</code>) is the VistA-specific tools
-      and library. Below it the <strong>database layer</strong> (<code>f-*</code>) is
-      <strong>FileMan</strong>, VistA's data engine, wrapped as a standalone library that needs no
-      Kernel. Below that the <strong>M layer</strong> (<code>m-*</code>) is the engine-neutral
-      toolchain, standard library, and seam. Each waterline is an enforced contract, held by a
-      generated registry and a red gate rather than convention — a layer never reaches back up.
+      The important line in this stack is not a technical one — it is the line between
+      <strong>the knowledge you need</strong> and <strong>the knowledge you don't</strong>. Below it
+      sits classic VistA: Kernel, FileMan, KIDS, the RPC Broker — four decades of software that
+      works, and that has always demanded deep, arcane, institutional knowledge to touch safely.
+      Above it sits a <strong>standard-library layer</strong> that covers those internals in
+      ordinary, mainstream technology. Developers and AI agents work at the top layer. The
+      institutional knowledge stays below the line, in code that is tested rather than remembered.
     </p>
 
     <div class="vfm">
       <div class="vfm__layer vfm__layer--v">
-        <span class="vfm__tag">v</span>
-        <span class="vfm__name">vista</span>
-        <span class="vfm__desc">180+ VistA applications, plus the VistA Standard Library (VSL).</span>
+        <span class="vfm__tag">◆</span>
+        <span class="vfm__name">you + your agent</span>
+        <span class="vfm__desc">Where the work happens — a human developer and an AI agent, on one surface.</span>
       </div>
 
       <div class="vfm__line">
         <span class="vfm__arrow" aria-hidden="true">←</span>
-        <span class="vfm__wl">m/v waterline</span>
+        <span class="vfm__wl">you call the library</span>
       </div>
 
       <div class="vfm__layer vfm__layer--f">
-        <span class="vfm__tag">f</span>
-        <span class="vfm__name">database</span>
-        <span class="vfm__desc">FileMan (File Manager), plus the FileMan Standard Library (FSL).</span>
+        <span class="vfm__tag">≡</span>
+        <span class="vfm__name">standard libraries</span>
+        <span class="vfm__desc"><strong>MSL</strong> — JSON, HTTP(S), crypto, and the rest of the ordinary toolkit. <strong>FSL</strong> — FileMan as a database you can call. <strong>VSL</strong> — VistA in plain nouns. 69 modules, 579 entry points.</span>
       </div>
 
       <div class="vfm__line">
         <span class="vfm__arrow" aria-hidden="true">←</span>
-        <span class="vfm__wl">m/f waterline</span>
+        <span class="vfm__wl">the library speaks VistA, so you don't have to</span>
       </div>
 
       <div class="vfm__layer vfm__layer--m">
-        <span class="vfm__tag">m</span>
-        <span class="vfm__name">m-toolchain</span>
-        <span class="vfm__desc">The M toolchain, plus the M Standard Library (MSL).</span>
+        <span class="vfm__tag">▣</span>
+        <span class="vfm__name">classic VistA</span>
+        <span class="vfm__desc">Kernel · FileMan · KIDS · RPC Broker — 40 years of institutional knowledge, running unchanged.</span>
       </div>
 
       <div class="vfm__line">
         <span class="vfm__arrow" aria-hidden="true">←</span>
-        <span class="vfm__wl">m/driver waterline</span>
+        <span class="vfm__wl">VistA runs on the engine</span>
       </div>
 
       <div class="vfm__layer vfm__layer--e">
         <span class="vfm__tag">∎</span>
-        <span class="vfm__name">m-engines</span>
-        <span class="vfm__desc">InterSystems IRIS and YottaDB — the M runtime engines.</span>
+        <span class="vfm__name">M engines</span>
+        <span class="vfm__desc">YottaDB and InterSystems IRIS — the same libraries, identical on both.</span>
       </div>
     </div>
 
     <div class="callout">
-      <strong>The three standard libraries this stack is built on.</strong>
-      The <strong>VistA Standard Library (VSL)</strong> is a thin wrapper around VistA's bespoke
-      technology — Kernel, KIDS, the remote-procedure-call (RPC) Broker — reframed in modern mainstream terms, so working
-      against VistA feels like working against an ordinary, well-typed API. The
-      <strong>FileMan Standard Library (FSL)</strong> gives that same treatment to
-      <strong>FileMan</strong>, VistA's data engine, as a standalone database layer that runs on a
-      bare M engine. And the <strong>M Standard Library (MSL)</strong> is a suite of
-      industry-standard libraries that make <strong>M</strong> a peer of other mainstream languages
-      instead of a special case.
+      <strong>Why a library layer changes who can work on VistA.</strong>
+      Every one of those boundaries used to be crossed by knowing things: which global to reach into,
+      which Kernel entry point to call, which side effect to expect. Each is now a documented call
+      with a test behind it. The <strong>M Standard Library (MSL)</strong> makes <strong>M</strong> a
+      peer of other mainstream languages instead of a special case; the <strong>FileMan Standard
+      Library (FSL)</strong> turns VistA's data engine into a database you can call from a bare M
+      engine; and the <strong>VistA Standard Library (VSL)</strong> reframes Kernel, KIDS and the
+      remote-procedure-call (RPC) Broker in modern mainstream terms, with a command surface in plain
+      nouns. The learning curve drops from <em>years of institutional apprenticeship</em> to
+      <em>reading an API</em> — which is exactly what lets an AI agent be productive here, and a new
+      human developer too.
     </div>
   </div>
 </section>
