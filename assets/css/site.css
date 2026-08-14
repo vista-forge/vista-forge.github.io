@@ -375,8 +375,8 @@ h3 {
 .claim--v { border-top: 2px solid var(--ember); }
 .claim--m { border-top: 2px solid var(--cyan); }
 
-/* Portable spans the whole org — both layers — so it runs full-width with an
-   ember→cyan accent rather than a single-layer color. */
+/* The third claim spans the whole org — both layers — so it runs full-width
+   with an ember→cyan accent rather than a single-layer color. */
 .claim--o {
   grid-column: 1 / -1;
   position: relative;
@@ -442,7 +442,7 @@ h3 {
 .claim--m li::before { background: var(--cyan-line); }
 .claim li strong { color: var(--text); font-weight: 600; }
 
-/* full-width Portable card: two columns of bullets on wide screens */
+/* full-width third claim card: two columns of bullets on wide screens */
 .claim--o ul {
   display: grid;
   grid-template-columns: 1fr 1fr;
