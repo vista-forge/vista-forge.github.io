@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VistA Forge — The hardened, industry-standard, AI-integrated VistA/M toolchain</title>
-<meta name="description" content="VistA Forge gives M the developer experience every other language takes for granted: format, lint, an LSP language server, unit tests with coverage against a live engine, a 40-module standard library, and VistA patches that provably install and provably back out. Identical on YottaDB and InterSystems IRIS — and every surface an AI agent needs is a generated, gated artifact, not prose it has to infer.">
+<meta name="description" content="VistA Forge gives M the developer experience every other language takes for granted: format, lint, an LSP language server, unit tests with coverage against a live engine, 69 standard-library modules across three bands, and VistA patches that provably install and provably back out. Identical on YottaDB and InterSystems IRIS — and every surface an AI agent needs is a generated, gated artifact, not prose it has to infer.">
 <link rel="canonical" href="https://vista-forge.github.io/">
 
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
       Work on VistA like it's 2026, not 1985. VistA Forge gives <strong>M</strong> the
       developer experience every other language takes for granted: format and lint in your
       editor, navigate over a real language server, run unit tests with coverage against a
-      <strong>live engine</strong> on every push, call a 40-module standard library instead of
+      <strong>live engine</strong> on every push, call a 69-module standard library instead of
       hand-rolling utilities, and ship VistA patches that provably install — and provably back
       out. Your code lives in <strong>git</strong>; the M engine is just the runtime. One
       <code>docker pull</code> gets you a running VistA; one static binary gets you the whole
@@ -102,7 +102,7 @@
         <h3>VistA, treated the way regulated industries treat production software</h3>
         <p>Nothing here is enforced by convention or a review note. Every boundary is a generated registry held by a red gate.</p>
         <ul>
-          <li><strong>Contract/registry-based seams.</strong> Every cross-layer boundary — the m/v waterline, the client-server dispatch seam, the engine seam — is a generated registry held by a red gate.</li>
+          <li><strong>Contract/registry-based seams.</strong> Every cross-layer boundary — the m/f/v waterline, the client-server dispatch seam, the engine seam — is a generated registry held by a red gate.</li>
           <li><strong>TDD for every module.</strong> Each <code>VSL*</code> module is built test-first against live VistA, with per-module coverage gates; each Go client the same way.</li>
           <li><strong>Full-corpus, live-system testing.</strong> Suites and executable examples run in CI against <strong>two complete live VistA systems</strong>, each carrying VistA's full ~40k-routine base.</li>
           <li><strong>Provable reversibility.</strong> A release tag can only exist after a build → install → verify → test → uninstall cycle diffs <strong>byte-clean</strong> against baseline on both engines.</li>
@@ -119,7 +119,7 @@
           <li><strong>The M standard, machine-readable.</strong> <code>m-standard</code> reconciles the Annotated M Standard, YottaDB, IRIS, and the VA's SAC/XINDEX rules into one citable reference that parsers, linters, and AI agents consume directly.</li>
           <li><strong>One grammar, generated from that standard.</strong> <a href="https://github.com/vista-forge/tree-sitter-m">tree-sitter-m</a> parses the full ~39k-routine VistA corpus at over 99% clean and stamps every token with its portability tier — driving the first real formatter, linter, and LSP server M has ever had.</li>
           <li><strong>Validated beyond VistA.</strong> <code>m-modern-corpus</code> snapshots ~4,000 routines of modern open-source M as a second validation corpus — proving the rules hold on today's idioms, not just VA legacy style.</li>
-          <li><strong>The M Standard Library.</strong> 40 <code>STD*</code> modules — JSON, HTTP(S), JWT, crypto, UUIDs, regex, S3, testing — conformance-tested against vendored RFC/NIST corpuses, identical on both engines.</li>
+          <li><strong>Three standard libraries, one discipline.</strong> 69 modules and 579 public entry points across the three bands — <strong>MSL</strong> (<code>STD*</code>, engine-neutral: JSON, HTTP(S), JWT, crypto, UUIDs, regex, S3, testing), <strong>FSL</strong> (<code>FSL*</code>, standalone FileMan), and <strong>VSL</strong> (<code>VSL*</code>, Kernel/VistA) — conformance-tested against vendored RFC/NIST corpuses, identical on both engines.</li>
           <li><strong>Mainstream delivery.</strong> Git-canonical <code>.m</code> source, static Go binaries, Docker engines, and CI on every push.</li>
         </ul>
       </div>
@@ -316,14 +316,16 @@
       </div>
 
       <div class="card">
-        <p class="card__task">Stop hand-rolling utilities</p>
+        <p class="card__task">Stop hand-rolling utilities — three standard libraries</p>
         <p>
           <code>m-stdlib</code> is a pure-M library of <strong>40 <code>STD*</code> modules</strong>:
           data formats (<code>STDJSON</code>, <code>STDXML</code>, <code>STDCSV</code>,
           <code>STDREGEX</code>), encoding, testing (<code>STDASSERT</code>, <code>STDMOCK</code>),
           crypto and auth (<code>STDCRYPTO</code>, <code>STDJWT</code>), networking
           (<code>STDHTTP</code>, <code>STDS3</code>), plus dates, logging, collections, strings,
-          math, and filesystem.
+          math, and filesystem. Above the waterline, <code>f-stdlib</code> adds 7
+          <code>FSL*</code> modules and <code>v-stdlib</code> 22 <code>VSL*</code> ones —
+          <strong>69 modules and 579 public entry points</strong> in all.
         </p>
       </div>
 
