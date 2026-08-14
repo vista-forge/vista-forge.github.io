@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VistA Forge — The hardened, industry-standard, AI-integrated VistA/M toolchain</title>
-<meta name="description" content="VistA Forge gives M the developer experience every other language takes for granted: format, lint, an LSP language server, unit tests with coverage against a live engine, 69 standard-library modules across three bands, and VistA patches that provably install and provably back out. Identical on YottaDB and InterSystems IRIS — and every surface an AI agent needs is a generated, gated artifact, not prose it has to infer.">
+<meta name="description" content="VistA Forge gives M the developer experience every other language takes for granted: format, lint, a real language server, unit tests with coverage against a live engine, 69 standard-library modules across three bands, and VistA patches that provably install and provably back out. Identical on YottaDB and InterSystems IRIS — and every surface an AI agent needs is a generated, gated artifact, not prose it has to infer.">
 <link rel="canonical" href="https://vista-forge.github.io/">
 
 <meta property="og:type" content="website">
@@ -87,11 +87,12 @@
     <p class="section__kicker">Hardened. Industry-standard. AI-integrated.</p>
     <h2>The tagline makes three claims, and each is load-bearing.</h2>
     <p class="section__intro">
-      <strong>VistA</strong> — the VA's public-domain hospital information system — has run real
-      hospitals for over four decades and is one of the largest working bodies of
-      <strong>M (MUMPS)</strong> code in existence. Yet developing on it today still means working
-      the way its authors did in the 1980s: code lives in the database rather than in git; there is
-      no formatter, no linter, no language server, no unit-test runner, no coverage, no CI; and a
+      <strong>VistA</strong> — the public-domain hospital information system of the US Department of
+      Veterans Affairs (VA) — has run real hospitals for over four decades and is one of the largest
+      working bodies of <strong>M (MUMPS)</strong> code in existence. Yet developing on it today
+      still means working the way its authors did in the 1980s: code lives in the database rather
+      than in git; there is no formatter, no linter, no language server, no unit-test runner, no
+      coverage, no continuous integration; and a
       patch installs into a live system with no reliable way to back it out. VistA Forge closes
       that gap — not by rewriting VistA, but by building the modern loop around it.
     </p>
@@ -103,8 +104,8 @@
         <p>Nothing here is enforced by convention or a review note. Every boundary is a generated registry held by a red gate.</p>
         <ul>
           <li><strong>Contract/registry-based seams.</strong> Every cross-layer boundary — the m/f/v waterline, the client-server dispatch seam, the engine seam — is a generated registry held by a red gate.</li>
-          <li><strong>TDD for every module.</strong> Each <code>VSL*</code> module is built test-first against live VistA, with per-module coverage gates; each Go client the same way.</li>
-          <li><strong>Full-corpus, live-system testing.</strong> Suites and executable examples run in CI against <strong>two complete live VistA systems</strong>, each carrying VistA's full ~40k-routine base.</li>
+          <li><strong>Test-driven development (TDD) for every module.</strong> Each VistA Standard Library (<code>VSL*</code>) module is built test-first against live VistA, with per-module coverage gates; each Go client the same way.</li>
+          <li><strong>Full-corpus, live-system testing.</strong> Suites and executable examples run on every push against <strong>two complete live VistA systems</strong>, each carrying VistA's full ~40k-routine base.</li>
           <li><strong>Provable reversibility.</strong> A release tag can only exist after a build → install → verify → test → uninstall cycle diffs <strong>byte-clean</strong> against baseline on both engines.</li>
           <li><strong>Declared data ownership.</strong> Modules declare their file footprints, exactly one module may write a given file, and every mutating verb carries fail-closed, host-attributed audit.</li>
           <li><strong>A red anywhere is a hard stop.</strong> It blocks the commit, the push, or the release tag — and the whole gate runs <strong>offline, on your machine</strong>, with no cloud service in the loop.</li>
@@ -116,11 +117,11 @@
         <h3>The tooling every mainstream language takes for granted, built on the M standard itself</h3>
         <p>And because the <code>m-*</code> half is engine-neutral, none of it is VistA-bound — the same toolchain works on any M system.</p>
         <ul>
-          <li><strong>The M standard, machine-readable.</strong> <code>m-standard</code> reconciles the Annotated M Standard, YottaDB, IRIS, and the VA's SAC/XINDEX rules into one citable reference that parsers, linters, and AI agents consume directly.</li>
-          <li><strong>One grammar, generated from that standard.</strong> <a href="https://github.com/vista-forge/tree-sitter-m">tree-sitter-m</a> parses the full ~39k-routine VistA corpus at over 99% clean and stamps every token with its portability tier — driving the first real formatter, linter, and LSP server M has ever had.</li>
+          <li><strong>The M standard, machine-readable.</strong> <code>m-standard</code> reconciles the Annotated M Standard, YottaDB, IRIS, and the VA's own programming rules — its Standards and Conventions (SAC) document and its XINDEX code checker — into one citable reference that parsers, linters, and AI agents consume directly.</li>
+          <li><strong>One grammar, generated from that standard.</strong> <a href="https://github.com/vista-forge/tree-sitter-m">tree-sitter-m</a> parses the full ~39k-routine VistA corpus at over 99% clean and stamps every token with its portability tier — driving the first real formatter, linter, and Language Server Protocol (LSP) server M has ever had.</li>
           <li><strong>Validated beyond VistA.</strong> <code>m-modern-corpus</code> snapshots ~4,000 routines of modern open-source M as a second validation corpus — proving the rules hold on today's idioms, not just VA legacy style.</li>
-          <li><strong>Three standard libraries, one discipline.</strong> 69 modules and 579 public entry points across the three bands — <strong>MSL</strong> (<code>STD*</code>, engine-neutral: JSON, HTTP(S), JWT, crypto, UUIDs, regex, S3, testing), <strong>FSL</strong> (<code>FSL*</code>, standalone FileMan), and <strong>VSL</strong> (<code>VSL*</code>, Kernel/VistA) — conformance-tested against vendored RFC/NIST corpuses, identical on both engines.</li>
-          <li><strong>Mainstream delivery.</strong> Git-canonical <code>.m</code> source, static Go binaries, Docker engines, and CI on every push.</li>
+          <li><strong>Three standard libraries, one discipline.</strong> 69 modules and 579 public entry points across the three bands — the <strong>M Standard Library</strong> (MSL: <code>STD*</code>, engine-neutral — JSON, HTTP(S), JWT, crypto, UUIDs, regex, S3, testing), the <strong>FileMan Standard Library</strong> (FSL: <code>FSL*</code>, standalone FileMan), and the <strong>VistA Standard Library</strong> (VSL: <code>VSL*</code>, Kernel/VistA) — conformance-tested against the test vectors published with the standards themselves, from the IETF's RFCs and the National Institute of Standards and Technology, identical on both engines.</li>
+          <li><strong>Mainstream delivery.</strong> Git-canonical <code>.m</code> source, static Go binaries, Docker engines, and a full gate on every push.</li>
         </ul>
       </div>
 
@@ -131,9 +132,9 @@
         <ul>
           <li><strong>One machine-readable command grammar.</strong> Every binary shares <code>clikit</code>: <code>--output text|json|auto</code>, a versioned JSON envelope, a deterministic exit-code ladder, and a reflected <code>schema</code> command — an agent drives the same gated surface a human does and gets a parseable result.</li>
           <li><strong>Generated agent guides, per band.</strong> Each standard library emits a self-contained agent guide and skill <strong>from its manifest</strong> — every module, entry point, error vocabulary and namespace rule, generated from the code, never a hand-written summary that rots.</li>
-          <li><strong>Grounded, not remembered.</strong> Facts about VistA come from queryable corpora served over MCP, each citing a source anchor: what the VA documentation <em>says</em>, and what a real system <em>measurably is</em>. "Not measured" is a legal answer; guessing is not.</li>
+          <li><strong>Grounded, not remembered.</strong> Facts about VistA come from queryable corpora served over the Model Context Protocol (MCP), each citing a source anchor: what the VA documentation <em>says</em>, and what a real system <em>measurably is</em>. "Not measured" is a legal answer; guessing is not.</li>
           <li><strong>The tool is the rule, not the reminder.</strong> The discipline lives inside the binaries: <code>m test</code> records a red-proof bound to the suite's content hash, so weakening a test cannot fake a pass, and every refusal names a next action validated against the live schema.</li>
-          <li><strong>Author, verify, and ship over MCP.</strong> <code>forge-mcp</code> exposes the whole loop — workspaces, gates, the red→green TDD ledger, allowlisted engine execution, and the KIDS ship chain — and its install verb <strong>refuses</strong> unless every link holds, enumerating each one that doesn't.</li>
+          <li><strong>Author, verify, and ship over MCP.</strong> <code>forge-mcp</code> exposes the whole loop — workspaces, gates, the red→green TDD ledger, allowlisted engine execution, and the KIDS ship chain (Kernel Installation &amp; Distribution System — VistA's native patch format) — and its install verb <strong>refuses</strong> unless every link holds, enumerating each one that doesn't.</li>
           <li><strong>Guarded at the harness, too.</strong> Editing an <code>.m</code> file runs fmt and lint in-turn; reaching for a raw <code>docker exec</code> into an engine is denied outright and told which sanctioned command to use instead.</li>
         </ul>
       </div>
@@ -196,7 +197,7 @@
           </tr>
           <tr>
             <td><strong>m/f/v waterline checks</strong></td>
-            <td><strong>seven executable checks</strong> (<code>m arch check</code>: dependency direction, no VistA symbols below the line, transport monopoly — AST call-expression + script scan, seam pin, run-lock bracketing, engine-busy registration, plain-noun command vocabulary) in every layer-bearing repo, plus an engine-access scan in every M <strong>and</strong> Go gate and a scheduled org-wide meta-gate backstop</td>
+            <td><strong>seven executable checks</strong> (<code>m arch check</code>: dependency direction, no VistA symbols below the line, transport monopoly — abstract-syntax-tree call-expression and script scan, seam pin, run-lock bracketing, engine-busy registration, plain-noun command vocabulary) in every layer-bearing repo, plus an engine-access scan in every M <strong>and</strong> Go gate and a scheduled org-wide meta-gate backstop</td>
           </tr>
           <tr>
             <td><strong>m-engine waterline checks</strong></td>
@@ -204,7 +205,7 @@
           </tr>
           <tr>
             <td><strong>VSL drift gates</strong></td>
-            <td><strong>26 red gates</strong> in one <code>make gates</code> run — ICR, namespace, engine-access, manifest/dispatcher/envelope drift, data ownership, additive-only compat, …</td>
+            <td><strong>26 red gates</strong> in one <code>make gates</code> run — Integration Control Registration, namespace, engine-access, manifest/dispatcher/envelope drift, data ownership, additive-only compat, …</td>
           </tr>
           <tr>
             <td><strong>Hard stops</strong></td>
@@ -275,7 +276,7 @@
     <div class="callout">
       <strong>The three standard libraries this stack is built on.</strong>
       The <strong>VistA Standard Library (VSL)</strong> is a thin wrapper around VistA's bespoke
-      technology — Kernel, KIDS, the RPC Broker — reframed in modern mainstream terms, so working
+      technology — Kernel, KIDS, the remote-procedure-call (RPC) Broker — reframed in modern mainstream terms, so working
       against VistA feels like working against an ordinary, well-typed API. The
       <strong>FileMan Standard Library (FSL)</strong> gives that same treatment to
       <strong>FileMan</strong>, VistA's data engine, as a standalone database layer that runs on a
@@ -296,11 +297,11 @@
       <div class="card">
         <p class="card__task">Write M like any modern language</p>
         <p>
-          <code>m fmt</code> (AST-preserving formatter), <code>m lint</code> (query-driven rule
+          <code>m fmt</code> (a formatter that rewrites the syntax tree, never the text), <code>m lint</code> (query-driven rule
           engine, with XINDEX/Kernel compatibility profiles), and <code>m lsp</code> (an LSP 3.x
           language server) all sit on <strong>one parser</strong> — <code>m-parse</code>, which
           embeds the <a href="https://github.com/vista-forge/tree-sitter-m">tree-sitter-m</a>
-          grammar as WASM and runs it through wazero. Static Go binaries, no CGO, no C toolchain at
+          grammar as WebAssembly and runs it through wazero. Static Go binaries, no C bindings, no C toolchain at
           runtime.
         </p>
       </div>
@@ -310,7 +311,7 @@
         <p>
           <code>m test</code> runs <code>*TST.m</code> suites on a live YottaDB or IRIS engine via
           <code>^STDASSERT</code>, with machine-readable results; <code>m coverage</code> produces
-          LCOV with per-module coverage gates. Every library in the org is built test-first and
+          standard LCOV coverage reports with per-module coverage gates. Every library in the org is built test-first and
           gated on both engines.
         </p>
       </div>
@@ -367,7 +368,7 @@
           <a href="https://github.com/orgs/vista-forge/packages/container/package/vista-iris">vista-iris</a>
           publishes a multi-arch container of WorldVistA on IRIS for Health Community — the full
           site build is baked into the image, so it boots already operational: Management Portal and
-          REST, RPC Broker for CPRS, HL7 MLLP, IRIS superserver. Fictitious test data only.
+          REST, the RPC Broker that serves CPRS (the VA's Computerized Patient Record System), HL7 messaging over its Minimal Lower Layer Protocol, and the IRIS superserver. Fictitious test data only.
         </p>
       </div>
 
@@ -562,7 +563,7 @@
           <tr><td><strong>docs</strong></td><td>ADRs, design corpus, and cross-repo coordination</td></tr>
           <tr><td><strong>workspace</strong></td><td>Clone-all manifest + idempotent <code>bootstrap.sh</code> for machine setup</td></tr>
           <tr><td><a href="https://github.com/orgs/vista-forge/packages/container/package/vista-iris">vista-iris</a></td><td>Pre-built VistA-on-IRIS container, fictitious test data only — the image is public; the build repo is not yet</td></tr>
-          <tr><td><strong>.github</strong></td><td>Reusable CI, the docs standard, the org repo registry, and the scheduled meta-gate</td></tr>
+          <tr><td><strong>.github</strong></td><td>Shared gate scripts and git hooks, the docs standard, the org repo registry, and the scheduled meta-gate</td></tr>
         </tbody>
       </table>
     </div>
@@ -579,12 +580,12 @@
       <li><strong>Git-canonical source.</strong> M code lives in <code>.m</code> files under version control; the database is the runtime, not the repository.</li>
       <li><strong>Dual-engine parity.</strong> YottaDB and IRIS are both first-class; the same suites gate both, and engine specifics live only inside the drivers.</li>
       <li><strong>One seam.</strong> Every tool reaches a live engine through the <code>m-driver-sdk</code> contract — no hand-rolled transports, verified by an executable conformance gate.</li>
-      <li><strong>Gated, not aspirational.</strong> Layer boundaries, seam contracts, registries, build specs, and doc links are generated, drift-gated artifacts checked in CI — not conventions enforced by review.</li>
+      <li><strong>Gated, not aspirational.</strong> Layer boundaries, seam contracts, registries, build specs, and doc links are generated, drift-gated artifacts checked on every push — not conventions enforced by review.</li>
       <li><strong>Declared data ownership.</strong> A module states which VistA files it touches and how; a source scan red-gates undeclared access, and exactly one module may write a given file.</li>
       <li><strong>Reversible by proof.</strong> Engine mutations are audited into a hash-chained attestation ledger, installs capture pre-images, and a release tag can only be cut when a full install → uninstall cycle diffs byte-clean.</li>
-      <li><strong>Static, dependency-free binaries.</strong> <code>CGO_ENABLED=0</code> everywhere; even the M parser runs as WASM.</li>
+      <li><strong>Static, dependency-free binaries.</strong> <code>CGO_ENABLED=0</code> everywhere; even the M parser runs as WebAssembly.</li>
       <li><strong>One contract, many surfaces.</strong> A single command grammar and reflected schema mean CLI flags, JSON envelopes, and agent tools never drift.</li>
-      <li><strong>Test-first.</strong> Every module is built TDD with per-module coverage gates; conformance suites run against vendored RFC/NIST corpuses.</li>
+      <li><strong>Test-first.</strong> Every module is built test-first with per-module coverage gates; conformance suites run against the test vectors published with the standards themselves.</li>
       <li><strong>Plain nouns.</strong> A command wraps an insider VistA subsystem in a name a developer can guess — and a lint gate keeps it that way.</li>
     </ul>
   </div>
@@ -613,7 +614,7 @@
       <strong>Not affiliated with or endorsed by the US Department of Veterans Affairs.</strong>
       "VistA" refers to the public-domain VA health information system. These tools operate on
       VistA source and ship with <strong>fictitious test data only</strong> — never load real
-      patient (PHI/PII) data into instances used with them.
+      patient data — protected health information or personally identifiable information — into instances used with them.
     </p>
   </div>
 </footer>
