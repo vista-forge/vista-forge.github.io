@@ -1,41 +1,44 @@
 /* VistA Forge — org site
-   Palette is semantic, not decorative:
-     ember  = the v (VistA-specific) layer
-     violet = the f (FileMan / database) layer
+   Palette is semantic, not decorative — one cool spectrum, read top-down in
+   stack order, so a layer's color is the same wherever it appears:
+     violet = the v (VistA-specific) layer   -- also the brand accent
+     blue   = the f (FileMan / database) layer
      cyan   = the m (engine-neutral) layer
-     green  = the m-engines runtime
-   Keep that mapping intact when adding sections. */
+     teal   = the m-engines runtime
+   Keep that mapping intact when adding sections. Token names are LAYERS, not
+   hues (--vista, --fm, --engine) precisely so a re-theme like this one stays a
+   value change; --cyan is the exception and is still literally cyan. */
 
 :root {
-  --bg: #0b0e14;
-  --bg-elev: #121722;
-  --bg-elev-2: #19202e;
-  --border: #262e3d;
-  --border-bright: #37425a;
+  --bg: #0a0c13;
+  --bg-elev: #111624;
+  --bg-elev-2: #181e30;
+  --border: #262d40;
+  --border-bright: #38415c;
 
-  --text: #e6edf3;
-  --text-dim: #9aa7b8;
-  --text-faint: #6b7789;
+  --text: #e8ecf5;
+  --text-dim: #9aa4bb;
+  --text-faint: #6b748c;
 
-  --ember: #ff8c42;
-  --ember-bright: #ffa864;
-  --ember-wash: rgba(255, 140, 66, 0.09);
-  --ember-line: rgba(255, 140, 66, 0.32);
+  --vista: #a78bfa;
+  --vista-bright: #c4b5fd;
+  --vista-wash: rgba(167, 139, 250, 0.10);
+  --vista-line: rgba(167, 139, 250, 0.34);
 
-  --cyan: #35c5e8;
-  --cyan-bright: #6fdcf7;
-  --cyan-wash: rgba(53, 197, 232, 0.08);
-  --cyan-line: rgba(53, 197, 232, 0.3);
+  --cyan: #22d3ee;
+  --cyan-bright: #67e8f9;
+  --cyan-wash: rgba(34, 211, 238, 0.08);
+  --cyan-line: rgba(34, 211, 238, 0.30);
 
-  --fm: #b18cff;
-  --fm-wash: rgba(177, 140, 255, 0.10);
-  --fm-line: rgba(177, 140, 255, 0.34);
+  --fm: #60a5fa;
+  --fm-wash: rgba(96, 165, 250, 0.10);
+  --fm-line: rgba(96, 165, 250, 0.32);
 
-  --engine: #4ec9a0;
-  --engine-wash: rgba(78, 201, 160, 0.09);
-  --engine-line: rgba(78, 201, 160, 0.30);
+  --engine: #2dd4bf;
+  --engine-wash: rgba(45, 212, 191, 0.09);
+  --engine-line: rgba(45, 212, 191, 0.30);
 
-  --ok: #4ec9a0;
+  --ok: #2dd4bf;
 
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -56,25 +59,25 @@
     --text-dim: #515c6b;
     --text-faint: #79838f;
 
-    --ember: #c2521a;
-    --ember-bright: #a8440f;
-    --ember-wash: rgba(194, 82, 26, 0.07);
-    --ember-line: rgba(194, 82, 26, 0.3);
+    --vista: #6d28d9;
+    --vista-bright: #5b21b6;
+    --vista-wash: rgba(109, 40, 217, 0.07);
+    --vista-line: rgba(109, 40, 217, 0.30);
 
-    --cyan: #0b7c99;
-    --cyan-bright: #085f76;
-    --cyan-wash: rgba(11, 124, 153, 0.07);
-    --cyan-line: rgba(11, 124, 153, 0.28);
+    --cyan: #0e7490;
+    --cyan-bright: #155e75;
+    --cyan-wash: rgba(14, 116, 144, 0.07);
+    --cyan-line: rgba(14, 116, 144, 0.28);
 
-    --fm: #6d3fc4;
-    --fm-wash: rgba(109, 63, 196, 0.07);
-    --fm-line: rgba(109, 63, 196, 0.30);
+    --fm: #1d4ed8;
+    --fm-wash: rgba(29, 78, 216, 0.07);
+    --fm-line: rgba(29, 78, 216, 0.28);
 
-    --engine: #0f7a55;
-    --engine-wash: rgba(15, 122, 85, 0.07);
-    --engine-line: rgba(15, 122, 85, 0.28);
+    --engine: #0f766e;
+    --engine-wash: rgba(15, 118, 110, 0.07);
+    --engine-line: rgba(15, 118, 110, 0.28);
 
-    --ok: #0f7a55;
+    --ok: #0f766e;
   }
 }
 
@@ -124,7 +127,7 @@ p code, li code, td code {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--ember);
+  background: var(--vista);
   color: #000;
   padding: 0.6rem 1rem;
   z-index: 100;
@@ -132,7 +135,7 @@ p code, li code, td code {
 .skip:focus { left: 0; }
 
 :focus-visible {
-  outline: 2px solid var(--ember);
+  outline: 2px solid var(--vista);
   outline-offset: 3px;
   border-radius: 3px;
 }
@@ -210,7 +213,7 @@ p code, li code, td code {
   padding: 5.5rem 0 4rem;
   border-bottom: 1px solid var(--border);
   background:
-    radial-gradient(60rem 26rem at 18% -8%, var(--ember-wash), transparent 68%),
+    radial-gradient(60rem 26rem at 18% -8%, var(--vista-wash), transparent 68%),
     radial-gradient(52rem 24rem at 92% 4%, var(--cyan-wash), transparent 66%);
 }
 
@@ -239,7 +242,7 @@ p code, li code, td code {
   color: var(--text-dim);
   background: var(--bg-elev);
 }
-.chip--live { border-color: var(--ember-line); color: var(--ember); }
+.chip--live { border-color: var(--vista-line); color: var(--vista); }
 .chip--eng  { border-color: var(--cyan-line); color: var(--cyan); }
 
 .hero h1 {
@@ -250,7 +253,7 @@ p code, li code, td code {
   font-weight: 700;
 }
 .hero h1 .forge {
-  background: linear-gradient(96deg, var(--ember) 12%, var(--ember-bright) 88%);
+  background: linear-gradient(96deg, var(--vista) 8%, var(--cyan-bright) 92%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -296,11 +299,11 @@ p code, li code, td code {
 .btn:hover { text-decoration: none; border-color: var(--text-faint); background: var(--bg-elev-2); }
 
 .btn--primary {
-  background: var(--ember);
-  border-color: var(--ember);
-  color: #14100c;
+  background: var(--vista);
+  border-color: var(--vista);
+  color: #150e2e;
 }
-.btn--primary:hover { background: var(--ember-bright); border-color: var(--ember-bright); }
+.btn--primary:hover { background: var(--vista-bright); border-color: var(--vista-bright); }
 
 .hero__snippet {
   margin-top: 2.2rem;
@@ -316,7 +319,7 @@ p code, li code, td code {
   max-width: 100%;
   overflow-x: auto;
 }
-.hero__snippet .prompt { color: var(--ember); user-select: none; }
+.hero__snippet .prompt { color: var(--vista); user-select: none; }
 .hero__snippet code { color: var(--text-dim); white-space: nowrap; }
 
 /* ---------- sections ---------- */
@@ -372,11 +375,11 @@ h3 {
   padding: 1.6rem;
   background: var(--bg-elev);
 }
-.claim--v { border-top: 2px solid var(--ember); }
+.claim--v { border-top: 2px solid var(--vista); }
 .claim--m { border-top: 2px solid var(--cyan); }
 
 /* The third claim spans the whole org — both layers — so it runs full-width
-   with an ember→cyan accent rather than a single-layer color. */
+   with a violet→cyan accent rather than a single-layer color. */
 .claim--o {
   grid-column: 1 / -1;
   position: relative;
@@ -387,7 +390,7 @@ h3 {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--ember), var(--cyan));
+  background: linear-gradient(90deg, var(--vista), var(--cyan));
 }
 
 .claim__eyebrow {
@@ -397,10 +400,10 @@ h3 {
   text-transform: uppercase;
   margin: 0 0 0.4rem;
 }
-.claim--v .claim__eyebrow { color: var(--ember); }
+.claim--v .claim__eyebrow { color: var(--vista); }
 .claim--m .claim__eyebrow { color: var(--cyan); }
 .claim--o .claim__eyebrow {
-  background: linear-gradient(90deg, var(--ember), var(--cyan-bright));
+  background: linear-gradient(90deg, var(--vista), var(--cyan-bright));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -438,7 +441,7 @@ h3 {
   border-radius: 50%;
   background: var(--text-faint);
 }
-.claim--v li::before { background: var(--ember-line); }
+.claim--v li::before { background: var(--vista-line); }
 .claim--m li::before { background: var(--cyan-line); }
 .claim li strong { color: var(--text); font-weight: 600; }
 
@@ -474,7 +477,7 @@ h3 {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
-  color: var(--ember);
+  color: var(--vista);
   font-family: var(--mono);
 }
 .stat__label {
@@ -574,9 +577,9 @@ td strong, td a { font-weight: 600; }
 }
 
 /* one wash + accent + label color per layer */
-.vfm__layer--v { background: var(--ember-wash); border-left-color: var(--ember); }
-.vfm__layer--v .vfm__name { color: var(--ember); }
-.vfm__layer--v .vfm__tag { color: var(--ember); box-shadow: inset 0 0 0 1px var(--ember-line); }
+.vfm__layer--v { background: var(--vista-wash); border-left-color: var(--vista); }
+.vfm__layer--v .vfm__name { color: var(--vista); }
+.vfm__layer--v .vfm__tag { color: var(--vista); box-shadow: inset 0 0 0 1px var(--vista-line); }
 
 .vfm__layer--f { background: var(--fm-wash); border-left-color: var(--fm); }
 .vfm__layer--f .vfm__name { color: var(--fm); }
@@ -709,7 +712,7 @@ td strong, td a { font-weight: 600; }
 
 .callout {
   border: 1px solid var(--border);
-  border-left: 3px solid var(--ember);
+  border-left: 3px solid var(--vista);
   border-radius: 0 8px 8px 0;
   background: var(--bg-elev);
   padding: 1.1rem 1.3rem;
