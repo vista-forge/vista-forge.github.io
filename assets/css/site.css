@@ -210,13 +210,17 @@ p code, li code, td code {
   color: transparent;
 }
 
+/* The tagline reads as one line — it was the 34ch max-width that broke it in
+   two. Deliberately NOT white-space:nowrap: the sentence is 65 characters, so
+   below ~630px it cannot fit and nowrap would push the page into a sideways
+   scroll. Left free, it sits on one line everywhere it can and wraps only on
+   a narrow phone. */
 .hero__tag {
   font-size: clamp(1.12rem, 2.4vw, 1.4rem);
   color: var(--text);
   font-weight: 550;
   margin: 0 0 1.3rem;
   letter-spacing: -0.012em;
-  max-width: 34ch;
 }
 
 .hero__lead {
