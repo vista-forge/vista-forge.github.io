@@ -147,22 +147,23 @@
     <p class="section__kicker">By the numbers</p>
     <h2>A red anywhere is a hard stop.</h2>
     <p class="section__intro">
-      Measured from the repos, July 2026. The gating is rigid top to bottom — it blocks the commit,
-      the merge, or the release tag. Nothing in the stack ships around a failing gate.
+      Measured from the repos, August 2026. The gating is rigid top to bottom — it blocks the commit,
+      the push, or the release tag. Nothing in the stack ships around a failing gate, and the whole
+      gate runs offline, on your machine, with no cloud service in the loop.
     </p>
 
     <div class="stats">
       <div class="stat">
-        <div class="stat__num">3,200+</div>
-        <div class="stat__label">M assertions across 64 suites and 1,400+ test cases — every suite run on <em>both</em> engines</div>
+        <div class="stat__num">5,400+</div>
+        <div class="stat__label">M assertions across 84 suites and 1,700+ test cases — every suite run on <em>both</em> VistA engines</div>
       </div>
       <div class="stat">
-        <div class="stat__num">1,300+</div>
-        <div class="stat__label">Go test functions (665 m-layer, 667 v-apps), table-driven</div>
+        <div class="stat__num">2,800+</div>
+        <div class="stat__label">Go test functions (1,474 m-layer, 1,033 v-apps), table-driven</div>
       </div>
       <div class="stat">
-        <div class="stat__num">21</div>
-        <div class="stat__label">repos gated on every push; 15 layer-bearing repos run the waterline gates</div>
+        <div class="stat__num">34</div>
+        <div class="stat__label">repos, every one carrying an offline <code>make check</code>; 19 layer-bearing repos run the waterline gates</div>
       </div>
       <div class="stat">
         <div class="stat__num">≥85%</div>
@@ -178,32 +179,32 @@
         </thead>
         <tbody>
           <tr>
-            <td><strong>M unit tests</strong> (MSL + VSL)</td>
-            <td><strong>64 suites · 1,400+ test cases · 3,200+ assertions</strong>, every suite run on <strong>both</strong> engines</td>
+            <td><strong>M unit tests</strong> (MSL + FSL + VSL)</td>
+            <td><strong>84 suites · 1,700+ test cases · 5,400+ assertions</strong>, every suite run on <strong>both</strong> VistA engines</td>
           </tr>
           <tr>
-            <td><strong>Go unit tests</strong> (m-apps + v-apps)</td>
-            <td><strong>1,300+ test functions</strong> (665 m-layer, 667 v-apps), table-driven</td>
+            <td><strong>Go unit tests</strong></td>
+            <td><strong>2,800+ test functions</strong> (1,474 m-layer, 1,033 v-apps, 350 in the non-waterline clients), table-driven</td>
           </tr>
           <tr>
-            <td><strong>Executable doc examples</strong></td>
-            <td><strong>51 generated example programs</strong> from <strong>500+ <code>@example</code> tags</strong>, run against the <strong>live</strong> VistA engines</td>
+            <td><strong>Executable doc examples</strong> (MSL + VSL)</td>
+            <td><strong>61 generated example programs</strong> from <strong>598 <code>@example</code> tags</strong>, run against the <strong>live</strong> VistA engines</td>
           </tr>
           <tr>
-            <td><strong>CI coverage</strong></td>
-            <td><strong>21 repos gated on every push</strong>; 15 layer-bearing repos each run the waterline gates</td>
+            <td><strong>Gate coverage</strong></td>
+            <td><strong>34 repos, every one carrying an offline <code>make check</code></strong>; 19 layer-bearing repos additionally run the waterline gates</td>
           </tr>
           <tr>
-            <td><strong>m/v waterline checks</strong></td>
-            <td><strong>G1–G4</strong> (<code>m arch check</code>: dependency direction, no VistA symbols below the line, transport monopoly, seam pin) in every layer-bearing repo's CI, plus a scheduled org-wide meta-gate backstop</td>
+            <td><strong>m/f/v waterline checks</strong></td>
+            <td><strong>G1–G4, G6–G8</strong> (<code>m arch check</code>: dependency direction, no VistA symbols below the line, transport monopoly — AST call-expression + script scan, seam pin, run-lock bracketing, busy-rung registration, plain-noun surface vocabulary) in every layer-bearing repo, plus an engine-access scan in every M <strong>and</strong> Go gate and a scheduled org-wide meta-gate backstop</td>
           </tr>
           <tr>
             <td><strong>m-engine waterline checks</strong></td>
-            <td>an <strong>executable conformance gate per driver</strong> — a driver binary that can't pass it can't ship</td>
+            <td>an <strong>executable conformance gate per driver</strong> (m-ydb, m-iris, m-rsm) — a driver binary that can't pass it can't ship</td>
           </tr>
           <tr>
             <td><strong>VSL drift gates</strong></td>
-            <td><strong>24 red gates</strong> in one <code>make gates</code> run — ICR, namespace, engine-access, manifest/dispatcher/envelope drift, data ownership, additive-only compat</td>
+            <td><strong>26 red gates</strong> in one <code>make gates</code> run — ICR, namespace, engine-access, manifest/dispatcher/envelope drift, data ownership, additive-only compat, …</td>
           </tr>
           <tr>
             <td><strong>Hard stops</strong></td>
