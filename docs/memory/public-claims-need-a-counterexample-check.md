@@ -32,11 +32,13 @@ not itself distinguishing — VistA's is that it **delivers care** rather than m
 
 ## The rule this produced
 
-Prefer **checkable scale facts** over rankings. What shipped: *"VistA — the VA's integrated
-healthcare information system, serving over 1,200 hospitals and clinics nationwide for over
-40 years — has been comprehensively re-engineered to provide AI-integrated development and
-modernization."* Every clause is verifiable — 1,380 facilities is the published figure, so
-"over 1,200" is deliberately conservative — and none of it invites the SSA or DoD rebuttal.
+Prefer **checkable scale facts** over rankings. What shipped: *"VistA — the VA's healthcare
+information system operating 1,200 hospitals and clinics nationwide for over 40 years — has
+been comprehensively re-engineered to provide AI-integrated development and modernization."*
+Every clause is verifiable and none of it invites the SSA or DoD rebuttal. The published
+figure is **1,380 facilities** (170 medical centers + 1,193 outpatient sites), so the round
+1,200 understates by ~180 — the safe direction, but don't "correct" it upward without
+re-checking the source.
 
 ⚠️ **Watch the attribution, not just the superlative.** The draft said "VA's VistA **is**
 the first … to leapfrog," which reads as *the VA* having done this. vista-forge is an
