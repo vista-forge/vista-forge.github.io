@@ -42,6 +42,9 @@
 
   --ok: #2dd4bf;
 
+  /* text set ON an accent-filled surface (skip link, primary button) */
+  --on-accent: #150e2e;
+
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
@@ -49,10 +52,50 @@
   --radius: 10px;
 }
 
-/* No light-scheme override: this site is black by design (2026-08-14).
-   color-scheme:dark above tells the browser to render form controls,
-   scrollbars and the canvas dark too, so a light-OS visitor still gets the
-   intended page instead of a half-inverted one. */
+/* Dark (black) is the DEFAULT and the design (2026-08-14); light is an
+   explicit opt-in via the header toggle (2026-08-20), never inferred from
+   prefers-color-scheme — a light-OS visitor still lands on the intended black
+   page. The toggle sets data-theme="light" on <html> (persisted in
+   localStorage, applied pre-paint by the inline head script on every page).
+   Every override below is a TOKEN value only — the accent hues drop from the
+   pastel dark-bg variants to their darker light-bg counterparts so the
+   layer-color semantics at the top of this file survive the swap. */
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  --bg-elev: #f6f7fa;
+  --bg-elev-2: #edeff5;
+  --border: #dfe3ec;
+  --border-bright: #c8cedd;
+
+  --text: #171a22;
+  --text-dim: #49516a;
+  --text-faint: #767e94;
+
+  --vista: #7c3aed;
+  --vista-bright: #6d28d9;
+  --vista-wash: rgba(124, 58, 237, 0.07);
+  --vista-line: rgba(124, 58, 237, 0.35);
+
+  --cyan: #0891b2;
+  --cyan-bright: #0e7490;
+  --cyan-wash: rgba(8, 145, 178, 0.06);
+  --cyan-line: rgba(8, 145, 178, 0.32);
+
+  --fm: #2563eb;
+  --fm-wash: rgba(37, 99, 235, 0.07);
+  --fm-line: rgba(37, 99, 235, 0.32);
+
+  --engine: #0d9488;
+  --engine-wash: rgba(13, 148, 136, 0.06);
+  --engine-line: rgba(13, 148, 136, 0.32);
+
+  --ok: #0d9488;
+
+  --on-accent: #ffffff;
+}
 
 * { box-sizing: border-box; }
 
@@ -101,7 +144,7 @@ p code, li code, td code {
   left: -9999px;
   top: 0;
   background: var(--vista);
-  color: #000;
+  color: var(--on-accent);
   padding: 0.6rem 1rem;
   z-index: 100;
 }
@@ -171,6 +214,27 @@ p code, li code, td code {
   font-weight: 500;
 }
 .nav a:hover { color: var(--text); text-decoration: none; }
+
+/* dark/light toggle: sun shown in dark ("switch to light"), moon in light */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--border-bright);
+  border-radius: 8px;
+  background: var(--bg-elev);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--text-faint); }
+.theme-toggle svg { width: 16px; height: 16px; display: block; }
+.theme-toggle .icon-moon { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-sun { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 
 @media (max-width: 860px) {
   .nav a.nav--opt { display: none; }
@@ -256,7 +320,7 @@ p code, li code, td code {
 .btn--primary {
   background: var(--vista);
   border-color: var(--vista);
-  color: #150e2e;
+  color: var(--on-accent);
 }
 .btn--primary:hover { background: var(--vista-bright); border-color: var(--vista-bright); }
 
