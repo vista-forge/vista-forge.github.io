@@ -34,9 +34,11 @@ try { if (localStorage.getItem("theme") === "light") document.documentElement.se
     <em>and</em> offers it to users <em>over a network</em>. A CLI does neither.
   </p>
   <p>
-    §13 is genuinely load-bearing for <strong>v-web</strong> and <strong>STDHTTPD</strong>,
-    which are network services. If you modify those and serve them to users, the AGPL
-    requires you to offer those users the corresponding source.
+    §13 would be load-bearing for a network service — something you modify and then
+    offer to users over a network, where the AGPL requires you to offer those users the
+    corresponding source. <strong>The org ships no such component today:</strong> its one
+    inbound HTTP surface and the M server framework beneath it were both retired on
+    2026-08-21. Everything published now is a CLI, a library, or a static artifact.
   </p>
 
   <h2>(b) The commercial option</h2>
@@ -70,7 +72,7 @@ try { if (localStorage.getItem("theme") === "light") document.documentElement.se
       <tr>
         <td>Shared toolkit and infrastructure — <code>clikit</code>,
             <code>workspace</code>, <code>go-cli-template</code>,
-            <code>vista-iris</code>, <code>vista-fileman</code></td>
+            <code>vista-iris</code>, <code>fileman</code></td>
         <td>Apache-2.0</td>
       </tr>
       <tr>
