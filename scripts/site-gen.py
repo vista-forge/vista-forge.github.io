@@ -79,7 +79,7 @@ _SENTENCE_END = re.compile(r"(?<=\.)\s+")
 _VERSION_TAG = re.compile(r"^v\d+(\.\d+)*$")
 _CODE_SPAN = re.compile(r"`([^`]+)`")
 
-LAYER_BLOCKS = {"m": "repos-m", "v": "repos-v"}
+LAYER_BLOCKS = {"m": "repos-m", "f": "repos-f", "v": "repos-v"}
 
 
 # --------------------------------------------------------------------------- #

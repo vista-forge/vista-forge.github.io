@@ -5,7 +5,7 @@
     {
       "name": "m-cli",
       "layer": "m",
-      "role": "Cross-engine M toolchain — the `m` busybox (fmt/lint/lsp/test/coverage/watch/vista/arch)",
+      "role": "Cross-engine M toolchain — the `m` busybox (fmt/lint/lsp/test/coverage/watch/engine/arch)",
       "tag": "v0.1.0",
       "public": false
     },
@@ -20,13 +20,20 @@
       "name": "m-driver-sdk",
       "layer": "m",
       "role": "M engine-driver SDK — the seam contract + reference engine Client (mdriver.Client)",
-      "tag": "v0.11.0",
+      "tag": "v0.17.0",
       "public": false
     },
     {
       "name": "m-ydb",
       "layer": "m",
       "role": "YottaDB engine driver — the m-ydb binary producing the driver envelope",
+      "tag": "",
+      "public": false
+    },
+    {
+      "name": "m-rsm",
+      "layer": "m",
+      "role": "Reference Standard M engine driver — the m-rsm binary producing the driver envelope",
       "tag": "",
       "public": false
     },
@@ -41,21 +48,35 @@
       "name": "m-parse",
       "layer": "m",
       "role": "Engine-neutral M parse substrate — tree-sitter-m over wazero; the foundation fmt/lint/lsp sit on (spec §4)",
-      "tag": "v0.1.0",
+      "tag": "v0.5.2",
       "public": false
+    },
+    {
+      "name": "m-devbox",
+      "layer": "m",
+      "role": "Portable, container-delivered M development environment — YottaDB + native callouts + the m toolchain + MSL in one pinned image",
+      "tag": "",
+      "public": true
     },
     {
       "name": "clikit",
       "layer": "m",
       "role": "Shared CLI convention layer — Kong grammar, JSON envelope, exit-code ladder — for the m-* / v-* Go toolchain (engine-neutral; no engine transport)",
-      "tag": "v0.9.0",
+      "tag": "v0.12.1",
+      "public": false
+    },
+    {
+      "name": "f-stdlib",
+      "layer": "f",
+      "role": "FSL, the FileMan Standard Library — f-band FSL* routines: JSON-shaped, web-era wrappers over FileMan's documented DBS API (needs standalone FileMan, nothing above it)",
+      "tag": "",
       "public": false
     },
     {
       "name": "v-pkg",
       "layer": "v",
       "role": "VistA KIDS packaging — the `v pkg` domain (build/install/verify/uninstall over the m engine seam)",
-      "tag": "v0.7.0",
+      "tag": "v0.11.1",
       "public": false
     },
     {
@@ -76,28 +97,21 @@
       "name": "v-base",
       "layer": "v",
       "role": "Host base library for v-<domain> CLIs — VSLAPI dispatch client (envelope codec, engine profiles, pagination, attribution/--yes) + the vslgen binding generator (vista-sysadmin-base §5)",
-      "tag": "v0.4.0",
+      "tag": "v0.16.0",
       "public": false
     },
     {
       "name": "v-db",
       "layer": "v",
       "role": "VistA FileMan data-dictionary / PIKS profiler — the `v db` domain (read-only inspect/profile over the m engine seam via v-base)",
-      "tag": "",
-      "public": false
-    },
-    {
-      "name": "v-web",
-      "layer": "v",
-      "role": "VistA Web Services — VWEB* routines: the inbound socket adapter (listener + device/TLS adapter) that drives the m-stdlib STDHTTPD server framework over a real socket. VistA-specific; consumes the engine-neutral STD* HTTP/socket base and the VSL* VistA base upward.",
-      "tag": "",
+      "tag": "v0.7.1",
       "public": false
     },
     {
       "name": "v-rpc-debug",
       "layer": "v",
       "role": "VistA RPC developer tools — the `v rpc-debug` domain. Taps the RPC Broker's native debug log (XWBDEBUG) over the m engine seam to view/save live RPC traffic for offline comparison against the VSL tap. The safe, read-only sibling of the high-risk `v rpc-tap` domain; the two integrate only at the v-cli busybox.",
-      "tag": "v0.4.0",
+      "tag": "v0.5.0",
       "public": false
     },
     {
