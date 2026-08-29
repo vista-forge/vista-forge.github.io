@@ -12,8 +12,17 @@ assets/css/site.css   all styling; no framework, no CDN
 assets/img/logo.png   the org mark (see "The logo" below)
 scripts/site-gen.py   generates the m/v repo tables from the ecosystem registry
 data/repos.json       the committed registry snapshot the tables render from
-.nojekyll             serve files as-is
+.nojekyll             serve files as-is  ⚠️ load-bearing: Astro's _astro/ dies without it
+forge-reference/      DEPLOYED ARTIFACT — do not hand-edit
 ```
+
+## `forge-reference/` — a deployed copy, not source
+
+That directory is the built `v` surface reference, served at
+<https://vista-forge.github.io/forge-reference/>. It is **generated in the
+`forge-reference` repo and copied here**; nothing in this repo produces it and
+no gate here grades it. To refresh it, follow that repo's
+`docs/guides/publishing.md` — never edit these files in place.
 
 ## Gates
 
