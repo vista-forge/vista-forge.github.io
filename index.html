@@ -37,6 +37,7 @@ try { if (localStorage.getItem("theme") === "light") document.documentElement.se
       <a href="#tools" class="nav--opt">Tools</a>
       <a href="#architecture" class="nav--opt">Architecture</a>
       <a href="#repos">Repos</a>
+      <a href="/forge-reference/">Reference</a>
       <a href="https://github.com/vista-forge">GitHub&nbsp;↗</a>
       <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
@@ -579,6 +580,7 @@ try { if (localStorage.getItem("theme") === "light") document.documentElement.se
           <tr><td><strong>docs</strong></td><td>ADRs, design corpus, and cross-repo coordination</td></tr>
           <tr><td><strong>workspace</strong></td><td>Clone-all manifest + idempotent <code>bootstrap.sh</code> for machine setup</td></tr>
           <tr><td><a href="https://github.com/orgs/vista-forge/packages/container/package/vista-iris">vista-iris</a></td><td>Pre-built VistA-on-IRIS container, fictitious test data only — the image is public; the build repo is not yet</td></tr>
+          <tr><td><strong>forge-reference</strong></td><td>The generator behind <a href="/forge-reference/">the published reference</a> — every page assembled from the contract, doc plane and error index each tool ships, so it cannot describe a flag that does not exist</td></tr>
           <tr><td><strong>.github</strong></td><td>Shared gate scripts and git hooks, the docs standard, the org repo registry, and the scheduled meta-gate</td></tr>
         </tbody>
       </table>

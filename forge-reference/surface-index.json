@@ -1,0 +1,1418 @@
+{
+  "commands": [
+    {
+      "slug": "v-new",
+      "domain": "v",
+      "command": "new",
+      "help": "Scaffold a new v domain repo from the in-org template (born gate-conforming).",
+      "engine": "none",
+      "mutates": false,
+      "flags": [
+        "dir",
+        "blurb",
+        "force"
+      ],
+      "example": "v new job",
+      "url": "/forge-reference/reference/v/v-new/"
+    },
+    {
+      "slug": "v-menu",
+      "domain": "v",
+      "command": "menu",
+      "help": "Browse the command surface interactively (palette).",
+      "engine": "none",
+      "mutates": false,
+      "example": "v menu",
+      "url": "/forge-reference/reference/v/v-menu/"
+    },
+    {
+      "slug": "v-discover",
+      "domain": "v",
+      "command": "discover",
+      "help": "Emit the aggregated command/flag/enum tree as JSON (agent discovery).",
+      "engine": "none",
+      "mutates": false,
+      "example": "v discover -o json",
+      "url": "/forge-reference/reference/v/v-discover/"
+    },
+    {
+      "slug": "v-version",
+      "domain": "v",
+      "command": "version",
+      "help": "Show version and build info.",
+      "engine": "none",
+      "mutates": false,
+      "example": "v version -o json",
+      "url": "/forge-reference/reference/v/v-version/"
+    },
+    {
+      "slug": "db-estimate",
+      "domain": "db",
+      "command": "estimate",
+      "group": "Analyze",
+      "help": "Estimate export size for a set of files (record count × sampled record size) and fit it against a cap (exit 3 over cap).",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "files",
+        "cap",
+        "top",
+        "page-size"
+      ],
+      "example": "v db estimate --files 2,19,63 --engine vehu",
+      "url": "/forge-reference/reference/db/db-estimate/"
+    },
+    {
+      "slug": "db-export",
+      "domain": "db",
+      "command": "export",
+      "group": "Inspect",
+      "help": "Write the data dictionary to disk as JSONL plus a manifest, for analysis away from the engine. The manifest records WHICH instance it came from, at what FileMan version, what was requested, and what was requested and not written.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "out",
+        "files",
+        "page-size"
+      ],
+      "example": "v db export --files 19 --out ./dd --engine vehu",
+      "url": "/forge-reference/reference/db/db-export/"
+    },
+    {
+      "slug": "db-census",
+      "domain": "db",
+      "command": "census",
+      "group": "Inspect",
+      "help": "The WALKED catalog of every file (table): honest record (row) counts with the stored header claim beside as an integrity signal, and sampled record sizes.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "file",
+        "token",
+        "one-page",
+        "out",
+        "pace",
+        "no-sizes",
+        "per-patient",
+        "patient-file",
+        "examined",
+        "elapsed",
+        "bytes"
+      ],
+      "example": "v db census --file 19 --engine vehu",
+      "url": "/forge-reference/reference/db/db-census/"
+    },
+    {
+      "slug": "db-refs",
+      "domain": "db",
+      "command": "refs",
+      "group": "Inspect",
+      "help": "The reference map (foreign keys) around one file: what it points at, and what points at it — with --verify auditing FileMan's pointed-to-by catalog against the fields themselves.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "all",
+        "out",
+        "max-files",
+        "token",
+        "pace",
+        "direction",
+        "depth",
+        "resolve",
+        "verify",
+        "scope",
+        "page-size"
+      ],
+      "example": "v db refs 19 --engine vehu",
+      "url": "/forge-reference/reference/db/db-refs/"
+    },
+    {
+      "slug": "db-indexes",
+      "domain": "db",
+      "command": "indexes",
+      "group": "Inspect",
+      "help": "Inventory one file's cross-references (indexes): both registers they are declared in, what each one stores, where the record id sits inside an entry, and whether its key IS the indexed column's value — the measurements that say what may be looked up by key and what may not.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "all",
+        "kind",
+        "walkable",
+        "key-sample",
+        "sample",
+        "page-size",
+        "token",
+        "one-page",
+        "pace",
+        "out",
+        "bytes",
+        "examined",
+        "elapsed"
+      ],
+      "example": "v db indexes 19 --engine vehu",
+      "url": "/forge-reference/reference/db/db-indexes/"
+    },
+    {
+      "slug": "db-schema",
+      "domain": "db",
+      "command": "schema",
+      "group": "Inspect",
+      "help": "Describe one file (table): its fields (columns) and types, pointers (foreign keys) and cross-references (indexes) — the data dictionary, which is this database's schema catalog.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "page-size"
+      ],
+      "example": "v db schema 19 --engine vehu",
+      "url": "/forge-reference/reference/db/db-schema/"
+    },
+    {
+      "slug": "db-integrity",
+      "domain": "db",
+      "command": "integrity",
+      "group": "Inspect",
+      "help": "The instance-integrity census: the whole-instance sweeps — header claims vs walked truth, pointer resolution, declared-type grammar, the declaration-driven index audit (register + feed), hollow sub-records, the DD census, key uniqueness, and the full-depth sub-file descent — as counts with denominators per file (class, file, count, content-fold rows), never a pass/fail verdict.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "to",
+        "pace",
+        "out"
+      ],
+      "example": "v db integrity --to 2 --engine vehu",
+      "url": "/forge-reference/reference/db/db-integrity/"
+    },
+    {
+      "slug": "db-integrity-compare",
+      "domain": "db",
+      "command": "integrity-compare",
+      "group": "Inspect",
+      "help": "Compare an integrity artifact against a named expectation, OFFLINE: a prior committed run of the same instance (any row difference is the red delta outcome) and/or the shipped-state ledger (one-sided excess is the attention outcome, never red). Speaks four pinned outcome words: clean, delta, attention, stopped.",
+      "mutates": false,
+      "flags": [
+        "base",
+        "assert",
+        "ledger"
+      ],
+      "example": "v db integrity-compare ./integrity-today --base ./integrity-baseline",
+      "url": "/forge-reference/reference/db/db-integrity-compare/"
+    },
+    {
+      "slug": "db-integrity-report",
+      "domain": "db",
+      "command": "integrity-report",
+      "group": "Inspect",
+      "help": "Explain one integrity artifact's pointer findings by TARGET (VD-D109): dangling mass joined to each target file's own header-ledger row — a header-divergent target is ONE finding with its mechanism shown, a healthy target is the class worth eyes, with the source list attached either way — plus the malformed split (type-history vs live-resolving), which has no target to attribute.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout"
+      ],
+      "example": "v db integrity-report ./integrity-today --engine vehu",
+      "url": "/forge-reference/reference/db/db-integrity-report/"
+    },
+    {
+      "slug": "db-bundle",
+      "domain": "db",
+      "command": "bundle",
+      "group": "Inspect",
+      "help": "Run a RUN SET — the committed declaration of the components a bundle is made of — writing each component to its own directory with its own manifest, and embedding the set that produced it. --explain reports what it WOULD export without reaching an engine.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "out",
+        "group",
+        "explain",
+        "base"
+      ],
+      "example": "v db bundle sets/dd-bundle.toml --out ./bundle --engine vehu",
+      "url": "/forge-reference/reference/db/db-bundle/"
+    },
+    {
+      "slug": "db-selection",
+      "domain": "db",
+      "command": "selection",
+      "group": "Inspect",
+      "help": "The SELECTION object: which tables to extract, at any depth, with a projection and filter per table — compiled into the run set 'v db bundle' runs. Saved, diffable and re-runnable; not a query language.",
+      "engine": "none",
+      "mutates": false,
+      "example": "v db selection --help",
+      "url": "/forge-reference/reference/db/db-selection/"
+    },
+    {
+      "slug": "db-selection-compile",
+      "domain": "db",
+      "command": "selection compile",
+      "help": "Compile a selection into the run set 'v db bundle' runs: each table entry becomes one 'rows' invocation with its projection and filter, each passthrough entry is carried unchanged, and the compiled set records which selection (and which catalog build, under which rule) produced it. Every entry is resolved against the generated command contract; a problem refuses and writes nothing.",
+      "engine": "none",
+      "mutates": false,
+      "flags": [
+        "out",
+        "catalog"
+      ],
+      "example": "v db selection compile sets/dd-bundle-selection.toml --out ./set.toml",
+      "url": "/forge-reference/reference/db/db-selection-compile/"
+    },
+    {
+      "slug": "db-selection-size",
+      "domain": "db",
+      "command": "selection size",
+      "help": "Size a selection BEFORE it is extracted (VD-D119/VD-D120): each table's N from the committed catalog build at zero engine cost, its mean row bytes from one spread probe at the component's own projection, tier and filter, widened until the sample-dispersion band is inside ±10 % or 5 visits are spent — an interval per component and for the whole, never a point; a selection with an unsizable component refuses before any engine visit and never holds a verdict.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "catalog",
+        "integrity",
+        "prior",
+        "cap",
+        "out"
+      ],
+      "example": "v db selection size sets/dd-bundle-selection.toml --catalog ~/data/v-db-catalog/vehu-2026-08-24-s4 --integrity baselines/integrity/vehu --prior ~/data/v-db-bundles/vehu-2026-08-24-s5-legA-committed --engine vehu",
+      "url": "/forge-reference/reference/db/db-selection-size/"
+    },
+    {
+      "slug": "db-selection-explain",
+      "domain": "db",
+      "command": "selection explain",
+      "help": "Report what a selection WOULD compile to — every entry, its kind, the verb and arguments it becomes, and the lineage the compile step would attach — without writing anything. If the selection has problems, all of them rather than the first.",
+      "engine": "none",
+      "mutates": false,
+      "flags": [
+        "catalog"
+      ],
+      "example": "v db selection explain sets/dd-bundle-selection.toml",
+      "url": "/forge-reference/reference/db/db-selection-explain/"
+    },
+    {
+      "slug": "db-catalog",
+      "domain": "db",
+      "command": "catalog",
+      "group": "Inspect",
+      "help": "The VistA data catalog: build it offline from a certified bundle plus an integrity capture (one entry per table — structure, volume and condition planes, derived package attribution with its rule, search index embedded), then browse and search the artifact without an engine.",
+      "engine": "none",
+      "mutates": false,
+      "example": "v db catalog --help",
+      "url": "/forge-reference/reference/db/db-catalog/"
+    },
+    {
+      "slug": "db-catalog-build",
+      "domain": "db",
+      "command": "catalog build",
+      "help": "Build the catalog artifact OFFLINE from a certified bundle and an integrity capture of the same instance: one entry per table with structure, volume and condition planes, the derived package attribution with its rule, and the search index built in — then certify the derivation by both-direction reconciliation against the components (refused is not published).",
+      "engine": "none",
+      "mutates": false,
+      "flags": [
+        "bundle",
+        "integrity",
+        "out",
+        "previous"
+      ],
+      "example": "v db catalog build --bundle ./bundle --integrity baselines/integrity/vehu --out ./catalog",
+      "url": "/forge-reference/reference/db/db-catalog-build/"
+    },
+    {
+      "slug": "db-catalog-browse",
+      "domain": "db",
+      "command": "catalog browse",
+      "help": "List the catalog's tables from the artifact — attribution-first by default (owner, then the contested set, then unmatched); size is never the default. Every row states its volume as a count or a named non-fact.",
+      "engine": "none",
+      "mutates": false,
+      "flags": [
+        "order",
+        "top"
+      ],
+      "example": "v db catalog browse ./catalog --top 40",
+      "url": "/forge-reference/reference/db/db-catalog-browse/"
+    },
+    {
+      "slug": "db-catalog-search",
+      "domain": "db",
+      "command": "catalog search",
+      "help": "Rank tables and fields by name and description over the artifact's embedded index, under the ranking rule the artifact ships as data. A negative answer carries the corpus denominator and the build age.",
+      "engine": "none",
+      "mutates": false,
+      "flags": [
+        "top"
+      ],
+      "example": "v db catalog search ./catalog 'patient name'",
+      "url": "/forge-reference/reference/db/db-catalog-search/"
+    },
+    {
+      "slug": "db-packet",
+      "domain": "db",
+      "command": "packet",
+      "group": "Inspect",
+      "help": "The DELIVERY PACKET: the per-component manifest, the producer certification, the channel evidence stated verbatim, the selection's lineage with every declared exclusion, the sized run, and the condition of the data — the same-session integrity audit's rows scoped to exactly what was extracted, read against the shipped-state floor. Counts over denominators; the packet never scores or judges.",
+      "engine": "none",
+      "mutates": false,
+      "flags": [
+        "bundle",
+        "audit",
+        "ledger",
+        "sizing",
+        "session-window",
+        "out"
+      ],
+      "example": "v db packet --bundle ./bundle --audit ./integrity-today --ledger baselines/integrity/ledger.jsonl --out packet.json",
+      "url": "/forge-reference/reference/db/db-packet/"
+    },
+    {
+      "slug": "db-rows",
+      "domain": "db",
+      "command": "rows",
+      "group": "Data",
+      "help": "One bounded page of a file's records (rows) walked in row-id order — the population is the walk, never a stored list, so nothing is missed because an index was stale (completeness block on every page).",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "fields",
+        "tier",
+        "where",
+        "parent",
+        "with-multiples",
+        "iens",
+        "iens-file",
+        "ids",
+        "explain",
+        "census",
+        "indexes",
+        "profile",
+        "token",
+        "out",
+        "max-pages",
+        "pace",
+        "max",
+        "bytes",
+        "examined",
+        "elapsed"
+      ],
+      "example": "v db rows 19 --fields .01 --max 20 --engine vehu",
+      "url": "/forge-reference/reference/db/db-rows/"
+    },
+    {
+      "slug": "db-get",
+      "domain": "db",
+      "command": "get",
+      "group": "Data",
+      "help": "One record (row) by its IEN (row id), byte-exact — .5 is a real IEN, not a typo.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "ref",
+        "fields",
+        "tier",
+        "with-multiples",
+        "ids"
+      ],
+      "example": "v db get 19 2 --fields .01 --engine vehu",
+      "url": "/forge-reference/reference/db/db-get/"
+    },
+    {
+      "slug": "db-count",
+      "domain": "db",
+      "command": "count",
+      "group": "Data",
+      "help": "Honest record (row) count of one file (table) — counted by walking the rows, resumable, with a completeness block. The count the file header stores is a CLAIM; this is a measurement.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "parent",
+        "where",
+        "index",
+        "from",
+        "to",
+        "prefix",
+        "token",
+        "one-page",
+        "pace",
+        "examined",
+        "elapsed"
+      ],
+      "example": "v db count 19 --engine vehu",
+      "url": "/forge-reference/reference/db/db-count/"
+    },
+    {
+      "slug": "db-find",
+      "domain": "db",
+      "command": "find",
+      "group": "Data",
+      "help": "Lookup over a named cross-reference (index) — a declared index walk in emission order. Emitted vs distinct stays visible because an index walk never de-duplicates; seeks position, never scans. --raw instead READS a cross-reference's stored entries, which is the only way to reach the ones a seek refuses (most of them: 354 of #2's 386 are site-authored).",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "from",
+        "to",
+        "prefix",
+        "fields",
+        "tier",
+        "where",
+        "ids",
+        "explain",
+        "census",
+        "indexes",
+        "profile",
+        "token",
+        "raw",
+        "at",
+        "ien-at",
+        "out",
+        "max-pages",
+        "pace",
+        "max",
+        "bytes",
+        "examined",
+        "elapsed"
+      ],
+      "example": "v db find 19 B --max 20 --engine vehu",
+      "url": "/forge-reference/reference/db/db-find/"
+    },
+    {
+      "slug": "db-distribution",
+      "domain": "db",
+      "command": "distribution",
+      "group": "Data",
+      "help": "Bounded distinct-value/top-N distribution of ONE field (column), or the depth of a multiple (nested table) — what values are actually in this column, and how many of each.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "where",
+        "index",
+        "from",
+        "to",
+        "prefix",
+        "top",
+        "distinct-cap",
+        "token",
+        "one-page",
+        "out",
+        "pace",
+        "examined",
+        "elapsed",
+        "bytes"
+      ],
+      "example": "v db distribution 19 4 --engine vehu",
+      "url": "/forge-reference/reference/db/db-distribution/"
+    },
+    {
+      "slug": "db-fields-profile",
+      "domain": "db",
+      "command": "fields-profile",
+      "group": "Data",
+      "help": "How many records hold a stored value in EACH field (column) of a file (table) — the whole dictionary tallied in ONE walk, so a wide sparse file says which of its columns actually carry data here.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "parent",
+        "top",
+        "empty",
+        "token",
+        "one-page",
+        "out",
+        "pace",
+        "examined",
+        "elapsed",
+        "bytes"
+      ],
+      "example": "v db fields-profile 19 --engine vehu",
+      "url": "/forge-reference/reference/db/db-fields-profile/"
+    },
+    {
+      "slug": "db-policy",
+      "domain": "db",
+      "command": "policy",
+      "group": "Authorize",
+      "help": "Show or declare the instance's authorization surface (class, per-file policy, read enablement) — enforcement is engine-side at every data verb's door.",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "reversible",
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "declare",
+        "revoke",
+        "yes"
+      ],
+      "example": "v db policy --engine vehu",
+      "url": "/forge-reference/reference/db/db-policy/"
+    },
+    {
+      "slug": "db-put",
+      "domain": "db",
+      "command": "put",
+      "group": "Write",
+      "help": "Create a record (row), or a sub-record in a multiple (nested table) — external values by default, validated whole-request.",
+      "engine": "write",
+      "mutates": true,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "value",
+        "iens",
+        "internal",
+        "laygo",
+        "ien",
+        "yes"
+      ],
+      "example": "v db put 3.1 --value '.01=TEST TITLE' --yes --engine vehu",
+      "url": "/forge-reference/reference/db/db-put/"
+    },
+    {
+      "slug": "db-edit",
+      "domain": "db",
+      "command": "edit",
+      "group": "Write",
+      "help": "Write values into an existing record (row) — one invalid value refuses the whole request; '@' clears a field (column), which is distinct from deleting the row.",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "irreversible",
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "value",
+        "internal",
+        "yes"
+      ],
+      "example": "v db edit 3.1 '3,' --value '.01=NEW TITLE' --yes --engine vehu",
+      "url": "/forge-reference/reference/db/db-edit/"
+    },
+    {
+      "slug": "db-delete",
+      "domain": "db",
+      "command": "delete",
+      "group": "Write",
+      "help": "Delete a record (row) — DRY-RUN by default (reports what would go); --commit --yes actuates.",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "irreversible",
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "commit",
+        "yes"
+      ],
+      "example": "v db delete 3.1 '3,' --engine vehu",
+      "url": "/forge-reference/reference/db/db-delete/"
+    },
+    {
+      "slug": "db-reindex",
+      "domain": "db",
+      "command": "reindex",
+      "group": "Write",
+      "help": "Rebuild one record's cross-references (its index entries). ADDS any entry that is missing; it does NOT remove one that is wrong — an index entry for a value the record no longer holds SURVIVES a reindex (measured, both engines). Whole-file reindex is deliberately not a verb.",
+      "engine": "write",
+      "mutates": true,
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "yes"
+      ],
+      "example": "v db reindex 3.1 3 --yes --engine vehu",
+      "url": "/forge-reference/reference/db/db-reindex/"
+    },
+    {
+      "slug": "db-text",
+      "domain": "db",
+      "command": "text",
+      "group": "Write",
+      "help": "Write or read ONE word-processing field (a text blob) — replace/append/--clear; --show reads the field back, which the older interface could only write.",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "irreversible",
+      "flags": [
+        "engine",
+        "lock-wait",
+        "timeout",
+        "line",
+        "from-file",
+        "append",
+        "clear",
+        "show",
+        "yes"
+      ],
+      "example": "v db text 19 '2,' 3.5 --show --engine vehu",
+      "url": "/forge-reference/reference/db/db-text/"
+    },
+    {
+      "slug": "pkg-parse",
+      "domain": "pkg",
+      "command": "parse",
+      "group": "Inspect",
+      "help": "Parse a .KID file and summarize its builds and sections.",
+      "engine": "none",
+      "mutates": false,
+      "example": "v pkg parse examples/XU_8.0_504.KID",
+      "url": "/forge-reference/reference/pkg/pkg-parse/"
+    },
+    {
+      "slug": "pkg-decompose",
+      "domain": "pkg",
+      "command": "decompose",
+      "group": "Transform",
+      "help": "Split a .KID into a per-component KIDComponents/ tree.",
+      "engine": "none",
+      "mutates": false,
+      "example": "v pkg decompose examples/XU_8.0_504.KID ./tree",
+      "url": "/forge-reference/reference/pkg/pkg-decompose/"
+    },
+    {
+      "slug": "pkg-assemble",
+      "domain": "pkg",
+      "command": "assemble",
+      "group": "Transform",
+      "help": "Reassemble a component tree back into a .KID.",
+      "engine": "none",
+      "mutates": false,
+      "example": "v pkg assemble ./tree ./XU_8.0_504.rebuilt.KID",
+      "url": "/forge-reference/reference/pkg/pkg-assemble/"
+    },
+    {
+      "slug": "pkg-roundtrip",
+      "domain": "pkg",
+      "command": "roundtrip",
+      "group": "Transform",
+      "help": "Verify decompose→assemble reproduces the build (exit 3 on drift).",
+      "engine": "none",
+      "mutates": false,
+      "example": "v pkg roundtrip examples/XU_8.0_504.KID",
+      "url": "/forge-reference/reference/pkg/pkg-roundtrip/"
+    },
+    {
+      "slug": "pkg-merge",
+      "domain": "pkg",
+      "command": "merge",
+      "group": "Transform",
+      "help": "Entry-level 3-way merge of ZWR files (git merge driver: base ours theirs; writes to ours, exit 3 on conflict).",
+      "engine": "none",
+      "mutates": false,
+      "example": "v pkg merge base.zwr ours.zwr theirs.zwr",
+      "url": "/forge-reference/reference/pkg/pkg-merge/"
+    },
+    {
+      "slug": "pkg-canonicalize",
+      "domain": "pkg",
+      "command": "canonicalize",
+      "group": "Transform",
+      "help": "Substitute install-time IENs with \"IEN\" in a tree (LOSSY; review-only).",
+      "engine": "none",
+      "mutates": false,
+      "example": "v pkg canonicalize ./tree/XU_8.0_504",
+      "url": "/forge-reference/reference/pkg/pkg-canonicalize/"
+    },
+    {
+      "slug": "pkg-classify",
+      "domain": "pkg",
+      "command": "classify",
+      "group": "Inspect",
+      "help": "Derive a .KID's reversibility class (pure-overwrite vs side-effecting) from its structure — no engine.",
+      "engine": "none",
+      "mutates": false,
+      "example": "v pkg classify examples/XU_8.0_504.KID",
+      "url": "/forge-reference/reference/pkg/pkg-classify/"
+    },
+    {
+      "slug": "pkg-diff",
+      "domain": "pkg",
+      "command": "diff",
+      "group": "Inspect",
+      "help": "Compare a .KID to the live engine WITHOUT mutating it: per-artifact NEW/CHANGED/identical preview (read-only; exit 0).",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "transport",
+        "lock-wait"
+      ],
+      "example": "v pkg diff examples/XU_8.0_504.KID --engine ydb --transport docker",
+      "url": "/forge-reference/reference/pkg/pkg-diff/"
+    },
+    {
+      "slug": "pkg-lint",
+      "domain": "pkg",
+      "command": "lint",
+      "group": "Inspect",
+      "help": "Run the PIKS data-class gate over a .KID (exit 3 on a blocked file).",
+      "engine": "none",
+      "mutates": false,
+      "flags": [
+        "piks",
+        "strict"
+      ],
+      "example": "v pkg lint examples/XU_8.0_504.KID",
+      "url": "/forge-reference/reference/pkg/pkg-lint/"
+    },
+    {
+      "slug": "pkg-build",
+      "domain": "pkg",
+      "command": "build",
+      "group": "Build \u0026 install",
+      "help": "Build a KIDS transport global from a declarative build spec (deterministic, normalized export).",
+      "engine": "none",
+      "mutates": false,
+      "flags": [
+        "src",
+        "out",
+        "piks",
+        "strict"
+      ],
+      "example": "v pkg build testdata/zzskel/kids/ZZSKEL.build.json --src testdata/zzskel/src --out ZZSKEL.kids",
+      "url": "/forge-reference/reference/pkg/pkg-build/"
+    },
+    {
+      "slug": "pkg-capture",
+      "domain": "pkg",
+      "command": "capture",
+      "group": "Build \u0026 install",
+      "help": "Capture a live compiled-FileMan component (input/print/sort template family) into a committed sidecar the build consumes (read-only).",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "transport",
+        "lock-wait",
+        "type",
+        "name",
+        "file",
+        "out",
+        "piks",
+        "strict"
+      ],
+      "example": "v pkg capture --type 'INPUT TEMPLATE' --name 'A1B2 ENTRY' --file 11500.1 --out src/captured/a1b2-entry.json --engine ydb --transport docker",
+      "url": "/forge-reference/reference/pkg/pkg-capture/"
+    },
+    {
+      "slug": "pkg-install",
+      "domain": "pkg",
+      "command": "install",
+      "group": "Build \u0026 install",
+      "help": "Install a built .KID on a live engine over the driver (preview by default; --commit runs the non-interactive KIDS load+install).",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "reversible",
+      "flags": [
+        "engine",
+        "transport",
+        "lock-wait",
+        "attest",
+        "no-attest",
+        "sign",
+        "commit",
+        "snapshot",
+        "auto-snapshot",
+        "allow-overwrite",
+        "heal",
+        "verify-checksums",
+        "skip-env-check",
+        "answer",
+        "register-package"
+      ],
+      "example": "v pkg install MYPKG.KID --engine ydb --transport docker --auto-snapshot --commit",
+      "url": "/forge-reference/reference/pkg/pkg-install/"
+    },
+    {
+      "slug": "pkg-export",
+      "domain": "pkg",
+      "command": "export",
+      "group": "Build \u0026 install",
+      "help": "Export an installed build off a live engine into a package source tree + rebuilt .KID (engine→git; read-only).",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "transport",
+        "lock-wait",
+        "out-dir",
+        "kid",
+        "piks",
+        "strict"
+      ],
+      "example": "v pkg export 'DI*22.0*169' --out-dir ./pkg --engine ydb --transport docker",
+      "url": "/forge-reference/reference/pkg/pkg-export/"
+    },
+    {
+      "slug": "pkg-snapshot",
+      "domain": "pkg",
+      "command": "snapshot",
+      "group": "Back-out",
+      "help": "Capture the live pre-image of a patch's routines into a restorable .KID (class-1 reversal).",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "transport",
+        "lock-wait",
+        "name",
+        "attest"
+      ],
+      "example": "v pkg snapshot testdata/zzskel/ZZSKEL.kids ZZSKEL.preimage.kids --engine ydb --transport docker",
+      "url": "/forge-reference/reference/pkg/pkg-snapshot/"
+    },
+    {
+      "slug": "pkg-restore",
+      "domain": "pkg",
+      "command": "restore",
+      "group": "Back-out",
+      "help": "Re-apply a pre-image snapshot .KID to revert routines to stock (preview by default; --commit installs).",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "reversible",
+      "flags": [
+        "engine",
+        "transport",
+        "lock-wait",
+        "attest",
+        "no-attest",
+        "sign",
+        "commit"
+      ],
+      "example": "v pkg restore MYPKG.preimage.kids --engine ydb --transport docker --commit",
+      "url": "/forge-reference/reference/pkg/pkg-restore/"
+    },
+    {
+      "slug": "pkg-verify",
+      "domain": "pkg",
+      "command": "verify",
+      "group": "Build \u0026 install",
+      "help": "Verify a .KID's install on a live engine (#9.7 status + per-routine presence).",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "transport",
+        "lock-wait",
+        "drift"
+      ],
+      "example": "v pkg verify examples/XU_8.0_504.KID --engine ydb --transport docker --drift",
+      "url": "/forge-reference/reference/pkg/pkg-verify/"
+    },
+    {
+      "slug": "pkg-uninstall",
+      "domain": "pkg",
+      "command": "uninstall",
+      "group": "Back-out",
+      "help": "Uninstall a .KID from a live engine (routine-only back-out: routines + #9.7/#9.6).",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "reversible",
+      "flags": [
+        "engine",
+        "transport",
+        "lock-wait",
+        "attest",
+        "no-attest",
+        "sign",
+        "restore",
+        "backout",
+        "force",
+        "verify",
+        "deregister"
+      ],
+      "example": "v pkg uninstall MYPKG.KID --engine ydb --transport docker --verify",
+      "url": "/forge-reference/reference/pkg/pkg-uninstall/"
+    },
+    {
+      "slug": "pkg-purge",
+      "domain": "pkg",
+      "command": "purge",
+      "group": "Back-out",
+      "help": "DESTROY a .KID's entire declared footprint to greenfield (routines incl. foreign, components, files, #9.7/#9.6/#9.4, sidecars). Preview by default; --commit to delete. The sanctioned clean after a leak/crash — NOT a reversal.",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "irreversible",
+      "flags": [
+        "engine",
+        "transport",
+        "lock-wait",
+        "attest",
+        "no-attest",
+        "sign",
+        "commit"
+      ],
+      "example": "v pkg purge MYPKG.KID --engine ydb --transport docker --commit",
+      "url": "/forge-reference/reference/pkg/pkg-purge/"
+    },
+    {
+      "slug": "pkg-adopt",
+      "domain": "pkg",
+      "command": "adopt",
+      "group": "Back-out",
+      "help": "Reconcile dangling crash intents: read the live engine, and when it PROVES a crashed op completed (or never landed), seal the missing ledger final. Preview by default (read-only probes); --commit to seal. Writes NO engine state — unprovable states route to purge/manual.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "transport",
+        "lock-wait",
+        "commit",
+        "attest",
+        "sign"
+      ],
+      "example": "v pkg adopt examples/XU_8.0_504.KID --engine ydb --transport docker",
+      "url": "/forge-reference/reference/pkg/pkg-adopt/"
+    },
+    {
+      "slug": "pkg-attest",
+      "domain": "pkg",
+      "command": "attest",
+      "group": "Inspect",
+      "help": "Validate the install-attestation audit ledger (hash chain + signatures; optional live replay).",
+      "engine": "none",
+      "mutates": false,
+      "example": "v pkg attest --help",
+      "url": "/forge-reference/reference/pkg/pkg-attest/"
+    },
+    {
+      "slug": "pkg-attest-verify",
+      "domain": "pkg",
+      "command": "attest verify",
+      "help": "Validate an attestation ledger's hash chain (+ signatures), optionally replaying it against the live engine.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "trust",
+        "replay",
+        "engine",
+        "transport",
+        "lock-wait"
+      ],
+      "example": "v pkg attest verify MYPKG.attest.jsonl",
+      "url": "/forge-reference/reference/pkg/pkg-attest-verify/"
+    },
+    {
+      "slug": "pkg-attest-check",
+      "domain": "pkg",
+      "command": "attest check",
+      "help": "Check a .KID's pre-image sidecars against the ledger (and, with --engine, the live engine): the standing sidecar ↔ ledger ↔ engine consistency gate (C2/G-SIDECAR).",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "attest",
+        "engine",
+        "transport",
+        "lock-wait"
+      ],
+      "example": "v pkg attest check examples/XU_8.0_504.KID",
+      "url": "/forge-reference/reference/pkg/pkg-attest-check/"
+    },
+    {
+      "slug": "rpc-debug-tail",
+      "domain": "rpc-debug",
+      "command": "tail",
+      "group": "Capture",
+      "help": "Stream live RPC traffic to the terminal (Ctrl-C to stop). Arms the debug level and WIPES the buffered XWBLOG on start (--no-clear keeps it); restores the level on exit.",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "irreversible",
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait",
+        "all",
+        "filter",
+        "interval",
+        "duration",
+        "level",
+        "keep",
+        "no-clear",
+        "restore-to"
+      ],
+      "example": "v rpc-debug tail --container vehu",
+      "url": "/forge-reference/reference/rpc-debug/rpc-debug-tail/"
+    },
+    {
+      "slug": "rpc-debug-capture",
+      "domain": "rpc-debug",
+      "command": "capture",
+      "group": "Capture",
+      "help": "Append live RPC traffic to a file as LDJSON for offline analysis. Arms the debug level and WIPES the buffered XWBLOG on start (--no-clear keeps it); restores the level on exit.",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "irreversible",
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait",
+        "all",
+        "filter",
+        "interval",
+        "duration",
+        "level",
+        "keep",
+        "no-clear",
+        "restore-to",
+        "out",
+        "quiet"
+      ],
+      "example": "v rpc-debug capture --container vehu --out cprs.ldjson",
+      "url": "/forge-reference/reference/rpc-debug/rpc-debug-capture/"
+    },
+    {
+      "slug": "rpc-debug-status",
+      "domain": "rpc-debug",
+      "command": "status",
+      "group": "Capture",
+      "help": "Show the current XWBDEBUG level and active log jobs.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait"
+      ],
+      "example": "v rpc-debug status --container vehu",
+      "url": "/forge-reference/reference/rpc-debug/rpc-debug-status/"
+    },
+    {
+      "slug": "rpc-debug-arm",
+      "domain": "rpc-debug",
+      "command": "arm",
+      "group": "Capture",
+      "help": "Turn XWBDEBUG capture on (set the broker debug level).",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "reversible",
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait",
+        "level"
+      ],
+      "example": "v rpc-debug arm --container vehu --level 2",
+      "url": "/forge-reference/reference/rpc-debug/rpc-debug-arm/"
+    },
+    {
+      "slug": "rpc-debug-disarm",
+      "domain": "rpc-debug",
+      "command": "disarm",
+      "group": "Capture",
+      "help": "Turn XWBDEBUG capture off (restore the debug level).",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "reversible",
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait",
+        "level"
+      ],
+      "example": "v rpc-debug disarm --container vehu --level 1",
+      "url": "/forge-reference/reference/rpc-debug/rpc-debug-disarm/"
+    },
+    {
+      "slug": "rpc-debug-clear",
+      "domain": "rpc-debug",
+      "command": "clear",
+      "group": "Capture",
+      "help": "Wipe the buffered XWBLOG (dry run by default — reports what would go; --commit wipes).",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "irreversible",
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait",
+        "commit"
+      ],
+      "example": "v rpc-debug clear --container vehu --commit",
+      "url": "/forge-reference/reference/rpc-debug/rpc-debug-clear/"
+    },
+    {
+      "slug": "rpc-debug-ping",
+      "domain": "rpc-debug",
+      "command": "ping",
+      "group": "Capture",
+      "help": "Fire test RPCs at a broker so a tap has traffic to capture.",
+      "mutates": false,
+      "flags": [
+        "addr",
+        "rpc",
+        "count",
+        "timeout"
+      ],
+      "example": "v rpc-debug ping --addr 127.0.0.1:9430",
+      "url": "/forge-reference/reference/rpc-debug/rpc-debug-ping/"
+    },
+    {
+      "slug": "rpc-debug-doctor",
+      "domain": "rpc-debug",
+      "command": "doctor",
+      "group": "Connect",
+      "help": "Diagnose the CPRS↔VistA broker network path (and --fix it).",
+      "mutates": false,
+      "flags": [
+        "container",
+        "broker-port",
+        "relay-addr",
+        "guest-host",
+        "timeout",
+        "fix"
+      ],
+      "example": "v rpc-debug doctor --container vehu",
+      "url": "/forge-reference/reference/rpc-debug/rpc-debug-doctor/"
+    },
+    {
+      "slug": "rpc-debug-relay",
+      "domain": "rpc-debug",
+      "command": "relay",
+      "group": "Connect",
+      "help": "Republish the loopback-bound broker so a VM (CPRS) can reach it.",
+      "mutates": false,
+      "flags": [
+        "listen",
+        "to",
+        "container",
+        "broker-port",
+        "install",
+        "uninstall",
+        "status"
+      ],
+      "example": "v rpc-debug relay --install --to 127.0.0.1:9430",
+      "url": "/forge-reference/reference/rpc-debug/rpc-debug-relay/"
+    },
+    {
+      "slug": "rpc-tap-arm",
+      "domain": "rpc-tap",
+      "command": "arm",
+      "group": "Control",
+      "help": "Turn capture on at a mode with a host lease + absolute cap.",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "reversible",
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait",
+        "mode",
+        "ttl",
+        "dur"
+      ],
+      "example": "v rpc-tap arm --container vehu --mode 2",
+      "url": "/forge-reference/reference/rpc-tap/rpc-tap-arm/"
+    },
+    {
+      "slug": "rpc-tap-disarm",
+      "domain": "rpc-tap",
+      "command": "disarm",
+      "group": "Control",
+      "help": "Turn capture off (the reaper self-terminates on its next wake).",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "reversible",
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait"
+      ],
+      "example": "v rpc-tap disarm --container vehu",
+      "url": "/forge-reference/reference/rpc-tap/rpc-tap-disarm/"
+    },
+    {
+      "slug": "rpc-tap-status",
+      "domain": "rpc-tap",
+      "command": "status",
+      "group": "Control",
+      "help": "Show the armed state + job ring / live record counts.",
+      "engine": "read",
+      "mutates": false,
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait"
+      ],
+      "example": "v rpc-tap status --container vehu",
+      "url": "/forge-reference/reference/rpc-tap/rpc-tap-status/"
+    },
+    {
+      "slug": "rpc-tap-drain",
+      "domain": "rpc-tap",
+      "command": "drain",
+      "group": "Control",
+      "help": "Pull live records, correlate into sessions; deletes nothing (D12) — its one write is the per-job drained watermark committrim honors.",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "reversible",
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait",
+        "lo",
+        "hi"
+      ],
+      "example": "v rpc-tap drain --container vehu",
+      "url": "/forge-reference/reference/rpc-tap/rpc-tap-drain/"
+    },
+    {
+      "slug": "rpc-tap-committrim",
+      "domain": "rpc-tap",
+      "command": "committrim",
+      "group": "Control",
+      "help": "Trim the durable ring prefix a drain has made safe — the engine refuses a seq beyond the drained watermark, and refuses a never-drained job.",
+      "engine": "write",
+      "mutates": true,
+      "reversibility": "irreversible",
+      "flags": [
+        "engine",
+        "transport",
+        "container",
+        "lock-wait",
+        "job",
+        "seq"
+      ],
+      "example": "v rpc-tap committrim --container vehu --job 123 --seq 42",
+      "url": "/forge-reference/reference/rpc-tap/rpc-tap-committrim/"
+    },
+    {
+      "slug": "rpc-tap-load",
+      "domain": "rpc-tap",
+      "command": "load",
+      "group": "Bench",
+      "help": "Drive concurrent [XWB] sessions at a broker and report throughput + latency (L8 load rig).",
+      "mutates": false,
+      "flags": [
+        "addr",
+        "rpc",
+        "workload",
+        "oracle",
+        "signon",
+        "concurrency",
+        "total",
+        "duration",
+        "timeout",
+        "stagger"
+      ],
+      "example": "v rpc-tap load --addr 127.0.0.1:9430 --concurrency 50 --total 500",
+      "url": "/forge-reference/reference/rpc-tap/rpc-tap-load/"
+    },
+    {
+      "slug": "rpc-tap-drive",
+      "domain": "rpc-tap",
+      "command": "drive",
+      "group": "Bench",
+      "help": "Open ONE broker session (full handshake) and fire RPCs in order, reporting exact response bytes (the live L1-L3 driver).",
+      "mutates": false,
+      "flags": [
+        "addr",
+        "rpc",
+        "param",
+        "signon",
+        "context",
+        "timeout"
+      ],
+      "example": "v rpc-tap drive --addr 127.0.0.1:9430 --rpc 'XUS INTRO MSG'",
+      "url": "/forge-reference/reference/rpc-tap/rpc-tap-drive/"
+    },
+    {
+      "slug": "rpc-tap-splice",
+      "domain": "rpc-tap",
+      "command": "splice",
+      "group": "Build",
+      "help": "Regenerate the foreign-overwrite XWBPRS routine for the KIDS build from a site's current XWBPRS (build input; never installs).",
+      "engine": "none",
+      "mutates": false,
+      "flags": [
+        "in",
+        "out"
+      ],
+      "example": "v rpc-tap splice --in XWBPRS.m --out generated/XWBPRS.m",
+      "url": "/forge-reference/reference/rpc-tap/rpc-tap-splice/"
+    }
+  ],
+  "facets": {
+    "domain": [
+      "db",
+      "pkg",
+      "rpc-debug",
+      "rpc-tap",
+      "v"
+    ],
+    "engine": [
+      "none",
+      "read",
+      "write"
+    ],
+    "group": [
+      "Analyze",
+      "Authorize",
+      "Back-out",
+      "Bench",
+      "Build",
+      "Build \u0026 install",
+      "Capture",
+      "Connect",
+      "Control",
+      "Data",
+      "Inspect",
+      "Transform",
+      "Write"
+    ],
+    "mutates": [
+      "yes",
+      "no"
+    ],
+    "reversibility": [
+      "irreversible",
+      "reversible"
+    ]
+  }
+}

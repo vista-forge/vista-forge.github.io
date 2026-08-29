@@ -1,0 +1,842 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>v-rpc-debug users guide | v reference</title><link rel="canonical" href="https://vista-forge.github.io/forge-reference/guides/rpc-debug/v-rpc-debug-users-guide/"/><link rel="sitemap" href="/forge-reference/sitemap-index.xml"/><link rel="shortcut icon" href="/forge-reference/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.2.2"/><meta name="generator" content="Starlight v0.41.7"/><meta property="og:title" content="v-rpc-debug users guide"/><meta property="og:type" content="article"/><meta property="og:url" content="https://vista-forge.github.io/forge-reference/guides/rpc-debug/v-rpc-debug-users-guide/"/><meta property="og:locale" content="en"/><meta property="og:description" content="Authored guide from the v-rpc-debug repository."/><meta property="og:site_name" content="v reference"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="Authored guide from the v-rpc-debug repository."/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/forge-reference/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/forge-reference/_astro/common.3y5H_jd2.css"><script type="module" src="/forge-reference/_astro/page.Dwipeu-R.js"></script></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">Skip to content</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><a href="/forge-reference/" class="site-title sl-flex astro-clw6ags5"><span class="astro-clw6ags5" translate="no">v reference</span></a></div><div class="sl-flex print:hidden astro-nczgtkxc"><site-search class="astro-nczgtkxc astro-r5ar4xm7" data-translations="{&quot;placeholder&quot;:&quot;Search&quot;}"><button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" class="astro-r5ar4xm7"><svg aria-hidden="true" class="astro-r5ar4xm7 astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-r5ar4xm7" aria-hidden="true">Search</span><kbd class="sl-hidden md:sl-flex astro-r5ar4xm7" style="display: none;"><kbd class="astro-r5ar4xm7">Ctrl</kbd><kbd class="astro-r5ar4xm7">K</kbd></kbd></button><dialog style="padding:0" aria-label="Search" class="astro-r5ar4xm7"><div class="dialog-frame sl-flex astro-r5ar4xm7"><button data-close-modal class="sl-flex md:sl-hidden astro-r5ar4xm7">Cancel</button><div class="search-container astro-r5ar4xm7"><div id="starlight__search" class="astro-r5ar4xm7"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/forge-reference/_astro/Search.astro_astro_type_script_index_0_lang.Cglg-HPf.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="Main"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="Menu" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><sl-sidebar-state-persist data-hash="133zcyw" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/" class="large astro-ojxuodky"><span class="astro-ojxuodky">Overview</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Command reference</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">db</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-bundle/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db bundle</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-catalog/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db catalog</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-catalog-browse/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db catalog browse</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-catalog-build/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db catalog build</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-catalog-search/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db catalog search</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-census/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db census</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-count/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db count</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-delete/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db delete</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-distribution/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db distribution</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-edit/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db edit</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-estimate/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db estimate</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-export/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db export</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-fields-profile/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db fields-profile</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-find/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db find</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-get/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db get</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-indexes/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db indexes</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-integrity/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db integrity</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-integrity-compare/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db integrity-compare</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-integrity-report/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db integrity-report</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-packet/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db packet</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-policy/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db policy</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-put/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db put</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-refs/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db refs</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-reindex/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db reindex</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-rows/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db rows</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-schema/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db schema</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-selection/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db selection</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-selection-compile/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db selection compile</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-selection-explain/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db selection explain</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-selection-size/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db selection size</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/db/db-text/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db text</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">pkg</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-adopt/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg adopt</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-assemble/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg assemble</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-attest/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg attest</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-attest-check/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg attest check</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-attest-verify/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg attest verify</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-build/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg build</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-canonicalize/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg canonicalize</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-capture/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg capture</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-classify/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg classify</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-decompose/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg decompose</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-diff/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg diff</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-export/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg export</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-install/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg install</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-lint/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg lint</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-merge/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg merge</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-parse/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg parse</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-purge/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg purge</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-restore/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg restore</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-roundtrip/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg roundtrip</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-snapshot/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg snapshot</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-uninstall/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg uninstall</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/pkg/pkg-verify/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg verify</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">rpc-debug</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-debug/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-debug/rpc-debug-arm/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug arm</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-debug/rpc-debug-capture/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug capture</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-debug/rpc-debug-clear/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug clear</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-debug/rpc-debug-disarm/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug disarm</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-debug/rpc-debug-doctor/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug doctor</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-debug/rpc-debug-ping/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug ping</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-debug/rpc-debug-relay/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug relay</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-debug/rpc-debug-status/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug status</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-debug/rpc-debug-tail/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug tail</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">rpc-tap</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-tap/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-tap/rpc-tap-arm/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap arm</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-tap/rpc-tap-committrim/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap committrim</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-tap/rpc-tap-disarm/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap disarm</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-tap/rpc-tap-drain/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap drain</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-tap/rpc-tap-drive/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap drive</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-tap/rpc-tap-load/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap load</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-tap/rpc-tap-splice/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap splice</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/rpc-tap/rpc-tap-status/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap status</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">v</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/reference/v/" class="astro-ojxuodky"><span class="astro-ojxuodky">v v</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/v/v-discover/" class="astro-ojxuodky"><span class="astro-ojxuodky">v discover</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/v/v-menu/" class="astro-ojxuodky"><span class="astro-ojxuodky">v menu</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/v/v-new/" class="astro-ojxuodky"><span class="astro-ojxuodky">v new</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/reference/v/v-version/" class="astro-ojxuodky"><span class="astro-ojxuodky">v version</span></a></li></ul></details></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Guides</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">db</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/guides/db/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db — guides</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/db/catalog-jsonl-contract/" class="astro-ojxuodky"><span class="astro-ojxuodky">The catalog artifact — what a consumer gets</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/db/indexes-jsonl-contract/" class="astro-ojxuodky"><span class="astro-ojxuodky">The index-sweep artifact — what a consumer gets</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/db/integrity-jsonl-contract/" class="astro-ojxuodky"><span class="astro-ojxuodky">The instance-integrity artifact — what a consumer gets</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/db/refs-jsonl-contract/" class="astro-ojxuodky"><span class="astro-ojxuodky">The pointer-graph artifact — what a consumer gets</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/db/v-db-examples-appendix/" class="astro-ojxuodky"><span class="astro-ojxuodky">`v db` technical reference — executed examples appendix</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/db/v-db-reference/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db — command reference</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/db/v-db-technical-reference/" class="astro-ojxuodky"><span class="astro-ojxuodky">`v-db` — technical reference</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/db/v-db-user-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">`v db` — user guide</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">pkg</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/guides/pkg/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg — guides</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/pkg/v-pkg-reference/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg — command reference</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/pkg/v-pkg-users-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">v-pkg User&#39;s Guide</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">rpc-debug</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/guides/rpc-debug/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug — guides</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/rpc-debug/v-rpc-debug-users-guide/" aria-current="page" class="astro-ojxuodky"><span class="astro-ojxuodky">v-rpc-debug users guide</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">rpc-tap</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="10"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/guides/rpc-tap/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap — guides</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/rpc-tap/reproduce-load-tests/" class="astro-ojxuodky"><span class="astro-ojxuodky">Reproduce the stress / load tests</span></a></li><li class="astro-ojxuodky"><a href="/forge-reference/guides/rpc-tap/user-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">v-rpc-tap — User &amp; Operator Guide</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">v</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="11"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-reference/guides/v/" class="astro-ojxuodky"><span class="astro-ojxuodky">v v — no authored guides</span></a></li></ul></details></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">On this page<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#contents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Contents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#1-introduction-and-background" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">1. Introduction and background</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#2-the-need-for-this-tool" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">2. The need for this tool</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#3-features-and-functions" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">3. Features and functions</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#4-command-summary" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">4. Command summary</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#capture-commands--the-xwbdebug-tap" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Capture commands — the XWBDEBUG tap</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#connect-commands--get-a-client-to-the-broker-at-all" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Connect commands — get a client to the broker at all</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#discovery-commands-describe-the-tool-work-with-no-drivercontainerdocker" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Discovery commands (describe the tool; work with no driver/container/Docker)</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#5-setup-one-time" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">5. Setup (one time)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#6-selecting-the-engine" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">6. Selecting the engine</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#setting-defaults-skip-the-flags" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Setting defaults (skip the flags)</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#7-logging-into-vehu" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">7. Logging into vehu</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-patient-with-the-most-data" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The patient with the most data</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#8-common-flags" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">8. Common flags</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#output-format--global-flags" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Output format &amp; global flags</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#typed-refusals" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Typed refusals</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#️-phi-warning--level-2-vs-3" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">⚠️ PHI warning — level 2 vs 3</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#9-end-to-end-runs" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">9. End-to-end runs</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#a-self-contained-no-cprs--ping-the-live-broker-examine-clean-up" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">A. Self-contained (no CPRS) — ping the live broker, examine, clean up</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#b-real-cprs--capture-a-live-login--chart-sweep" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">B. Real CPRS — capture a live login + chart sweep</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#10-connecting-cprs-to-vehu-networking" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">10. Connecting CPRS to vehu (networking)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#11-comparing-against-the-vsl-tap" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">11. Comparing against the VSL tap</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#12-limitations" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">12. Limitations</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#13-troubleshooting" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">13. Troubleshooting</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#14-references" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">14. References</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/forge-reference/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#contents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Contents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#1-introduction-and-background" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">1. Introduction and background</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#2-the-need-for-this-tool" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">2. The need for this tool</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#3-features-and-functions" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">3. Features and functions</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#4-command-summary" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">4. Command summary</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#capture-commands--the-xwbdebug-tap" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Capture commands — the XWBDEBUG tap</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#connect-commands--get-a-client-to-the-broker-at-all" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Connect commands — get a client to the broker at all</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#discovery-commands-describe-the-tool-work-with-no-drivercontainerdocker" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Discovery commands (describe the tool; work with no driver/container/Docker)</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#5-setup-one-time" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">5. Setup (one time)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#6-selecting-the-engine" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">6. Selecting the engine</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#setting-defaults-skip-the-flags" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Setting defaults (skip the flags)</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#7-logging-into-vehu" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">7. Logging into vehu</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-patient-with-the-most-data" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The patient with the most data</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#8-common-flags" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">8. Common flags</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#output-format--global-flags" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Output format &amp; global flags</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#typed-refusals" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Typed refusals</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#️-phi-warning--level-2-vs-3" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">⚠️ PHI warning — level 2 vs 3</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#9-end-to-end-runs" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">9. End-to-end runs</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#a-self-contained-no-cprs--ping-the-live-broker-examine-clean-up" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">A. Self-contained (no CPRS) — ping the live broker, examine, clean up</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#b-real-cprs--capture-a-live-login--chart-sweep" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">B. Real CPRS — capture a live login + chart sweep</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#10-connecting-cprs-to-vehu-networking" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">10. Connecting CPRS to vehu (networking)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#11-comparing-against-the-vsl-tap" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">11. Comparing against the VSL tap</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#12-limitations" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">12. Limitations</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#13-troubleshooting" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">13. Troubleshooting</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#14-references" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">14. References</span></a></li></ul></nav></starlight-toc><script type="module" src="/forge-reference/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="en" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">v-rpc-debug users guide</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><aside aria-label="Note" class="starlight-aside starlight-aside--note"><p class="starlight-aside__title" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="starlight-aside__icon"><path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z"/></svg>Note</p><div class="starlight-aside__content"><p>Hand-written, not generated — the words are v-rpc-debug’s, from <a href="https://github.com/vista-forge/v-rpc-debug/blob/main/docs/guides/v-rpc-debug-users-guide.md"><code dir="auto">docs/guides/v-rpc-debug-users-guide.md</code></a>. What this site guarantees about them is <a href="/forge-reference/guides/rpc-debug/">coverage</a>, not correctness.</p></div></aside>
+<blockquote>
+<p><strong>Supersedes <code dir="auto">v-rpc-user-guide.md</code>.</strong> This is the current, canonical guide for
+<code dir="auto">v-rpc-debug</code> / <code dir="auto">v rpc-debug</code>. The older <code dir="auto">v-rpc-user-guide.md</code> is retained only
+for history.</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="contents">Contents</h2><a class="sl-anchor-link" href="#contents"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Contents”</span></a></div>
+<ol>
+<li><a href="#1-introduction-and-background">Introduction and background</a></li>
+<li><a href="#2-the-need-for-this-tool">The need for this tool</a></li>
+<li><a href="#3-features-and-functions">Features and functions</a></li>
+<li><a href="#4-command-summary">Command summary (what each does + when to use it)</a></li>
+<li><a href="#5-setup-one-time">Setup (one time)</a></li>
+<li><a href="#6-selecting-the-engine">Selecting the engine</a></li>
+<li><a href="#7-logging-into-vehu">Logging into vehu — credentials, user, and the richest patient</a></li>
+<li><a href="#8-common-flags">Common flags</a></li>
+<li><a href="#9-end-to-end-runs">End-to-end runs (copy/paste)</a></li>
+<li><a href="#10-connecting-cprs-to-vehu-networking">Connecting CPRS to vehu (networking)</a></li>
+<li><a href="#11-comparing-against-the-vsl-tap">Comparing against the VSL tap</a></li>
+<li><a href="#12-limitations">Limitations</a></li>
+<li><a href="#13-troubleshooting">Troubleshooting</a></li>
+<li><a href="#14-references">References</a></li>
+</ol>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="1-introduction-and-background">1. Introduction and background</h2><a class="sl-anchor-link" href="#1-introduction-and-background"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “1. Introduction and background”</span></a></div>
+<p><code dir="auto">v-rpc-debug</code> (mounted in the <code dir="auto">v</code> umbrella as <strong><code dir="auto">v rpc-debug</code></strong>) shows you the
+<strong>RPCs flowing through a VistA RPC Broker</strong>, live in your terminal, and can save
+them to a file for later analysis.</p>
+<p>VistA’s clients — most visibly <strong>CPRS</strong> — never touch the M database directly.
+They speak to the <strong>RPC Broker</strong> (the <code dir="auto">XWB</code> package), which dispatches each request
+to a named <strong>Remote Procedure Call (RPC)</strong> that runs M code on the engine and
+returns a result. A single CPRS sign-on and chart open fires <strong>hundreds</strong> of these
+RPCs in a precise sequence. That traffic is normally invisible: it happens on a TCP
+socket between a Windows client and the engine, and nothing writes it down.</p>
+<p><code dir="auto">v-rpc-debug</code> makes that traffic visible <strong>without installing or patching
+anything</strong> on the engine. It does this with the Broker’s <strong>own, built-in</strong> debug
+facility, <strong><code dir="auto">XWBDEBUG</code></strong>. When raised to debug level, the Broker writes each RPC it
+dispatches to a scratch global (<code dir="auto">^XTMP("XWBLOG"_$J)</code>). <code dir="auto">v-rpc-debug</code> toggles that
+level, reads the log over the <strong>m-driver-sdk engine seam</strong>, parses it, and streams
+or saves it — then restores the Broker to its prior state on exit. Turning the tap
+on and off is a single parameter toggle that the tool manages for you.</p>
+<p>Everything the tool does to the engine goes <strong>only</strong> through the <code dir="auto">mdriver.Client</code>
+seam (the m-driver-sdk → <code dir="auto">m-ydb</code>/<code dir="auto">m-iris</code> driver stack) — never raw <code dir="auto">docker exec</code>,
+never a hand-rolled M interpreter call. That is the org’s mandatory engine-access
+rule, and it means the same binary works against YottaDB (<code dir="auto">vehu</code>) and IRIS-VistA
+(<code dir="auto">foia*</code>) with only an <code dir="auto">--engine</code> change.</p>
+<p><strong>What it is — and is not.</strong> <code dir="auto">v-rpc-debug</code> is a <strong>debug / validation</strong> tool, not a
+durable capture pipeline:</p>
+<ul>
+<li><code dir="auto">XWBDEBUG</code> logs RPC <strong>names</strong> — not results, not request↔response correlation,
+not (at the safe level) parameters.</li>
+<li>It can <strong>drop traffic</strong> under load (the log is per-job and wiped at each new
+connection — see <a href="#12-limitations">Limitations</a>).</li>
+<li>It has <strong>no S3 / egress</strong>.</li>
+</ul>
+<p>The durable, complete, egress-capable capture path is the separate <strong>VSL broker
+hook</strong> (the Phase-2 tap). <code dir="auto">v-rpc-debug</code> is the <strong>zero-install oracle</strong> you check
+that tap against: it produces LDJSON whose field names (<code dir="auto">rpc</code>, <code dir="auto">ts</code>, <code dir="auto">job</code>, <code dir="auto">seq</code>)
+deliberately line up with the s3tap envelope, so the two captures can be joined and
+diffed <strong>offline</strong>.</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="2-the-need-for-this-tool">2. The need for this tool</h2><a class="sl-anchor-link" href="#2-the-need-for-this-tool"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “2. The need for this tool”</span></a></div>
+<p>Three recurring questions motivated <code dir="auto">v-rpc-debug</code>, and each maps to a use case it
+answers directly:</p>
+<ol>
+<li>
+<p><strong>“Is the client actually reaching the Broker, and what is it calling?”</strong>
+When CPRS (or any Broker client) misbehaves, the first thing you need is ground
+truth: <em>which</em> RPCs fire, <em>in what order</em>. Before this tool that meant guessing
+from CPRS-side symptoms. Now you <code dir="auto">tail</code> the Broker and watch the real sequence —
+e.g. confirm the canonical sign-on chain <code dir="auto">XUS SIGNON SETUP → XUS INTRO MSG → XUS AV CODE → XUS GET USER INFO → XWB CREATE CONTEXT …</code> before chart-load RPCs.</p>
+</li>
+<li>
+<p><strong>“Did my VSL tap capture the same RPCs the Broker really saw?”</strong>
+The VSL hook is the durable capture, but a capture you can’t validate is a
+liability. <code dir="auto">XWBDEBUG</code> is the Broker’s <em>own</em> accounting of what it dispatched, so
+it is the <strong>independent oracle</strong>: capture the same workload both ways and diff
+the <code dir="auto">rpc</code> sets offline. Anything the oracle saw that the tap missed is a tap bug.</p>
+</li>
+<li>
+<p><strong>“Why won’t CPRS even connect?”</strong>
+The single most error-prone step in a VistA-in-Docker + CPRS-in-a-VM lab is the
+network path — it fails with the same opaque <code dir="auto">WSAECONNREFUSED</code>. <code dir="auto">v-rpc-debug</code>
+folds in a <strong>network doctor</strong> and a <strong>built-in relay</strong> so the same tool that
+reads the traffic also gets the client talking to the engine in the first place.</p>
+</li>
+</ol>
+<p>The design constraints that follow from this role:</p>
+<ul>
+<li><strong>Zero install on the engine</strong> — uses a facility VistA already ships; you can run
+it against a production-fidelity image and leave it byte-clean.</li>
+<li><strong>Engine-portable</strong> — one binary, <code dir="auto">--engine ydb|iris</code>, via the driver seam.</li>
+<li><strong>Safe by default</strong> — logs RPC <strong>names only</strong> unless you explicitly opt into the
+PHI-bearing parameter level on a test system.</li>
+<li><strong>Comparable output</strong> — LDJSON aligned with the s3tap envelope so the oracle
+role actually works.</li>
+</ul>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="3-features-and-functions">3. Features and functions</h2><a class="sl-anchor-link" href="#3-features-and-functions"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “3. Features and functions”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Live viewer</strong> (<code dir="auto">tail</code>)</td>
+<td>Watch RPC names stream into your terminal in real time as a client drives the Broker; restores the Broker level on exit.</td>
+</tr>
+<tr>
+<td><strong>File capture</strong> (<code dir="auto">capture</code>)</td>
+<td>Append each RPC to a file as LDJSON (one JSON object per line) for offline analysis and tap comparison.</td>
+</tr>
+<tr>
+<td><strong>Zero-install tap</strong></td>
+<td>Uses the Broker’s native <code dir="auto">XWBDEBUG</code> — nothing is added to or patched on the engine; the tool only toggles a parameter and reads a scratch global.</td>
+</tr>
+<tr>
+<td><strong>Engine-portable</strong></td>
+<td>Same binary for YottaDB (<code dir="auto">vehu</code>) and IRIS-VistA (<code dir="auto">foia*</code>) via <code dir="auto">--engine</code>, all through the <code dir="auto">mdriver.Client</code> seam — never raw <code dir="auto">docker exec</code>.</td>
+</tr>
+<tr>
+<td><strong>State management</strong></td>
+<td><code dir="auto">status</code>/<code dir="auto">arm</code>/<code dir="auto">disarm</code>/<code dir="auto">clear</code> give explicit control of the debug level and the buffered log; <code dir="auto">tail</code>/<code dir="auto">capture</code> arm + restore automatically.</td>
+</tr>
+<tr>
+<td><strong>Self-test traffic</strong> (<code dir="auto">ping</code>)</td>
+<td>Fire harmless no-arg RPCs straight at the Broker port so a tap has something to capture — no CPRS or external client needed.</td>
+</tr>
+<tr>
+<td><strong>Network doctor</strong> (<code dir="auto">doctor</code>)</td>
+<td>Walk the whole CPRS→VistA path (docker → publish mode → listener → relay), pinpoint the broken hop, and print the exact address to type into CPRS.</td>
+</tr>
+<tr>
+<td><strong>Built-in relay</strong> (<code dir="auto">relay</code>)</td>
+<td>A dependency-free TCP forwarder (no <code dir="auto">socat</code>) that republishes a loopback-bound Broker on a VM-reachable interface; optional persistent <code dir="auto">systemd --user</code> service.</td>
+</tr>
+<tr>
+<td><strong>Safe-by-default capture</strong></td>
+<td>Logs RPC <strong>names only</strong> (level 2); the parameter-bearing level 3 is PHI and must be opted into explicitly on a test system.</td>
+</tr>
+<tr>
+<td><strong>Comparable output</strong></td>
+<td>LDJSON field names (<code dir="auto">rpc</code>, <code dir="auto">ts</code>, <code dir="auto">job</code>, <code dir="auto">seq</code>) align with the s3tap envelope so oracle-vs-tap diffs are a straight set comparison.</td>
+</tr>
+<tr>
+<td><strong>Flexible filtering</strong></td>
+<td><code dir="auto">--all</code>, <code dir="auto">--filter TEXT</code>, <code dir="auto">--interval</code>, <code dir="auto">--duration</code> shape what you see and how long you watch.</td>
+</tr>
+<tr>
+<td><strong>Discovery surface</strong></td>
+<td><code dir="auto">menu</code> (interactive palette), <code dir="auto">version</code>, <code dir="auto">schema</code> (machine-readable CLI contract), <code dir="auto">install-completions</code> — none of which touch an engine.</td>
+</tr>
+<tr>
+<td><strong>Flagless operation</strong></td>
+<td>Engine knobs read env vars (<code dir="auto">VRPC_ENGINE</code>/<code dir="auto">VRPC_TRANSPORT</code>/<code dir="auto">VRPC_CONTAINER</code>); set them once (direnv) and run <code dir="auto">v-rpc-debug status</code> with no flags.</td>
+</tr>
+</tbody>
+</table>
+<p>Once mounted into the <code dir="auto">v</code> umbrella, every command is available as <code dir="auto">v rpc-debug …</code>.
+Standalone, it is <code dir="auto">v-rpc-debug …</code> — the form used throughout this guide.</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="4-command-summary">4. Command summary</h2><a class="sl-anchor-link" href="#4-command-summary"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “4. Command summary”</span></a></div>
+<p>This domain’s own surface is grouped as <strong>Capture</strong> (the <code dir="auto">XWBDEBUG</code> tap) and
+<strong>Connect</strong> (get CPRS talking to VistA), and both names come from the generated
+contract, which is where the grouping is defined — so this list is its own
+denominator. One section per verb below, which is also what <code dir="auto">doc-surface-gate</code>
+requires of this file: a command that ships without one reds this repo’s
+<code dir="auto">make check</code>.</p>
+<p>The discovery commands at the end are a third table but not a third group. They
+come from the shared <code dir="auto">clikit</code> surface every <code dir="auto">v</code> tool carries, not from this
+domain, which is why they appear on the binary and not in
+<code dir="auto">dist/v-contract.json</code> — and so they get a table rather than sections.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="capture-commands--the-xwbdebug-tap">Capture commands — the <code dir="auto">XWBDEBUG</code> tap</h3><a class="sl-anchor-link" href="#capture-commands--the-xwbdebug-tap"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Capture commands — the XWBDEBUG tap”</span></a></div>
+<p>These reach the engine through the driver seam, so they take the engine flags
+(§6). Flag detail for each is in <a href="#8-common-flags">§8</a>; this section is what the
+verb does and when you want it.</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="status"><code dir="auto">status</code></h4><a class="sl-anchor-link" href="#status"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “status”</span></a></div>
+<p>Read-only. Shows the current <code dir="auto">XWBDEBUG</code> level and how many log jobs and <code dir="auto">RPC:</code>
+lines are buffered. It changes nothing, so it is safe at any point.</p>
+<p>Reach for it to check state before or after a run, or to confirm the level went
+back to <code dir="auto">1</code> (stock) when a run finished.</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="tail"><code dir="auto">tail</code></h4><a class="sl-anchor-link" href="#tail"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “tail”</span></a></div>
+<p>Arms <code dir="auto">XWBDEBUG</code>, clears the log, streams new <code dir="auto">RPC:</code> lines to the terminal until
+Ctrl-C, then <strong>restores the level it found</strong>. The restore is the point: a <code dir="auto">tail</code>
+that is interrupted still leaves the engine as it was.</p>
+<p>Reach for it to <em>watch</em> live traffic — to confirm a client is reaching the
+Broker at all, and to see the RPC sequence a workflow actually fires.</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="capture"><code dir="auto">capture</code></h4><a class="sl-anchor-link" href="#capture"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “capture”</span></a></div>
+<p><code dir="auto">tail</code>, plus each record appended to a file as LDJSON (and echoed to stderr
+unless <code dir="auto">--quiet</code>). Same arm/clear/restore lifecycle.</p>
+<p>Reach for it to <em>save</em> a workload — a CPRS login, a chart sweep — for offline
+analysis, or to compare against the VSL tap (§11).</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="arm"><code dir="auto">arm</code></h4><a class="sl-anchor-link" href="#arm"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “arm”</span></a></div>
+<p>Sets <code dir="auto">XWBDEBUG</code> to level 2 (names) and <strong>leaves it on</strong>. Nothing restores it but
+you or <code dir="auto">disarm</code>.</p>
+<p>Reach for it when the tap has to stay on across several manual steps: <code dir="auto">arm</code>,
+drive a client by hand, then <code dir="auto">capture --no-clear</code> to collect what accumulated.</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="disarm"><code dir="auto">disarm</code></h4><a class="sl-anchor-link" href="#disarm"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “disarm”</span></a></div>
+<p>Restores <code dir="auto">XWBDEBUG</code> to level 1 (stock).</p>
+<p>Reach for it when a run left the level armed — overlapping runs, or a hard kill
+that skipped <code dir="auto">tail</code>’s restore.</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="clear"><code dir="auto">clear</code></h4><a class="sl-anchor-link" href="#clear"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “clear”</span></a></div>
+<p>Wipes every <code dir="auto">^XTMP("XWBLOG"*)</code> node so the engine’s buffer is pristine.
+<strong>Dry run by default</strong>: a bare <code dir="auto">clear</code> reports how many lines <em>would</em> go and
+touches nothing; <code dir="auto">--commit</code> wipes.</p>
+<p>Reach for it to start from a clean slate, or to tidy up afterwards — though the
+buffer auto-purges in about seven days on its own.</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="ping"><code dir="auto">ping</code></h4><a class="sl-anchor-link" href="#ping"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “ping”</span></a></div>
+<p>Fires harmless no-arg RPCs straight at the Broker’s TCP port. This is the
+<strong>RPC-client role</strong>, not the engine one: it takes <code dir="auto">--addr</code> and none of the
+engine flags, because it opens a socket rather than reaching through the driver.</p>
+<p>Reach for it to produce traffic worth watching, so a <code dir="auto">tail</code> or <code dir="auto">capture</code> can be
+tested without launching CPRS or any external client.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="connect-commands--get-a-client-to-the-broker-at-all">Connect commands — get a client to the broker at all</h3><a class="sl-anchor-link" href="#connect-commands--get-a-client-to-the-broker-at-all"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Connect commands — get a client to the broker at all”</span></a></div>
+<p>Host-side networking. Neither writes to the engine.</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="doctor"><code dir="auto">doctor</code></h4><a class="sl-anchor-link" href="#doctor"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “doctor”</span></a></div>
+<p>Walks the whole CPRS→VistA path — docker, publish mode, Broker listener, relay —
+names the hop that is broken, and prints the exact <code dir="auto">s=… p=…</code> address to hand
+CPRS. <code dir="auto">--fix</code> starts the relay if one is needed and missing.</p>
+<p>Reach for it when CPRS cannot connect (<code dir="auto">WSAECONNREFUSED</code>), or before a CPRS run
+to confirm the path is green rather than discovering it is not mid-demo.</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="relay"><code dir="auto">relay</code></h4><a class="sl-anchor-link" href="#relay"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “relay”</span></a></div>
+<p>A built-in TCP forwarder — no <code dir="auto">socat</code> — that republishes a loopback-bound Broker
+on <code dir="auto">0.0.0.0:19431</code> so a VM can reach it. <code dir="auto">--install</code> / <code dir="auto">--uninstall</code> /
+<code dir="auto">--status</code> manage a persistent <code dir="auto">systemd --user</code> service.</p>
+<p>Reach for it when the Broker is published loopback-only and a VM or CPRS host
+must reach it, or when you want the relay to survive a reboot.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="discovery-commands-describe-the-tool-work-with-no-drivercontainerdocker">Discovery commands (describe the tool; work with no driver/container/Docker)</h3><a class="sl-anchor-link" href="#discovery-commands-describe-the-tool-work-with-no-drivercontainerdocker"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Discovery commands (describe the tool; work with no driver/container/Docker)”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+<th>Use it when…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">menu</code></td>
+<td>Opens a full-screen, keyboard-driven palette over the command tree (breadcrumb, categories, per-command detail + status badge). Non-TTY: prints styled help.</td>
+<td>You want to browse the surface without memorizing flags.</td>
+</tr>
+<tr>
+<td><code dir="auto">version</code></td>
+<td>Shows version and build info.</td>
+<td>Reporting an issue, or confirming which build you’re running.</td>
+</tr>
+<tr>
+<td><code dir="auto">schema</code></td>
+<td>Emits the entire command/flag/enum tree as JSON (hidden from <code dir="auto">--help</code>).</td>
+<td>Scripting, or an agent discovering the CLI contract.</td>
+</tr>
+<tr>
+<td><code dir="auto">install-completions</code></td>
+<td>Installs shell tab-completion (hidden from <code dir="auto">--help</code>).</td>
+<td>One-time shell setup.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="5-setup-one-time">5. Setup (one time)</h2><a class="sl-anchor-link" href="#5-setup-one-time"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “5. Setup (one time)”</span></a></div>
+<p><code dir="auto">v-rpc-debug</code> is a single static binary. It reaches the engine <strong>only</strong> through the
+m-driver-sdk seam, so it needs the <code dir="auto">m-&lt;engine&gt;</code> driver binary reachable — the one
+external dependency. Put both binaries on your <code dir="auto">PATH</code> <strong>in the same directory</strong> and
+<code dir="auto">v-rpc-debug</code> locates the driver automatically (driver-contract §4) — <strong>no
+<code dir="auto">M_&lt;ENGINE&gt;_BIN</code> to set</strong>:</p>
+<div class="expressive-code"><link rel="stylesheet" href="/forge-reference/_astro/ec.w36nc.css"><script type="module" src="/forge-reference/_astro/ec.0vx5m.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">cd</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">~/vista-forge/v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> &amp;&amp; </span><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">install</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">BINDIR=~/scripts/bin</span><span style="--0:#D6DEEB;--1:#403F53">   </span><span style="--0:#919F9F;--1:#5F636F"># installs v-rpc-debug</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">install</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-m755</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">~/vista-forge/m-ydb/dist/m-ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">~/scripts/bin/</span><span style="--0:#D6DEEB;--1:#403F53">         </span><span style="--0:#919F9F;--1:#5F636F"># co-locate the driver</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="cd ~/vista-forge/v-rpc-debug &amp;&amp; make install BINDIR=~/scripts/bin   # installs v-rpc-debuginstall -m755 ~/vista-forge/m-ydb/dist/m-ydb ~/scripts/bin/         # co-locate the driver"><div></div></button></div></figure></div>
+<p>The only thing <code dir="auto">v-rpc-debug</code> can’t guess is <strong>which engine container</strong> to talk to.
+Set it once — engine defaults to <code dir="auto">ydb</code>, transport to <code dir="auto">docker</code>:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">export</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">VRPC_CONTAINER</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#C5E478;--1:#3B61B0">vehu</span><span style="--0:#D6DEEB;--1:#403F53">        </span><span style="--0:#919F9F;--1:#5F636F"># once per shell, or in the repo .envrc (direnv)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="export VRPC_CONTAINER=vehu        # once per shell, or in the repo .envrc (direnv)"><div></div></button></div></figure></div>
+<p>That’s the whole configuration. Everything is now flagless:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">status</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">tail</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">capture</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--out</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">rpc.ldjson</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="v-rpc-debug statusv-rpc-debug tailv-rpc-debug capture --out rpc.ldjson"><div></div></button></div></figure></div>
+<p><strong>Requirements:</strong> Docker running with the target engine container up (e.g. <code dir="auto">vehu</code>).
+For IRIS, co-locate the <code dir="auto">m-iris</code> driver and add <code dir="auto">--engine iris</code> (or
+<code dir="auto">VRPC_ENGINE=iris</code>). <code dir="auto">M_&lt;ENGINE&gt;_BIN</code> still works as an explicit override if you
+keep the driver somewhere else.</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="6-selecting-the-engine">6. Selecting the engine</h2><a class="sl-anchor-link" href="#6-selecting-the-engine"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “6. Selecting the engine”</span></a></div>
+<p>Engine-side commands take three knobs, all with sensible defaults so you usually
+override <strong>nothing</strong> (just set the container once, per §5):</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Env</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">--engine</code></td>
+<td><code dir="auto">ydb</code></td>
+<td><code dir="auto">VRPC_ENGINE</code></td>
+<td>which engine: <code dir="auto">ydb</code> or <code dir="auto">iris</code> (IRIS = explicit opt-in for VA validation)</td>
+</tr>
+<tr>
+<td><code dir="auto">--transport</code></td>
+<td><code dir="auto">docker</code></td>
+<td><code dir="auto">VRPC_TRANSPORT</code></td>
+<td>driver transport: <code dir="auto">local</code>, <code dir="auto">docker</code>, <code dir="auto">remote</code></td>
+</tr>
+<tr>
+<td><code dir="auto">--container</code></td>
+<td>—</td>
+<td><code dir="auto">VRPC_CONTAINER</code></td>
+<td>container/instance name; sets <code dir="auto">M_&lt;ENGINE&gt;_CONTAINER</code></td>
+</tr>
+</tbody>
+</table>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">status</span><span style="--0:#D6DEEB;--1:#403F53">                                    </span><span style="--0:#919F9F;--1:#5F636F"># ydb / docker / $VRPC_CONTAINER</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">status</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">iris</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--container</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">foia-t12</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#919F9F;--1:#5F636F"># override ad hoc</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="v-rpc-debug status                                    # ydb / docker / $VRPC_CONTAINERv-rpc-debug status --engine iris --container foia-t12 # override ad hoc"><div></div></button></div></figure></div>
+<p>(The connection — container, base URL, credentials — is otherwise read by the
+driver from its <code dir="auto">M_&lt;ENGINE&gt;_*</code> environment, exactly like <code dir="auto">m vista</code>.)</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="setting-defaults-skip-the-flags">Setting defaults (skip the flags)</h3><a class="sl-anchor-link" href="#setting-defaults-skip-the-flags"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Setting defaults (skip the flags)”</span></a></div>
+<p>Every engine flag also reads an environment variable, so set them once and drop the
+flags entirely:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Env var</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">--engine</code></td>
+<td><code dir="auto">VRPC_ENGINE</code></td>
+</tr>
+<tr>
+<td><code dir="auto">--transport</code></td>
+<td><code dir="auto">VRPC_TRANSPORT</code></td>
+</tr>
+<tr>
+<td><code dir="auto">--container</code></td>
+<td><code dir="auto">VRPC_CONTAINER</code></td>
+</tr>
+<tr>
+<td><code dir="auto">--addr</code> (<code dir="auto">ping</code>)</td>
+<td><code dir="auto">VRPC_ADDR</code></td>
+</tr>
+<tr>
+<td><code dir="auto">--listen</code> / <code dir="auto">--relay-addr</code> (<code dir="auto">relay</code>/<code dir="auto">doctor</code>)</td>
+<td><code dir="auto">VRPC_RELAY_ADDR</code></td>
+</tr>
+</tbody>
+</table>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">export</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">M_YDB_BIN</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#7FDBCA;--1:#096E72">~</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">vista-forge</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">m-ydb</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">dist</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">m-ydb</span><span style="--0:#D6DEEB;--1:#403F53">     </span><span style="--0:#919F9F;--1:#5F636F"># driver location (or co-locate, per §5)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">export</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">VRPC_ENGINE</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#C5E478;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">VRPC_TRANSPORT</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#C5E478;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">VRPC_CONTAINER</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#C5E478;--1:#3B61B0">vehu</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">status</span><span style="--0:#D6DEEB;--1:#403F53">        </span><span style="--0:#919F9F;--1:#5F636F"># no --engine/--transport/--container needed</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">tail</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">capture</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--out</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">rpc.ldjson</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="export M_YDB_BIN=~/vista-forge/m-ydb/dist/m-ydb     # driver location (or co-locate, per §5)export VRPC_ENGINE=ydb VRPC_TRANSPORT=docker VRPC_CONTAINER=vehuv-rpc-debug status        # no --engine/--transport/--container neededv-rpc-debug tailv-rpc-debug capture --out rpc.ldjson"><div></div></button></div></figure></div>
+<p>A flag on the command line always <strong>overrides</strong> its env var, so you can keep ydb as
+the default and switch to IRIS ad hoc with <code dir="auto">--engine iris</code>.</p>
+<p><strong>Make it persistent</strong> with <a href="https://direnv.net">direnv</a> — the house per-project
+env backbone. Add to <code dir="auto">~/vista-forge/v-rpc-debug/.envrc</code> (then <code dir="auto">direnv allow</code>):</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">export</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">M_YDB_BIN</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C5E478;--1:#3B61B0">$HOME</span><span style="--0:#ECC48D;--1:#984E4D">/vista-forge/m-ydb/dist/m-ydb</span><span style="--0:#D9F5DD;--1:#111111">"</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">export</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">VRPC_ENGINE</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#C5E478;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">VRPC_TRANSPORT</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#C5E478;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">VRPC_CONTAINER</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#C5E478;--1:#3B61B0">vehu</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="export M_YDB_BIN=&quot;$HOME/vista-forge/m-ydb/dist/m-ydb&quot;export VRPC_ENGINE=ydb VRPC_TRANSPORT=docker VRPC_CONTAINER=vehu"><div></div></button></div></figure></div>
+<p>so the defaults apply automatically whenever you <code dir="auto">cd</code> into the repo. (Or put the
+same <code dir="auto">export</code>s in your shell rc for a machine-wide default.) The driver-native
+<code dir="auto">M_&lt;ENGINE&gt;_CONTAINER</code> (e.g. <code dir="auto">M_YDB_CONTAINER=vehu</code>) also works for the container if
+you prefer the driver’s own variable.</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="7-logging-into-vehu">7. Logging into vehu</h2><a class="sl-anchor-link" href="#7-logging-into-vehu"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “7. Logging into vehu”</span></a></div>
+<p>To drive real traffic you log a client (CPRS) into VistA. For the <code dir="auto">worldvista/vehu</code>
+demo image these access/verify codes are documented and <strong>confirmed against this
+engine</strong> (access-code hashes resolve to the named <code dir="auto">#200</code> users — see
+<a href="#14-references">References</a>):</p>
+<table>
+<thead>
+<tr>
+<th>User</th>
+<th>Access</th>
+<th>Verify</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PROVIDER,VERO</strong></td>
+<td><code dir="auto">CAS123</code></td>
+<td><code dir="auto">CAS123..</code></td>
+<td><strong>provider — recommended</strong></td>
+</tr>
+<tr>
+<td>VEHU,TEN</td>
+<td><code dir="auto">10VEHU</code></td>
+<td><code dir="auto">QXYG~011</code></td>
+<td>demo clinician</td>
+</tr>
+<tr>
+<td>System Manager</td>
+<td><code dir="auto">PRO1234</code></td>
+<td><code dir="auto">PRO1234!!</code></td>
+<td>admin / programmer</td>
+</tr>
+</tbody>
+</table>
+<p>E-signature code (to sign orders/notes): <code dir="auto">123456</code>.</p>
+<p><strong>Recommended user type → a clinical <em>provider</em></strong> (e.g. <strong>PROVIDER,VERO</strong> /
+<code dir="auto">CAS123</code>). A provider sees the full chart <em>and</em> can place orders, so a session
+exercises the widest set of RPCs (orders, notes, consults, meds, labs, vitals) —
+the richest traffic for tap validation. The System Manager account can browse but
+isn’t a clinician, so it fires a narrower set.</p>
+<p>At the CPRS sign-on screen type the access code, Tab, then the verify code — or type
+<code dir="auto">CAS123;CAS123..</code> in the Access field. (On these demo images you may be prompted to
+choose a new verify code on first login; just set one.)</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="the-patient-with-the-most-data">The patient with the most data</h3><a class="sl-anchor-link" href="#the-patient-with-the-most-data"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “The patient with the most data”</span></a></div>
+<p>Picked from a live read-only probe of vehu (order/note/visit cross-references, see
+<a href="#14-references">References</a>). For the <strong>richest, most varied</strong> chart — the best
+choice for exercising the most RPCs across tabs — open:</p>
+<blockquote>
+<p><strong>TEN,PATIENT</strong> — <strong>691 notes, 190 visits, 236 orders</strong> (by far the most clinical
+documents and encounters of any patient). Search <code dir="auto">TEN,PATIENT</code> in CPRS.</p>
+</blockquote>
+<p>Runners-up with broad data: <strong>FORTYSIX,PATIENT</strong> (48 notes / 121 visits / 175
+orders) and <strong>THIRTYSIX,PATIENT</strong> (64 / 68 / 170).</p>
+<p>If you specifically want <strong>maximum orders</strong> (and nothing else), <strong>SEVENTYEIGHT,
+OUTPATIENT</strong> has 1,508 orders — but <strong>0 notes and 0 visits</strong> (it’s an order-load
+patient), so it lights up far fewer tabs than TEN,PATIENT. For a representative
+full-chart RPC sweep, prefer <strong>TEN,PATIENT</strong>.</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="8-common-flags">8. Common flags</h2><a class="sl-anchor-link" href="#8-common-flags"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “8. Common flags”</span></a></div>
+<p>For <code dir="auto">tail</code> and <code dir="auto">capture</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">--all</code></td>
+<td>off</td>
+<td>Show every log line (connect/reject/etc.), not just <code dir="auto">RPC:</code> lines</td>
+</tr>
+<tr>
+<td><code dir="auto">--filter TEXT</code></td>
+<td>—</td>
+<td>Only RPCs whose name contains <code dir="auto">TEXT</code> (case-insensitive)</td>
+</tr>
+<tr>
+<td><code dir="auto">--interval N</code></td>
+<td><code dir="auto">1.0</code></td>
+<td>Poll the log every <code dir="auto">N</code> seconds</td>
+</tr>
+<tr>
+<td><code dir="auto">--duration D</code></td>
+<td><code dir="auto">0</code></td>
+<td>Stop after <code dir="auto">D</code> (e.g. <code dir="auto">30s</code>, <code dir="auto">5m</code>); <code dir="auto">0</code> = run until Ctrl-C</td>
+</tr>
+<tr>
+<td><code dir="auto">--level {2,3}</code></td>
+<td><code dir="auto">2</code></td>
+<td>Debug level to arm — <strong>see the PHI warning below</strong></td>
+</tr>
+<tr>
+<td><code dir="auto">--keep</code></td>
+<td>off</td>
+<td>Leave <code dir="auto">XWBDEBUG</code> armed on exit instead of restoring</td>
+</tr>
+<tr>
+<td><code dir="auto">--no-clear</code></td>
+<td>off</td>
+<td>Don’t wipe the existing log on start (capture what’s already buffered)</td>
+</tr>
+<tr>
+<td><code dir="auto">--restore-to N</code></td>
+<td><code dir="auto">-1</code></td>
+<td>Level to restore on exit (<code dir="auto">-1</code> = the level found at start). Use <code dir="auto">1</code> to force stock if a prior/overlapping run left it armed</td>
+</tr>
+<tr>
+<td><code dir="auto">--out PATH</code></td>
+<td>—</td>
+<td>(<code dir="auto">capture</code> only, required) output file; <code dir="auto">file://PATH</code> or <code dir="auto">PATH</code></td>
+</tr>
+<tr>
+<td><code dir="auto">--quiet</code></td>
+<td>off</td>
+<td>(<code dir="auto">capture</code> only) don’t echo to the terminal</td>
+</tr>
+</tbody>
+</table>
+<p>For <code dir="auto">ping</code> (the RPC-client role — it talks to the Broker’s TCP port, not the
+engine, so it takes <code dir="auto">--addr</code> and none of the engine flags):</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">--rpc NAME</code></td>
+<td>a small no-arg set</td>
+<td>RPC name to send; repeatable, so <code dir="auto">--rpc A --rpc B</code> sends both</td>
+</tr>
+<tr>
+<td><code dir="auto">--count N</code></td>
+<td><code dir="auto">1</code></td>
+<td>Send the whole set <code dir="auto">N</code> times — the cheap way to produce enough traffic for a <code dir="auto">tail</code> to be worth watching</td>
+</tr>
+</tbody>
+</table>
+<p>For <code dir="auto">doctor</code> and <code dir="auto">relay</code> (the Connect pair — host-side networking, no engine
+writes):</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">--guest-host HOST</code></td>
+<td><code dir="auto">10.0.2.2</code></td>
+<td>(<code dir="auto">doctor</code>) How the <strong>VM</strong> names the host. VirtualBox NAT is <code dir="auto">10.0.2.2</code>; change it if your hypervisor differs, or <code dir="auto">doctor</code> will diagnose the wrong address as unreachable</td>
+</tr>
+<tr>
+<td><code dir="auto">--to HOST:PORT</code></td>
+<td>discovered</td>
+<td>(<code dir="auto">relay</code>) The Broker backend to forward to. Left unset it is discovered from <code dir="auto">--container</code>, falling back to <code dir="auto">127.0.0.1:9430</code> — set it explicitly when the Broker is not where discovery would look</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h3"><h3 id="output-format--global-flags">Output format &amp; global flags</h3><a class="sl-anchor-link" href="#output-format--global-flags"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Output format &amp; global flags”</span></a></div>
+<p>Every command honors the shared clikit globals:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">-o</code>, <code dir="auto">--output {text,json,auto}</code></td>
+<td><code dir="auto">text</code> (styled, default on a TTY), <code dir="auto">json</code> (machine-readable), or <code dir="auto">auto</code></td>
+</tr>
+<tr>
+<td><code dir="auto">--no-color</code></td>
+<td>Disable ANSI styling even on a TTY</td>
+</tr>
+<tr>
+<td><code dir="auto">-v</code>, <code dir="auto">--verbose</code></td>
+<td>Verbose diagnostics to stderr</td>
+</tr>
+</tbody>
+</table>
+<p>For <code dir="auto">tail</code>, <code dir="auto">-o json</code> streams the same LDJSON records <code dir="auto">capture</code> writes — handy for
+piping into <code dir="auto">jq</code>:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">tail</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--container</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">vehu</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-o</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">json</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">|</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">jq</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-r</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">.rpc</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="v-rpc-debug tail --engine ydb --container vehu -o json | jq -r .rpc"><div></div></button></div></figure></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="typed-refusals">Typed refusals</h3><a class="sl-anchor-link" href="#typed-refusals"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Typed refusals”</span></a></div>
+<p>Every refusal carries a stable code, so a script can branch on the reason rather
+than on the message text. Every code this domain can raise:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Exit</th>
+<th>Means</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">USAGE</code></td>
+<td>2</td>
+<td>The invocation did not parse — an unknown flag, a missing required argument, a value outside an enum</td>
+<td>Run the command with <code dir="auto">--help</code>; the message names the offending token</td>
+</tr>
+<tr>
+<td><code dir="auto">UNSUPPORTED</code></td>
+<td>2</td>
+<td>The operation exists but not on this platform — <code dir="auto">relay --uninstall</code> is Linux-only, because the service it removes is a <code dir="auto">systemd --user</code> unit</td>
+<td>Do it by hand on this platform, or run it on Linux</td>
+</tr>
+<tr>
+<td><code dir="auto">NO_DRIVER</code></td>
+<td>4</td>
+<td>No engine driver could be reached for a Capture command</td>
+<td>Check the driver binary and the container/transport you named; the Connect and discovery commands need neither</td>
+</tr>
+<tr>
+<td><code dir="auto">LISTEN</code></td>
+<td>1</td>
+<td><code dir="auto">relay</code> could not bind its listening port</td>
+<td>Something already holds it — <code dir="auto">relay --status</code>, or pick another port</td>
+</tr>
+<tr>
+<td><code dir="auto">INSTALL</code></td>
+<td>1</td>
+<td><code dir="auto">relay --install</code> could not write the <code dir="auto">systemd --user</code> service</td>
+<td>Check the privileges systemd needs for a user unit</td>
+</tr>
+<tr>
+<td><code dir="auto">OUTPUT</code></td>
+<td>1</td>
+<td><code dir="auto">capture</code> could not write its output file</td>
+<td>Check the <code dir="auto">--out</code> path is writable</td>
+</tr>
+<tr>
+<td><code dir="auto">RELAY</code></td>
+<td>1</td>
+<td>The relay itself failed while forwarding</td>
+<td>Check the listen address is free and the broker host/port are reachable; <code dir="auto">doctor</code> walks the whole CPRS→VistA path and names the broken hop</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h3"><h3 id="️-phi-warning--level-2-vs-3">⚠️ PHI warning — level 2 vs 3</h3><a class="sl-anchor-link" href="#️-phi-warning--level-2-vs-3"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “⚠️ PHI warning — level 2 vs 3”</span></a></div>
+<ul>
+<li><strong>Level 2 (default)</strong> logs RPC <strong>names only</strong> — safe.</li>
+<li><strong>Level 3</strong> logs the full call string <strong>including RPC parameters</strong>, which on a
+real VistA is <strong>PHI</strong>, written in cleartext to <code dir="auto">^XTMP</code>. Only use <code dir="auto">--level 3</code> on a
+test system with no real patient data, and clear the log afterward.</li>
+</ul>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="9-end-to-end-runs">9. End-to-end runs</h2><a class="sl-anchor-link" href="#9-end-to-end-runs"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “9. End-to-end runs”</span></a></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="a-self-contained-no-cprs--ping-the-live-broker-examine-clean-up">A. Self-contained (no CPRS) — ping the live broker, examine, clean up</h3><a class="sl-anchor-link" href="#a-self-contained-no-cprs--ping-the-live-broker-examine-clean-up"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “A. Self-contained (no CPRS) — ping the live broker, examine, clean up”</span></a></div>
+<p>Copy/paste the whole block; it pings vehu’s broker, saves the captured RPCs, shows
+them, then leaves the engine pristine (level 1, log cleared):</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">export</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">M_YDB_BIN</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#7FDBCA;--1:#096E72">~</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">vista-forge</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">m-ydb</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">dist</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">m-ydb</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">ENG</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">--engine ydb --transport docker --container vehu</span><span style="--0:#D9F5DD;--1:#111111">"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">status</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$ENG</span><span style="--0:#D6DEEB;--1:#403F53">                                   </span><span style="--0:#919F9F;--1:#5F636F"># 1. baseline (level 1, off)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">arm</span><span style="--0:#D6DEEB;--1:#403F53">    </span><span style="--0:#C5E478;--1:#3B61B0">$ENG</span><span style="--0:#D6DEEB;--1:#403F53">                                   </span><span style="--0:#919F9F;--1:#5F636F"># 2. arm capture (level 2)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ping</span><span style="--0:#D6DEEB;--1:#403F53">   </span><span style="--0:#82AAFF;--1:#3B61B0">--addr</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">127.0.0.1:9430</span><span style="--0:#D6DEEB;--1:#403F53">                  </span><span style="--0:#919F9F;--1:#5F636F"># 3. fire real RPCs at the broker</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">capture</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$ENG</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--out</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">smoke.ldjson</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">      </span><span style="--0:#82AAFF;--1:#3B61B0">--no-clear</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--duration</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">2s</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--restore-to</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">1</span><span style="--0:#D6DEEB;--1:#403F53">            </span><span style="--0:#919F9F;--1:#5F636F"># 4. save buffered RPCs -&gt; file, restore to 1</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 5. examine the output</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">cat</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">smoke.ldjson</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">jq</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-r</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">.rpc</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">smoke.ldjson</span><span style="--0:#D6DEEB;--1:#403F53">                                 </span><span style="--0:#919F9F;--1:#5F636F"># just the RPC names</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">jq</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-r</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">"\(.seq)\t\(.rpc)"</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">smoke.ldjson</span><span style="--0:#D6DEEB;--1:#403F53">                   </span><span style="--0:#919F9F;--1:#5F636F"># seq + name, in order</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">jq</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-s</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">group_by(.rpc)|map({rpc:.[0].rpc,n:length})|sort_by(-.n)</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">smoke.ldjson</span><span style="--0:#D6DEEB;--1:#403F53">  </span><span style="--0:#919F9F;--1:#5F636F"># counts</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">clear</span><span style="--0:#D6DEEB;--1:#403F53">  </span><span style="--0:#C5E478;--1:#3B61B0">$ENG</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--commit</span><span style="--0:#D6DEEB;--1:#403F53">                          </span><span style="--0:#919F9F;--1:#5F636F"># 6. wipe the buffered log (bare = dry run)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">status</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$ENG</span><span style="--0:#D6DEEB;--1:#403F53">                                   </span><span style="--0:#919F9F;--1:#5F636F"># 7. confirm: level 1 (off), 0 buffered</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="export M_YDB_BIN=~/vista-forge/m-ydb/dist/m-ydbENG=&quot;--engine ydb --transport docker --container vehu&quot;v-rpc-debug status $ENG                                   # 1. baseline (level 1, off)v-rpc-debug arm    $ENG                                   # 2. arm capture (level 2)v-rpc-debug ping   --addr 127.0.0.1:9430                  # 3. fire real RPCs at the brokerv-rpc-debug capture $ENG --out smoke.ldjson \      --no-clear --duration 2s --restore-to 1            # 4. save buffered RPCs -> file, restore to 1cat smoke.ldjsonjq -r &#x27;.rpc&#x27; smoke.ldjson                                 # just the RPC namesjq -r &#x27;&quot;\(.seq)\t\(.rpc)&quot;&#x27; smoke.ldjson                   # seq + name, in orderjq -s &#x27;group_by(.rpc)|map({rpc:.[0].rpc,n:length})|sort_by(-.n)&#x27; smoke.ldjson  # countsv-rpc-debug clear  $ENG --commit                          # 6. wipe the buffered log (bare = dry run)v-rpc-debug status $ENG                                   # 7. confirm: level 1 (off), 0 buffered"><div></div></button></div></figure></div>
+<p>Each captured line looks like:</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">{</span><span style="--0:#7FDBCA;--1:#096E72">"source"</span><span style="--0:#D6DEEB;--1:#403F53">:</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">xwbdebug</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53">,</span><span style="--0:#7FDBCA;--1:#096E72">"schema_version"</span><span style="--0:#D6DEEB;--1:#403F53">:</span><span style="--0:#F78C6C;--1:#AA0982">1</span><span style="--0:#D6DEEB;--1:#403F53">,</span><span style="--0:#7FDBCA;--1:#096E72">"kind"</span><span style="--0:#D6DEEB;--1:#403F53">:</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">rpc</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53">,</span><span style="--0:#7FDBCA;--1:#096E72">"rpc"</span><span style="--0:#D6DEEB;--1:#403F53">:</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">XWB IM HERE</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53">,</span><span style="--0:#7FDBCA;--1:#096E72">"ts"</span><span style="--0:#D6DEEB;--1:#403F53">:</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">67747,48090</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53">,</span><span style="--0:#7FDBCA;--1:#096E72">"job"</span><span style="--0:#D6DEEB;--1:#403F53">:</span><span style="--0:#F78C6C;--1:#AA0982">416</span><span style="--0:#D6DEEB;--1:#403F53">,</span><span style="--0:#7FDBCA;--1:#096E72">"seq"</span><span style="--0:#D6DEEB;--1:#403F53">:</span><span style="--0:#F78C6C;--1:#AA0982">4</span><span style="--0:#D6DEEB;--1:#403F53">,</span><span style="--0:#7FDBCA;--1:#096E72">"msg"</span><span style="--0:#D6DEEB;--1:#403F53">:</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">RPC: XWB IM HERE</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{&quot;source&quot;:&quot;xwbdebug&quot;,&quot;schema_version&quot;:1,&quot;kind&quot;:&quot;rpc&quot;,&quot;rpc&quot;:&quot;XWB IM HERE&quot;,&quot;ts&quot;:&quot;67747,48090&quot;,&quot;job&quot;:416,&quot;seq&quot;:4,&quot;msg&quot;:&quot;RPC: XWB IM HERE&quot;}"><div></div></button></div></figure></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="b-real-cprs--capture-a-live-login--chart-sweep">B. Real CPRS — capture a live login + chart sweep</h3><a class="sl-anchor-link" href="#b-real-cprs--capture-a-live-login--chart-sweep"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “B. Real CPRS — capture a live login + chart sweep”</span></a></div>
+<p>CPRS runs in the VM; <code dir="auto">v-rpc-debug</code> runs on the host. <strong>Before launching CPRS, make
+sure the network path is healthy</strong> — run <code dir="auto">v rpc-debug doctor</code> and, if it says so,
+start the relay (see <a href="#10-connecting-cprs-to-vehu-networking">Connecting CPRS to vehu</a>
+below). With the path green, CPRS connects to the address <code dir="auto">doctor</code> prints (vehu:
+<code dir="auto">s=10.0.2.2 p=19431</code>).</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">export</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">M_YDB_BIN</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#7FDBCA;--1:#096E72">~</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">vista-forge</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">m-ydb</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">dist</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">m-ydb</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">ENG</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">--engine ydb --transport docker --container vehu</span><span style="--0:#D9F5DD;--1:#111111">"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 1. start capturing (arms, clears, streams to file). Leave it running.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">capture</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$ENG</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--out</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">cprs-login.ldjson</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--restore-to</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">1</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">#   --- in the VM: launch CPRS, sign in as PROVIDER,VERO (CAS123;CAS123..),</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">#       open patient TEN,PATIENT, click through the chart tabs ---</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 2. back on the host: Ctrl-C the capture  (restores XWBDEBUG to 1)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 3. examine</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">wc</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-l</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">cprs-login.ldjson</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">jq</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-r</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">"\(.seq)\t\(.rpc)"</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">cprs-login.ldjson</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">|</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">head</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-20</span><span style="--0:#D6DEEB;--1:#403F53">         </span><span style="--0:#919F9F;--1:#5F636F"># the sign-on sequence</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">jq</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-s</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">group_by(.rpc)|map({rpc:.[0].rpc,n:length})|sort_by(-.n)|.[:20]</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">cprs-login.ldjson</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 4. clean up</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">clear</span><span style="--0:#D6DEEB;--1:#403F53">  </span><span style="--0:#C5E478;--1:#3B61B0">$ENG</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--commit</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">status</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$ENG</span><span style="--0:#D6DEEB;--1:#403F53">                                   </span><span style="--0:#919F9F;--1:#5F636F"># level 1 (off), 0 buffered</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="export M_YDB_BIN=~/vista-forge/m-ydb/dist/m-ydbENG=&quot;--engine ydb --transport docker --container vehu&quot;v-rpc-debug capture $ENG --out cprs-login.ldjson --restore-to 1wc -l cprs-login.ldjsonjq -r &#x27;&quot;\(.seq)\t\(.rpc)&quot;&#x27; cprs-login.ldjson | head -20         # the sign-on sequencejq -s &#x27;group_by(.rpc)|map({rpc:.[0].rpc,n:length})|sort_by(-.n)|.[:20]&#x27; cprs-login.ldjsonv-rpc-debug clear  $ENG --commitv-rpc-debug status $ENG                                   # level 1 (off), 0 buffered"><div></div></button></div></figure></div>
+<blockquote>
+<p>A complete real CPRS sign-on captured this way runs to ~1,120 RPC records / ~242
+distinct RPCs across the connection — the canonical chain begins <code dir="auto">XUS SIGNON SETUP → XUS INTRO MSG → XUS AV CODE → XUS GET USER INFO → XWB GET BROKER INFO → XUS DIVISION GET → XWB CREATE CONTEXT …</code> before chart-load RPCs. Capture files
+(<code dir="auto">*.ldjson</code>) are git-ignored — they’re data, not source.</p>
+</blockquote>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="10-connecting-cprs-to-vehu-networking">10. Connecting CPRS to vehu (networking)</h2><a class="sl-anchor-link" href="#10-connecting-cprs-to-vehu-networking"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “10. Connecting CPRS to vehu (networking)”</span></a></div>
+<p>CPRS-in-a-VM reaching VistA-in-Docker is the single most error-prone step, and it
+always fails the same opaque way: CPRS shows <strong><code dir="auto">WSAECONNREFUSED / WASConnectByName</code></strong>.
+The cause is almost always that the broker is published to the host’s <strong>loopback
+only</strong> (Docker <code dir="auto">127.0.0.1:9430</code>), which a VM cannot reach — so the path needs a
+relay on a reachable interface. <code dir="auto">v rpc-debug doctor</code> diagnoses the whole chain and
+tells you exactly what to do; <code dir="auto">v rpc-debug relay</code> is the fix.</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">doctor</span><span style="--0:#D6DEEB;--1:#403F53">                     </span><span style="--0:#919F9F;--1:#5F636F"># walk docker -&gt; publish mode -&gt; broker -&gt; relay; prints the CPRS address</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="v-rpc-debug doctor                     # walk docker -> publish mode -> broker -> relay; prints the CPRS address"><div></div></button></div></figure></div>
+<p>A healthy run ends with <code dir="auto">path looks good</code> and the line to type into CPRS:</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">✓ docker           vehu is running (image worldvista/vehu)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">⚠ broker publish   published on 127.0.0.1:9430 — bound to loopback, so a VM cannot reach it directly</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">✓ broker listener  [XWB] handshake on 127.0.0.1:9430 replied 9 bytes (listener live)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">✓ relay            relay on 0.0.0.0:19431 forwards to the broker</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">CPRS should connect to:  10.0.2.2:19431   (s=10.0.2.2 p=19431)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="✓ docker           vehu is running (image worldvista/vehu)⚠ broker publish   published on 127.0.0.1:9430 — bound to loopback, so a VM cannot reach it directly✓ broker listener  [XWB] handshake on 127.0.0.1:9430 replied 9 bytes (listener live)✓ relay            relay on 0.0.0.0:19431 forwards to the brokerCPRS should connect to:  10.0.2.2:19431   (s=10.0.2.2 p=19431)"><div></div></button></div></figure></div>
+<p>If the <strong>relay</strong> line is ✗, start it — either let <code dir="auto">doctor</code> do it, or run it directly:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">doctor</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--fix</span><span style="--0:#D6DEEB;--1:#403F53">               </span><span style="--0:#919F9F;--1:#5F636F"># start the relay if needed, then re-check</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># or:</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">relay</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--install</span><span style="--0:#D6DEEB;--1:#403F53">            </span><span style="--0:#919F9F;--1:#5F636F"># persistent user service (starts on boot)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">relay</span><span style="--0:#D6DEEB;--1:#403F53">                      </span><span style="--0:#919F9F;--1:#5F636F"># or just run it in the foreground (Ctrl-C to stop)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">relay</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--status</span><span style="--0:#D6DEEB;--1:#403F53">             </span><span style="--0:#919F9F;--1:#5F636F"># is it listening / installed / active?</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v-rpc-debug</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">relay</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--uninstall</span><span style="--0:#D6DEEB;--1:#403F53">          </span><span style="--0:#919F9F;--1:#5F636F"># remove the persistent service</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="v-rpc-debug doctor --fix               # start the relay if needed, then re-checkv-rpc-debug relay --install            # persistent user service (starts on boot)v-rpc-debug relay                      # or just run it in the foreground (Ctrl-C to stop)v-rpc-debug relay --status             # is it listening / installed / active?v-rpc-debug relay --uninstall          # remove the persistent service"><div></div></button></div></figure></div>
+<p><code dir="auto">v rpc-debug relay</code> is a built-in TCP forwarder (no <code dir="auto">socat</code> needed): it discovers
+the broker port from <code dir="auto">docker inspect</code> and republishes it on <code dir="auto">0.0.0.0:19431</code> so the
+VM can reach it. <code dir="auto">--install</code> writes a <code dir="auto">systemd --user</code> unit (<code dir="auto">loginctl enable-linger</code> to run it without a login session). It never touches vehu or VistA —
+pure host-side port forwarding.</p>
+<p><strong>In CPRS</strong>, set the server/port to what <code dir="auto">doctor</code> printed (vehu via VirtualBox NAT =
+<code dir="auto">s=10.0.2.2 p=19431</code>). The cleanest launch is a Windows shortcut with the args
+<strong>outside</strong> the path quotes: <code dir="auto">Target: "…\CPRSChart.exe" s=10.0.2.2 p=19431</code>.</p>
+<blockquote>
+<p><strong>Prefer to skip the relay entirely?</strong> <code dir="auto">doctor</code> will also tell you: re-run the
+container publishing the broker on all interfaces (<code dir="auto">-p 0.0.0.0:9430:9430</code>) and the
+VM can reach <code dir="auto">10.0.2.2:9430</code> directly — no relay. The relay is the non-invasive
+option when you can’t change how the container is started.</p>
+<p>For <strong>foia (IRIS-VistA)</strong> the broker port is <code dir="auto">19430</code> (not <code dir="auto">9430</code>); pass it with
+<code dir="auto">--broker-port 19430</code>.</p>
+</blockquote>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="11-comparing-against-the-vsl-tap">11. Comparing against the VSL tap</h2><a class="sl-anchor-link" href="#11-comparing-against-the-vsl-tap"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “11. Comparing against the VSL tap”</span></a></div>
+<p>The whole point of the LDJSON format is that its field names line up with the s3tap
+envelope (<code dir="auto">rpc</code>, <code dir="auto">ts</code>, <code dir="auto">job</code>, <code dir="auto">seq</code>), so you can join the two captures <strong>offline</strong>
+to validate the VSL tap:</p>
+<ol>
+<li>
+<p>Capture the oracle: <code dir="auto">v rpc-debug capture … --out xwbdebug.ldjson</code> while you run a
+known workload (e.g. a CPRS login).</p>
+</li>
+<li>
+<p>Capture the same workload through the VSL tap (separate pipeline) → its LDJSON.</p>
+</li>
+<li>
+<p>Compare offline — e.g. load both into DuckDB and diff the set of <code dir="auto">rpc</code> names per
+<code dir="auto">job</code>:</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="sql"><code><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">-- RPCs the broker saw (oracle) but the VSL tap missed</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">SELECT</span><span style="--0:#D6DEEB;--1:#403F53"> rpc </span><span style="--0:#C792EA;--1:#8844AE">FROM</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">xwbdebug.ldjson</span><span style="--0:#D9F5DD;--1:#111111">'</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">EXCEPT</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">SELECT</span><span style="--0:#D6DEEB;--1:#403F53"> rpc </span><span style="--0:#C792EA;--1:#8844AE">FROM</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">vsltap.ldjson</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="-- RPCs the broker saw (oracle) but the VSL tap missedSELECT rpc FROM &#x27;xwbdebug.ldjson&#x27;EXCEPTSELECT rpc FROM &#x27;vsltap.ldjson&#x27;;"><div></div></button></div></figure></div>
+</li>
+</ol>
+<p>The correlation/analysis itself lives in the analysis pipeline, <strong>not</strong> in this tool
+— <code dir="auto">v rpc-debug</code> only produces the comparable oracle output.</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="12-limitations">12. Limitations</h2><a class="sl-anchor-link" href="#12-limitations"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “12. Limitations”</span></a></div>
+<ul>
+<li><strong>Names only.</strong> No RPC results, no request↔response correlation, no payloads
+(those need the VSL hook).</li>
+<li><strong>Can drop traffic.</strong> <code dir="auto">XWBDEBUG</code> writes to <code dir="auto">^XTMP("XWBLOG"_$J)</code>, one node-tree per
+broker job, and <strong>wipes it at the start of each new connection</strong>. Since process
+IDs recycle, a connection that begins <em>and</em> ends entirely between two polls can be
+overwritten before the tool reads it. Use a short <code dir="auto">--interval</code> for busy systems;
+for lossless capture use the VSL tap. (A single, persistent CPRS session is one
+connection, so its full sequence is captured reliably.)</li>
+<li><strong>Self-purging.</strong> Each log auto-expires ~7 days after its connection (Kernel’s
+<code dir="auto">^XTMP</code> cleanup) — fine for live use, not an archive.</li>
+<li><strong>Second-resolution timestamps</strong> (<code dir="auto">$HOROLOG</code>).</li>
+</ul>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="13-troubleshooting">13. Troubleshooting</h2><a class="sl-anchor-link" href="#13-troubleshooting"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “13. Troubleshooting”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause / fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">NO_DRIVER</code> error</td>
+<td>The <code dir="auto">m-&lt;engine&gt;</code> driver isn’t found — build it (<code dir="auto">make build</code> in <code dir="auto">m-ydb</code>/<code dir="auto">m-iris</code>) or set <code dir="auto">M_&lt;ENGINE&gt;_BIN</code>.</td>
+</tr>
+<tr>
+<td><code dir="auto">ENGINE</code> error from <code dir="auto">status</code></td>
+<td>Engine down or unreachable over the driver — check the container is up and the transport/container flags are right.</td>
+</tr>
+<tr>
+<td>Nothing appears in <code dir="auto">tail</code></td>
+<td>No traffic is hitting the broker, or your <code dir="auto">--filter</code> excludes it; try <code dir="auto">--all</code>, and confirm with <code dir="auto">status</code> that the level is ≥ 2.</td>
+</tr>
+<tr>
+<td>Level didn’t restore (still <code dir="auto">ON</code>)</td>
+<td>Either a hard-kill (<code dir="auto">kill -9</code>) skipped the restore, or an <strong>overlapping run</strong>: <code dir="auto">tail</code>/<code dir="auto">capture</code> restore to the level they <em>found</em> at start, so if one started while another already armed level 2, it leaves it at 2. Fix: <code dir="auto">v rpc-debug disarm</code>, or run with <code dir="auto">--restore-to 1</code> to force stock on exit.</td>
+</tr>
+<tr>
+<td>Buffered lines won’t go away</td>
+<td>They auto-purge in ~7 days; to wipe now use <code dir="auto">v rpc-debug clear --commit</code> (or start a <code dir="auto">tail</code>/<code dir="auto">capture</code> without <code dir="auto">--no-clear</code>).</td>
+</tr>
+<tr>
+<td>Capture file empty</td>
+<td>The workload ran outside the capture window, or every connection was wiped between polls — lower <code dir="auto">--interval</code>, or arm first and capture with <code dir="auto">--no-clear</code>.</td>
+</tr>
+<tr>
+<td>CPRS can’t reach vehu (<code dir="auto">WSAECONNREFUSED</code>)</td>
+<td>Run <code dir="auto">v rpc-debug doctor</code> — it pinpoints the broken hop. Usually the broker is published loopback-only and the relay is down: <code dir="auto">v rpc-debug doctor --fix</code> (or <code dir="auto">v rpc-debug relay --install</code>). See <a href="#10-connecting-cprs-to-vehu-networking">Connecting CPRS to vehu</a>.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="14-references">14. References</h2><a class="sl-anchor-link" href="#14-references"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “14. References”</span></a></div>
+<ul>
+<li><strong>vehu credentials</strong> — <a href="https://hub.docker.com/r/worldvista/vehu">Docker Hub: <code dir="auto">worldvista/vehu</code></a>
+(per-user access/verify table); <a href="https://github.com/WorldVistA/docker-vista/blob/master/README.md">WorldVistA/docker-vista README</a>;
+<a href="https://groups.google.com/g/Hardhats/c/ABYd5QyXmTk">Hardhats — VEHU/CPRS Demo access/verify codes</a>.
+Codes were <strong>confirmed against this engine</strong> read-only (<code dir="auto">$$EN^XUSHSH</code> access-code
+hash → <code dir="auto">#200</code> “A” index).</li>
+<li><strong>CPRS sign-in</strong> — <a href="https://code.worldvista.org/files/clients/OSEHRA_VistA/CPRS/1_0_31_118/Help/Signing_In_to_CPRS.htm">Signing In to CPRS (WorldVistA)</a>.</li>
+<li><strong>Patient-data figures</strong> — live read-only probe of vehu via the driver seam:
+orders <code dir="auto">^OR(100,"AC",DFN)</code> (#100), notes <code dir="auto">^TIU(8925,"C",DFN)</code> (#8925), visits
+<code dir="auto">^AUPNVSIT("C",DFN)</code> (#9000010), names <code dir="auto">^DPT(DFN,0)</code> (#2). 2026-06-26.</li>
+<li><strong>Internal</strong> — <code dir="auto">docs/archive/v-rpc-implementation-plan.md</code> (design + tracker, archived);
+<code dir="auto">docs/memory/v-rpc-domain.md</code> (locked design, follow-ups); the shared
+<code dir="auto">cprs-rpc-xwbdebug-host-probe</code> memory and <code dir="auto">cprs-rpc-xwbdebug-smoke-test</code> proposal
+(XWBDEBUG mechanics on the engine side).</li>
+</ul>
+</div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"></div></footer></div></div></main></div></div></div></div></body></html>
