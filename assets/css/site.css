@@ -180,6 +180,17 @@ p code, li code, td code {
   gap: 1rem;
   height: 60px;
 }
+.site-header .brand,
+.site-header .theme-toggle { flex: none; }
+/* nav rides against the theme control on the right, as it did when the
+   control was inside it */
+/* nav rides against the theme control on the right, as it did when the control
+   was inside it. `margin-inline-start: auto` and NOT `justify-content: flex-end`
+   — with flex-end, content overflowing a scroll container spills past the START
+   edge and Chrome will not scroll back to it, so the first item (Stack) becomes
+   unreachable on a narrow screen. An auto margin collapses to 0 once the strip
+   overflows, which leaves it scrollable from the beginning. */
+.site-header .nav { flex: 0 1 auto; margin-inline-start: auto; }
 
 .brand {
   display: flex;
@@ -203,15 +214,29 @@ p code, li code, td code {
   flex: none;
 }
 
+/* The banner is thin, fixed to the top, and carries EVERY primary item at
+   every width. It used to drop two of them below 860px (.nav--opt), which made
+   the menu a function of the viewport; now the strip scrolls sideways instead,
+   so nothing is ever unreachable. The theme control sits outside .nav, so it
+   cannot be scrolled out of reach either. */
 .nav {
   display: flex;
   align-items: center;
   gap: 1.4rem;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* room for a focus ring inside the scroll box */
+  padding: 4px 0;
 }
+.nav::-webkit-scrollbar { display: none; }
 .nav a {
   color: var(--text-dim);
   font-size: 0.9rem;
   font-weight: 500;
+  white-space: nowrap;
 }
 .nav a:hover { color: var(--text); text-decoration: none; }
 
@@ -237,10 +262,11 @@ p code, li code, td code {
 :root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 
 @media (max-width: 860px) {
-  .nav a.nav--opt { display: none; }
+  .nav { gap: 1.1rem; }
 }
 @media (max-width: 560px) {
-  .nav { gap: 1rem; }
+  .nav { gap: 0.9rem; }
+  .nav a { font-size: 0.85rem; }
 }
 
 /* ---------- hero ---------- */

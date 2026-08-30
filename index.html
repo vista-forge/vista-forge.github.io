@@ -18,8 +18,14 @@
 <meta property="og:image" content="https://vista-forge.github.io/assets/img/logo.png">
 <link rel="stylesheet" href="assets/css/site.css">
 <script>
-/* pre-paint: apply a persisted light-theme choice before first render (dark is the default) */
-try { if (localStorage.getItem("theme") === "light") document.documentElement.setAttribute("data-theme", "light"); } catch (e) {}
+/* pre-paint: apply a persisted light-theme choice before first render (dark is the default).
+   `starlight-theme` is the same choice made on /forge-reference/ — that site is a wing of this
+   one, so a toggle there must not be forgotten on the way back. Both keys are written on every
+   toggle; either one alone is enough to restore the choice. */
+try {
+  var t = localStorage.getItem("theme") || localStorage.getItem("starlight-theme");
+  if (t === "light") document.documentElement.setAttribute("data-theme", "light");
+} catch (e) {}
 </script>
 </head>
 <body>
@@ -32,18 +38,20 @@ try { if (localStorage.getItem("theme") === "light") document.documentElement.se
       <img class="brand__mark" src="assets/img/mark.png" alt="" width="26" height="26" decoding="async">
       VistA Forge
     </a>
+    <!-- Every item stays in the banner at every width: the nav scrolls sideways
+         rather than dropping links, and the theme control sits outside it so it
+         is never scrolled away. -->
     <nav class="nav" aria-label="Primary">
       <a href="#stack">Stack</a>
-      <a href="#tools" class="nav--opt">Tools</a>
-      <a href="#architecture" class="nav--opt">Architecture</a>
+      <a href="#tools">Tools</a>
+      <a href="#architecture">Architecture</a>
       <a href="#repos">Repos</a>
       <a href="/forge-reference/">Reference</a>
-      <a href="https://github.com/vista-forge">GitHub&nbsp;↗</a>
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme">
+    </nav>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-    </nav>
+    </button>
   </div>
 </header>
 
@@ -649,7 +657,12 @@ try { if (localStorage.getItem("theme") === "light") document.documentElement.se
     var toLight = root.getAttribute("data-theme") !== "light";
     if (toLight) root.setAttribute("data-theme", "light");
     else root.removeAttribute("data-theme");
-    try { localStorage.setItem("theme", toLight ? "light" : "dark"); } catch (e) {}
+    try {
+      var v = toLight ? "light" : "dark";
+      localStorage.setItem("theme", v);
+      /* the reference site (Starlight) persists the same choice under its own key */
+      localStorage.setItem("starlight-theme", v);
+    } catch (e) {}
     relabel();
   });
   relabel();

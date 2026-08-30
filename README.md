@@ -49,6 +49,20 @@ sections:
 Both light and dark themes are supported via `prefers-color-scheme`; a change to
 one needs a check against the other.
 
+### The palette is restated in `forge-reference`
+
+The reference site is a wing of this one and wears the same chrome, but it is a
+separate deployment built by Starlight — there is no shared stylesheet, and a
+`<link>` across origins would be an off-host load its `offline-check` forbids.
+So the same token values are restated in `forge-reference/site/src/styles/forge.css`
+(in the `forge-reference` repo), mapped onto Starlight's own `--sl-color-*` names.
+
+**Nothing gates the agreement.** A change to a token here is a change there as
+well, and the only way to see a drift is to look at the two pages side by side.
+The same goes for the header: the nav items in `index.html` are mirrored by that
+repo's `src/components/OrgNav.astro`, and both toggles write both theme keys
+(`theme` here, `starlight-theme` there) so one click holds across the boundary.
+
 ## What is generated, and what is not
 
 **Generated — do not hand-edit.** The `m` and `v` repo tables live between
