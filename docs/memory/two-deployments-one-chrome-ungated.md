@@ -37,10 +37,16 @@ values is the deliberate cost of the offline guarantee, not an oversight.
 
 Starlight persists the choice under `starlight-theme`; this site uses `theme`.
 Both toggles now write **both** keys and both pre-paint scripts read either, so
-one click holds across the boundary. Change one and a reader gets a black
-landing page and a white reference from a single click — a bug that looks like
-a caching problem and is not ([[stale-css-cache-not-a-code-bug]] is the one it
-would be mistaken for).
+one click holds across the boundary. Change one and a reader gets one ground on
+the landing page and the other on the reference from a single click — a bug that
+looks like a caching problem and is not ([[stale-css-cache-not-a-code-bug]] is
+the one it would be mistaken for).
+
+⚠️ **Both defaults must agree, and each site states its own.** Light became the
+default on 2026-08-30; the reference expresses that in the head script that
+seeds `starlight-theme`, which must stay ahead of Starlight's own inline
+ThemeProvider — that one falls back to `prefers-color-scheme`, so a dark-OS
+reader would land dark on a site whose default is light.
 
 ## Nav rule: every item, every width
 

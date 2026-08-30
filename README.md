@@ -46,8 +46,16 @@ sections:
 | `--ember` | the `v` layer — VistA-specific |
 | `--cyan` | the `m` layer — engine-neutral |
 
-Both light and dark themes are supported via `prefers-color-scheme`; a change to
-one needs a check against the other.
+**Light is the default; dark is an explicit opt-in** via the header toggle
+(2026-08-30 — it was the other way round from 2026-08-14). Neither is inferred
+from `prefers-color-scheme`: the choice is the reader's, persisted in
+`localStorage` and applied pre-paint by an inline script on every page. The
+light values live on bare `:root` and the dark ones under
+`:root[data-theme="dark"]`, so a change to one needs a check against the other.
+
+Dark is **dark, not black**. The ground was `#000` with the elevated surfaces
+barely above it, which made every card edge a hairline against a void; the ramp
+now starts one step up, at the same hue and saturation.
 
 ### The palette is restated in `forge-reference`
 

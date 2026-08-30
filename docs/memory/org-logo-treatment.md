@@ -1,6 +1,6 @@
 ---
 name: org-logo-treatment
-description: The site's mark is the faceted-V art (v-forge-icon.png), knocked out by a saturation key and floating on the black page; the old chromed-anvil render it replaced could not be knocked out at all, which is why the plate treatment existed.
+description: The site's mark is the faceted-V art (v-forge-icon.png), knocked out by a saturation key so it floats on whatever ground the page has; the old chromed-anvil render it replaced could not be knocked out at all, which is why the plate treatment existed.
 metadata:
   type: project
 ---
@@ -47,9 +47,15 @@ killed the shadow but still bit the bevels. Hence `.brand__mark` carrying
 `background:#fff` + a 1px ring — the plate was a workaround for an unkeyable image, not
 a design choice.
 
-**That constraint is gone with the art.** The header mark now sits directly on the black
-page; the plate and ring are removed. Don't reintroduce them, and don't port the old
+**That constraint is gone with the art.** The header mark now sits directly on the page;
+the plate and ring are removed. Don't reintroduce them, and don't port the old
 "never try to knock this out" rule to the new mark — it keys cleanly, as above.
+
+**And the knockout is real, which is why the 2026-08-30 flip to a light default needed
+no logo work.** Measured on the shipped file: `mark.png`'s corner alpha is 1–3/255, so
+there is no baked ground to show against white. It was drawn for a black page and is not
+bound to one. (`logo.png` and `logo-180.png` keep their opaque plates on purpose —
+social cards and iOS icons want an opaque tile — and they are never the header mark.)
 
 The old render remains the **GitHub org avatar**
 (`https://avatars.githubusercontent.com/u/287217332`) and is unaffected by this; if the

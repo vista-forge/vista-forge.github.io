@@ -9,59 +9,17 @@
    hues (--vista, --fm, --engine) precisely so a re-theme like this one stays a
    value change; --cyan is the exception and is still literally cyan. */
 
+/* LIGHT is the DEFAULT (2026-08-30). It was dark-on-black from 2026-08-14 with
+   light as an explicit opt-in; the ground is now light, and dark is the opt-in.
+   Neither is inferred from prefers-color-scheme — the choice is the reader's
+   toggle, persisted in localStorage and applied pre-paint by the inline head
+   script on every page (which is why the script is duplicated into cla.html and
+   licensing.html rather than shared: a deferred file cannot beat first paint).
+   The dark block below overrides TOKEN VALUES ONLY — the accent hues lift from
+   their darker light-bg forms to the pastel dark-bg ones so the layer-colour
+   semantics at the top of this file survive the swap. */
+
 :root {
-  color-scheme: dark;
-
-  --bg: #000000;
-  --bg-elev: #0b0c11;
-  --bg-elev-2: #14161d;
-  --border: #21242e;
-  --border-bright: #343846;
-
-  --text: #f2f4f8;
-  --text-dim: #a2aabd;
-  --text-faint: #6f778a;
-
-  --vista: #a78bfa;
-  --vista-bright: #c4b5fd;
-  --vista-wash: rgba(167, 139, 250, 0.10);
-  --vista-line: rgba(167, 139, 250, 0.34);
-
-  --cyan: #22d3ee;
-  --cyan-bright: #67e8f9;
-  --cyan-wash: rgba(34, 211, 238, 0.08);
-  --cyan-line: rgba(34, 211, 238, 0.30);
-
-  --fm: #60a5fa;
-  --fm-wash: rgba(96, 165, 250, 0.10);
-  --fm-line: rgba(96, 165, 250, 0.32);
-
-  --engine: #2dd4bf;
-  --engine-wash: rgba(45, 212, 191, 0.09);
-  --engine-line: rgba(45, 212, 191, 0.30);
-
-  --ok: #2dd4bf;
-
-  /* text set ON an accent-filled surface (skip link, primary button) */
-  --on-accent: #150e2e;
-
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-
-  --maxw: 1080px;
-  --radius: 10px;
-}
-
-/* Dark (black) is the DEFAULT and the design (2026-08-14); light is an
-   explicit opt-in via the header toggle (2026-08-20), never inferred from
-   prefers-color-scheme — a light-OS visitor still lands on the intended black
-   page. The toggle sets data-theme="light" on <html> (persisted in
-   localStorage, applied pre-paint by the inline head script on every page).
-   Every override below is a TOKEN value only — the accent hues drop from the
-   pastel dark-bg variants to their darker light-bg counterparts so the
-   layer-color semantics at the top of this file survive the swap. */
-
-:root[data-theme="light"] {
   color-scheme: light;
 
   --bg: #ffffff;
@@ -94,7 +52,58 @@
 
   --ok: #0d9488;
 
+  /* text set ON an accent-filled surface (skip link, primary button) */
   --on-accent: #ffffff;
+
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --maxw: 1080px;
+  --radius: 10px;
+}
+
+/* Dark: DARK, not black (2026-08-30). The page ground was #000 with the
+   elevated surfaces barely above it, which made every card edge a hairline
+   against a void and gave the whole page one hard floor. The ramp now starts
+   one step up — the old --border value becomes the deepest SURFACE — so
+   elevation reads as elevation and the borders have something to sit on.
+   Same hue and saturation throughout (~228°, low sat), so this is a lightness
+   shift, not a re-theme. */
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #12141b;
+  --bg-elev: #191c24;
+  --bg-elev-2: #21242e;
+  --border: #2c3140;
+  --border-bright: #3f4557;
+
+  --text: #f2f4f8;
+  --text-dim: #a2aabd;
+  --text-faint: #6f778a;
+
+  --vista: #a78bfa;
+  --vista-bright: #c4b5fd;
+  --vista-wash: rgba(167, 139, 250, 0.10);
+  --vista-line: rgba(167, 139, 250, 0.34);
+
+  --cyan: #22d3ee;
+  --cyan-bright: #67e8f9;
+  --cyan-wash: rgba(34, 211, 238, 0.08);
+  --cyan-line: rgba(34, 211, 238, 0.30);
+
+  --fm: #60a5fa;
+  --fm-wash: rgba(96, 165, 250, 0.10);
+  --fm-line: rgba(96, 165, 250, 0.32);
+
+  --engine: #2dd4bf;
+  --engine-wash: rgba(45, 212, 191, 0.09);
+  --engine-line: rgba(45, 212, 191, 0.30);
+
+  --ok: #2dd4bf;
+
+  --on-accent: #150e2e;
 }
 
 * { box-sizing: border-box; }
@@ -240,7 +249,7 @@ p code, li code, td code {
 }
 .nav a:hover { color: var(--text); text-decoration: none; }
 
-/* dark/light toggle: sun shown in dark ("switch to light"), moon in light */
+/* dark/light toggle: moon shown in light ("switch to dark"), sun in dark */
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -257,9 +266,9 @@ p code, li code, td code {
 }
 .theme-toggle:hover { color: var(--text); border-color: var(--text-faint); }
 .theme-toggle svg { width: 16px; height: 16px; display: block; }
-.theme-toggle .icon-moon { display: none; }
-:root[data-theme="light"] .theme-toggle .icon-sun { display: none; }
-:root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+.theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
 @media (max-width: 860px) {
   .nav { gap: 1.1rem; }
