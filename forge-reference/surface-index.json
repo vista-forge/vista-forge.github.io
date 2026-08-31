@@ -317,7 +317,7 @@
       "domain": "db",
       "command": "catalog",
       "group": "Inspect",
-      "help": "The VistA data catalog: build it offline from a certified bundle plus an integrity capture (one entry per table — structure, volume and condition planes, derived package attribution with its rule, search index embedded), then browse and search the artifact without an engine.",
+      "help": "The VistA data catalog: build it without touching an engine, from a certified bundle plus an integrity capture (one entry per table — structure, volume and condition planes, derived package attribution with its rule, search index embedded), then browse and search the artifact without an engine.",
       "engine": "none",
       "mutates": false,
       "example": "v db catalog --help",
