@@ -1,0 +1,1131 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>v pkg — User Guide | VistA Forge docs</title><link rel="canonical" href="https://vista-forge.github.io/forge-docs/guides/pkg/v-pkg-users-guide/"/><link rel="sitemap" href="/forge-docs/sitemap-index.xml"/><link rel="apple-touch-icon" href="/forge-docs/logo-180.png"/><script>try{var t=localStorage.getItem("starlight-theme")||localStorage.getItem("theme")||"light";t=t==="dark"?"dark":"light";document.documentElement.dataset.theme=t;localStorage.setItem("starlight-theme",t);localStorage.setItem("theme",t);}catch(e){}</script><link rel="shortcut icon" href="/forge-docs/favicon-32.png" type="image/png"/><meta name="generator" content="Astro v7.2.2"/><meta name="generator" content="Starlight v0.41.7"/><meta property="og:title" content="v pkg — User Guide"/><meta property="og:type" content="article"/><meta property="og:url" content="https://vista-forge.github.io/forge-docs/guides/pkg/v-pkg-users-guide/"/><meta property="og:locale" content="en"/><meta property="og:description" content="Authored guide from the v-pkg repository."/><meta property="og:site_name" content="VistA Forge docs"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="Authored guide from the v-pkg repository."/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/forge-docs/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/forge-docs/_astro/common.Beiizmev.css"><script type="module" src="/forge-docs/_astro/page.Dwipeu-R.js"></script></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">Skip to content</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><span class="brand sl-flex astro-hen6hmfb"><a class="brand__home sl-flex astro-hen6hmfb" href="https://vista-forge.github.io/"><img class="brand__mark astro-hen6hmfb" src="/forge-docs/mark.png" alt="" width="26" height="26" decoding="async"><span class="brand__org astro-hen6hmfb" translate="no">VistA Forge</span></a><span class="brand__sep astro-hen6hmfb" aria-hidden="true">/</span><a class="brand__here astro-hen6hmfb" href="/forge-docs/" translate="no">docs</a></span></div><div class="sl-flex print:hidden astro-nczgtkxc"></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"><nav class="org-nav astro-yq4gbgkh" aria-label="Primary"><a href="https://vista-forge.github.io/#stack" class="org-nav__link astro-yq4gbgkh">Stack</a><a href="https://vista-forge.github.io/#tools" class="org-nav__link astro-yq4gbgkh">Tools</a><a href="https://vista-forge.github.io/#architecture" class="org-nav__link astro-yq4gbgkh">Architecture</a><a href="https://vista-forge.github.io/#repos" class="org-nav__link astro-yq4gbgkh">Repos</a><a href="/forge-docs/" class="org-nav__link astro-yq4gbgkh" aria-current="true">Docs</a></nav></div><button class="theme-toggle" type="button" aria-label="Switch to dark theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><script type="module">var e=document.documentElement,t=document.querySelectorAll(`button.theme-toggle`);function n(){let n=e.dataset.theme===`light`;for(let e of t)e.setAttribute(`aria-label`,n?`Switch to dark theme`:`Switch to light theme`)}for(let r of t)r.addEventListener(`click`,()=>{let t=e.dataset.theme===`light`?`dark`:`light`;e.dataset.theme=t;try{localStorage.setItem(`starlight-theme`,t),localStorage.setItem(`theme`,t)}catch{}n()});n();</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="Main"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="Menu" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><div class="sb-tools astro-geakwi6g" data-base="/forge-docs/"><div class="sb-row astro-geakwi6g"><div class="sb-field astro-geakwi6g"><svg class="sb-icon astro-geakwi6g" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="16" height="16"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z" class="astro-geakwi6g"></path></svg><input type="search" class="sb-input astro-geakwi6g" autocomplete="off" spellcheck="false" placeholder="Search" aria-label="Search every page"><button class="sb-clear astro-geakwi6g" type="button" aria-label="Clear" hidden>&times;</button></div><div class="sb-controls astro-geakwi6g" role="group" aria-label="List controls"><button type="button" class="sb-btn astro-geakwi6g" data-act="toggle-all" title="Expand every group" aria-label="Expand every group"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="14" height="14" class="astro-geakwi6g"><path d="M12 3 7 9h10l-5-6ZM7 15h10l-5 6-5-6Z" class="astro-geakwi6g"></path></svg></button><button type="button" class="sb-btn astro-geakwi6g" data-act="sort" aria-pressed="false" title="Sort A–Z" aria-label="Sort A–Z"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="14" height="14" class="astro-geakwi6g"><path d="M7 4v13H4l4 4 4-4H9V4H7Zm7 1h7v2h-7V5Zm0 5h5v2h-5v-2Zm0 5h3v2h-3v-2Z" class="astro-geakwi6g"></path></svg></button></div></div><div class="sb-results astro-geakwi6g" hidden aria-live="polite"></div><p class="sb-empty astro-geakwi6g" hidden></p></div><script type="module">var e=document.querySelector(`.sb-tools`);if(e){let t=e.dataset.base||`/`,n=e.querySelector(`.sb-input`),r=e.querySelector(`.sb-clear`),i=e.querySelector(`.sb-results`),a=e.querySelector(`.sb-empty`),o=e.querySelector(`[data-act="toggle-all"]`),s=e.querySelector(`[data-act="sort"]`),c=()=>document.querySelector(`#starlight__sidebar ul.top-level`),l=null,u=Function(`u`,`return import(u)`),d=0,f=e=>{let t=c();t&&(t.style.display=e?``:`none`)},p=e=>{a.textContent=e,a.hidden=!e},m=async e=>{let n=++d;if(!e.trim()){i.hidden=!0,i.innerHTML=``,f(!0),p(``);return}try{l||(l=await u(`${t}pagefind/pagefind.js`),await l.options({baseUrl:t}))}catch{p(`Search is unavailable in this build.`);return}let r=await l.search(e);if(n!==d)return;let a=await Promise.all(r.results.slice(0,12).map(e=>e.data()));if(n===d){if(f(!1),i.hidden=!1,!a.length){i.innerHTML=``,p(`No page matches “${e}”.`);return}p(``),i.innerHTML=`<p class="sb-count">${r.results.length} result${r.results.length===1?``:`s`}</p>`+a.map(e=>`<a class="sb-hit" href="${e.url}"><span class="sb-hit__t">${e.meta?.title??e.url}</span><span class="sb-hit__x">${e.excerpt}</span></a>`).join(``)}},h;n.addEventListener(`input`,()=>{r.hidden=!n.value,window.clearTimeout(h);let e=n.value;h=window.setTimeout(()=>m(e),120)}),n.addEventListener(`keydown`,e=>{e.key===`Escape`&&(n.value=``,n.dispatchEvent(new Event(`input`)))}),r.addEventListener(`click`,()=>{n.value=``,n.dispatchEvent(new Event(`input`)),n.focus()});let g=()=>{let e=c(),t=(e?Array.from(e.querySelectorAll(`details`)):[]).some(e=>!e.open)?`Expand every group`:`Collapse every group`;o.setAttribute(`aria-label`,t),o.title=t};g(),o.addEventListener(`click`,()=>{let e=c();if(!e)return;let t=Array.from(e.querySelectorAll(`details`)),n=t.some(e=>!e.open);t.forEach(e=>e.open=n),g()});let _=new WeakMap;s.addEventListener(`click`,()=>{let e=c();if(!e)return;let t=s.getAttribute(`aria-pressed`)!==`true`;s.setAttribute(`aria-pressed`,String(t));let n=t?`Restore the declared order`:`Sort A–Z`;s.setAttribute(`aria-label`,n),s.title=n,Array.from(e.querySelectorAll(`ul`)).forEach(e=>{let n=Array.from(e.children);if(_.has(e)||_.set(e,n.slice()),t){let t=e=>(e.textContent||``).trim().toLowerCase();n.slice().sort((e,n)=>t(e).localeCompare(t(n))).forEach(t=>e.appendChild(t))}else(_.get(e)||n).forEach(t=>e.appendChild(t))})})}</script><!-- The result rows are built by JS with innerHTML, so they never carry Astro's
+     scope attribute and a scoped rule cannot reach them: Astro stamps the scope
+     at BUILD time onto markup it can see, and runtime nodes are invisible to it.
+     (Measured 2026-08-31 — the first build rendered the results as one run of
+     unstyled links.) These are global, namespaced under .sb-results so "global"
+     means this component's own runtime output and nothing else. --><sl-sidebar-state-persist data-hash="1gf6bp3" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/" class="large astro-ojxuodky"><span class="astro-ojxuodky">Overview</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Start here</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">v</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/start-here/v/vista-forge-in-five-minutes/" class="astro-ojxuodky"><span class="astro-ojxuodky">VistA Forge in five minutes</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/start-here/v/install-v/" class="astro-ojxuodky"><span class="astro-ojxuodky">Install v</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/start-here/v/connect-to-an-engine/" class="astro-ojxuodky"><span class="astro-ojxuodky">Connect to an engine</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/start-here/v/your-first-command/" class="astro-ojxuodky"><span class="astro-ojxuodky">Your first command</span></a></li></ul></details></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Concepts</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">v</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/what-is-vista/" class="astro-ojxuodky"><span class="astro-ojxuodky">What is VistA?</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/what-you-never-have-to-touch/" class="astro-ojxuodky"><span class="astro-ojxuodky">What do I never have to touch?</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/what-leaks-through/" class="astro-ojxuodky"><span class="astro-ojxuodky">What actually leaks through, and why</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/the-words/" class="astro-ojxuodky"><span class="astro-ojxuodky">What do I call things?</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/where-v-attaches/" class="astro-ojxuodky"><span class="astro-ojxuodky">Where v attaches</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/the-engine-seam/" class="astro-ojxuodky"><span class="astro-ojxuodky">How does a command on my laptop reach a live engine</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/selecting-an-engine/" class="astro-ojxuodky"><span class="astro-ojxuodky">Which instance am I talking to</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/the-output-contract/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why does every command have two faces</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/the-exit-ladder/" class="astro-ojxuodky"><span class="astro-ojxuodky">What do the exit codes mean, and how do I script against them</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/typed-refusals/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why is a refusal a feature</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/preview-then-commit/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why is dry-run the default</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/artifacts/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why do these tools write files</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/v/determinism-and-reproducibility/" class="astro-ojxuodky"><span class="astro-ojxuodky">What does a re-run guarantee</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">db</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/v-db-technical-reference/" class="astro-ojxuodky"><span class="astro-ojxuodky">Technical Reference</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/fileman-is-a-dbms/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why this is a database, not a filing convention</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/the-data-dictionary/" class="astro-ojxuodky"><span class="astro-ojxuodky">What is the schema, and where does it live</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/records-and-ids/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why is .5 a real row id</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/nested-tables/" class="astro-ojxuodky"><span class="astro-ojxuodky">What is a nested table, and why is it also a table</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/cross-references/" class="astro-ojxuodky"><span class="astro-ojxuodky">What is an index here, and why are there two registers of them</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/pointers/" class="astro-ojxuodky"><span class="astro-ojxuodky">What is a foreign key here, and what is a dangling one</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/counting-is-a-walk/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why is a row count not a SELECT COUNT(*)</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/claims-versus-truth/" class="astro-ojxuodky"><span class="astro-ojxuodky">Where does the integrity census get its authority</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/reading-and-writing/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why do writes go through the DBMS and never through storage</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/policy-and-authorization/" class="astro-ojxuodky"><span class="astro-ojxuodky">What decides whether this instance will let me read or write</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/db/getting-data-off/" class="astro-ojxuodky"><span class="astro-ojxuodky">How do I get data off the engine for analysis</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">pkg</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/concepts/pkg/what-a-package-is/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why is a package not a directory or a repository</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/pkg/patches-and-numbering/" class="astro-ojxuodky"><span class="astro-ojxuodky">What is a patch, and who assigns its number</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/pkg/the-distribution-format/" class="astro-ojxuodky"><span class="astro-ojxuodky">What is a distribution actually made of</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/pkg/how-an-install-works/" class="astro-ojxuodky"><span class="astro-ojxuodky">What does an install do to a running system</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/pkg/why-reversal-is-hard/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why can a change not simply be undone</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/pkg/reversibility-classes/" class="astro-ojxuodky"><span class="astro-ojxuodky">What can a back-out honestly promise</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/pkg/pre-images/" class="astro-ojxuodky"><span class="astro-ojxuodky">What is captured before a write, and what restores it</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/pkg/determinism/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why must the same input build byte-identical output</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/pkg/attestation/" class="astro-ojxuodky"><span class="astro-ojxuodky">What does an audit ledger prove, and what does it not</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">rpc-debug</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/concepts/rpc-debug/how-a-client-talks-to-vista/" class="astro-ojxuodky"><span class="astro-ojxuodky">How does a clinical workstation talk to the server</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/rpc-debug/what-a-remote-procedure-is/" class="astro-ojxuodky"><span class="astro-ojxuodky">What is a remote procedure here</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/rpc-debug/why-this-is-hard-to-observe/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why is there no log by default</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/rpc-debug/the-built-in-tap/" class="astro-ojxuodky"><span class="astro-ojxuodky">What does the built-in capture give me, and what does it cost</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/rpc-debug/the-durable-tap/" class="astro-ojxuodky"><span class="astro-ojxuodky">Why did full-payload capture need more than the built-in tap</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/rpc-debug/reading-a-capture/" class="astro-ojxuodky"><span class="astro-ojxuodky">What is a session, and how are records put back together</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/concepts/rpc-debug/which-tool/" class="astro-ojxuodky"><span class="astro-ojxuodky">Which capture tool answers my question</span></a></li></ul></details></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Guides</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">v</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/guides/v/" class="astro-ojxuodky"><span class="astro-ojxuodky">v — the root of every command</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">db</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/guides/db/v-db-user-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">User Guide</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/guides/db/find-what-points-at-a-table/" class="astro-ojxuodky"><span class="astro-ojxuodky">Find what points at a table</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/guides/db/count-rows-honestly/" class="astro-ojxuodky"><span class="astro-ojxuodky">Count the rows in a table, honestly</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/guides/db/look-a-record-up-by-name/" class="astro-ojxuodky"><span class="astro-ojxuodky">Look a record up by name</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/guides/db/export-for-offline-analysis/" class="astro-ojxuodky"><span class="astro-ojxuodky">Export a table for analysis elsewhere</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">pkg</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="10"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/guides/pkg/v-pkg-users-guide/" aria-current="page" class="astro-ojxuodky"><span class="astro-ojxuodky">User Guide</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/guides/pkg/preview-a-patch/" class="astro-ojxuodky"><span class="astro-ojxuodky">See exactly what a patch would do</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/guides/pkg/install-reversibly/" class="astro-ojxuodky"><span class="astro-ojxuodky">Install a patch so you can take it back out</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/guides/pkg/back-a-patch-out/" class="astro-ojxuodky"><span class="astro-ojxuodky">Take a patch back out</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">rpc-debug</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="11"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/guides/rpc-debug/v-rpc-debug-users-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">User Guide</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/guides/rpc-debug/watch-live-traffic/" class="astro-ojxuodky"><span class="astro-ojxuodky">Watch what a workstation is sending</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/guides/rpc-debug/diagnose-a-broken-connection/" class="astro-ojxuodky"><span class="astro-ojxuodky">Diagnose a client that cannot connect</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">rpc-tap</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="12"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/guides/rpc-tap/user-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">User Guide</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/guides/rpc-tap/capture-traffic-durably/" class="astro-ojxuodky"><span class="astro-ojxuodky">Capture client traffic for later analysis</span></a></li></ul></details></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Reference</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="13"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">db</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="14"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/catalog-jsonl-contract/" class="astro-ojxuodky"><span class="astro-ojxuodky">The catalog artifact — JSONL input contract</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/indexes-jsonl-contract/" class="astro-ojxuodky"><span class="astro-ojxuodky">The index-sweep artifact — JSONL input contract</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/integrity-jsonl-contract/" class="astro-ojxuodky"><span class="astro-ojxuodky">The instance-integrity artifact — JSONL input contract</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/refs-jsonl-contract/" class="astro-ojxuodky"><span class="astro-ojxuodky">The pointer-graph artifact — JSONL input contract</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/v-db-examples-appendix/" class="astro-ojxuodky"><span class="astro-ojxuodky">Examples</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/v-db-reference/" class="astro-ojxuodky"><span class="astro-ojxuodky">Command Reference</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-bundle/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db bundle</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-catalog/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db catalog</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-catalog-browse/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db catalog browse</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-catalog-build/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db catalog build</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-catalog-search/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db catalog search</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-census/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db census</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-count/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db count</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-delete/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db delete</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-distribution/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db distribution</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-edit/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db edit</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-estimate/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db estimate</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-export/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db export</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-fields-profile/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db fields-profile</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-find/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db find</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-get/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db get</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-indexes/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db indexes</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-integrity/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db integrity</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-integrity-compare/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db integrity-compare</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-integrity-report/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db integrity-report</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-packet/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db packet</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-policy/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db policy</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-put/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db put</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-refs/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db refs</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-reindex/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db reindex</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-rows/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db rows</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-schema/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db schema</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-selection/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db selection</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-selection-compile/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db selection compile</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-selection-explain/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db selection explain</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-selection-size/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db selection size</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/db/db-text/" class="astro-ojxuodky"><span class="astro-ojxuodky">v db text</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">pkg</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="15"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/v-pkg-reference/" class="astro-ojxuodky"><span class="astro-ojxuodky">Command Reference</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-adopt/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg adopt</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-assemble/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg assemble</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-attest/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg attest</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-attest-check/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg attest check</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-attest-verify/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg attest verify</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-build/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg build</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-canonicalize/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg canonicalize</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-capture/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg capture</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-classify/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg classify</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-decompose/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg decompose</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-diff/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg diff</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-export/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg export</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-install/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg install</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-lint/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg lint</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-merge/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg merge</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-parse/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg parse</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-purge/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg purge</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-restore/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg restore</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-roundtrip/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg roundtrip</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-snapshot/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg snapshot</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-uninstall/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg uninstall</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/pkg/pkg-verify/" class="astro-ojxuodky"><span class="astro-ojxuodky">v pkg verify</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">rpc-debug</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="16"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-debug/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-debug/rpc-debug-arm/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug arm</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-debug/rpc-debug-capture/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug capture</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-debug/rpc-debug-clear/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug clear</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-debug/rpc-debug-disarm/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug disarm</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-debug/rpc-debug-doctor/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug doctor</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-debug/rpc-debug-ping/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug ping</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-debug/rpc-debug-relay/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug relay</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-debug/rpc-debug-status/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug status</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-debug/rpc-debug-tail/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-debug tail</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">rpc-tap</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="17"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-tap/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-tap/reproduce-load-tests/" class="astro-ojxuodky"><span class="astro-ojxuodky">Reproduce the stress / load tests</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-tap/rpc-tap-arm/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap arm</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-tap/rpc-tap-committrim/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap committrim</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-tap/rpc-tap-disarm/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap disarm</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-tap/rpc-tap-drain/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap drain</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-tap/rpc-tap-drive/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap drive</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-tap/rpc-tap-load/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap load</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-tap/rpc-tap-splice/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap splice</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/rpc-tap/rpc-tap-status/" class="astro-ojxuodky"><span class="astro-ojxuodky">v rpc-tap status</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">v</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="18"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/reference/v/" class="astro-ojxuodky"><span class="astro-ojxuodky">v</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/v/v-discover/" class="astro-ojxuodky"><span class="astro-ojxuodky">v discover</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/v/v-menu/" class="astro-ojxuodky"><span class="astro-ojxuodky">v menu</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/v/v-new/" class="astro-ojxuodky"><span class="astro-ojxuodky">v new</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/reference/v/v-version/" class="astro-ojxuodky"><span class="astro-ojxuodky">v version</span></a></li></ul></details></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Errors</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="19"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/forge-docs/errors/db/" class="astro-ojxuodky"><span class="astro-ojxuodky">db</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/errors/pkg/" class="astro-ojxuodky"><span class="astro-ojxuodky">pkg</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/errors/rpc-debug/" class="astro-ojxuodky"><span class="astro-ojxuodky">rpc-debug</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/errors/rpc-tap/" class="astro-ojxuodky"><span class="astro-ojxuodky">rpc-tap</span></a></li><li class="astro-ojxuodky"><a href="/forge-docs/errors/v/" class="astro-ojxuodky"><span class="astro-ojxuodky">v</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/forge-docs/sources-and-coverage/" class="large astro-ojxuodky"><span class="astro-ojxuodky">Sources and coverage</span></a></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"><nav class="org-nav astro-yq4gbgkh" aria-label="Primary"><a href="https://vista-forge.github.io/#stack" class="org-nav__link astro-yq4gbgkh">Stack</a><a href="https://vista-forge.github.io/#tools" class="org-nav__link astro-yq4gbgkh">Tools</a><a href="https://vista-forge.github.io/#architecture" class="org-nav__link astro-yq4gbgkh">Architecture</a><a href="https://vista-forge.github.io/#repos" class="org-nav__link astro-yq4gbgkh">Repos</a><a href="/forge-docs/" class="org-nav__link astro-yq4gbgkh" aria-current="true">Docs</a></nav></div><button class="theme-toggle" type="button" aria-label="Switch to dark theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">On this page<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#reliability-in-numbers" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Reliability, in numbers</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#table-of-contents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Table of Contents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#1-what-kids-is-and-how-stock-vista-installs-software" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">1. What KIDS is, and how stock VistA installs software</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#2-the-real-vista-inventory--a-live-probe-of-two-production-fidelity-systems" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">2. The real VistA inventory — a live probe of two production-fidelity systems</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#3-categories-of-packages-installed-in-a-real-vista" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">3. Categories of packages installed in a real VistA</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#3a-by-function--the-vista-package-taxonomy" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">3a. By function — the VistA package taxonomy</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#3b-by-payload--what-a-build-actually-ships" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">3b. By payload — what a build actually ships</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#3c-by-reversibility--the-category-that-governs-back-out-safety" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">3c. By reversibility — the category that governs back-out safety</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#4-gap-analysis--how-the-stock-installation-process-works-and-where-it-falls-short" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">4. Gap analysis — how the stock installation process works, and where it falls short</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#5-how-v-pkg-remediates-each-gap" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">5. How v-pkg remediates each gap</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#6-setup--building-the-cli-and-connecting-to-an-engine" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">6. Setup — building the CLI and connecting to an engine</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#7-command-summary--every-verb-its-action-and-its-use-case" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">7. Command summary — every verb, its action, and its use case</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#8-core-workflows" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">8. Core workflows</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#8a-build--preview--install-the-safe-happy-path" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">8a. Build → preview → install (the safe happy path)</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#8b-back-out--class-aware-uninstall" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">8b. Back-out — class-aware uninstall</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#8c-decompose--review--reassemble-offline-version-control-friendly" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">8c. Decompose / review / reassemble (offline, version-control friendly)</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#8d-delete-at-site-and-the-component-closed-loop" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">8d. Delete-at-site and the component closed loop</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#9-install-attestation-the-audit-ledger" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">9. Install attestation (the audit ledger)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#10-exit-codes--the-machine-checkable-safety-contract" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">10. Exit codes — the machine-checkable safety contract</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#11-validation--verification--how-thoroughly-v-pkg-is-tested" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">11. Validation &amp; verification — how thoroughly v-pkg is tested</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#by-the-numbers" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">By the numbers</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-two-real-engines" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The two real engines</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#per-command-coverage" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Per-command coverage</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#intentionally-broken-patches-the-safety-demos" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Intentionally-broken patches (the safety demos)</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#what-is-not-claimed" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">What is not claimed</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#12-reference--environment-files-and-flags" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">12. Reference — environment, files, and flags</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/forge-docs/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#reliability-in-numbers" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Reliability, in numbers</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#table-of-contents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Table of Contents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#1-what-kids-is-and-how-stock-vista-installs-software" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">1. What KIDS is, and how stock VistA installs software</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#2-the-real-vista-inventory--a-live-probe-of-two-production-fidelity-systems" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">2. The real VistA inventory — a live probe of two production-fidelity systems</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#3-categories-of-packages-installed-in-a-real-vista" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">3. Categories of packages installed in a real VistA</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#3a-by-function--the-vista-package-taxonomy" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">3a. By function — the VistA package taxonomy</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#3b-by-payload--what-a-build-actually-ships" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">3b. By payload — what a build actually ships</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#3c-by-reversibility--the-category-that-governs-back-out-safety" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">3c. By reversibility — the category that governs back-out safety</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#4-gap-analysis--how-the-stock-installation-process-works-and-where-it-falls-short" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">4. Gap analysis — how the stock installation process works, and where it falls short</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#5-how-v-pkg-remediates-each-gap" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">5. How v-pkg remediates each gap</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#6-setup--building-the-cli-and-connecting-to-an-engine" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">6. Setup — building the CLI and connecting to an engine</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#7-command-summary--every-verb-its-action-and-its-use-case" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">7. Command summary — every verb, its action, and its use case</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#8-core-workflows" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">8. Core workflows</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#8a-build--preview--install-the-safe-happy-path" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">8a. Build → preview → install (the safe happy path)</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#8b-back-out--class-aware-uninstall" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">8b. Back-out — class-aware uninstall</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#8c-decompose--review--reassemble-offline-version-control-friendly" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">8c. Decompose / review / reassemble (offline, version-control friendly)</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#8d-delete-at-site-and-the-component-closed-loop" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">8d. Delete-at-site and the component closed loop</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#9-install-attestation-the-audit-ledger" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">9. Install attestation (the audit ledger)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#10-exit-codes--the-machine-checkable-safety-contract" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">10. Exit codes — the machine-checkable safety contract</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#11-validation--verification--how-thoroughly-v-pkg-is-tested" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">11. Validation &amp; verification — how thoroughly v-pkg is tested</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#by-the-numbers" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">By the numbers</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-two-real-engines" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The two real engines</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#per-command-coverage" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Per-command coverage</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#intentionally-broken-patches-the-safety-demos" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Intentionally-broken patches (the safety demos)</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#what-is-not-claimed" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">What is not claimed</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#12-reference--environment-files-and-flags" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">12. Reference — environment, files, and flags</span></a></li></ul></nav></starlight-toc><script type="module" src="/forge-docs/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="en" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">v pkg — User Guide</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><aside aria-label="Note" class="starlight-aside starlight-aside--note"><p class="starlight-aside__title" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="starlight-aside__icon"><path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z"/></svg>Note</p><div class="starlight-aside__content"><p>Hand-written, not generated — the words are v-pkg’s, from <a href="https://github.com/vista-forge/v-pkg/blob/main/docs/guides/v-pkg-users-guide.md"><code dir="auto">docs/guides/v-pkg-users-guide.md</code></a>. What this site guarantees about them is <a href="/forge-docs/sources-and-coverage/#v-pkg">coverage</a>, not correctness.</p></div></aside>
+<p><code dir="auto">v-pkg</code> is the <code dir="auto">v pkg</code> domain of the VistA developer CLI: a <strong>non-interactive,
+engine-neutral, verifiably-safe</strong> driver for the VistA/M software-distribution
+format, <strong>KIDS</strong> (Kernel Installation &amp; Distribution System). It builds, inspects,
+installs, verifies, snapshots, backs out, and <strong>attests</strong> KIDS builds against a live
+VistA engine — YottaDB <em>or</em> InterSystems IRIS — through one sanctioned transport
+seam, never a bespoke installer.</p>
+<p>This guide is in two parts. <strong>Part I — Background Research</strong> establishes, from a live
+probe of two real VistA systems and a 2,404-distribution corpus analysis, <em>what KIDS
+software actually is</em>, <em>how stock VistA installs it</em>, <em>where the stock process leaves
+gaps</em>, and <em>how v-pkg closes each gap</em>. <strong>Part II — Using v-pkg</strong> is the operational
+manual: setup, the full command summary, and the day-to-day workflows.</p>
+<blockquote>
+<p>One sentence: <strong>v-pkg installs by faithfully driving the native KIDS filer through
+its real M entry points (no bespoke installer), and adds the safety the convention
+never had — pre-flight overwrite refusal, a class-aware back-out that refuses to
+fake a reversal it cannot soundly compute, and a tamper-evident install
+attestation ledger.</strong></p>
+</blockquote>
+<blockquote>
+<div class="sl-heading-wrapper level-h3"><h3 id="reliability-in-numbers">Reliability, in numbers</h3><a class="sl-anchor-link" href="#reliability-in-numbers"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Reliability, in numbers”</span></a></div>
+<p><strong>Proven, not promised — full detail in <a href="#11-validation--verification--how-thoroughly-v-pkg-is-tested">§11 Validation &amp; verification</a>:</strong></p>
+<ul>
+<li><strong>~500 automated pass/fail assertions</strong> — <strong>222 Go test functions → 291 subtests</strong>, race-detector on, every CI push.</li>
+<li><strong>2,404 real KIDS distributions</strong> (the entire WorldVistA mirror, 157 packages) swept offline, plus <strong>14,296 routine-checksum verifications</strong>.</li>
+<li><strong>Dual-engine live gates</strong> on <strong>YottaDB <em>and</em> InterSystems IRIS</strong> — <code dir="auto">stress</code> <strong>56/56</strong>, foreign-refuse <strong>24/24</strong>, partition <strong>17/17</strong> on <em>each</em> engine.</li>
+<li><strong>Every command</strong> covered at the unit tier and exercised live; every safety feature proven against an intentionally-broken patch.</li>
+</ul>
+</blockquote>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="table-of-contents">Table of Contents</h2><a class="sl-anchor-link" href="#table-of-contents"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Table of Contents”</span></a></div>
+<p><strong>Part I — Background Research</strong></p>
+<ul>
+<li><a href="#1-what-kids-is-and-how-stock-vista-installs-software">1. What KIDS is, and how stock VistA installs software</a></li>
+<li><a href="#2-the-real-vista-inventory--a-live-probe-of-two-production-fidelity-systems">2. The real VistA inventory — a live probe of two production-fidelity systems</a></li>
+<li><a href="#3-categories-of-packages-installed-in-a-real-vista">3. Categories of packages installed in a real VistA</a></li>
+<li><a href="#4-gap-analysis--how-the-stock-installation-process-works-and-where-it-falls-short">4. Gap analysis — how the stock installation process works, and where it falls short</a></li>
+<li><a href="#5-how-v-pkg-remediates-each-gap">5. How v-pkg remediates each gap</a></li>
+</ul>
+<p><strong>Part II — Using v-pkg</strong></p>
+<ul>
+<li><a href="#6-setup--building-the-cli-and-connecting-to-an-engine">6. Setup — building the CLI and connecting to an engine</a></li>
+<li><a href="#7-command-summary--every-verb-its-action-and-its-use-case">7. Command summary — every verb, its action, and its use case</a></li>
+<li><a href="#8-core-workflows">8. Core workflows</a></li>
+<li><a href="#9-install-attestation-the-audit-ledger">9. Install attestation (the audit ledger)</a></li>
+<li><a href="#10-exit-codes--the-machine-checkable-safety-contract">10. Exit codes — the machine-checkable safety contract</a></li>
+<li><a href="#11-validation--verification--how-thoroughly-v-pkg-is-tested">11. Validation &amp; verification — how thoroughly v-pkg is tested</a></li>
+<li><a href="#12-reference--environment-files-and-flags">12. Reference — environment, files, and flags</a></li>
+</ul>
+<hr>
+<div class="sl-heading-wrapper level-h1"><h1 id="part-i--background-research">Part I — Background Research</h1><a class="sl-anchor-link" href="#part-i--background-research"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Part I — Background Research”</span></a></div>
+<div class="sl-heading-wrapper level-h2"><h2 id="1-what-kids-is-and-how-stock-vista-installs-software">1. What KIDS is, and how stock VistA installs software</h2><a class="sl-anchor-link" href="#1-what-kids-is-and-how-stock-vista-installs-software"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “1. What KIDS is, and how stock VistA installs software”</span></a></div>
+<p>VistA software ships as a <strong>KIDS distribution</strong> — a <code dir="auto">.KID</code>/<code dir="auto">.KIDS</code> text file containing
+a <em>transport global</em>: the FileMan <strong>BUILD</strong> file (<code dir="auto">#9.6</code>) serialized as
+subscript→value pairs. A build carries, at minimum, the new/changed <strong>routines</strong> (M
+program source), and may also carry FileMan <strong>components</strong> (options, RPCs, protocols,
+templates, keys, …), whole <strong>files</strong> (data dictionary and/or data), install-time
+<strong>hook routines</strong> (environment-check, pre-install, post-install), <strong>install
+questions</strong>, and <strong>required-build</strong> prerequisites.</p>
+<p>Stock installation is a <strong>three-phase, terminal-driven conversation</strong> an operator runs
+from the KIDS menu:</p>
+<ol>
+<li><strong>Load</strong> (<code dir="auto">[XPD LOAD DISTRIBUTION]</code> → <code dir="auto">EN1^XPDIL</code>) — read the host file, create an
+<strong>INSTALL</strong> record (<code dir="auto">#9.7</code>), and lay the transport global into <code dir="auto">^XTMP</code>.</li>
+<li><strong>Questions</strong> — run the environment check, then ask the standard KIDS questions plus
+any build-specific install questions.</li>
+<li><strong>Install</strong> (<code dir="auto">[XPD INSTALL BUILD]</code> → <code dir="auto">EN^XPDIJ</code>) — file every component, run the
+pre/post-install hooks, and record the result in <code dir="auto">#9.7</code> STATUS (piece 9 = <code dir="auto">3</code>,
+“Install Completed”).</li>
+</ol>
+<p>The <strong>source of truth is FileMan</strong>: <code dir="auto">#9.7</code> records <em>what installed and when</em>; the
+<strong>PACKAGE</strong> file (<code dir="auto">#9.4</code>) PATCH APPLICATION HISTORY records <em>which patch is applied</em>
+(read by <code dir="auto">$$PATCH^XPDUTL</code>). The methodology is <strong>forward-only</strong> — <em>KIDS ships no
+generic uninstall.</em> The only native rollback aid is “Backup a Transport Global,” which
+backs up <strong>routines only</strong> (not data, DD, or FileMan entries), plus a hand-written,
+per-patch back-out procedure.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="2-the-real-vista-inventory--a-live-probe-of-two-production-fidelity-systems">2. The real VistA inventory — a live probe of two production-fidelity systems</h2><a class="sl-anchor-link" href="#2-the-real-vista-inventory--a-live-probe-of-two-production-fidelity-systems"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “2. The real VistA inventory — a live probe of two production-fidelity systems”</span></a></div>
+<p>To ground this guide in reality rather than theory, the BUILD (<code dir="auto">#9.6</code>), INSTALL
+(<code dir="auto">#9.7</code>), and PACKAGE (<code dir="auto">#9.4</code>) files were probed live on <strong>two</strong> production-fidelity
+VistA systems through the v-pkg driver stack (the same engine seam the tool uses for
+every operation — <em>not</em> a raw login):</p>
+<table>
+<thead>
+<tr>
+<th>Live system</th>
+<th>Engine</th>
+<th style="text-align: right">BUILD <code dir="auto">#9.6</code> (builds present)</th>
+<th style="text-align: right">INSTALL <code dir="auto">#9.7</code> (install events)</th>
+<th style="text-align: right">PACKAGE <code dir="auto">#9.4</code> (packages)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>vehu</strong> (VistA-VEHU-M)</td>
+<td>YottaDB</td>
+<td style="text-align: right"><strong>12,955</strong></td>
+<td style="text-align: right"><strong>14,345</strong></td>
+<td style="text-align: right"><strong>470</strong></td>
+</tr>
+<tr>
+<td><strong>foia</strong> (FOIA VistA)</td>
+<td>InterSystems IRIS</td>
+<td style="text-align: right"><strong>13,829</strong></td>
+<td style="text-align: right"><strong>13,100</strong></td>
+<td style="text-align: right"><strong>157</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Reproduce (vehu shown):</p>
+<div class="expressive-code"><link rel="stylesheet" href="/forge-docs/_astro/ec.w36nc.css"><script type="module" src="/forge-docs/_astro/ec.0vx5m.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">m</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">exec</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">S U="^" W "BUILD=",$P(^XPD(9.6,0),U,4),", INSTALL=",$P(^XPD(9.7,0),U,4),", PKG=",$P(^DIC(9.4,0),U,4)</span><span style="--0:#D9F5DD;--1:#111111">'</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="m engine exec --engine ydb --transport docker \  &#x27;S U=&quot;^&quot; W &quot;BUILD=&quot;,$P(^XPD(9.6,0),U,4),&quot;, INSTALL=&quot;,$P(^XPD(9.7,0),U,4),&quot;, PKG=&quot;,$P(^DIC(9.4,0),U,4)&#x27;"><div></div></button></div></figure></div>
+<p><strong>What this tells us.</strong> A real VistA is not a handful of packages — it is the
+accumulated sediment of <strong>~13,000 KIDS builds and ~13,000–14,000 install events</strong>, the
+deposit of decades of national patches plus local modifications. The two systems differ
+revealingly: <strong>vehu</strong> carries more <em>packages</em> (470) — it is a fuller VistA with local
+and <code dir="auto">ZZ</code>-namespace software — while <strong>foia</strong> (the FOIA public release on IRIS) carries
+slightly more <em>builds</em> across far fewer (157) packages, skewing toward the national
+clinical core. Any tool that installs or backs out software on a system of this scale
+must be <strong>non-interactive, idempotent, and refuse-by-default</strong> — there is no operator
+who can babysit 13,000 menu conversations.</p>
+<blockquote>
+<p>The 12,955 vehu builds are the same population the companion analysis
+<a href="https://github.com/vista-forge/v-pkg/blob/main/docs/design/kids-convention-vs-v-pkg.md"><code dir="auto">kids-convention-vs-v-pkg.md</code></a> classifies;
+the live re-probe here confirms that headline count from the current engine.</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="3-categories-of-packages-installed-in-a-real-vista">3. Categories of packages installed in a real VistA</h2><a class="sl-anchor-link" href="#3-categories-of-packages-installed-in-a-real-vista"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “3. Categories of packages installed in a real VistA”</span></a></div>
+<p>“Category” has three useful axes for a real VistA. All three matter for installation
+safety.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="3a-by-function--the-vista-package-taxonomy">3a. By function — the VistA package taxonomy</h3><a class="sl-anchor-link" href="#3a-by-function--the-vista-package-taxonomy"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “3a. By function — the VistA package taxonomy”</span></a></div>
+<p>The 157–470 packages in the <code dir="auto">#9.4</code> PACKAGE file span the standard VistA functional
+tiers. Representative members (namespace in parentheses):</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Representative packages (namespace)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Infrastructure / Kernel</strong></td>
+<td>Kernel (<code dir="auto">XU</code>), FileMan (<code dir="auto">DI</code>), MailMan (<code dir="auto">XM</code>), RPC Broker (<code dir="auto">XWB</code>), Task Manager (<code dir="auto">XUT</code>), Health Level Seven (<code dir="auto">HL</code>), Toolkit (<code dir="auto">XT</code>)</td>
+</tr>
+<tr>
+<td><strong>Patient administration</strong></td>
+<td>Registration/ADT (<code dir="auto">DG</code>), Scheduling (<code dir="auto">SD</code>), PIMS, Master Patient Index (<code dir="auto">MPI</code>)</td>
+</tr>
+<tr>
+<td><strong>Clinical documentation / order entry</strong></td>
+<td>CPRS/Order Entry (<code dir="auto">OR</code>), Text Integration Utilities (<code dir="auto">TIU</code>), Consult/Request Tracking (<code dir="auto">GMRC</code>), Vitals (<code dir="auto">GMRV</code>), Health Summary (<code dir="auto">GMTS</code>), Clinical Reminders (<code dir="auto">PXRM</code>), PCE (<code dir="auto">PX</code>)</td>
+</tr>
+<tr>
+<td><strong>Clinical ancillaries</strong></td>
+<td>Laboratory (<code dir="auto">LR</code>), Pharmacy — Outpatient (<code dir="auto">PSO</code>) / Inpatient (<code dir="auto">PSJ</code>) / Data (<code dir="auto">PSS</code>) / ECME (<code dir="auto">BPS</code>), Radiology (<code dir="auto">RA</code>), Surgery (<code dir="auto">SR</code>)</td>
+</tr>
+<tr>
+<td><strong>Financial / administrative</strong></td>
+<td>Integrated Billing (<code dir="auto">IB</code>), Accounts Receivable (<code dir="auto">PRCA</code>), Fee Basis (<code dir="auto">FB</code>)</td>
+</tr>
+<tr>
+<td><strong>Decision support / interfaces</strong></td>
+<td>VPR (<code dir="auto">VPR</code>), Web services (<code dir="auto">WEBP</code>), Terminology, HL7 messaging (<code dir="auto">HL</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>A package is a <strong>namespace owner</strong>, not a build: one package (e.g. Kernel) accounts for
+<em>hundreds</em> of the 12,955 builds — every <code dir="auto">XU*8.0*NNN</code> patch is one build under the
+Kernel package. This is why the build count dwarfs the package count.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="3b-by-payload--what-a-build-actually-ships">3b. By payload — what a build actually ships</h3><a class="sl-anchor-link" href="#3b-by-payload--what-a-build-actually-ships"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “3b. By payload — what a build actually ships”</span></a></div>
+<p>A static parse of <strong>2,404 WorldVistA <code dir="auto">.KID</code> distributions</strong> (157 packages,
+<strong>14,288 routine instances</strong>;
+<a href="https://github.com/vista-forge/v-pkg/blob/main/docs/design/kids-corpus-findings.md"><code dir="auto">kids-corpus-findings.md</code></a>) categorizes builds by
+their transport-global node forms:</p>
+<table>
+<thead>
+<tr>
+<th>What the build ships / does</th>
+<th style="text-align: right">Distributions</th>
+<th style="text-align: right">%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ship ≥ 1 routine</td>
+<td style="text-align: right">2,343</td>
+<td style="text-align: right"><strong>97%</strong></td>
+</tr>
+<tr>
+<td><strong>Routines ONLY</strong> — no install code, no entries, no DD/data</td>
+<td style="text-align: right"><strong>674</strong></td>
+<td style="text-align: right"><strong>28%</strong></td>
+</tr>
+<tr>
+<td><strong>Side-effecting</strong> — install code and/or FileMan entries and/or DD/data</td>
+<td style="text-align: right"><strong>1,730</strong></td>
+<td style="text-align: right"><strong>72%</strong></td>
+</tr>
+<tr>
+<td>Ship install-time CODE (Env-Check / Pre / Post)</td>
+<td style="text-align: right">1,235</td>
+<td style="text-align: right">51%</td>
+</tr>
+<tr>
+<td>Ship non-routine FileMan entries (options/RPCs/protocols/keys/…)</td>
+<td style="text-align: right">1,206</td>
+<td style="text-align: right">50%</td>
+</tr>
+<tr>
+<td>Ship a FileMan FILE (DD and/or data)</td>
+<td style="text-align: right">579</td>
+<td style="text-align: right">24%</td>
+</tr>
+<tr>
+<td>Declare a real required-build dependency</td>
+<td style="text-align: right">1,890</td>
+<td style="text-align: right">79%</td>
+</tr>
+<tr>
+<td>Multi-build distribution (&gt; 1 install name)</td>
+<td style="text-align: right">88</td>
+<td style="text-align: right">3.66%</td>
+</tr>
+</tbody>
+</table>
+<p>The non-routine <strong>component types</strong> shipped, by distribution count:</p>
+<table>
+<thead>
+<tr>
+<th>File #</th>
+<th>Component</th>
+<th style="text-align: right">%</th>
+<th>File #</th>
+<th>Component</th>
+<th style="text-align: right">%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9.8</td>
+<td>ROUTINE</td>
+<td style="text-align: right">95%</td>
+<td>.401</td>
+<td>SORT TEMPLATE</td>
+<td style="text-align: right">5%</td>
+</tr>
+<tr>
+<td>19</td>
+<td>OPTION</td>
+<td style="text-align: right"><strong>39%</strong></td>
+<td>3.8</td>
+<td>MAIL GROUP</td>
+<td style="text-align: right">4%</td>
+</tr>
+<tr>
+<td>.4</td>
+<td>PRINT TEMPLATE</td>
+<td style="text-align: right">20%</td>
+<td>870</td>
+<td>HL LOGICAL LINK</td>
+<td style="text-align: right">4%</td>
+</tr>
+<tr>
+<td>19.1</td>
+<td>SECURITY KEY</td>
+<td style="text-align: right">20%</td>
+<td>.403</td>
+<td>FORM</td>
+<td style="text-align: right">3%</td>
+</tr>
+<tr>
+<td>101</td>
+<td>PROTOCOL</td>
+<td style="text-align: right">18%</td>
+<td>8989.52</td>
+<td>PARAMETER TEMPLATE</td>
+<td style="text-align: right">3%</td>
+</tr>
+<tr>
+<td>.402</td>
+<td>INPUT TEMPLATE</td>
+<td style="text-align: right">10%</td>
+<td>779.2</td>
+<td>HLO APPLICATION</td>
+<td style="text-align: right">2%</td>
+</tr>
+<tr>
+<td>8994</td>
+<td>REMOTE PROCEDURE (RPC)</td>
+<td style="text-align: right">9%</td>
+<td>9.2</td>
+<td>HELP FRAME</td>
+<td style="text-align: right">2%</td>
+</tr>
+<tr>
+<td>409.61</td>
+<td>LIST TEMPLATE</td>
+<td style="text-align: right">8%</td>
+<td>.84</td>
+<td>DIALOG</td>
+<td style="text-align: right">2%</td>
+</tr>
+<tr>
+<td>8989.51</td>
+<td>PARAMETER DEFINITION</td>
+<td style="text-align: right">7%</td>
+<td>3.6</td>
+<td>BULLETIN</td>
+<td style="text-align: right">2%</td>
+</tr>
+<tr>
+<td>771</td>
+<td>HL7 APPLICATION</td>
+<td style="text-align: right">5%</td>
+<td>.5</td>
+<td>FUNCTION</td>
+<td style="text-align: right">1%</td>
+</tr>
+</tbody>
+</table>
+<p>Each non-routine row is a <strong>data write into a FileMan file that stock uninstall does
+not reverse.</strong> Installing an OPTION (#19) or a PARAMETER DEFINITION (#8989.51) leaves a
+permanent row; restoring a routine pre-image does nothing for it.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="3c-by-reversibility--the-category-that-governs-back-out-safety">3c. By reversibility — the category that governs back-out safety</h3><a class="sl-anchor-link" href="#3c-by-reversibility--the-category-that-governs-back-out-safety"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “3c. By reversibility — the category that governs back-out safety”</span></a></div>
+<p>Projecting the payload categories onto the question <em>“can this be undone by restoring a
+pre-image?”</em> yields two reversibility classes — and the headline finding, robust across
+<strong>both</strong> independent corpora (the 12,955 vehu installed set <em>and</em> the 2,404 WorldVistA
+on-disk set):</p>
+<blockquote>
+<p><strong>The pure-overwrite, snapshot/restore-reversible class is a <em>minority</em> (≈ a third —
+28–39%). The majority of real builds (61–72%) are <em>side-effecting</em> and have no
+generic inverse.</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Reversibility class</th>
+<th style="text-align: right">vehu installed (n=12,955)</th>
+<th style="text-align: right">WorldVistA on-disk (n=2,404)</th>
+<th>Can a routine-pre-image restore undo it?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pure overwrite</strong> (routines only, no hooks/entries/DD)</td>
+<td style="text-align: right">38.9%</td>
+<td style="text-align: right">28%</td>
+<td><strong>Yes — complete undo</strong></td>
+</tr>
+<tr>
+<td><strong>Side-effecting</strong> (install code, entries, or DD/data)</td>
+<td style="text-align: right">61.1%</td>
+<td style="text-align: right">72%</td>
+<td><strong>No — orphans data/side-effects</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>install hook is the silent reversibility killer</strong>: a build that ships only
+routines is “pure” until you notice it also carries a post-install routine (37.1% of
+vehu builds do) that may have re-indexed a file or queued a job. v-pkg’s classifier
+keys exactly on this: <code dir="auto">SideEffecting if (install-code OR FileMan-entries OR DD/data)</code>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="4-gap-analysis--how-the-stock-installation-process-works-and-where-it-falls-short">4. Gap analysis — how the stock installation process works, and where it falls short</h2><a class="sl-anchor-link" href="#4-gap-analysis--how-the-stock-installation-process-works-and-where-it-falls-short"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “4. Gap analysis — how the stock installation process works, and where it falls short”</span></a></div>
+<p>Stock KIDS is a sound <em>forward</em> mechanism, but it was built for an operator at a
+terminal and leaves several gaps that matter for modern CI/CD, automation, and
+auditable safety:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Gap in the stock process</th>
+<th>Why it bites</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>G1</strong></td>
+<td><strong>Interactive only.</strong> Install is a multi-prompt menu conversation (<code dir="auto">EN1^XPDIL</code> host-file load can’t be fed over a stdin-less pipe).</td>
+<td>Un-automatable; no CI, no agent, no scripted rollout across 13,000-build systems.</td>
+</tr>
+<tr>
+<td><strong>G2</strong></td>
+<td><strong>Silent overwrite.</strong> Native install overwrites a resident (national) routine unconditionally, with no pre-image kept.</td>
+<td>A patch can clobber code you can never get back — with no warning and no record.</td>
+</tr>
+<tr>
+<td><strong>G3</strong></td>
+<td><strong>No generic uninstall.</strong> KIDS ships <em>no</em> back-out; the answer is a hand-written, per-patch DIBR procedure.</td>
+<td>Every rollback is bespoke, manual, and error-prone — and most are never written.</td>
+</tr>
+<tr>
+<td><strong>G4</strong></td>
+<td><strong>Backup covers routines only, silently.</strong> “Backup a Transport Global” captures routines and <em>says nothing</em> about the DD, data, and FileMan entries it omits.</td>
+<td>A backup that looks complete but silently isn’t — restoring it after a side-effecting patch leaves orphaned data.</td>
+</tr>
+<tr>
+<td><strong>G5</strong></td>
+<td><strong>No machine-checkable refusal.</strong> Safety depended on an operator <em>not</em> running a dangerous step.</td>
+<td>No exit code, no gate — automation has nothing to test against.</td>
+</tr>
+<tr>
+<td><strong>G6</strong></td>
+<td><strong>No pre-install preview.</strong> “Compare Transport Global to Current System” exists but is an interactive, eyes-on step.</td>
+<td>You can’t programmatically assert “this install changes exactly these N routines and nothing else” before committing.</td>
+</tr>
+<tr>
+<td><strong>G7</strong></td>
+<td><strong>Half-install corruption.</strong> An aborted install can leave a <code dir="auto">#9.7</code> entry with a <code dir="auto">"B"</code> cross-reference but no usable <code dir="auto">0</code>-node; the re-install guard then falsely reports “already installed.”</td>
+<td>A package gets wedged — neither installed nor re-installable — with no native repair.</td>
+</tr>
+<tr>
+<td><strong>G8</strong></td>
+<td><strong>Checksums are an optional, eyes-on step.</strong> “Verify Checksums in Transport Global” is a menu option an operator may skip.</td>
+<td>Transit corruption or tampering of routine source can slip through.</td>
+</tr>
+<tr>
+<td><strong>G9</strong></td>
+<td><strong>No provenance.</strong> “It installed” is a STATUS code in <code dir="auto">#9.7</code>; there is no portable, tamper-evident, offline-auditable record of <em>what changed on the engine.</em></td>
+<td>No third-party-verifiable audit trail — you cannot prove, later and off-system, what an install actually did.</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="5-how-v-pkg-remediates-each-gap">5. How v-pkg remediates each gap</h2><a class="sl-anchor-link" href="#5-how-v-pkg-remediates-each-gap"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “5. How v-pkg remediates each gap”</span></a></div>
+<p>v-pkg’s design is the <strong>faithful machine reading</strong> of the convention: its <em>install</em> is
+automation <strong>of</strong> the native filer (same <code dir="auto">EN^XPDIJ</code>, same files, every parameter
+honored — <strong>no bespoke installer</strong>), and its <em>uninstall</em> and <em>attestation</em> are the
+missing halves, built honestly. The gaps above map one-to-one onto remediations, most
+delivered through the four-increment <strong>verifiable-safety</strong> hardening effort
+(completed 2026-06-30):</p>
+<table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>Remediation in v-pkg</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>G1</strong> Interactive only</td>
+<td><strong>Non-interactive, idempotent install</strong> over the driver: stage the transport global into <code dir="auto">^XTMP</code> in size-bounded chunks, then call the <em>same</em> <code dir="auto">EN^XPDIJ</code> the menu would, in one engine process. <code dir="auto">--answer NAME=VALUE</code> pre-answers install questions through the real <code dir="auto">$$ANSWER^XPDIQ</code>.</td>
+<td><code dir="auto">install</code></td>
+</tr>
+<tr>
+<td><strong>G2</strong> Silent overwrite</td>
+<td><strong>Pre-flight overwrite refusal.</strong> v-pkg probes which target routines already exist and <strong>refuses (exit 4)</strong> to clobber a national routine unless you pass <code dir="auto">--snapshot</code>/<code dir="auto">--auto-snapshot</code> (capture a pre-image first) or <code dir="auto">--allow-overwrite</code> (explicit, recorded).</td>
+<td><code dir="auto">install</code> <code dir="auto">decideInstall</code></td>
+</tr>
+<tr>
+<td><strong>G3</strong> No uninstall</td>
+<td><strong>Class-aware back-out.</strong> <code dir="auto">uninstall</code> types each build’s reversibility from the <code dir="auto">.KID</code> and chooses: <code dir="auto">restore</code> a pre-image, install an authored <code dir="auto">--backout</code>, <code dir="auto">delete</code> (greenfield only), <code dir="auto">partition</code> (restore-foreign-then-delete-greenfield), or <strong>refuse</strong>.</td>
+<td><code dir="auto">uninstall</code> (increment #1: all standard FileMan component types)</td>
+</tr>
+<tr>
+<td><strong>G4</strong> Silent partial backup</td>
+<td><strong>Typed snapshot with an honest <code dir="auto">completeUndo</code> flag.</strong> <code dir="auto">snapshot</code>/<code dir="auto">--auto-snapshot</code> captures the live routine pre-image and marks it a complete undo <em>only</em> when the build is pure-overwrite with no greenfield adds and no non-routine components — otherwise it itemizes the <code dir="auto">uncaptured</code> components an authored back-out must cover.</td>
+<td><code dir="auto">snapshot</code>, <code dir="auto">restore</code></td>
+</tr>
+<tr>
+<td><strong>G5</strong> No refusal contract</td>
+<td><strong>Exit-coded safety boundary.</strong> Exit <code dir="auto">4</code> = <em>Refused</em> is the codification of “do not perform an irreversible mutation you cannot honestly undo.” Gates assert it on vehu + foia.</td>
+<td>all live verbs</td>
+</tr>
+<tr>
+<td><strong>G6</strong> No preview</td>
+<td><strong>Preview by default</strong> (increment #2; polarity flipped by v-surface-hardening 0.1). A bare <code dir="auto">install</code> / <code dir="auto">diff &lt;kid&gt;</code> previews the install against the live engine — per-routine NEW/CHANGED/identical and per-component would-add/would-change/identical — staging nothing, reaching <code dir="auto">EN^XPDIJ</code> never, exit 0 always. <code dir="auto">install --commit</code> actuates.</td>
+<td><code dir="auto">diff</code>, bare <code dir="auto">install</code></td>
+</tr>
+<tr>
+<td><strong>G7</strong> Half-install wedge</td>
+<td><strong><code dir="auto">install --heal</code></strong> (increment #3a) detects a <em>proven-corrupt</em> <code dir="auto">#9.7</code> entry (a <code dir="auto">"B"</code> xref but no usable <code dir="auto">0</code>-node) and purges it by IEN before reinstalling — never touching a healthy install.</td>
+<td><code dir="auto">install --heal</code></td>
+</tr>
+<tr>
+<td><strong>G8</strong> Optional checksums</td>
+<td><strong>Transport-checksum verify</strong> (increment #3b). v-pkg recomputes each routine’s line-2-blind <code dir="auto">B</code> checksum vs the <code dir="auto">.KID</code>’s stored value. Default = <strong>warn</strong> (≈1.6% of real national patches are “born self-inconsistent”); <code dir="auto">--verify-checksums</code> makes it a hard pre-connect refuse. Plus <strong>sidecar-integrity</strong> (#3c): a snapshot is content-hashed so a tampered pre-image is refused on restore (<code dir="auto">SIDECAR_TAMPERED</code>).</td>
+<td><code dir="auto">install --verify-checksums</code>, <code dir="auto">restore</code>/<code dir="auto">uninstall</code></td>
+</tr>
+<tr>
+<td><strong>G9</strong> No provenance</td>
+<td><strong>Install attestation</strong> (increment #4). Every engine-mutating op appends a tamper-EVIDENT record (op, before/after routine checksums, components, snapshot ref, status, …) to a host-side append-only ledger, chained by <code dir="auto">prevHash</code> (always) and optionally <strong>ed25519-signed</strong> (<code dir="auto">--sign</code>). <code dir="auto">attest verify</code> validates the chain + signatures and can <strong>replay</strong> the recorded after-state against the live engine.</td>
+<td><code dir="auto">install</code>/<code dir="auto">uninstall</code>/<code dir="auto">restore</code> (default-on), <code dir="auto">attest verify</code></td>
+</tr>
+</tbody>
+</table>
+<p>The throughline: <strong>where the convention trusted an operator not to do the dangerous
+thing, v-pkg makes the dangerous thing unrepresentable</strong> — and where the convention left
+no record, v-pkg leaves a verifiable one. Full mechanism and parameter-by-parameter
+mapping: <a href="https://github.com/vista-forge/v-pkg/blob/main/docs/design/kids-convention-vs-v-pkg.md"><code dir="auto">kids-convention-vs-v-pkg.md</code></a>.</p>
+<hr>
+<div class="sl-heading-wrapper level-h1"><h1 id="part-ii--using-v-pkg">Part II — Using v-pkg</h1><a class="sl-anchor-link" href="#part-ii--using-v-pkg"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Part II — Using v-pkg”</span></a></div>
+<div class="sl-heading-wrapper level-h2"><h2 id="6-setup--building-the-cli-and-connecting-to-an-engine">6. Setup — building the CLI and connecting to an engine</h2><a class="sl-anchor-link" href="#6-setup--building-the-cli-and-connecting-to-an-engine"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “6. Setup — building the CLI and connecting to an engine”</span></a></div>
+<p><code dir="auto">v-pkg</code> is a single static Go binary (also mountable as <code dir="auto">v pkg &lt;verb&gt;</code> under the <code dir="auto">v</code>
+umbrella). Build it:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">cd</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">~/vista-forge/v-pkg</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">build</span><span style="--0:#D6DEEB;--1:#403F53">           </span><span style="--0:#919F9F;--1:#5F636F"># → dist/v-pkg</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="cd ~/vista-forge/v-pkgmake build           # → dist/v-pkg"><div></div></button></div></figure></div>
+<p><strong>Engine access is through the driver stack only</strong> — v-pkg never shells into a
+container or runs a raw M interpreter. Every live verb takes <code dir="auto">--engine ydb|iris</code> and
+<code dir="auto">--transport local|docker|remote</code>; the connection details (container, base URL,
+credentials) are read by the driver from its <code dir="auto">M_&lt;ENGINE&gt;_*</code> environment, so they never
+appear on the command line. For the local YDB engine (vehu):</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">export</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">M_YDB_BIN</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53">../</span><span style="--0:#C5E478;--1:#3B61B0">m-ydb</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">dist</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">m-ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">M_YDB_CONTAINER</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#C5E478;--1:#3B61B0">vehu</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">M_YDB_TRANSPORT</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#C5E478;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> \</span></div></div><div class="ec-line"><div class="code"><span class="indent">       </span><span style="--0:#C5E478;--1:#3B61B0">M_YDB_DIST</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">home</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">vehu</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">lib</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">gtm</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">M_YDB_GBLDIR</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">home</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">vehu</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">g</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">vehu</span><span style="--0:#D6DEEB;--1:#403F53">.</span><span style="--0:#C5E478;--1:#3B61B0">gld</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">M_YDB_ROUTINES</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">home</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">vehu</span><span style="--0:#D6DEEB;--1:#403F53">/</span><span style="--0:#C5E478;--1:#3B61B0">r</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="export M_YDB_BIN=../m-ydb/dist/m-ydb M_YDB_CONTAINER=vehu M_YDB_TRANSPORT=docker \       M_YDB_DIST=/home/vehu/lib/gtm M_YDB_GBLDIR=/home/vehu/g/vehu.gld M_YDB_ROUTINES=/home/vehu/r"><div></div></button></div></figure></div>
+<p>For IRIS (foia) the driver reads <code dir="auto">M_IRIS_BASE_URL</code> / <code dir="auto">_NAMESPACE</code> / <code dir="auto">_USER</code> /
+<code dir="auto">_PASSWORD</code> (loaded from <code dir="auto">~/data/vista-forge/auth.env</code> via direnv). Add
+<code dir="auto">--output json</code> to any verb for machine-readable output.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="7-command-summary--every-verb-its-action-and-its-use-case">7. Command summary — every verb, its action, and its use case</h2><a class="sl-anchor-link" href="#7-command-summary--every-verb-its-action-and-its-use-case"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “7. Command summary — every verb, its action, and its use case”</span></a></div>
+<p><code dir="auto">v pkg</code> has two families: <strong>offline</strong> verbs (pure <code dir="auto">.KID</code> manipulation, no engine) and
+<strong>live</strong> verbs (drive a real engine through the driver). Live verbs require
+<code dir="auto">--engine</code>/<code dir="auto">--transport</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th style="text-align: center">Engine?</th>
+<th>Action</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">build &lt;spec&gt;</code></td>
+<td style="text-align: center">no</td>
+<td>Build a deterministic, normalized <code dir="auto">.KID</code> from a declarative build spec (<code dir="auto">--src</code>, <code dir="auto">--out</code>). Authorable components: routines, FileMan FILEs (DD+data), options, security keys, protocols, RPCs, mail groups, list templates, help frames, HL7/HLO applications, logical links, parameter definitions, <strong>bulletins</strong>, and captured template-family images.</td>
+<td>Author a KIDS distribution from versioned source instead of a manual KIDS build.</td>
+</tr>
+<tr>
+<td><code dir="auto">parse &lt;kid&gt;</code></td>
+<td style="text-align: center">no</td>
+<td>Summarize a <code dir="auto">.KID</code>’s builds and section counts.</td>
+<td>Quick inspection of an unknown distribution.</td>
+</tr>
+<tr>
+<td><code dir="auto">classify &lt;kid&gt;</code></td>
+<td style="text-align: center">no</td>
+<td>Derive the reversibility class (pure-overwrite vs side-effecting) from structure alone.</td>
+<td>Know <em>before</em> touching an engine whether a clean back-out is even possible.</td>
+</tr>
+<tr>
+<td><code dir="auto">lint &lt;kid&gt;</code></td>
+<td style="text-align: center">no</td>
+<td>Run the PIKS data-class gate (<code dir="auto">--piks</code>, <code dir="auto">--strict</code>); exit 3 on a blocked file.</td>
+<td>Refuse to version Patient/Institution-class operational data.</td>
+</tr>
+<tr>
+<td><code dir="auto">decompose &lt;kid&gt; &lt;dir&gt;</code></td>
+<td style="text-align: center">no</td>
+<td>Split a <code dir="auto">.KID</code> into a per-component <code dir="auto">KIDComponents/</code> tree.</td>
+<td>Diff/review a distribution component-by-component; put it under source control.</td>
+</tr>
+<tr>
+<td><code dir="auto">assemble &lt;dir&gt; &lt;kid&gt;</code></td>
+<td style="text-align: center">no</td>
+<td>Reassemble a component tree back into a <code dir="auto">.KID</code>.</td>
+<td>Rebuild a distribution after editing the decomposed tree.</td>
+</tr>
+<tr>
+<td><code dir="auto">roundtrip &lt;kid&gt;</code></td>
+<td style="text-align: center">no</td>
+<td>Verify decompose→assemble reproduces the build byte-for-byte (exit 3 on drift).</td>
+<td>Prove a decompose/assemble cycle is lossless before trusting it.</td>
+</tr>
+<tr>
+<td><code dir="auto">canonicalize &lt;dir&gt;</code></td>
+<td style="text-align: center">no</td>
+<td>Substitute install-time IENs with <code dir="auto">"IEN"</code> in a tree (LOSSY; review-only).</td>
+<td>Compare two distributions ignoring site-specific record numbers.</td>
+</tr>
+<tr>
+<td><code dir="auto">merge &lt;base&gt; &lt;ours&gt; &lt;theirs&gt;</code></td>
+<td style="text-align: center">no</td>
+<td>Entry-level 3-way merge of ZWR component files (exit 3 on conflict).</td>
+<td>The git merge driver for decomposed trees under version control.</td>
+</tr>
+<tr>
+<td><code dir="auto">diff &lt;kid&gt;</code></td>
+<td style="text-align: center"><strong>yes</strong></td>
+<td>Read-only preview vs the live engine: per-artifact NEW/CHANGED/identical (exit 0 always).</td>
+<td>Pre-flight “what would this install change?” without mutating anything.</td>
+</tr>
+<tr>
+<td><code dir="auto">install &lt;kid&gt;</code></td>
+<td style="text-align: center"><strong>yes</strong></td>
+<td>Install a built <code dir="auto">.KID</code> (non-interactive native KIDS load+install).</td>
+<td>The core operation — file a distribution onto a live engine, safely.</td>
+</tr>
+<tr>
+<td><code dir="auto">verify &lt;kid&gt;</code></td>
+<td style="text-align: center"><strong>yes</strong></td>
+<td>Confirm an install: <code dir="auto">#9.7</code> status, per-routine presence, per-component presence <strong>and content</strong> (volatile-masked 0-node compare), <strong>delete-at-site records asserted ABSENT</strong>, plus <code dir="auto">--drift</code>.</td>
+<td>Prove a distribution is fully installed and still applied — including that its shipped deletions actually happened.</td>
+</tr>
+<tr>
+<td><code dir="auto">snapshot &lt;kid&gt; &lt;out&gt;</code></td>
+<td style="text-align: center"><strong>yes</strong></td>
+<td>Capture the live pre-image of everything the patch would overwrite or delete — routines <strong>and component records (verbatim)</strong> — into a restorable <code dir="auto">.KID</code> (<code dir="auto">--name</code>).</td>
+<td>Make a patch’s overwrites/deletions reversible before installing it; the honesty report itemizes anything uncapturable.</td>
+</tr>
+<tr>
+<td><code dir="auto">restore &lt;kid&gt;</code></td>
+<td style="text-align: center"><strong>yes</strong></td>
+<td>Re-apply a pre-image snapshot (preview by default; <code dir="auto">--commit</code> installs).</td>
+<td>Revert overwritten routines to their captured pre-patch source.</td>
+</tr>
+<tr>
+<td><code dir="auto">uninstall &lt;kid&gt;</code></td>
+<td style="text-align: center"><strong>yes</strong></td>
+<td>Class-aware back-out: partitioned <strong>restore-first</strong> (pre-imaged routines <em>and</em> component records re-filed, greenfield adds deleted) + <code dir="auto">#9.7</code>/<code dir="auto">#9.6</code> cleanup.</td>
+<td>Remove a distribution — safely, refusing what it cannot soundly reverse and never deleting what it cannot restore.</td>
+</tr>
+<tr>
+<td><code dir="auto">capture --type T --name N</code></td>
+<td style="text-align: center"><strong>yes</strong></td>
+<td>Read ONE live compiled-FileMan record (input/print/sort template, form+blocks, dialog) into a committed JSON sidecar (read-only; PIKS-gated).</td>
+<td>Author the compiled template family from a live specimen — the only authoring verb that touches an engine.</td>
+</tr>
+<tr>
+<td><code dir="auto">export &lt;name&gt;</code></td>
+<td style="text-align: center"><strong>yes</strong></td>
+<td>Export an installed build off a live engine into a package source tree + rebuilt <code dir="auto">.KID</code> (read-only).</td>
+<td>Engine→git: recover versionable source for a build that exists only on an engine.</td>
+</tr>
+<tr>
+<td><code dir="auto">attest verify &lt;ledger&gt;</code></td>
+<td style="text-align: center">optional</td>
+<td>Validate the attestation ledger’s hash chain (+ <code dir="auto">--trust</code> signatures); <code dir="auto">--replay</code> against the live engine.</td>
+<td>Audit, off-system, exactly what a sequence of installs/back-outs did — and prove it untampered.</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="8-core-workflows">8. Core workflows</h2><a class="sl-anchor-link" href="#8-core-workflows"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “8. Core workflows”</span></a></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="8a-build--preview--install-the-safe-happy-path">8a. Build → preview → install (the safe happy path)</h3><a class="sl-anchor-link" href="#8a-build--preview--install-the-safe-happy-path"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “8a. Build → preview → install (the safe happy path)”</span></a></div>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 1. Build a deterministic .KID from a spec</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">build</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">mypkg/kids/MYPKG.build.json</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--src</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">mypkg/src</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--out</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.KID</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 2. (offline) Know the reversibility class up front</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">classify</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.KID</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 3. (read-only) Preview the exact effect on the live engine — mutates nothing</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">diff</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53">        </span><span style="--0:#919F9F;--1:#5F636F"># NEW/CHANGED/identical per artifact</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 4. Install. If it would overwrite existing routines, capture a pre-image first:</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">install</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--auto-snapshot</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--commit</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">#    (writes the pre-image sidecar MYPKG.preimage.kids and, by default, the</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">#     attestation ledger MYPKG.attest.jsonl)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 5. Confirm the install</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">verify</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--drift</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="v pkg build mypkg/kids/MYPKG.build.json --src mypkg/src --out MYPKG.KIDv pkg classify MYPKG.KIDv pkg diff MYPKG.KID --engine ydb --transport docker        # NEW/CHANGED/identical per artifactv pkg install MYPKG.KID --engine ydb --transport docker --auto-snapshot --commitv pkg verify MYPKG.KID --engine ydb --transport docker --drift"><div></div></button></div></figure></div>
+<p><code dir="auto">install</code> <strong>refuses (exit 4)</strong> to clobber an existing national routine <strong>or a live
+component record</strong> (a shipped SEND entry purges any existing version; a DELETE-AT-SITE
+entry removes one) unless you give it <code dir="auto">--auto-snapshot</code>/<code dir="auto">--snapshot &lt;out&gt;</code> (the safe
+path — enables a later restore) or <code dir="auto">--allow-overwrite</code> (explicit, no pre-image). The
+pre-image sidecar embeds the overwritten/deleted <strong>component records VERBATIM</strong>
+alongside the routine sources, so restore stays a plain install-of-the-pre-image. A
+component name that is ambiguous on the live engine (multiple same-named records)
+refuses <code dir="auto">AMBIGUOUS_COMPONENT</code> rather than guessing. Other useful install flags:
+<code dir="auto">--register-package "NAME"</code> (stamp the <code dir="auto">#9.4</code> footprint so <code dir="auto">$$PATCH^XPDUTL</code> is honest),
+<code dir="auto">--heal</code> (purge a corrupt half-install first), <code dir="auto">--verify-checksums</code> (hard checksum
+gate), <code dir="auto">--answer NAME=VALUE</code> (pre-answer an install question). A bare <code dir="auto">install</code> previews
+and stops (same plan as <code dir="auto">diff</code>); only <code dir="auto">--commit</code> actuates.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="8b-back-out--class-aware-uninstall">8b. Back-out — class-aware uninstall</h3><a class="sl-anchor-link" href="#8b-back-out--class-aware-uninstall"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “8b. Back-out — class-aware uninstall”</span></a></div>
+<p>The right back-out depends on the build’s reversibility class, which <code dir="auto">uninstall</code> decides
+from the <code dir="auto">.KID</code>:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Pure-overwrite patch with a captured sidecar → clean restore of the pre-image:</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">uninstall</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--verify</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">#   (auto-detects MYPKG.preimage.kids; --verify confirms the live routines match)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Side-effecting patch → uninstall REFUSES (exit 4) unless you provide a reversal:</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">uninstall</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">SIDEFX.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">#   → refused: "provide --backout &lt;authored inverse&gt; or --restore &lt;pre-image&gt;, or --force"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Authored inverse for a side-effecting patch:</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">uninstall</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">SIDEFX.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--backout</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">SIDEFX-backout.KID</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Also clear the #9.4 patch-history footprint (symmetric to --register-package):</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">uninstall</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--deregister</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="v pkg uninstall MYPKG.KID --engine ydb --transport docker --verifyv pkg uninstall SIDEFX.KID --engine ydb --transport dockerv pkg uninstall SIDEFX.KID --engine ydb --transport docker --backout SIDEFX-backout.KIDv pkg uninstall MYPKG.KID --engine ydb --transport docker --deregister"><div></div></button></div></figure></div>
+<p>With a pre-image in play, the back-out is <strong>partitioned and restore-first</strong>: records
+the pre-image captured (overwritten or deleted at install) are re-filed by the
+pre-image install, and only the <strong>greenfield</strong> adds — routines <em>and</em> component records
+the site never had — are deleted afterwards. The report itemizes
+<code dir="auto">restoredComponents</code> / <code dir="auto">deletedComponents</code>.</p>
+<p><code dir="auto">--force</code> overrides a refusal (deletes routines anyway, leaving any declared-foreign
+overwrite in place rather than bricking it) — use it only when you accept that
+install-time data/side-effects will be orphaned. Even under <code dir="auto">--force</code>, records the
+<strong>attestation ledger</strong> says the install overwrote are NEVER deleted
+(<code dir="auto">protectedComponents</code>) — with no pre-image to restore them, deleting would brick
+what nothing can put back. Symmetrically, an uninstall with a <strong>wrong or stale
+sidecar</strong> (one missing a routine or component the ledger/declaration says was
+overwritten) is refused instead of partitioned.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="8c-decompose--review--reassemble-offline-version-control-friendly">8c. Decompose / review / reassemble (offline, version-control friendly)</h3><a class="sl-anchor-link" href="#8c-decompose--review--reassemble-offline-version-control-friendly"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “8c. Decompose / review / reassemble (offline, version-control friendly)”</span></a></div>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">decompose</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">tree/</span><span style="--0:#D6DEEB;--1:#403F53">      </span><span style="--0:#919F9F;--1:#5F636F"># → tree/MYPKG_1.0_1/KIDComponents/...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># ...review/diff the component files under source control...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">assemble</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">tree/</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG2.KID</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">roundtrip</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.KID</span><span style="--0:#D6DEEB;--1:#403F53">            </span><span style="--0:#919F9F;--1:#5F636F"># prove the cycle is lossless (exit 3 on drift)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="v pkg decompose MYPKG.KID tree/      # → tree/MYPKG_1.0_1/KIDComponents/...v pkg assemble tree/ MYPKG2.KIDv pkg roundtrip MYPKG.KID            # prove the cycle is lossless (exit 3 on drift)"><div></div></button></div></figure></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="8d-delete-at-site-and-the-component-closed-loop">8d. Delete-at-site and the component closed loop</h3><a class="sl-anchor-link" href="#8d-delete-at-site-and-the-component-closed-loop"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “8d. Delete-at-site and the component closed loop”</span></a></div>
+<p>Real national patches ship <strong>DELETE-AT-SITE</strong> entries (<code dir="auto">#9.68</code> ACTION 1 — 877 records
+across the corpus): install <em>deletes</em> the named live record. v-pkg handles the whole
+arc:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">diff</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">DELPATCH.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">#   component 19:XYZ OPTION would-delete        ← graded in the read-only plan</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">install</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">DELPATCH.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--auto-snapshot</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--commit</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">#   the doomed record is captured VERBATIM into the pre-image before install deletes it</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">verify</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">DELPATCH.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">#   delete-at-site 19:XYZ OPTION  deleted (as shipped)   ← asserted ABSENT, not present</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">uninstall</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">DELPATCH.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--verify</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">#   the deleted record is RE-FILED from the pre-image — the site's original is back</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="v pkg diff DELPATCH.KID --engine ydb --transport dockerv pkg install DELPATCH.KID --engine ydb --transport docker --auto-snapshot --commitv pkg verify DELPATCH.KID --engine ydb --transport dockerv pkg uninstall DELPATCH.KID --engine ydb --transport docker --verify"><div></div></button></div></figure></div>
+<p>The same closed loop covers overwritten components: the site’s original OPTION /
+template / RPC / bulletin / etc. comes back after uninstall (template-family records
+byte-identical; XPDIA entry classes content-surface exact — FileMan re-stamps its
+bookkeeping pieces). Proven end-to-end by <code dir="auto">make preimage-gate</code> (35/35 on both engines).</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="9-install-attestation-the-audit-ledger">9. Install attestation (the audit ledger)</h2><a class="sl-anchor-link" href="#9-install-attestation-the-audit-ledger"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “9. Install attestation (the audit ledger)”</span></a></div>
+<p>Every engine-<strong>mutating</strong> op (<code dir="auto">install</code> / <code dir="auto">uninstall</code> / <code dir="auto">restore</code> — never a read-only
+<code dir="auto">diff</code>/<code dir="auto">verify</code>) appends a structured record to a host-side append-only <strong>JSON Lines
+ledger</strong>, default <code dir="auto">&lt;kid&gt;.attest.jsonl</code> next to the distribution (<code dir="auto">--attest &lt;path&gt;</code> to
+override). A record captures the op + sub-action, build name + reversibility class,
+engine/transport, <strong>BEFORE/AFTER</strong> per-routine checksums, components touched, the
+<strong>component-overwrite set</strong> (<code dir="auto">componentOverwrites</code> — which live records the install
+purged or deleted; uninstall folds this durable truth back in as the ledger guard),
+required-build chain, snapshot reference + content hash, <code dir="auto">#9.7</code> status, verify verdict,
+exit code, and timestamp.</p>
+<p>Two layered protections:</p>
+<ul>
+<li><strong>Hash chain (always):</strong> each record carries <code dir="auto">prevHash</code> = the prior record’s hash, so
+the ledger is append-only and <em>tamper-evident</em> — editing any past record breaks the
+chain.</li>
+<li><strong>ed25519 signature (opt-in, <code dir="auto">--sign</code>):</strong> each record is signed against an <strong>external</strong>
+private key (<code dir="auto">$VPKG_ATTEST_KEY</code>, a hex 32-byte seed), making it <em>tamper-resistant</em> —
+the only protection against a determined forger who could re-hash the whole tail.</li>
+</ul>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Attestation is ON by default; suppress with --no-attest. Sign with --sign:</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">VPKG_ATTEST_KEY</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#ECC48D;--1:#3B61B0">&lt;hex-seed&gt;</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">install</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.KID</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--sign</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--commit</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Audit the ledger offline (chain + signatures):</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">attest</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">verify</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.attest.jsonl</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--trust</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">&lt;hex-pubkey&gt;</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Replay the recorded after-state against the live engine (does it still match?):</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">v</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">pkg</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">attest</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">verify</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">MYPKG.attest.jsonl</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--replay</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--engine</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ydb</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--transport</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docker</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="VPKG_ATTEST_KEY=<hex-seed> v pkg install MYPKG.KID --engine ydb --transport docker --sign --commitv pkg attest verify MYPKG.attest.jsonl --trust <hex-pubkey>v pkg attest verify MYPKG.attest.jsonl --replay --engine ydb --transport docker"><div></div></button></div></figure></div>
+<p><code dir="auto">attest verify</code> exits non-zero (3) if the chain is broken, a signature fails the pinned
+key, or a replay mismatches — making the audit a gate, not just a report. Replay checks
+each routine’s <em>net</em> recorded state (the most recent record that touched it), so a full
+install→uninstall lifecycle replays clean. A record is written only when the op actually
+mutated the engine; a refused / no-op / already-installed op attests nothing.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="10-exit-codes--the-machine-checkable-safety-contract">10. Exit codes — the machine-checkable safety contract</h2><a class="sl-anchor-link" href="#10-exit-codes--the-machine-checkable-safety-contract"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “10. Exit codes — the machine-checkable safety contract”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Name</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>OK</td>
+<td>success</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>Runtime</td>
+<td>engine / I/O / parse failure (<code dir="auto">INSTALL_FAILED</code>, <code dir="auto">UNINSTALL_FAILED</code>, …)</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>Usage</td>
+<td>bad flags (<code dir="auto">BAD_ANSWER</code>, <code dir="auto">MULTI_BUILD_REGISTER</code>, …)</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>Check</td>
+<td>drift / not-verified-clean / broken attestation (<code dir="auto">NOT_VERIFIED</code>, <code dir="auto">VERIFY_CLEAN_FAILED</code>, <code dir="auto">ATTEST_VERIFY_FAILED</code>, <code dir="auto">ROUNDTRIP_FAILED</code>)</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>Refused</strong></td>
+<td>the safety stop — <code dir="auto">INSTALL_REFUSED</code> (routine OR component clobber w/o pre-image), <code dir="auto">UNINSTALL_REFUSED</code> (would brick a foreign routine / a ledger-overwritten component / side-effecting / wrong sidecar), <code dir="auto">AMBIGUOUS_COMPONENT</code> (multiple same-named live records — never a guessed pre-image), <code dir="auto">ALREADY_INSTALLED</code>, <code dir="auto">CHECKSUM_MISMATCH</code>, <code dir="auto">SIDECAR_TAMPERED</code>, <code dir="auto">NO_DRIVER</code></td>
+</tr>
+</tbody>
+</table>
+<p>Exit <code dir="auto">4</code> is the heart of the safety model: <em>do not perform an irreversible engine
+mutation that cannot be honestly undone.</em> Scripts and CI gate on it directly.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="11-validation--verification--how-thoroughly-v-pkg-is-tested">11. Validation &amp; verification — how thoroughly v-pkg is tested</h2><a class="sl-anchor-link" href="#11-validation--verification--how-thoroughly-v-pkg-is-tested"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “11. Validation &amp; verification — how thoroughly v-pkg is tested”</span></a></div>
+<p>v-pkg is built test-first (TDD), and reliability is not a claim — it is a number you
+can re-run. Every release is held to <strong>three independent tiers</strong> of automated proof,
+and the live tiers run against <strong>two production-fidelity VistA systems on two different
+M engines</strong> (YottaDB <em>and</em> InterSystems IRIS), not a mock.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="by-the-numbers">By the numbers</h3><a class="sl-anchor-link" href="#by-the-numbers"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “By the numbers”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>What it proves</th>
+<th style="text-align: right">Scale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unit + integration</strong> (Go, race-detector on, every CI push)</td>
+<td>every function, decision tree, parser, emitter, and engine-interaction path (via a fake driver)</td>
+<td style="text-align: right"><strong>317 test functions</strong></td>
+</tr>
+<tr>
+<td><strong>Offline corpus sweep</strong> (<code dir="auto">make corpus</code>)</td>
+<td>parse / decompose / assemble / round-trip / checksum / reversal-coverage classification / bulletin oracle, over the <strong>entire WorldVistA patch mirror</strong></td>
+<td style="text-align: right"><strong>2,404 real KIDS distributions</strong> (157 packages) — round-trip DRIFT=0 + <strong>~14,300 routine-checksum verifications</strong></td>
+</tr>
+<tr>
+<td><strong>Live adversarial gates</strong> (<code dir="auto">make stress</code> / <code dir="auto">live-gate</code> / <code dir="auto">capture-gate</code> / <strong><code dir="auto">preimage-gate</code></strong> + foreign-refuse + partition), <strong>× 2 engines</strong></td>
+<td>the full install→verify→back-out lifecycle, the <strong>component pre-image closed loop</strong>, and every safety refusal, against a real VistA</td>
+<td style="text-align: right"><strong>~170 assertions/engine × 2 engines</strong> (stress 56 + preimage 35 + foreign 24 + capture 23 + partition 17 + live-gate 15)</td>
+</tr>
+<tr>
+<td><strong>Real-national-patch campaign</strong> (<code dir="auto">scripts/corpus-live-sweep.sh</code>), <strong>× 2 engines</strong></td>
+<td>classify + live dry-run over a stratified sample of every component class and feature axis; <strong>closed-loop install→verify→uninstall-restore of real national patches</strong> (<code dir="auto">foreignRestore: exact</code> + attest replay); refusal sampling</td>
+<td style="text-align: right"><strong>35/35 per engine</strong> — canon: <a href="https://github.com/vista-forge/v-pkg/blob/main/docs/design/live-validation-campaign.md"><code dir="auto">live-validation-campaign.md</code></a></td>
+</tr>
+</tbody>
+</table>
+<p>That is <strong>~700 automated pass/fail assertions plus ~16,700 corpus verifications across
+2,404 real-world KIDS distributions</strong>, re-runnable on demand — the unit + corpus tiers
+on every push, the live tiers on the engine host.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="the-two-real-engines">The two real engines</h3><a class="sl-anchor-link" href="#the-two-real-engines"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “The two real engines”</span></a></div>
+<p>The live tiers are run end-to-end on <strong>both</strong> of VistA’s supported M engines, against
+real, fully-populated systems:</p>
+<ul>
+<li><strong>vehu</strong> (VistA-VEHU-M) on <strong>YottaDB</strong> — 12,955 builds / 14,345 installs / 470 packages.</li>
+<li><strong>foia</strong> (FOIA VistA) on <strong>InterSystems IRIS</strong> — 13,829 builds / 13,100 installs / 157 packages.</li>
+</ul>
+<p>The same gate scripts pass on both (<code dir="auto">make stress</code> <strong>56/56</strong>, <code dir="auto">make preimage-gate</code>
+<strong>35/35</strong>, foreign-refuse <strong>24/24</strong>, <code dir="auto">make capture-gate</code> <strong>23/23</strong>, partition
+<strong>17/17</strong>, <code dir="auto">make live-gate</code> <strong>15/15</strong>, corpus-live-sweep <strong>35/35</strong> on each engine), so
+the safety guarantees are engine-independent.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="per-command-coverage">Per-command coverage</h3><a class="sl-anchor-link" href="#per-command-coverage"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Per-command coverage”</span></a></div>
+<p>Every command is covered at the unit tier <em>and</em> exercised live; the safety-bearing
+commands additionally have dedicated adversarial (intentionally-broken-input) probes.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th style="text-align: right">Unit tests¹</th>
+<th style="text-align: center">Offline corpus</th>
+<th style="text-align: center">Live (YDB + IRIS)</th>
+<th>Adversarial / erroneous-input probes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">build</code></td>
+<td style="text-align: right">~75</td>
+<td style="text-align: center">—</td>
+<td style="text-align: center">✓ (every gate builds its inputs)</td>
+<td>deterministic-output + golden-KID drift</td>
+</tr>
+<tr>
+<td><code dir="auto">parse</code></td>
+<td style="text-align: right">~11</td>
+<td style="text-align: center">✓ 2,404</td>
+<td style="text-align: center">✓</td>
+<td>malformed-section handling</td>
+</tr>
+<tr>
+<td><code dir="auto">decompose</code>/<code dir="auto">assemble</code>/<code dir="auto">roundtrip</code>/<code dir="auto">canonicalize</code></td>
+<td style="text-align: right">~15</td>
+<td style="text-align: center">✓ 2,404 round-trips</td>
+<td style="text-align: center">✓</td>
+<td><strong>tamper-faithfulness</strong> (an edit must survive the round-trip, exit 3 on drift)</td>
+</tr>
+<tr>
+<td><code dir="auto">classify</code></td>
+<td style="text-align: right">~13</td>
+<td style="text-align: center">✓ 2,404</td>
+<td style="text-align: center">—</td>
+<td>mixed/foreign-overwrite class detection</td>
+</tr>
+<tr>
+<td><code dir="auto">lint</code> (PIKS)</td>
+<td style="text-align: right">~6</td>
+<td style="text-align: center">—</td>
+<td style="text-align: center">—</td>
+<td>blocked-data-class refusal (exit 3)</td>
+</tr>
+<tr>
+<td><code dir="auto">diff</code> / bare-<code dir="auto">install</code> preview</td>
+<td style="text-align: right">~10</td>
+<td style="text-align: center">—</td>
+<td style="text-align: center">✓ clean→NEW, installed→identical, <strong>edited→CHANGED</strong>, delete-at-site→<strong>would-delete</strong></td>
+<td>read-only no-op proof (engine byte-identical)</td>
+</tr>
+<tr>
+<td><code dir="auto">install</code></td>
+<td style="text-align: right">~47</td>
+<td style="text-align: center">—</td>
+<td style="text-align: center">✓</td>
+<td>no-clobber refuse, already-installed, <strong>checksum-mismatch</strong>, <strong>heal-on-healthy</strong>, env-check/required-build, <strong>half-install corpse → heal</strong></td>
+</tr>
+<tr>
+<td><code dir="auto">verify</code></td>
+<td style="text-align: right">~40</td>
+<td style="text-align: center">—</td>
+<td style="text-align: center">✓ content + drift + <strong>delete-at-site absence</strong></td>
+<td>not-installed (exit 3), drift detection, surviving-deletion detection</td>
+</tr>
+<tr>
+<td><code dir="auto">snapshot</code></td>
+<td style="text-align: right">~15</td>
+<td style="text-align: center">—</td>
+<td style="text-align: center">✓ routines + <strong>verbatim component records</strong></td>
+<td>honest <code dir="auto">completeUndo</code>; <strong>ambiguous-record refuse</strong>; capture-exactly-once (redundant install leaves the sidecar byte-unchanged)</td>
+</tr>
+<tr>
+<td><code dir="auto">restore</code></td>
+<td style="text-align: right">~8</td>
+<td style="text-align: center">—</td>
+<td style="text-align: center">✓</td>
+<td><strong>tampered-sidecar refuse</strong> (<code dir="auto">SIDECAR_TAMPERED</code>)</td>
+</tr>
+<tr>
+<td><code dir="auto">uninstall</code></td>
+<td style="text-align: right">~30</td>
+<td style="text-align: center">—</td>
+<td style="text-align: center">✓ incl. <strong>component restore-first partition</strong> + delete-at-site put-back</td>
+<td>side-effecting refuse, <strong>foreign-brick refuse</strong> (24/24), <strong>partition ordering</strong> (17/17), <strong>ledger-guard protection</strong> (H1), wrong-sidecar refuse, double-uninstall grace</td>
+</tr>
+<tr>
+<td><code dir="auto">attest verify</code></td>
+<td style="text-align: right">~21</td>
+<td style="text-align: center">—</td>
+<td style="text-align: center">✓ chain + <strong>live replay</strong></td>
+<td><strong>tampered-ledger refuse</strong>, wrong-key / unsigned refuse</td>
+</tr>
+</tbody>
+</table>
+<p>¹ Approximate: counts the test functions exercising each command; shared suites
+(e.g. the install/verify/uninstall lifecycle suite) are counted under each relevant
+command, so the column sums to more than the 222 distinct functions.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="intentionally-broken-patches-the-safety-demos">Intentionally-broken patches (the safety demos)</h3><a class="sl-anchor-link" href="#intentionally-broken-patches-the-safety-demos"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Intentionally-broken patches (the safety demos)”</span></a></div>
+<p>Every safety feature is proven against a deliberately-malformed input that v-pkg must
+refuse — these run on <strong>both</strong> engines every <code dir="auto">make stress</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Broken input</th>
+<th>v-pkg must…</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Routine bytes that don’t match the stored checksum</td>
+<td>refuse <code dir="auto">CHECKSUM_MISMATCH</code> (exit 4)</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Pre-image sidecar edited after capture</td>
+<td>refuse <code dir="auto">SIDECAR_TAMPERED</code> (exit 4)</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Attestation ledger record edited</td>
+<td><code dir="auto">attest verify</code> fail (exit 3, chain broken)</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Install over a national routine with no pre-image</td>
+<td>refuse <code dir="auto">INSTALL_REFUSED</code> (exit 4)</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Bare uninstall of a side-effecting patch</td>
+<td>refuse (would orphan data)</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Uninstall a foreign-overwrite with no pre-image</td>
+<td>refuse (would brick a national routine)</td>
+<td>✓ 24/24</td>
+</tr>
+<tr>
+<td><code dir="auto">--heal</code> on a healthy install</td>
+<td>refuse (heal ≠ clobber)</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>A corrupt half-install (<code dir="auto">#9.7</code> with a <code dir="auto">"B"</code> xref but no <code dir="auto">0</code>-node)</td>
+<td>detect + <strong>purge + reinstall</strong> under <code dir="auto">--heal</code></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Required-build absent</td>
+<td>refuse (env-check enforcement)</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Decompose→assemble of a tampered tree</td>
+<td>carry the change through (auditable, no silent swallow)</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Pre-image sidecar with a forged <strong>component</strong> node</td>
+<td>refuse <code dir="auto">SIDECAR_TAMPERED</code> (the hash covers components)</td>
+<td>✓ 2 engines</td>
+</tr>
+<tr>
+<td>Duplicate same-named live component record</td>
+<td>refuse <code dir="auto">AMBIGUOUS_COMPONENT</code> (never a guessed pre-image)</td>
+<td>✓ 2 engines</td>
+</tr>
+<tr>
+<td>Forced uninstall with a LOST sidecar</td>
+<td>ledger-overwritten records <strong>protected from DIK</strong>, safe subset deleted</td>
+<td>✓ 2 engines</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h3"><h3 id="what-is-not-claimed">What is <em>not</em> claimed</h3><a class="sl-anchor-link" href="#what-is-not-claimed"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “What is not claimed”</span></a></div>
+<p>In the spirit of v-pkg’s own honesty principle: the live closed-loop tiers prove the
+install lifecycle on <strong>two real org packages (MSL + VSL), five real national patches
+(FH/EN/PRC — <code dir="auto">foreignRestore: exact</code> both engines), and the synthetic fixtures</strong>, not
+by installing all 2,404 corpus distributions (a full VEHU/FOIA site already carries the
+national stream — every small pure-overwrite corpus patch reports
+<code dir="auto">already-installed</code>). The corpus-wide tier covers the <em>offline</em> path across all 2,404;
+the campaign’s stratified live dry-runs cover every component class and feature axis
+read-only. Doctrine-bound payloads (install-time code, data merges, FILE DD) are
+installed KIDS-faithfully but never generically reversed — the validated gap inventory
+lives in <a href="https://github.com/vista-forge/v-pkg/blob/main/docs/design/live-validation-campaign.md"><code dir="auto">live-validation-campaign.md</code></a>. The
+live gates run on the engine host, not inside the per-push CI, which runs the unit
+tier + lint + vulnerability scan.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="12-reference--environment-files-and-flags">12. Reference — environment, files, and flags</h2><a class="sl-anchor-link" href="#12-reference--environment-files-and-flags"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “12. Reference — environment, files, and flags”</span></a></div>
+<p><strong>Environment (read by the driver, never on the command line):</strong></p>
+<ul>
+<li>YDB: <code dir="auto">M_YDB_BIN</code>, <code dir="auto">M_YDB_CONTAINER</code>, <code dir="auto">M_YDB_TRANSPORT</code>, <code dir="auto">M_YDB_DIST</code>, <code dir="auto">M_YDB_GBLDIR</code>, <code dir="auto">M_YDB_ROUTINES</code></li>
+<li>IRIS: <code dir="auto">M_IRIS_BASE_URL</code> (full Atelier path ending <code dir="auto">…/api/atelier/v1/</code>), <code dir="auto">M_IRIS_NAMESPACE</code>, <code dir="auto">M_IRIS_USER</code>, <code dir="auto">M_IRIS_PASSWORD</code></li>
+<li>Attestation: <code dir="auto">VPKG_ATTEST_KEY</code> (hex ed25519 seed, for <code dir="auto">--sign</code>), <code dir="auto">VPKG_ATTEST_PUBKEY</code> (hex public key, default for <code dir="auto">attest verify --trust</code>)</li>
+</ul>
+<p><strong>Files v-pkg reads/writes alongside a <code dir="auto">.KID</code>:</strong></p>
+<ul>
+<li><code dir="auto">&lt;kid&gt;.preimage.kids</code> — the auto-snapshot pre-image sidecar (<code dir="auto">install --auto-snapshot</code>; auto-detected by <code dir="auto">uninstall</code>)</li>
+<li><code dir="auto">&lt;kid&gt;.attest.jsonl</code> — the attestation ledger (default; <code dir="auto">--attest &lt;path&gt;</code> to relocate)</li>
+</ul>
+<p><strong>Key flags by verb</strong> (see <code dir="auto">v pkg &lt;verb&gt; --help</code> for the full set):</p>
+<table>
+<thead>
+<tr>
+<th>Verb</th>
+<th>Notable flags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">install</code></td>
+<td><code dir="auto">--commit</code> (a bare <code dir="auto">install</code> previews), <code dir="auto">--snapshot &lt;out&gt;</code>, <code dir="auto">--auto-snapshot</code>, <code dir="auto">--allow-overwrite</code>, <code dir="auto">--heal</code>, <code dir="auto">--verify-checksums</code>, <code dir="auto">--skip-env-check</code>, <code dir="auto">--answer NAME=VALUE</code>, <code dir="auto">--register-package "NAME"</code>, <code dir="auto">--attest &lt;path&gt;</code>, <code dir="auto">--no-attest</code>, <code dir="auto">--sign</code></td>
+</tr>
+<tr>
+<td><code dir="auto">uninstall</code></td>
+<td><code dir="auto">--restore &lt;preimage&gt;</code>, <code dir="auto">--backout &lt;kid&gt;</code>, <code dir="auto">--force</code>, <code dir="auto">--verify</code>, <code dir="auto">--deregister</code>, <code dir="auto">--attest &lt;path&gt;</code>, <code dir="auto">--no-attest</code>, <code dir="auto">--sign</code></td>
+</tr>
+<tr>
+<td><code dir="auto">restore</code></td>
+<td><code dir="auto">--commit</code>, <code dir="auto">--attest &lt;path&gt;</code>, <code dir="auto">--no-attest</code>, <code dir="auto">--sign</code></td>
+</tr>
+<tr>
+<td><code dir="auto">verify</code></td>
+<td><code dir="auto">--drift</code></td>
+</tr>
+<tr>
+<td><code dir="auto">snapshot</code></td>
+<td><code dir="auto">--name</code></td>
+</tr>
+<tr>
+<td><code dir="auto">diff</code></td>
+<td>(read-only; <code dir="auto">--engine</code>/<code dir="auto">--transport</code> only)</td>
+</tr>
+<tr>
+<td><code dir="auto">attest verify</code></td>
+<td><code dir="auto">--trust &lt;hexpub&gt;</code>, <code dir="auto">--replay</code>, <code dir="auto">--engine</code>, <code dir="auto">--transport</code></td>
+</tr>
+<tr>
+<td><code dir="auto">lint</code></td>
+<td><code dir="auto">--piks &lt;tsv&gt;</code>, <code dir="auto">--strict</code></td>
+</tr>
+<tr>
+<td><code dir="auto">build</code></td>
+<td><code dir="auto">--src &lt;dir&gt;</code>, <code dir="auto">--out &lt;path&gt;</code></td>
+</tr>
+<tr>
+<td><code dir="auto">capture</code></td>
+<td><code dir="auto">--type "INPUT TEMPLATE"</code>, <code dir="auto">--name "&lt;.01 NAME&gt;"</code>, <code dir="auto">--file &lt;n&gt;</code> (disambiguates same-named templates by their target FILE — compiled-template names are unique per file, not globally: <code dir="auto">A1B2 ENTRY</code> names eight records on vehu), <code dir="auto">--out &lt;sidecar.json&gt;</code>, <code dir="auto">--piks &lt;tsv&gt;</code>, <code dir="auto">--strict</code></td>
+</tr>
+<tr>
+<td><code dir="auto">export</code></td>
+<td><code dir="auto">--out-dir &lt;tree&gt;</code> (the package source tree to write: <code dir="auto">kids/</code> + <code dir="auto">src/</code>), <code dir="auto">--kid &lt;path&gt;</code> (the rebuilt <code dir="auto">.KID</code>; defaults to <code dir="auto">&lt;out-dir&gt;/dist/kids/&lt;pkg&gt;.kids</code>), <code dir="auto">--piks &lt;tsv&gt;</code>, <code dir="auto">--strict</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><em>Background research sources: live <code dir="auto">#9.6</code>/<code dir="auto">#9.7</code>/<code dir="auto">#9.4</code> probe of vehu (YDB) + foia
+(IRIS) through the v-pkg driver stack (2026-06-30);
+<a href="https://github.com/vista-forge/v-pkg/blob/main/docs/design/kids-corpus-findings.md"><code dir="auto">kids-corpus-findings.md</code></a> (2,404 WorldVistA
+distributions); <a href="https://github.com/vista-forge/v-pkg/blob/main/docs/design/kids-convention-vs-v-pkg.md"><code dir="auto">kids-convention-vs-v-pkg.md</code></a>
+(12,955-build vehu classification + full gap analysis);
+<a href="https://github.com/vista-forge/v-pkg/blob/main/docs/design/kids-installation-automation.md"><code dir="auto">kids-installation-automation.md</code></a> (install
+mechanism); <a href="https://github.com/vista-forge/v-pkg/blob/main/docs/design/kids-coverage-audit.md"><code dir="auto">kids-coverage-audit.md</code></a> (reversal-
+coverage audit + post-effort re-tally);
+<a href="https://github.com/vista-forge/v-pkg/blob/main/docs/design/live-validation-campaign.md"><code dir="auto">live-validation-campaign.md</code></a> (full-surface
+live validation vs real national packages, both engines). Command surface generated
+from <code dir="auto">dist/v-contract.json</code>.</em></p>
+</div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"></div></footer></div></div></main></div></div></div></div></body></html>

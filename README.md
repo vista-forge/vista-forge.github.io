@@ -13,14 +13,14 @@ assets/img/logo.png   the org mark (see "The logo" below)
 scripts/site-gen.py   generates the m/v repo tables from the ecosystem registry
 data/repos.json       the committed registry snapshot the tables render from
 .nojekyll             serve files as-is  ⚠️ load-bearing: Astro's _astro/ dies without it
-forge-reference/      DEPLOYED ARTIFACT — do not hand-edit
+forge-docs/           DEPLOYED ARTIFACT — do not hand-edit
 ```
 
-## `forge-reference/` — a deployed copy, not source
+## `forge-docs/` — a deployed copy, not source
 
 That directory is the built `v` surface reference, served at
-<https://vista-forge.github.io/forge-reference/>. It is **generated in the
-`forge-reference` repo and copied here**; nothing in this repo produces it and
+<https://vista-forge.github.io/forge-docs/>. It is **generated in the
+`forge-docs` repo and copied here**; nothing in this repo produces it and
 no gate here grades it. To refresh it, follow that repo's
 `docs/guides/publishing.md` — never edit these files in place.
 
@@ -57,13 +57,13 @@ Dark is **dark, not black**. The ground was `#000` with the elevated surfaces
 barely above it, which made every card edge a hairline against a void; the ramp
 now starts one step up, at the same hue and saturation.
 
-### The palette is restated in `forge-reference`
+### The palette is restated in `forge-docs`
 
 The reference site is a wing of this one and wears the same chrome, but it is a
 separate deployment built by Starlight — there is no shared stylesheet, and a
 `<link>` across origins would be an off-host load its `offline-check` forbids.
-So the same token values are restated in `forge-reference/site/src/styles/forge.css`
-(in the `forge-reference` repo), mapped onto Starlight's own `--sl-color-*` names.
+So the same token values are restated in `forge-docs/site/src/styles/forge.css`
+(in the `forge-docs` repo), mapped onto Starlight's own `--sl-color-*` names.
 
 **Nothing gates the agreement.** A change to a token here is a change there as
 well, and the only way to see a drift is to look at the two pages side by side.
