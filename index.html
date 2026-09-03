@@ -42,8 +42,9 @@ try {
          rather than dropping links, and the theme control sits outside it so it
          is never scrolled away. -->
     <nav class="nav" aria-label="Primary">
-      <a href="#stack">Stack</a>
-      <a href="#tools">Tools</a>
+      <a href="#hardened">Hardened</a>
+      <a href="#standardized">Standardized</a>
+      <a href="#ai-integrated">AI-Integrated</a>
       <a href="#architecture">Architecture</a>
       <a href="#repos">Repos</a>
       <a href="/forge-docs/">Docs</a>
@@ -68,10 +69,9 @@ try {
       clinics nationwide for over 40 years — has been comprehensively re-engineered for
       AI-integrated development and modernization.</strong> Four decades of proven clinical
       software is now a system an <strong>AI agent</strong> can read, change, test, and ship —
-      on rails that prove every change installs, works, and can be taken back out. Modernization
-      moves at software speed, every release lands with evidence behind it, and VistA keeps
-      running throughout: this is built <em>around</em> the system, extending the platform the
-      VA already trusts.
+      on rails that prove every change installs, works, and can be taken back out.
+      <strong>Modernization moves at AI speed.</strong> Every release ships with proof. VistA never
+      stops running — the platform the VA already trusts, extended rather than replaced.
     </p>
 
     <div class="cta-row">
@@ -92,25 +92,32 @@ try {
   </div>
 </section>
 
-<!-- ══════════════ the two claims ══════════════ -->
+<!-- ══════════════ the three claims ══════════════ -->
 <section class="section" id="why">
   <div class="wrap">
-    <p class="section__kicker">Hardened. Industry-standardized. AI-integrated.</p>
+    <p class="section__kicker">Hardened. Industry-standardized. AI-Integrated.</p>
     <h2>The tagline makes three claims, and each is load-bearing.</h2>
     <p class="section__intro">
       <strong>VistA</strong> — the public-domain hospital information system of the US Department of
-      Veterans Affairs (VA) — has run real hospitals for over four decades and is one of the largest
-      working bodies of <strong>M (MUMPS)</strong> code in existence. VistA Forge gives that
-      codebase the loop every modern language already has: source in git, a formatter, a linter, a
-      language server, unit tests with coverage, a full gate on every push, and patches that install
-      and back out on proof. It builds <em>around</em> VistA rather than rewriting it — the system
-      keeps running exactly as it does today, and the way you work on it moves to 2026.
+      Veterans Affairs (VA) — has run real hospitals continuously for more than four decades, and it
+      remains one of the most capable clinical systems in service anywhere. VistA Forge gives that
+      system the full complement of tools modern software teams rely on every day: version control,
+      automated code review, comprehensive automated testing, and updates proven to install cleanly
+      and to come back out just as cleanly. It builds <em>around</em> VistA rather than replacing it
+      — the system keeps running exactly as it does today, while the way it is developed, tested and
+      delivered moves to 2026.
     </p>
+  </div>
+</section>
 
-    <div class="claims">
-      <div class="claim claim--v">
-        <p class="claim__eyebrow">Hardened — the quality bar</p>
-        <h3>VistA, treated the way regulated industries treat production software</h3>
+<!-- ══════════════ claim 1 — hardened ══════════════ -->
+<section class="section" id="hardened">
+  <div class="wrap">
+    <p class="section__kicker">Hardened — the quality bar</p>
+    <h2>VistA, treated the way regulated industries treat production software</h2>
+
+    <div class="claims claims--solo">
+      <div class="claim claim--v claim--solo">
         <p>Hardening here is a measured quality-control regime, not a posture: continuous integration, test-driven design, and tests counted in the thousands.</p>
         <ul>
           <li><strong>Continuous integration on every push.</strong> The full gate — build, lint, tests, coverage — runs before a change can land, and runs <strong>offline, on your machine</strong>, with no cloud service in the loop.</li>
@@ -122,10 +129,185 @@ try {
           <li><strong>A red anywhere is a hard stop.</strong> It blocks the commit, the push, or the release tag. Nothing ships around a failing gate.</li>
         </ul>
       </div>
+    </div>
 
-      <div class="claim claim--m">
-        <p class="claim__eyebrow">Industry-standardized — the layer you work at</p>
-        <h3>The layer developers touch is now ordinary, mainstream technology</h3>
+    <div class="subsection" id="numbers">
+      <p class="subsection__kicker">By the numbers</p>
+      <h3 class="subsection__title">A red anywhere is a hard stop.</h3>
+      <p class="section__intro">
+        Measured from the repos, August 2026. The gating is rigid top to bottom — it blocks the commit,
+        the push, or the release tag. Nothing in the stack ships around a failing gate, and the whole
+        gate runs offline, on your machine, with no cloud service in the loop.
+      </p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat__num">5,400+</div>
+          <div class="stat__label">M assertions across 84 suites and 1,700+ test cases — every suite run on <em>both</em> VistA engines</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">2,800+</div>
+          <div class="stat__label">Go test functions (1,474 m-layer, 1,033 v-apps), table-driven</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">34</div>
+          <div class="stat__label">repos, every one carrying an offline <code>make check</code>; 19 layer-bearing repos run the waterline gates</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">≥85%</div>
+          <div class="stat__label">per-module coverage floor, alongside zero lint findings at <code>--error-on=error</code></div>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption class="visually-hidden">Hardening surfaces and their measures</caption>
+          <thead>
+            <tr><th scope="col">Hardening surface</th><th scope="col">Measure</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>M unit tests</strong> (MSL + FSL + VSL)</td>
+              <td><strong>84 suites · 1,700+ test cases · 5,400+ assertions</strong>, every suite run on <strong>both</strong> VistA engines</td>
+            </tr>
+            <tr>
+              <td><strong>Go unit tests</strong></td>
+              <td><strong>2,800+ test functions</strong> (1,474 m-layer, 1,033 v-apps, 350 in the non-waterline clients), table-driven</td>
+            </tr>
+            <tr>
+              <td><strong>Executable doc examples</strong> (MSL + VSL)</td>
+              <td><strong>61 generated example programs</strong> from <strong>598 <code>@example</code> tags</strong>, run against the <strong>live</strong> VistA engines</td>
+            </tr>
+            <tr>
+              <td><strong>Gate coverage</strong></td>
+              <td><strong>34 repos, every one carrying an offline <code>make check</code></strong>; 19 layer-bearing repos additionally run the waterline gates</td>
+            </tr>
+            <tr>
+              <td><strong>m/f/v waterline checks</strong></td>
+              <td><strong>seven executable checks</strong> (<code>m arch check</code>: dependency direction, no VistA symbols below the line, transport monopoly — abstract-syntax-tree call-expression and script scan, seam pin, run-lock bracketing, engine-busy registration, plain-noun command vocabulary) in every layer-bearing repo, plus an engine-access scan in every M <strong>and</strong> Go gate and a scheduled org-wide meta-gate backstop</td>
+            </tr>
+            <tr>
+              <td><strong>m-engine waterline checks</strong></td>
+              <td>an <strong>executable conformance gate per driver</strong> — a driver binary that can't pass it can't ship</td>
+            </tr>
+            <tr>
+              <td><strong>VSL drift gates</strong></td>
+              <td><strong>26 red gates</strong> in one <code>make gates</code> run — Integration Control Registration, namespace, engine-access, manifest/dispatcher/envelope drift, data ownership, additive-only compat, …</td>
+            </tr>
+            <tr>
+              <td><strong>Hard stops</strong></td>
+              <td>lint <code>--error-on=error</code> zero findings · ≥85% per-module coverage · release only on a byte-clean lifecycle, both engines</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection" id="tools">
+      <p class="subsection__kicker">What&#8217;s here, by developer task</p>
+      <h3 class="subsection__title">The everyday loop M never had.</h3>
+
+      <div class="cards">
+        <div class="card">
+          <p class="card__task">Write M like any modern language</p>
+          <p>
+            <code>m fmt</code> (a formatter that rewrites the syntax tree, never the text), <code>m lint</code> (query-driven rule
+            engine, with XINDEX/Kernel compatibility profiles), and <code>m lsp</code> (an LSP 3.x
+            language server) all sit on <strong>one parser</strong> — <code>m-parse</code>, which
+            embeds the <a href="https://github.com/vista-forge/tree-sitter-m">tree-sitter-m</a>
+            grammar as WebAssembly and runs it through wazero. Static Go binaries, no C bindings, no C toolchain at
+            runtime.
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="card__task">Test against a real engine, with coverage</p>
+          <p>
+            <code>m test</code> runs <code>*TST.m</code> suites on a live YottaDB or IRIS engine via
+            <code>^STDASSERT</code>, with machine-readable results; <code>m coverage</code> produces
+            standard LCOV coverage reports with per-module coverage gates. Every library in the org is built test-first and
+            gated on both engines.
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="card__task">Stop hand-rolling utilities — three standard libraries</p>
+          <p>
+            <code>m-stdlib</code> is a pure-M library of <strong>40 <code>STD*</code> modules</strong>:
+            data formats (<code>STDJSON</code>, <code>STDXML</code>, <code>STDCSV</code>,
+            <code>STDREGEX</code>), encoding, testing (<code>STDASSERT</code>, <code>STDMOCK</code>),
+            crypto and auth (<code>STDCRYPTO</code>, <code>STDJWT</code>), networking
+            (<code>STDHTTP</code>, <code>STDS3</code>), plus dates, logging, collections, strings,
+            math, and filesystem. Above the waterline, <code>f-stdlib</code> adds 7
+            <code>FSL*</code> modules and <code>v-stdlib</code> 22 <code>VSL*</code> ones —
+            <strong>69 modules and 579 public entry points</strong> in all.
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="card__task">Reach an engine exactly one way</p>
+          <p>
+            <code>m-driver-sdk</code> defines the vendor-neutral driver contract — typed verbs, a
+            structured engine-error model, honest capability documents, and an <strong>executable
+            conformance gate</strong> any driver binary must pass. Everything above the seam reaches
+            an engine only through this contract.
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="card__task">Treat VistA patches as code</p>
+          <p>
+            <code>v-pkg</code> gives <strong>KIDS</strong> — VistA's native package/patch format — a
+            real lifecycle: parse, classify, lint, decompose, assemble, roundtrip, diff, build,
+            install, verify, snapshot, restore, uninstall, attest. Decompose a distribution into a
+            git-diffable component tree and reassemble it byte-identically; install, verify, and
+            cleanly back out against a live engine.
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="card__task">Administer VistA with plain-noun commands</p>
+          <p>
+            The sysadmin platform pairs each engine-side <code>VSL*</code> module with a host-side
+            <code>v &lt;domain&gt;</code> command, <strong>generated — not hand-wired</strong> — from
+            the VSL manifest. Plain nouns a developer can guess: <code>v pkg</code>,
+            <code>v rpc-debug</code>, <code>v rpc-tap</code>. VA product names never appear in a
+            command; a lint gate enforces the plain language.
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="card__task">Run VistA on your own machine</p>
+          <p>
+            <a href="https://github.com/orgs/vista-forge/packages/container/package/vista-iris">vista-iris</a>
+            publishes a multi-arch container of WorldVistA on IRIS for Health Community — the full
+            site build is baked into the image, so it boots already operational: Management Portal and
+            REST, the RPC Broker that serves CPRS (the VA's Computerized Patient Record System), HL7 messaging over its Minimal Lower Layer Protocol, and the IRIS superserver. Fictitious test data only.
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="card__task">Drive it all with an AI agent</p>
+          <p>
+            Every binary shares one command grammar (<code>clikit</code>):
+            <code>--output text|json|auto</code>, a versioned JSON envelope, a deterministic exit-code
+            ladder, and a reflected <code>schema</code> command — so an agent invokes the same gated
+            surface a human uses and gets machine-parseable results.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ claim 2 — industry-standardized ══════════════ -->
+<section class="section" id="standardized">
+  <div class="wrap">
+    <p class="section__kicker">Industry-standardized — the layer you work at</p>
+    <h2>The layer developers touch is now ordinary, mainstream technology</h2>
+
+    <div class="claims claims--solo">
+      <div class="claim claim--m claim--solo">
         <p>Nobody reaches into VistA's internals any more. Work happens against a standard library — and everything in it is something a developer already knows.</p>
         <ul>
           <li><strong>JSON, HTTP(S), crypto — the ordinary toolkit.</strong> The <strong>M Standard Library</strong> (MSL) gives M what every mainstream language ships: JSON, HTTP(S), JWT, crypto digests, UUIDs, base64, regex, S3, testing — conformance-tested against the test vectors published with the standards themselves, and identical on both engines.</li>
@@ -135,11 +317,88 @@ try {
           <li><strong>Mainstream delivery.</strong> Git-canonical <code>.m</code> source, static Go binaries, container-delivered engines, and a full gate on every push.</li>
         </ul>
       </div>
+    </div>
 
-      <div class="claim claim--o">
-        <p class="claim__eyebrow">AI-integrated — the whole org</p>
-        <h3>An AI agent is a first-class consumer of this toolchain, not an afterthought bolted onto it</h3>
-        <p><strong>VistA — the VA's healthcare information system operating 1,200 hospitals and clinics nationwide for over 40 years — has been comprehensively re-engineered to provide AI-integrated development and modernization.</strong> Every surface an agent needs is a generated, gated artifact rather than prose it has to infer — and the rails that hold for a human hold for an agent, because they are the same rails.</p>
+    <div class="subsection" id="stack">
+      <p class="subsection__kicker">The stack at a glance</p>
+      <h3 class="subsection__title">Classic VistA stays put. An industry-standard layer goes on top.</h3>
+      <p class="section__intro">
+        The important line in this stack is not a technical one — it is the line between
+        <strong>the knowledge you need</strong> and <strong>the knowledge you don't</strong>. Below it
+        sits classic VistA: Kernel, FileMan, KIDS, the RPC Broker — four decades of software that
+        works, and that has always demanded deep, arcane, institutional knowledge to touch safely.
+        Above it sits an <strong>industry-standard layer</strong> that covers those internals in
+        ordinary, mainstream technology. Developers and AI agents work at the top layer. The
+        institutional knowledge stays below the line, in code that is tested rather than remembered.
+      </p>
+
+      <div class="vfm">
+        <div class="vfm__layer vfm__layer--v">
+          <span class="vfm__tag">◆</span>
+          <span class="vfm__name">you + your agent</span>
+          <span class="vfm__desc">Where the work happens — a human developer and an AI agent, on one surface.</span>
+        </div>
+
+        <div class="vfm__line">
+          <span class="vfm__arrow" aria-hidden="true">←</span>
+          <span class="vfm__wl">you call the library</span>
+        </div>
+
+        <div class="vfm__layer vfm__layer--f">
+          <span class="vfm__tag">≡</span>
+          <span class="vfm__name">standard libraries</span>
+          <span class="vfm__desc"><strong>MSL</strong> — JSON, HTTP(S), crypto, and the rest of the ordinary toolkit. <strong>FSL</strong> — FileMan as a database you can call. <strong>VSL</strong> — VistA in plain nouns. 69 modules, 579 entry points.</span>
+        </div>
+
+        <div class="vfm__line">
+          <span class="vfm__arrow" aria-hidden="true">←</span>
+          <span class="vfm__wl">the library speaks VistA, so you don't have to</span>
+        </div>
+
+        <div class="vfm__layer vfm__layer--m">
+          <span class="vfm__tag">▣</span>
+          <span class="vfm__name">classic VistA</span>
+          <span class="vfm__desc">Kernel · FileMan · KIDS · RPC Broker — 40 years of institutional knowledge, running unchanged.</span>
+        </div>
+
+        <div class="vfm__line">
+          <span class="vfm__arrow" aria-hidden="true">←</span>
+          <span class="vfm__wl">VistA runs on the engine</span>
+        </div>
+
+        <div class="vfm__layer vfm__layer--e">
+          <span class="vfm__tag">∎</span>
+          <span class="vfm__name">M engines</span>
+          <span class="vfm__desc">YottaDB and InterSystems IRIS — the same libraries, identical on both.</span>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Why a library layer changes who can work on VistA.</strong>
+        Every one of those boundaries used to be crossed by knowing things: which global to reach into,
+        which Kernel entry point to call, which side effect to expect. Each is now a documented call
+        with a test behind it. The <strong>M Standard Library (MSL)</strong> makes <strong>M</strong> a
+        peer of other mainstream languages instead of a special case; the <strong>FileMan Standard
+        Library (FSL)</strong> turns VistA's data engine into a database you can call from a bare M
+        engine; and the <strong>VistA Standard Library (VSL)</strong> reframes Kernel, KIDS and the
+        remote-procedure-call (RPC) Broker in modern mainstream terms, with a command surface in plain
+        nouns. The learning curve drops from <em>years of institutional apprenticeship</em> to
+        <em>reading an API</em> — which is exactly what lets an AI agent be productive here, and a new
+        human developer too.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ claim 3 — AI-integrated ══════════════ -->
+<section class="section" id="ai-integrated">
+  <div class="wrap">
+    <p class="section__kicker">AI-Integrated — the whole org</p>
+    <h2>An AI agent is a first-class consumer of this toolchain, not an afterthought bolted onto it</h2>
+
+    <div class="claims claims--solo">
+      <div class="claim claim--o claim--solo">
+        <p><strong>VistA — the VA's healthcare information system operating 1,200 hospitals and clinics nationwide for over 40 years — has been comprehensively re-engineered for AI-integrated development and modernization.</strong> Every surface an agent needs is a generated, gated artifact rather than prose it has to infer — and the rails that hold for a human hold for an agent, because they are the same rails.</p>
         <ul>
           <li><strong>One machine-readable command grammar.</strong> Every binary shares <code>clikit</code>: <code>--output text|json|auto</code>, a versioned JSON envelope, a deterministic exit-code ladder, and a reflected <code>schema</code> command — an agent drives the same gated surface a human does and gets a parseable result.</li>
           <li><strong>Generated agent guides, per band.</strong> Each standard library emits a self-contained agent guide and skill <strong>from its manifest</strong> — every module, entry point, error vocabulary and namespace rule, generated from the code, never a hand-written summary that rots.</li>
@@ -152,256 +411,16 @@ try {
   </div>
 </section>
 
-<!-- ══════════════ by the numbers ══════════════ -->
-<section class="section" id="numbers">
+<!-- ══════════════ architecture (collapsed by default) ══════════════ -->
+<section class="section section--fold" id="architecture">
   <div class="wrap">
-    <p class="section__kicker">By the numbers</p>
-    <h2>A red anywhere is a hard stop.</h2>
-    <p class="section__intro">
-      Measured from the repos, August 2026. The gating is rigid top to bottom — it blocks the commit,
-      the push, or the release tag. Nothing in the stack ships around a failing gate, and the whole
-      gate runs offline, on your machine, with no cloud service in the loop.
-    </p>
-
-    <div class="stats">
-      <div class="stat">
-        <div class="stat__num">5,400+</div>
-        <div class="stat__label">M assertions across 84 suites and 1,700+ test cases — every suite run on <em>both</em> VistA engines</div>
-      </div>
-      <div class="stat">
-        <div class="stat__num">2,800+</div>
-        <div class="stat__label">Go test functions (1,474 m-layer, 1,033 v-apps), table-driven</div>
-      </div>
-      <div class="stat">
-        <div class="stat__num">34</div>
-        <div class="stat__label">repos, every one carrying an offline <code>make check</code>; 19 layer-bearing repos run the waterline gates</div>
-      </div>
-      <div class="stat">
-        <div class="stat__num">≥85%</div>
-        <div class="stat__label">per-module coverage floor, alongside zero lint findings at <code>--error-on=error</code></div>
-      </div>
-    </div>
-
-    <div class="table-scroll">
-      <table>
-        <caption class="visually-hidden">Hardening surfaces and their measures</caption>
-        <thead>
-          <tr><th scope="col">Hardening surface</th><th scope="col">Measure</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>M unit tests</strong> (MSL + FSL + VSL)</td>
-            <td><strong>84 suites · 1,700+ test cases · 5,400+ assertions</strong>, every suite run on <strong>both</strong> VistA engines</td>
-          </tr>
-          <tr>
-            <td><strong>Go unit tests</strong></td>
-            <td><strong>2,800+ test functions</strong> (1,474 m-layer, 1,033 v-apps, 350 in the non-waterline clients), table-driven</td>
-          </tr>
-          <tr>
-            <td><strong>Executable doc examples</strong> (MSL + VSL)</td>
-            <td><strong>61 generated example programs</strong> from <strong>598 <code>@example</code> tags</strong>, run against the <strong>live</strong> VistA engines</td>
-          </tr>
-          <tr>
-            <td><strong>Gate coverage</strong></td>
-            <td><strong>34 repos, every one carrying an offline <code>make check</code></strong>; 19 layer-bearing repos additionally run the waterline gates</td>
-          </tr>
-          <tr>
-            <td><strong>m/f/v waterline checks</strong></td>
-            <td><strong>seven executable checks</strong> (<code>m arch check</code>: dependency direction, no VistA symbols below the line, transport monopoly — abstract-syntax-tree call-expression and script scan, seam pin, run-lock bracketing, engine-busy registration, plain-noun command vocabulary) in every layer-bearing repo, plus an engine-access scan in every M <strong>and</strong> Go gate and a scheduled org-wide meta-gate backstop</td>
-          </tr>
-          <tr>
-            <td><strong>m-engine waterline checks</strong></td>
-            <td>an <strong>executable conformance gate per driver</strong> — a driver binary that can't pass it can't ship</td>
-          </tr>
-          <tr>
-            <td><strong>VSL drift gates</strong></td>
-            <td><strong>26 red gates</strong> in one <code>make gates</code> run — Integration Control Registration, namespace, engine-access, manifest/dispatcher/envelope drift, data ownership, additive-only compat, …</td>
-          </tr>
-          <tr>
-            <td><strong>Hard stops</strong></td>
-            <td>lint <code>--error-on=error</code> zero findings · ≥85% per-module coverage · release only on a byte-clean lifecycle, both engines</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ the stack ══════════════ -->
-<section class="section" id="stack">
-  <div class="wrap">
-    <p class="section__kicker">The stack at a glance</p>
-    <h2>Classic VistA stays put. An industry-standard layer goes on top.</h2>
-    <p class="section__intro">
-      The important line in this stack is not a technical one — it is the line between
-      <strong>the knowledge you need</strong> and <strong>the knowledge you don't</strong>. Below it
-      sits classic VistA: Kernel, FileMan, KIDS, the RPC Broker — four decades of software that
-      works, and that has always demanded deep, arcane, institutional knowledge to touch safely.
-      Above it sits an <strong>industry-standard layer</strong> that covers those internals in
-      ordinary, mainstream technology. Developers and AI agents work at the top layer. The
-      institutional knowledge stays below the line, in code that is tested rather than remembered.
-    </p>
-
-    <div class="vfm">
-      <div class="vfm__layer vfm__layer--v">
-        <span class="vfm__tag">◆</span>
-        <span class="vfm__name">you + your agent</span>
-        <span class="vfm__desc">Where the work happens — a human developer and an AI agent, on one surface.</span>
-      </div>
-
-      <div class="vfm__line">
-        <span class="vfm__arrow" aria-hidden="true">←</span>
-        <span class="vfm__wl">you call the library</span>
-      </div>
-
-      <div class="vfm__layer vfm__layer--f">
-        <span class="vfm__tag">≡</span>
-        <span class="vfm__name">standard libraries</span>
-        <span class="vfm__desc"><strong>MSL</strong> — JSON, HTTP(S), crypto, and the rest of the ordinary toolkit. <strong>FSL</strong> — FileMan as a database you can call. <strong>VSL</strong> — VistA in plain nouns. 69 modules, 579 entry points.</span>
-      </div>
-
-      <div class="vfm__line">
-        <span class="vfm__arrow" aria-hidden="true">←</span>
-        <span class="vfm__wl">the library speaks VistA, so you don't have to</span>
-      </div>
-
-      <div class="vfm__layer vfm__layer--m">
-        <span class="vfm__tag">▣</span>
-        <span class="vfm__name">classic VistA</span>
-        <span class="vfm__desc">Kernel · FileMan · KIDS · RPC Broker — 40 years of institutional knowledge, running unchanged.</span>
-      </div>
-
-      <div class="vfm__line">
-        <span class="vfm__arrow" aria-hidden="true">←</span>
-        <span class="vfm__wl">VistA runs on the engine</span>
-      </div>
-
-      <div class="vfm__layer vfm__layer--e">
-        <span class="vfm__tag">∎</span>
-        <span class="vfm__name">M engines</span>
-        <span class="vfm__desc">YottaDB and InterSystems IRIS — the same libraries, identical on both.</span>
-      </div>
-    </div>
-
-    <div class="callout">
-      <strong>Why a library layer changes who can work on VistA.</strong>
-      Every one of those boundaries used to be crossed by knowing things: which global to reach into,
-      which Kernel entry point to call, which side effect to expect. Each is now a documented call
-      with a test behind it. The <strong>M Standard Library (MSL)</strong> makes <strong>M</strong> a
-      peer of other mainstream languages instead of a special case; the <strong>FileMan Standard
-      Library (FSL)</strong> turns VistA's data engine into a database you can call from a bare M
-      engine; and the <strong>VistA Standard Library (VSL)</strong> reframes Kernel, KIDS and the
-      remote-procedure-call (RPC) Broker in modern mainstream terms, with a command surface in plain
-      nouns. The learning curve drops from <em>years of institutional apprenticeship</em> to
-      <em>reading an API</em> — which is exactly what lets an AI agent be productive here, and a new
-      human developer too.
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ what's here, by task ══════════════ -->
-<section class="section" id="tools">
-  <div class="wrap">
-    <p class="section__kicker">What's here, by developer task</p>
-    <h2>The everyday loop M never had.</h2>
-
-    <div class="cards">
-      <div class="card">
-        <p class="card__task">Write M like any modern language</p>
-        <p>
-          <code>m fmt</code> (a formatter that rewrites the syntax tree, never the text), <code>m lint</code> (query-driven rule
-          engine, with XINDEX/Kernel compatibility profiles), and <code>m lsp</code> (an LSP 3.x
-          language server) all sit on <strong>one parser</strong> — <code>m-parse</code>, which
-          embeds the <a href="https://github.com/vista-forge/tree-sitter-m">tree-sitter-m</a>
-          grammar as WebAssembly and runs it through wazero. Static Go binaries, no C bindings, no C toolchain at
-          runtime.
-        </p>
-      </div>
-
-      <div class="card">
-        <p class="card__task">Test against a real engine, with coverage</p>
-        <p>
-          <code>m test</code> runs <code>*TST.m</code> suites on a live YottaDB or IRIS engine via
-          <code>^STDASSERT</code>, with machine-readable results; <code>m coverage</code> produces
-          standard LCOV coverage reports with per-module coverage gates. Every library in the org is built test-first and
-          gated on both engines.
-        </p>
-      </div>
-
-      <div class="card">
-        <p class="card__task">Stop hand-rolling utilities — three standard libraries</p>
-        <p>
-          <code>m-stdlib</code> is a pure-M library of <strong>40 <code>STD*</code> modules</strong>:
-          data formats (<code>STDJSON</code>, <code>STDXML</code>, <code>STDCSV</code>,
-          <code>STDREGEX</code>), encoding, testing (<code>STDASSERT</code>, <code>STDMOCK</code>),
-          crypto and auth (<code>STDCRYPTO</code>, <code>STDJWT</code>), networking
-          (<code>STDHTTP</code>, <code>STDS3</code>), plus dates, logging, collections, strings,
-          math, and filesystem. Above the waterline, <code>f-stdlib</code> adds 7
-          <code>FSL*</code> modules and <code>v-stdlib</code> 22 <code>VSL*</code> ones —
-          <strong>69 modules and 579 public entry points</strong> in all.
-        </p>
-      </div>
-
-      <div class="card">
-        <p class="card__task">Reach an engine exactly one way</p>
-        <p>
-          <code>m-driver-sdk</code> defines the vendor-neutral driver contract — typed verbs, a
-          structured engine-error model, honest capability documents, and an <strong>executable
-          conformance gate</strong> any driver binary must pass. Everything above the seam reaches
-          an engine only through this contract.
-        </p>
-      </div>
-
-      <div class="card">
-        <p class="card__task">Treat VistA patches as code</p>
-        <p>
-          <code>v-pkg</code> gives <strong>KIDS</strong> — VistA's native package/patch format — a
-          real lifecycle: parse, classify, lint, decompose, assemble, roundtrip, diff, build,
-          install, verify, snapshot, restore, uninstall, attest. Decompose a distribution into a
-          git-diffable component tree and reassemble it byte-identically; install, verify, and
-          cleanly back out against a live engine.
-        </p>
-      </div>
-
-      <div class="card">
-        <p class="card__task">Administer VistA with plain-noun commands</p>
-        <p>
-          The sysadmin platform pairs each engine-side <code>VSL*</code> module with a host-side
-          <code>v &lt;domain&gt;</code> command, <strong>generated — not hand-wired</strong> — from
-          the VSL manifest. Plain nouns a developer can guess: <code>v pkg</code>,
-          <code>v rpc-debug</code>, <code>v rpc-tap</code>. VA product names never appear in a
-          command; a lint gate enforces the plain language.
-        </p>
-      </div>
-
-      <div class="card">
-        <p class="card__task">Run VistA on your own machine</p>
-        <p>
-          <a href="https://github.com/orgs/vista-forge/packages/container/package/vista-iris">vista-iris</a>
-          publishes a multi-arch container of WorldVistA on IRIS for Health Community — the full
-          site build is baked into the image, so it boots already operational: Management Portal and
-          REST, the RPC Broker that serves CPRS (the VA's Computerized Patient Record System), HL7 messaging over its Minimal Lower Layer Protocol, and the IRIS superserver. Fictitious test data only.
-        </p>
-      </div>
-
-      <div class="card">
-        <p class="card__task">Drive it all with an AI agent</p>
-        <p>
-          Every binary shares one command grammar (<code>clikit</code>):
-          <code>--output text|json|auto</code>, a versioned JSON envelope, a deterministic exit-code
-          ladder, and a reflected <code>schema</code> command — so an agent invokes the same gated
-          surface a human uses and gets machine-parseable results.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ architecture ══════════════ -->
-<section class="section" id="architecture">
-  <div class="wrap">
-    <p class="section__kicker">Architecture</p>
-    <h2>Why registries — VistA's failure mode, inverted.</h2>
+    <details class="fold">
+      <summary class="fold__summary">
+        <span class="fold__kicker">Architecture</span>
+        <h2 class="fold__title">Why registries — VistA&#8217;s failure mode, inverted.</h2>
+        <span class="fold__chev" aria-hidden="true"></span>
+      </summary>
+      <div class="fold__body">
     <p class="section__intro">
       Classic VistA integrates by <strong>reaching into other packages' globals</strong>: every
       application owns its own data <em>and</em> freely reads and writes everyone else's, with the
@@ -481,14 +500,21 @@ try {
       byte-clean reversibility cannot become a release. Raw <code>docker exec</code> and
       direct-mode engine access are denied by tooling, not discouraged by docs.
     </div>
+      </div>
+    </details>
   </div>
 </section>
 
-<!-- ══════════════ repos ══════════════ -->
-<section class="section" id="repos">
+<!-- ══════════════ repos (collapsed by default) ══════════════ -->
+<section class="section section--fold" id="repos">
   <div class="wrap">
-    <p class="section__kicker">The repos</p>
-    <h2>Everything in the org.</h2>
+    <details class="fold">
+      <summary class="fold__summary">
+        <span class="fold__kicker">The repos</span>
+        <h2 class="fold__title">Everything in the org.</h2>
+        <span class="fold__chev" aria-hidden="true"></span>
+      </summary>
+      <div class="fold__body">
     <p class="section__intro">
       The toolchain is in active development and most of it is still private while the seams and
       licensing settle. <strong>Linked names are public today; the rest are listed for shape and
@@ -593,14 +619,21 @@ try {
         </tbody>
       </table>
     </div>
+      </div>
+    </details>
   </div>
 </section>
 
-<!-- ══════════════ principles ══════════════ -->
-<section class="section section--flush" id="principles">
+<!-- ══════════════ principles (collapsed by default) ══════════════ -->
+<section class="section section--fold section--flush" id="principles">
   <div class="wrap">
-    <p class="section__kicker">Design principles</p>
-    <h2>What the whole stack agrees on.</h2>
+    <details class="fold">
+      <summary class="fold__summary">
+        <span class="fold__kicker">Design principles</span>
+        <h2 class="fold__title">What the whole stack agrees on.</h2>
+        <span class="fold__chev" aria-hidden="true"></span>
+      </summary>
+      <div class="fold__body">
 
     <ul class="principles">
       <li><strong>Git-canonical source.</strong> M code lives in <code>.m</code> files under version control; the database is the runtime, not the repository.</li>
@@ -614,6 +647,8 @@ try {
       <li><strong>Test-first.</strong> Every module is built test-first with per-module coverage gates; conformance suites run against the test vectors published with the standards themselves.</li>
       <li><strong>Plain nouns.</strong> A command wraps an insider VistA subsystem in a name a developer can guess — and a lint gate keeps it that way.</li>
     </ul>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -667,6 +702,27 @@ try {
     relabel();
   });
   relabel();
+})();
+</script>
+
+<script>
+/* Architecture / Repos / Design principles ship COLLAPSED — they are reference
+   depth, not the first read. A link to one (the nav, the hero's "what's
+   available now") must still land open, or the anchor jumps to a shut summary
+   and the page looks broken. */
+(function () {
+  function openTarget(hash) {
+    if (!hash || hash.length < 2) return;
+    var el;
+    try { el = document.getElementById(decodeURIComponent(hash.slice(1))); } catch (e) { return; }
+    if (!el) return;
+    var d = el.closest("details.fold") || el.querySelector("details.fold");
+    if (!d || d.open) return;
+    d.open = true;
+    el.scrollIntoView();
+  }
+  openTarget(location.hash);
+  window.addEventListener("hashchange", function () { openTarget(location.hash); });
 })();
 </script>
 

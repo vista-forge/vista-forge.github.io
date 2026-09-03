@@ -509,6 +509,126 @@ h3 {
   .claim--o ul { grid-template-columns: 1fr; }
 }
 
+/* A claim that owns its own section: the eyebrow and headline are promoted to
+   the section header, so the card is one full-width panel of evidence. */
+.claims--solo { grid-template-columns: 1fr; }
+.claim--solo { grid-column: 1 / -1; }
+.claim--solo ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem 1.6rem;
+}
+@media (max-width: 820px) {
+  .claim--solo ul { grid-template-columns: 1fr; }
+}
+.claim--v.claim--solo::before,
+.claim--m.claim--solo::before { content: none; }
+
+/* ---------- sub-sections (a block that sits UNDER a claim) ---------- */
+
+/* A rule rather than more padding: inside one section these read as chapters of
+   the same argument, so they need a divider that is visibly lighter than the
+   section boundary above them. */
+.subsection {
+  margin-top: 3.5rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+.subsection__kicker {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0 0 0.7rem;
+}
+.subsection__title {
+  font-size: clamp(1.4rem, 2.8vw, 1.8rem);
+  letter-spacing: -0.024em;
+  line-height: 1.16;
+  margin: 0 0 0.9rem;
+  font-weight: 670;
+}
+
+/* ---------- collapsible sections ---------- */
+
+/* Reference depth — architecture, the repo inventory, the principles — ships
+   CLOSED. It is the material a reader comes back for, not the first read, and a
+   shut <details> keeps the page's argument the length of the argument. */
+/* the divider moves onto the <details> itself, so a closed fold is one rule,
+   not two stacked ones */
+.section--fold { padding: 0; border-bottom: none; }
+.fold { border-bottom: 1px solid var(--border); }
+.section--fold.section--flush .fold { border-bottom: none; }
+
+.fold__summary {
+  list-style: none;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  padding: 2.4rem 0;
+}
+.fold__summary::-webkit-details-marker { display: none; }
+.fold__summary:focus-visible {
+  outline: 2px solid var(--vista);
+  outline-offset: 4px;
+  border-radius: var(--radius);
+}
+
+.fold__kicker {
+  grid-column: 1;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.section--fold .fold__title {
+  grid-column: 1;
+  font-size: clamp(1.5rem, 3vw, 1.95rem);
+  letter-spacing: -0.026em;
+  line-height: 1.15;
+  margin: 0.25rem 0 0;
+  font-weight: 680;
+}
+.fold__summary:hover .fold__title { color: var(--vista); }
+
+/* The affordance: a chevron that turns, so "there is more here" is legible
+   without a word of instruction. */
+.fold__chev {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--border-bright);
+  border-radius: 50%;
+  background: var(--bg-elev);
+  position: relative;
+  flex: none;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+.fold__chev::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid var(--text-dim);
+  border-bottom: 2px solid var(--text-dim);
+  transform: translateY(-0.12rem) rotate(45deg);
+}
+.fold[open] .fold__chev { transform: rotate(180deg); }
+.fold__summary:hover .fold__chev { border-color: var(--text-faint); }
+
+.fold__body { padding-bottom: 4rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fold__chev { transition: none; }
+}
+
 /* ---------- numbers ---------- */
 
 .stats {
