@@ -1,0 +1,1190 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Commands — v db | VistA Forge docs</title><link rel="canonical" href="https://vista-forge.github.io/forge-docs/v/v-db/commands/"/><link rel="sitemap" href="/forge-docs/sitemap-index.xml"/><link rel="apple-touch-icon" href="/forge-docs/logo-180.png"/><script>try{var t=localStorage.getItem("starlight-theme")||localStorage.getItem("theme")||"light";t=t==="dark"?"dark":"light";document.documentElement.dataset.theme=t;localStorage.setItem("starlight-theme",t);localStorage.setItem("theme",t);}catch(e){}</script><link rel="shortcut icon" href="/forge-docs/favicon-32.png" type="image/png"/><meta name="generator" content="Astro v7.2.2"/><meta name="generator" content="Starlight v0.41.7"/><meta property="og:title" content="Commands — v db"/><meta property="og:type" content="article"/><meta property="og:url" content="https://vista-forge.github.io/forge-docs/v/v-db/commands/"/><meta property="og:locale" content="en"/><meta property="og:description" content="Every command `v db` ships, generated from its own committed contract."/><meta property="og:site_name" content="VistA Forge docs"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="Every command `v db` ships, generated from its own committed contract."/><meta name="forge-page" content="domain-index"/><meta name="forge-domain" content="db"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/forge-docs/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/forge-docs/_astro/common.BZ69VvZ3.css"><script type="module" src="/forge-docs/_astro/page.Dwipeu-R.js"></script></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">Skip to content</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><span class="brand sl-flex astro-hen6hmfb"><a class="brand__home sl-flex astro-hen6hmfb" href="https://vista-forge.github.io/"><img class="brand__mark astro-hen6hmfb" src="/forge-docs/mark.png" alt="" width="26" height="26" decoding="async"><span class="brand__org astro-hen6hmfb" translate="no">VistA Forge</span></a><span class="brand__sep astro-hen6hmfb" aria-hidden="true">/</span><a class="brand__here astro-hen6hmfb" href="/forge-docs/" translate="no">docs</a></span></div><div class="sl-flex print:hidden astro-nczgtkxc"><forge-search class="astro-nczgtkxc astro-ac66eqjo" data-translations="{&quot;placeholder&quot;:&quot;Search&quot;}"><div id="forge-search" class="forge-search-box astro-ac66eqjo"></div><span class="forge-search-icon sl-flex md:sl-hidden astro-ac66eqjo" aria-hidden="true"><svg aria-hidden="true" class="astro-ac66eqjo astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg></span></forge-search><script type="module" src="/forge-docs/_astro/Search.astro_astro_type_script_index_0_lang.DcD7Xsk4.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"><nav class="org-nav astro-yq4gbgkh" aria-label="Primary"><a href="https://vista-forge.github.io/#stack" class="org-nav__link astro-yq4gbgkh">Stack</a><a href="https://vista-forge.github.io/#tools" class="org-nav__link astro-yq4gbgkh">Tools</a><a href="https://vista-forge.github.io/#architecture" class="org-nav__link astro-yq4gbgkh">Architecture</a><a href="https://vista-forge.github.io/#repos" class="org-nav__link astro-yq4gbgkh">Repos</a><a href="/forge-docs/" class="org-nav__link astro-yq4gbgkh" aria-current="true">Docs</a></nav></div><button class="theme-toggle" type="button" aria-label="Switch to dark theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><script type="module">var e=document.documentElement,t=document.querySelectorAll(`button.theme-toggle`);function n(){let n=e.dataset.theme===`light`;for(let e of t)e.setAttribute(`aria-label`,n?`Switch to dark theme`:`Switch to light theme`)}for(let r of t)r.addEventListener(`click`,()=>{let t=e.dataset.theme===`light`?`dark`:`light`;e.dataset.theme=t;try{localStorage.setItem(`starlight-theme`,t),localStorage.setItem(`theme`,t)}catch{}n()});n();</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="Main"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="Menu" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><sl-sidebar-state-persist data-hash="16wx1p2" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-47ci7che"><li class="astro-47ci7che"><details open class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/">v · VistA tools</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details open class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/">v db</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/user-guide/">User Guide</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/user-guide/getting-started/" class="astro-47ci7che"><span class="astro-47ci7che">Getting started</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/user-guide/core-concepts/" class="astro-47ci7che"><span class="astro-47ci7che">Core concepts</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/user-guide/recipes/" class="astro-47ci7che"><span class="astro-47ci7che">Recipes</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/user-guide/troubleshooting/" class="astro-47ci7che"><span class="astro-47ci7che">Troubleshooting</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/user-guide/limitations/" class="astro-47ci7che"><span class="astro-47ci7che">Limitations</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/concepts/">Concepts</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/the-database-plainly/" class="astro-47ci7che"><span class="astro-47ci7che">The database, plainly</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/why-v-db-exists/" class="astro-47ci7che"><span class="astro-47ci7che">Why v db exists</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/the-fileman-translation/" class="astro-47ci7che"><span class="astro-47ci7che">The FileMan translation</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/fileman-in-modern-terms/" class="astro-47ci7che"><span class="astro-47ci7che">FileMan in modern terms</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/host-engine-and-the-seam/" class="astro-47ci7che"><span class="astro-47ci7che">Host, engine and the seam</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/the-contract-and-the-envelope/" class="astro-47ci7che"><span class="astro-47ci7che">The contract and the envelope</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/completeness/" class="astro-47ci7che"><span class="astro-47ci7che">Completeness</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/bounds-budgets-and-cursors/" class="astro-47ci7che"><span class="astro-47ci7che">Bounds, budgets and cursors</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/the-run-lock/" class="astro-47ci7che"><span class="astro-47ci7che">The run-lock</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/authorization/" class="astro-47ci7che"><span class="astro-47ci7che">Authorization</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/artifacts-and-manifests/" class="astro-47ci7che"><span class="astro-47ci7che">Artifacts and manifests</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/engine-floors/" class="astro-47ci7che"><span class="astro-47ci7che">Engine floors</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/the-rpc-face/" class="astro-47ci7che"><span class="astro-47ci7che">The RPC face</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/the-verified-channel/" class="astro-47ci7che"><span class="astro-47ci7che">The verified channel</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/independent-oracles/" class="astro-47ci7che"><span class="astro-47ci7che">Independent oracles</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/how-it-was-built/" class="astro-47ci7che"><span class="astro-47ci7che">How it was built</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/hardening/" class="astro-47ci7che"><span class="astro-47ci7che">Hardening</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/operational-notes/" class="astro-47ci7che"><span class="astro-47ci7che">Operational notes</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/concepts/further-reading/" class="astro-47ci7che"><span class="astro-47ci7che">Further reading</span></a></li></ul></details></li><li class="astro-47ci7che"><details open class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/commands/" aria-current="page">Commands</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/commands/analyze/">Analyze</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/analyze/estimate/" class="astro-47ci7che"><span class="astro-47ci7che">estimate</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/commands/inspect/">Inspect</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/export/" class="astro-47ci7che"><span class="astro-47ci7che">export</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/census/" class="astro-47ci7che"><span class="astro-47ci7che">census</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/refs/" class="astro-47ci7che"><span class="astro-47ci7che">refs</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/indexes/" class="astro-47ci7che"><span class="astro-47ci7che">indexes</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/schema/" class="astro-47ci7che"><span class="astro-47ci7che">schema</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/integrity/" class="astro-47ci7che"><span class="astro-47ci7che">integrity</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/integrity-compare/" class="astro-47ci7che"><span class="astro-47ci7che">integrity-compare</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/integrity-report/" class="astro-47ci7che"><span class="astro-47ci7che">integrity-report</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/bundle/" class="astro-47ci7che"><span class="astro-47ci7che">bundle</span></a></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/commands/inspect/selection/">selection</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/selection/compile/" class="astro-47ci7che"><span class="astro-47ci7che">compile</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/selection/size/" class="astro-47ci7che"><span class="astro-47ci7che">size</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/selection/explain/" class="astro-47ci7che"><span class="astro-47ci7che">explain</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/commands/inspect/catalog/">catalog</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/catalog/build/" class="astro-47ci7che"><span class="astro-47ci7che">build</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/catalog/browse/" class="astro-47ci7che"><span class="astro-47ci7che">browse</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/catalog/search/" class="astro-47ci7che"><span class="astro-47ci7che">search</span></a></li></ul></details></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/inspect/packet/" class="astro-47ci7che"><span class="astro-47ci7che">packet</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/commands/data/">Data</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/data/rows/" class="astro-47ci7che"><span class="astro-47ci7che">rows</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/data/get/" class="astro-47ci7che"><span class="astro-47ci7che">get</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/data/count/" class="astro-47ci7che"><span class="astro-47ci7che">count</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/data/find/" class="astro-47ci7che"><span class="astro-47ci7che">find</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/data/distribution/" class="astro-47ci7che"><span class="astro-47ci7che">distribution</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/data/fields-profile/" class="astro-47ci7che"><span class="astro-47ci7che">fields-profile</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/commands/authorize/">Authorize</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="10"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/authorize/policy/" class="astro-47ci7che"><span class="astro-47ci7che">policy</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/commands/write/">Write</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="11"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/write/put/" class="astro-47ci7che"><span class="astro-47ci7che">put</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/write/edit/" class="astro-47ci7che"><span class="astro-47ci7che">edit</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/write/delete/" class="astro-47ci7che"><span class="astro-47ci7che">delete</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/write/reindex/" class="astro-47ci7che"><span class="astro-47ci7che">reindex</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/write/text/" class="astro-47ci7che"><span class="astro-47ci7che">text</span></a></li></ul></details></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/commands/errors/" class="astro-47ci7che"><span class="astro-47ci7che">Errors</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-db/examples/">Examples</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="12"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/examples/analyze/" class="astro-47ci7che"><span class="astro-47ci7che">Analyze</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/examples/inspect/" class="astro-47ci7che"><span class="astro-47ci7che">Inspect</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/examples/data/" class="astro-47ci7che"><span class="astro-47ci7che">Data</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/examples/authorize/" class="astro-47ci7che"><span class="astro-47ci7che">Authorize</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-db/examples/write/" class="astro-47ci7che"><span class="astro-47ci7che">Write</span></a></li></ul></details></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-pkg/">v pkg</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="13"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-pkg/user-guide/">User Guide</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="14"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/user-guide/getting-started/" class="astro-47ci7che"><span class="astro-47ci7che">Getting started</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/user-guide/core-workflows/" class="astro-47ci7che"><span class="astro-47ci7che">Core workflows</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/user-guide/attestation/" class="astro-47ci7che"><span class="astro-47ci7che">Attestation</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-pkg/concepts/">Concepts</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="15"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/the-two-planes/" class="astro-47ci7che"><span class="astro-47ci7che">The two planes</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/every-verb-declares-three-things/" class="astro-47ci7che"><span class="astro-47ci7che">Every verb declares three things</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/reversibility/" class="astro-47ci7che"><span class="astro-47ci7che">Reversibility</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/what-diff-sees/" class="astro-47ci7che"><span class="astro-47ci7che">What diff sees</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/what-verify-sees/" class="astro-47ci7che"><span class="astro-47ci7che">What verify sees</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/drift/" class="astro-47ci7che"><span class="astro-47ci7che">Drift</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/the-exit-ladder/" class="astro-47ci7che"><span class="astro-47ci7che">The exit ladder</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/the-transport-seam/" class="astro-47ci7che"><span class="astro-47ci7che">The transport seam</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/the-attestation-ledger/" class="astro-47ci7che"><span class="astro-47ci7che">The attestation ledger</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/the-real-vista-inventory/" class="astro-47ci7che"><span class="astro-47ci7che">The real VistA inventory</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/categories-of-packages/" class="astro-47ci7che"><span class="astro-47ci7che">Categories of packages</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/gap-analysis/" class="astro-47ci7che"><span class="astro-47ci7che">Gap analysis</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/how-v-pkg-remediates/" class="astro-47ci7che"><span class="astro-47ci7che">How v pkg remediates each gap</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/concepts/validation/" class="astro-47ci7che"><span class="astro-47ci7che">Validation and verification</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-pkg/commands/">Commands</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="16"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-pkg/commands/inspect/">Inspect</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="17"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/inspect/parse/" class="astro-47ci7che"><span class="astro-47ci7che">parse</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/inspect/classify/" class="astro-47ci7che"><span class="astro-47ci7che">classify</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/inspect/diff/" class="astro-47ci7che"><span class="astro-47ci7che">diff</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/inspect/lint/" class="astro-47ci7che"><span class="astro-47ci7che">lint</span></a></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-pkg/commands/inspect/attest/">attest</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="18"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/inspect/attest/verify/" class="astro-47ci7che"><span class="astro-47ci7che">verify</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/inspect/attest/check/" class="astro-47ci7che"><span class="astro-47ci7che">check</span></a></li></ul></details></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-pkg/commands/transform/">Transform</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="19"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/transform/decompose/" class="astro-47ci7che"><span class="astro-47ci7che">decompose</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/transform/assemble/" class="astro-47ci7che"><span class="astro-47ci7che">assemble</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/transform/roundtrip/" class="astro-47ci7che"><span class="astro-47ci7che">roundtrip</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/transform/merge/" class="astro-47ci7che"><span class="astro-47ci7che">merge</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/transform/canonicalize/" class="astro-47ci7che"><span class="astro-47ci7che">canonicalize</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-pkg/commands/build--install/">Build &amp; install</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="20"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/build--install/build/" class="astro-47ci7che"><span class="astro-47ci7che">build</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/build--install/capture/" class="astro-47ci7che"><span class="astro-47ci7che">capture</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/build--install/install/" class="astro-47ci7che"><span class="astro-47ci7che">install</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/build--install/export/" class="astro-47ci7che"><span class="astro-47ci7che">export</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/build--install/verify/" class="astro-47ci7che"><span class="astro-47ci7che">verify</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-pkg/commands/back-out/">Back-out</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="21"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/back-out/snapshot/" class="astro-47ci7che"><span class="astro-47ci7che">snapshot</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/back-out/restore/" class="astro-47ci7che"><span class="astro-47ci7che">restore</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/back-out/uninstall/" class="astro-47ci7che"><span class="astro-47ci7che">uninstall</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/back-out/purge/" class="astro-47ci7che"><span class="astro-47ci7che">purge</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/back-out/adopt/" class="astro-47ci7che"><span class="astro-47ci7che">adopt</span></a></li></ul></details></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/commands/errors/" class="astro-47ci7che"><span class="astro-47ci7che">Errors</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-pkg/examples/">Examples</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="22"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/examples/inspect/" class="astro-47ci7che"><span class="astro-47ci7che">Inspect</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/examples/transform/" class="astro-47ci7che"><span class="astro-47ci7che">Transform</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/examples/build-install/" class="astro-47ci7che"><span class="astro-47ci7che">Build &amp; install</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-pkg/examples/back-out/" class="astro-47ci7che"><span class="astro-47ci7che">Back-out</span></a></li></ul></details></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-log/">v rpc-log</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="23"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-log/user-guide/">User Guide</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="24"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/user-guide/getting-started/" class="astro-47ci7che"><span class="astro-47ci7che">Getting started</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/user-guide/selecting-the-engine/" class="astro-47ci7che"><span class="astro-47ci7che">Selecting the engine</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/user-guide/logging-into-vehu/" class="astro-47ci7che"><span class="astro-47ci7che">Logging into vehu</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/user-guide/end-to-end-runs/" class="astro-47ci7che"><span class="astro-47ci7che">End-to-end runs</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/user-guide/connecting-cprs/" class="astro-47ci7che"><span class="astro-47ci7che">Connecting CPRS to vehu</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/user-guide/comparing-with-the-vsl-tap/" class="astro-47ci7che"><span class="astro-47ci7che">Comparing with the VSL tap</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/user-guide/limitations/" class="astro-47ci7che"><span class="astro-47ci7che">Limitations</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/user-guide/troubleshooting/" class="astro-47ci7che"><span class="astro-47ci7che">Troubleshooting</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-log/concepts/">Concepts</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="25"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/concepts/it-intercepts-nothing/" class="astro-47ci7che"><span class="astro-47ci7che">It intercepts nothing</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/concepts/arming-has-a-cost/" class="astro-47ci7che"><span class="astro-47ci7che">Arming has a cost</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/concepts/why-reading-a-log-is-irreversible/" class="astro-47ci7che"><span class="astro-47ci7che">Why reading a log is irreversible</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/concepts/what-each-verb-reaches/" class="astro-47ci7che"><span class="astro-47ci7che">What each verb reaches</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/concepts/dry-run-by-default/" class="astro-47ci7che"><span class="astro-47ci7che">Dry run by default</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/concepts/the-instance-is-resolved/" class="astro-47ci7che"><span class="astro-47ci7che">The instance is resolved</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/concepts/doctors-diagnosis/" class="astro-47ci7che"><span class="astro-47ci7che">Doctor&#39;s diagnosis</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/concepts/the-loopback-problem/" class="astro-47ci7che"><span class="astro-47ci7che">The loopback problem</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/concepts/why-this-tool/" class="astro-47ci7che"><span class="astro-47ci7che">Why this tool</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/concepts/further-reading/" class="astro-47ci7che"><span class="astro-47ci7che">Further reading</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-log/commands/">Commands</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="26"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-log/commands/capture/">Capture</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="27"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/commands/capture/tail/" class="astro-47ci7che"><span class="astro-47ci7che">tail</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/commands/capture/capture/" class="astro-47ci7che"><span class="astro-47ci7che">capture</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/commands/capture/status/" class="astro-47ci7che"><span class="astro-47ci7che">status</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/commands/capture/arm/" class="astro-47ci7che"><span class="astro-47ci7che">arm</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/commands/capture/disarm/" class="astro-47ci7che"><span class="astro-47ci7che">disarm</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/commands/capture/clear/" class="astro-47ci7che"><span class="astro-47ci7che">clear</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/commands/capture/ping/" class="astro-47ci7che"><span class="astro-47ci7che">ping</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-log/commands/connect/">Connect</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="28"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/commands/connect/doctor/" class="astro-47ci7che"><span class="astro-47ci7che">doctor</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/commands/connect/relay/" class="astro-47ci7che"><span class="astro-47ci7che">relay</span></a></li></ul></details></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/commands/errors/" class="astro-47ci7che"><span class="astro-47ci7che">Errors</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-log/examples/">Examples</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="29"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/examples/capture/" class="astro-47ci7che"><span class="astro-47ci7che">Capture</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-log/examples/connect/" class="astro-47ci7che"><span class="astro-47ci7che">Connect</span></a></li></ul></details></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-tap/">v rpc-tap</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="30"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-tap/user-guide/">User Guide</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="31"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/user-guide/prerequisites/" class="astro-47ci7che"><span class="astro-47ci7che">Prerequisites</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/user-guide/build-and-verify/" class="astro-47ci7che"><span class="astro-47ci7che">Build and verify</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/user-guide/the-kids-package/" class="astro-47ci7che"><span class="astro-47ci7che">The KIDS package</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/user-guide/install/" class="astro-47ci7che"><span class="astro-47ci7che">Install</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/user-guide/operate-the-capture-lifecycle/" class="astro-47ci7che"><span class="astro-47ci7che">Operate the capture lifecycle</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/user-guide/uninstall/" class="astro-47ci7che"><span class="astro-47ci7che">Uninstall</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/user-guide/drain-to-downstream/" class="astro-47ci7che"><span class="astro-47ci7che">Drain to downstream</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/user-guide/safety-properties/" class="astro-47ci7che"><span class="astro-47ci7che">Safety properties</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/user-guide/troubleshooting/" class="astro-47ci7che"><span class="astro-47ci7che">Troubleshooting</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-tap/concepts/">Concepts</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="32"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/concepts/half-runs-on-the-engine/" class="astro-47ci7che"><span class="astro-47ci7che">Half of this tool runs on the engine</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/concepts/the-splice/" class="astro-47ci7che"><span class="astro-47ci7che">The splice</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/concepts/leases/" class="astro-47ci7che"><span class="astro-47ci7che">Leases</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/concepts/the-ring/" class="astro-47ci7che"><span class="astro-47ci7che">The ring</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/concepts/the-drivers-measure-a-broker/" class="astro-47ci7che"><span class="astro-47ci7che">The drivers measure a broker</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/concepts/a-missing-engine-half-is-a-refusal/" class="astro-47ci7che"><span class="astro-47ci7che">A missing engine half is a refusal</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/concepts/rpc-tap-and-rpc-log/" class="astro-47ci7che"><span class="astro-47ci7che">rpc-tap and rpc-log</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-tap/commands/">Commands</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="33"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-tap/commands/control/">Control</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="34"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/commands/control/arm/" class="astro-47ci7che"><span class="astro-47ci7che">arm</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/commands/control/disarm/" class="astro-47ci7che"><span class="astro-47ci7che">disarm</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/commands/control/status/" class="astro-47ci7che"><span class="astro-47ci7che">status</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/commands/control/drain/" class="astro-47ci7che"><span class="astro-47ci7che">drain</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/commands/control/committrim/" class="astro-47ci7che"><span class="astro-47ci7che">committrim</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-tap/commands/bench/">Bench</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="35"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/commands/bench/load/" class="astro-47ci7che"><span class="astro-47ci7che">load</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/commands/bench/drive/" class="astro-47ci7che"><span class="astro-47ci7che">drive</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-tap/commands/build/">Build</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="36"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/commands/build/splice/" class="astro-47ci7che"><span class="astro-47ci7che">splice</span></a></li></ul></details></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/commands/errors/" class="astro-47ci7che"><span class="astro-47ci7che">Errors</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-rpc-tap/examples/">Examples</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="37"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/examples/control/" class="astro-47ci7che"><span class="astro-47ci7che">Control</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/examples/bench/" class="astro-47ci7che"><span class="astro-47ci7che">Bench</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-rpc-tap/examples/build/" class="astro-47ci7che"><span class="astro-47ci7che">Build</span></a></li></ul></details></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-utilities/">v utilities</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="38"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-utilities/commands/">Commands</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="39"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-utilities/commands/new/" class="astro-47ci7che"><span class="astro-47ci7che">new</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-utilities/commands/menu/" class="astro-47ci7che"><span class="astro-47ci7che">menu</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-utilities/commands/discover/" class="astro-47ci7che"><span class="astro-47ci7che">discover</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-utilities/commands/version/" class="astro-47ci7che"><span class="astro-47ci7che">version</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-utilities/commands/errors/" class="astro-47ci7che"><span class="astro-47ci7che">Errors</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/v/v-utilities/examples/">Examples</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="40"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/v/v-utilities/examples/version/" class="astro-47ci7che"><span class="astro-47ci7che">version</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-utilities/examples/menu/" class="astro-47ci7che"><span class="astro-47ci7che">menu</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-utilities/examples/discover/" class="astro-47ci7che"><span class="astro-47ci7che">discover</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/v/v-utilities/examples/new/" class="astro-47ci7che"><span class="astro-47ci7che">new</span></a></li></ul></details></li></ul></details></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/m/">m · M engine tools</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="41"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/m/m-driver-sdk/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">m-driver-sdk</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/m/m-iris/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">m-iris</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/m/m-modern-corpus/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">m-modern-corpus</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/m/m-parse/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">m-parse</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/m/m-standard/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">m-standard</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/m/m-stdlib/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">m-stdlib</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/m/m-ydb/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">m-ydb</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/m/tree-sitter-m/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">tree-sitter-m</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/products/">Products</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="42"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/products/m-devbox/">m-devbox</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="43"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/products/m-devbox/user-guide/">User Guide</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="44"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/user-guide/start-here/" class="astro-47ci7che"><span class="astro-47ci7che">Start here</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/user-guide/install-run-stop/" class="astro-47ci7che"><span class="astro-47ci7che">Install, run, stop</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/user-guide/requirements/" class="astro-47ci7che"><span class="astro-47ci7che">Requirements</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/user-guide/use-your-ai-assistant/" class="astro-47ci7che"><span class="astro-47ci7che">Use your AI assistant</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/user-guide/agentic-coding/" class="astro-47ci7che"><span class="astro-47ci7che">Agentic coding in the box</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/user-guide/the-agent-contract/" class="astro-47ci7che"><span class="astro-47ci7che">The agent contract</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/user-guide/data-compose-and-details/" class="astro-47ci7che"><span class="astro-47ci7che">Data, Compose and other details</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/user-guide/remove/" class="astro-47ci7che"><span class="astro-47ci7che">Remove</span></a></li></ul></details></li><li class="astro-47ci7che"><details class="astro-47ci7che"><summary class="astro-47ci7che"><span class="group-label astro-47ci7che"><a class="large landing astro-47ci7che" href="/forge-docs/products/m-devbox/concepts/">Concepts</a></span><svg aria-hidden="true" class="caret astro-47ci7che astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="45"></sl-sidebar-restore><ul class="astro-47ci7che"><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/concepts/the-stack-from-the-metal-up/" class="astro-47ci7che"><span class="astro-47ci7che">The M developer stack, from the metal up</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/concepts/m-in-ten-minutes/" class="astro-47ci7che"><span class="astro-47ci7che">M in ten minutes</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/m-devbox/concepts/glossary/" class="astro-47ci7che"><span class="astro-47ci7che">Glossary</span></a></li></ul></details></li></ul></details></li><li class="astro-47ci7che"><a href="/forge-docs/products/m-vscode/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">m-vscode</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/vdb-explorer/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">vdb-explorer</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/vista-atlas/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">vista-atlas</span></a></li><li class="astro-47ci7che"><a href="/forge-docs/products/vista-compass/" class="large landing alone astro-47ci7che"><span class="astro-47ci7che">vista-compass</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"><nav class="org-nav astro-yq4gbgkh" aria-label="Primary"><a href="https://vista-forge.github.io/#stack" class="org-nav__link astro-yq4gbgkh">Stack</a><a href="https://vista-forge.github.io/#tools" class="org-nav__link astro-yq4gbgkh">Tools</a><a href="https://vista-forge.github.io/#architecture" class="org-nav__link astro-yq4gbgkh">Architecture</a><a href="https://vista-forge.github.io/#repos" class="org-nav__link astro-yq4gbgkh">Repos</a><a href="/forge-docs/" class="org-nav__link astro-yq4gbgkh" aria-current="true">Docs</a></nav></div><button class="theme-toggle" type="button" aria-label="Switch to dark theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">On this page<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#analyze" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Analyze</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#inspect" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Inspect</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#data" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Data</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#authorize" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Authorize</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#write" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Write</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#global-flags" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Global flags</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#exit-codes" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Exit codes</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#errors" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Errors</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#notes" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Notes</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-json-envelope" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The JSON envelope</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#completeness-fields" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Completeness fields</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#recurring-flag-families" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Recurring flag families</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#projection-tiers" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Projection tiers</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#filter-operators" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Filter operators</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#default-bounds" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Default bounds</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#what-each-exit-class-means-here" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">What each exit class means here</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#typed-refusals-explained" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Typed refusals, explained</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-umbrellas-own-verbs" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The umbrella&#39;s own verbs</span></a></li></ul></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/forge-docs/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#analyze" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Analyze</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#inspect" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Inspect</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#data" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Data</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#authorize" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Authorize</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#write" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Write</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#global-flags" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Global flags</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#exit-codes" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Exit codes</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#errors" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Errors</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#notes" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Notes</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-json-envelope" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The JSON envelope</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#completeness-fields" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Completeness fields</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#recurring-flag-families" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Recurring flag families</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#projection-tiers" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Projection tiers</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#filter-operators" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Filter operators</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#default-bounds" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Default bounds</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#what-each-exit-class-means-here" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">What each exit class means here</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#typed-refusals-explained" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Typed refusals, explained</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-umbrellas-own-verbs" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The umbrella&#39;s own verbs</span></a></li></ul></li></ul></nav></starlight-toc><script type="module" src="/forge-docs/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="en" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">Commands — v db</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><div class="sl-heading-wrapper level-h2"><h2 id="analyze">Analyze</h2><a class="sl-anchor-link" href="#analyze"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Analyze”</span></a></div>
+<p>Sizing the database as it is — measured counts and sampled record sizes.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/analyze/estimate/"><code dir="auto">v db estimate</code></a></td>
+<td>Estimate export size for a set of files (record count × sampled record size) and fit it against a cap (exit 3 over cap).</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="inspect">Inspect</h2><a class="sl-anchor-link" href="#inspect"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Inspect”</span></a></div>
+<p>Dictionary and catalog reads: schema, the walked census, explain.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/export/"><code dir="auto">v db export</code></a></td>
+<td>Write the data dictionary to disk as JSONL plus a manifest, for analysis away from the engine. The manifest records WHICH instance it came from, at what FileMan version, what was requested, and what was requested and not written.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/census/"><code dir="auto">v db census</code></a></td>
+<td>The WALKED catalog of every file (table): honest record (row) counts with the stored header claim beside as an integrity signal, and sampled record sizes.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/refs/"><code dir="auto">v db refs</code></a></td>
+<td>The reference map (foreign keys) around one file: what it points at, and what points at it — with --verify auditing FileMan's pointed-to-by catalog against the fields themselves.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/indexes/"><code dir="auto">v db indexes</code></a></td>
+<td>Inventory one file's cross-references (indexes): both registers they are declared in, what each one stores, where the record id sits inside an entry, and whether its key IS the indexed column's value — the measurements that say what may be looked up by key and what may not.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/schema/"><code dir="auto">v db schema</code></a></td>
+<td>Describe one file (table): its fields (columns) and types, pointers (foreign keys) and cross-references (indexes) — the data dictionary, which is this database's schema catalog.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/integrity/"><code dir="auto">v db integrity</code></a></td>
+<td>The instance-integrity census: the whole-instance sweeps — header claims vs walked truth, pointer resolution, declared-type grammar, the declaration-driven index audit (register + feed), hollow sub-records, the DD census, key uniqueness, and the full-depth sub-file descent — as counts with denominators per file (class, file, count, content-fold rows), never a pass/fail verdict.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/integrity-compare/"><code dir="auto">v db integrity-compare</code></a></td>
+<td>Compare an integrity artifact against a named expectation, OFFLINE: a prior committed run of the same instance (any row difference is the red delta outcome) and/or the shipped-state ledger (one-sided excess is the attention outcome, never red). Speaks four pinned outcome words: clean, delta, attention, stopped.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/integrity-report/"><code dir="auto">v db integrity-report</code></a></td>
+<td>Explain one integrity artifact's pointer findings by TARGET (VD-D109): dangling mass joined to each target file's own header-ledger row — a header-divergent target is ONE finding with its mechanism shown, a healthy target is the class worth eyes, with the source list attached either way — plus the malformed split (type-history vs live-resolving), which has no target to attribute.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/bundle/"><code dir="auto">v db bundle</code></a></td>
+<td>Run a RUN SET — the committed declaration of the components a bundle is made of — writing each component to its own directory with its own manifest, and embedding the set that produced it. --explain reports what it WOULD export without reaching an engine.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/selection/"><code dir="auto">v db selection</code></a></td>
+<td>The SELECTION object: which tables to extract, at any depth, with a projection and filter per table — compiled into the run set 'v db bundle' runs. Saved, diffable and re-runnable; not a query language.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/selection/compile/"><code dir="auto">v db selection compile</code></a></td>
+<td>Compile a selection into the run set 'v db bundle' runs: each table entry becomes one 'rows' invocation with its projection and filter, each passthrough entry is carried unchanged, and the compiled set records which selection (and which catalog build, under which rule) produced it. Every entry is resolved against the generated command contract; a problem refuses and writes nothing.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/selection/size/"><code dir="auto">v db selection size</code></a></td>
+<td>Size a selection BEFORE it is extracted (VD-D119/VD-D120): each table's N from the committed catalog build at zero engine cost, its mean row bytes from one spread probe at the component's own projection, tier and filter, widened until the sample-dispersion band is inside ±10 % or 5 visits are spent — an interval per component and for the whole, never a point; a selection with an unsizable component refuses before any engine visit and never holds a verdict.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/selection/explain/"><code dir="auto">v db selection explain</code></a></td>
+<td>Report what a selection WOULD compile to — every entry, its kind, the verb and arguments it becomes, and the lineage the compile step would attach — without writing anything. If the selection has problems, all of them rather than the first.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/catalog/"><code dir="auto">v db catalog</code></a></td>
+<td>The VistA data catalog: build it without touching an engine, from a certified bundle plus an integrity capture (one entry per table — structure, volume and condition planes, derived package attribution with its rule, search index embedded), then browse and search the artifact without an engine.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/catalog/build/"><code dir="auto">v db catalog build</code></a></td>
+<td>Build the catalog artifact OFFLINE from a certified bundle and an integrity capture of the same instance: one entry per table with structure, volume and condition planes, the derived package attribution with its rule, and the search index built in — then certify the derivation by both-direction reconciliation against the components (refused is not published).</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/catalog/browse/"><code dir="auto">v db catalog browse</code></a></td>
+<td>List the catalog's tables from the artifact — attribution-first by default (owner, then the contested set, then unmatched); size is never the default. Every row states its volume as a count or a named non-fact.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/catalog/search/"><code dir="auto">v db catalog search</code></a></td>
+<td>Rank tables and fields by name and description over the artifact's embedded index, under the ranking rule the artifact ships as data. A negative answer carries the corpus denominator and the build age.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/inspect/packet/"><code dir="auto">v db packet</code></a></td>
+<td>The DELIVERY PACKET: the per-component manifest, the producer certification, the channel evidence stated verbatim, the selection's lineage with every declared exclusion, the sized run, and the condition of the data — the same-session integrity audit's rows scoped to exactly what was extracted, read against the shipped-state floor. Counts over denominators; the packet never scores or judges.</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="data">Data</h2><a class="sl-anchor-link" href="#data"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Data”</span></a></div>
+<p>The data plane: bounded, resumable reads with a completeness block on every page.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/data/rows/"><code dir="auto">v db rows</code></a></td>
+<td>One bounded page of a file's records (rows) walked in row-id order — the population is the walk, never a stored list, so nothing is missed because an index was stale (completeness block on every page).</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/data/get/"><code dir="auto">v db get</code></a></td>
+<td>One record (row) by its IEN (row id), byte-exact — .5 is a real IEN, not a typo.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/data/count/"><code dir="auto">v db count</code></a></td>
+<td>Honest record (row) count of one file (table) — counted by walking the rows, resumable, with a completeness block. The count the file header stores is a CLAIM; this is a measurement.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/data/find/"><code dir="auto">v db find</code></a></td>
+<td>Lookup over a named cross-reference (index) — a declared index walk in emission order. Emitted vs distinct stays visible because an index walk never de-duplicates; seeks position, never scans. --raw instead READS a cross-reference's stored entries, which is the only way to reach the ones a seek refuses (most of them: 354 of #2's 386 are site-authored).</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/data/distribution/"><code dir="auto">v db distribution</code></a></td>
+<td>Bounded distinct-value/top-N distribution of ONE field (column), or the depth of a multiple (nested table) — what values are actually in this column, and how many of each.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/data/fields-profile/"><code dir="auto">v db fields-profile</code></a></td>
+<td>How many records hold a stored value in EACH field (column) of a file (table) — the whole dictionary tallied in ONE walk, so a wide sparse file says which of its columns actually carry data here.</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="authorize">Authorize</h2><a class="sl-anchor-link" href="#authorize"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Authorize”</span></a></div>
+<p>The instance's declared authorization surface (enforced engine-side at every verb door).</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/authorize/policy/"><code dir="auto">v db policy</code></a></td>
+<td>Show or declare the instance's authorization surface (class, per-file policy, read enablement) — enforcement is engine-side at every data verb's door.</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="write">Write</h2><a class="sl-anchor-link" href="#write"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Write”</span></a></div>
+<p>Validated, audited mutations behind the engine-side @mutates gate.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/write/put/"><code dir="auto">v db put</code></a></td>
+<td>Create a record (row), or a sub-record in a multiple (nested table) — external values by default, validated whole-request.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/write/edit/"><code dir="auto">v db edit</code></a></td>
+<td>Write values into an existing record (row) — one invalid value refuses the whole request; '@' clears a field (column), which is distinct from deleting the row.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/write/delete/"><code dir="auto">v db delete</code></a></td>
+<td>Delete a record (row) — DRY-RUN by default (reports what would go); --commit --yes actuates.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/write/reindex/"><code dir="auto">v db reindex</code></a></td>
+<td>Rebuild one record's cross-references (its index entries). ADDS any entry that is missing; it does NOT remove one that is wrong — an index entry for a value the record no longer holds SURVIVES a reindex (measured, both engines). Whole-file reindex is deliberately not a verb.</td>
+</tr>
+<tr>
+<td><a href="/forge-docs/v/v-db/commands/write/text/"><code dir="auto">v db text</code></a></td>
+<td>Write or read ONE word-processing field (a text blob) — replace/append/--clear; --show reads the field back, which the older interface could only write.</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="global-flags">Global flags</h2><a class="sl-anchor-link" href="#global-flags"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Global flags”</span></a></div>
+<p>Every command accepts these.</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Type</th>
+<th>Default</th>
+<th>Env</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">-o</code>, <code dir="auto">--output</code></td>
+<td><code dir="auto">text</code> | <code dir="auto">json</code> | <code dir="auto">auto</code></td>
+<td><code dir="auto">auto</code></td>
+<td>—</td>
+<td>Output format: text (TTY-styled), json, or auto.</td>
+</tr>
+<tr>
+<td><code dir="auto">--no-color</code></td>
+<td><code dir="auto">bool</code></td>
+<td>—</td>
+<td><code dir="auto">NO_COLOR</code></td>
+<td>Disable ANSI styling even on a TTY.</td>
+</tr>
+<tr>
+<td><code dir="auto">-v</code>, <code dir="auto">--verbose</code></td>
+<td><code dir="auto">bool</code></td>
+<td>—</td>
+<td>—</td>
+<td>Verbose diagnostics to stderr.</td>
+</tr>
+<tr>
+<td><code dir="auto">--version</code></td>
+<td><code dir="auto">bool</code></td>
+<td>—</td>
+<td>—</td>
+<td>Print version and build info.</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="exit-codes">Exit codes</h2><a class="sl-anchor-link" href="#exit-codes"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Exit codes”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">0</code></td>
+<td>ok</td>
+</tr>
+<tr>
+<td><code dir="auto">1</code></td>
+<td>runtime error</td>
+</tr>
+<tr>
+<td><code dir="auto">2</code></td>
+<td>usage error</td>
+</tr>
+<tr>
+<td><code dir="auto">3</code></td>
+<td>check / gate failed</td>
+</tr>
+<tr>
+<td><code dir="auto">4</code></td>
+<td>refused / substrate unavailable</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="errors">Errors</h2><a class="sl-anchor-link" href="#errors"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Errors”</span></a></div>
+<p>Every typed refusal <code dir="auto">v db</code> can raise, looked up by the code it printed: <a href="/forge-docs/v/v-db/commands/errors/">Errors</a>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="notes">Notes</h2><a class="sl-anchor-link" href="#notes"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Notes”</span></a></div>
+<p><em>Hand-written in the owning repository; the tables above are generated.</em></p>
+<p>The facts the contract does not carry, in one place: the envelope, the completeness fields, the filter operators, the default bounds, the typed refusals explained, the recurring flag families and the projection tiers. Everything a single verb accepts, returns and refuses is on that verb's own page, generated from the contract.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="the-json-envelope">The JSON envelope</h3><a class="sl-anchor-link" href="#the-json-envelope"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “The JSON envelope”</span></a></div>
+<p>Every command emits the same shape:</p>
+<div class="expressive-code"><link rel="stylesheet" href="/forge-docs/_astro/ec.w36nc.css"><script type="module" src="/forge-docs/_astro/ec.0vx5m.js"></script><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7FDBCA;--1:#096E72">"schemaVersion"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">1.1</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7FDBCA;--1:#096E72">"command"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">db rows &lt;file&gt;</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7FDBCA;--1:#096E72">"ok"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#FF6A83;--1:#A24848">true</span><span style="--0:#D6DEEB;--1:#403F53">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7FDBCA;--1:#096E72">"exit"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#F78C6C;--1:#AA0982">0</span><span style="--0:#D6DEEB;--1:#403F53">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7FDBCA;--1:#096E72">"data"</span><span style="--0:#D6DEEB;--1:#403F53">: { }</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{  &quot;schemaVersion&quot;: &quot;1.1&quot;,  &quot;command&quot;: &quot;db rows <file>&quot;,  &quot;ok&quot;: true,  &quot;exit&quot;: 0,  &quot;data&quot;: { }}"><div></div></button></div></figure></div>
+<p>On failure, <code dir="auto">data</code> is replaced by <code dir="auto">error</code>:</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7FDBCA;--1:#096E72">"schemaVersion"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">1.1</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7FDBCA;--1:#096E72">"ok"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#FF6A83;--1:#A24848">false</span><span style="--0:#D6DEEB;--1:#403F53">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7FDBCA;--1:#096E72">"exit"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#F78C6C;--1:#AA0982">2</span><span style="--0:#D6DEEB;--1:#403F53">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7FDBCA;--1:#096E72">"error"</span><span style="--0:#D6DEEB;--1:#403F53">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#7FDBCA;--1:#096E72">"code"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">USAGE</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#7FDBCA;--1:#096E72">"exit"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#F78C6C;--1:#AA0982">2</span><span style="--0:#D6DEEB;--1:#403F53">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#7FDBCA;--1:#096E72">"message"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">unexpected argument version</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#7FDBCA;--1:#096E72">"hint"</span><span style="--0:#D6DEEB;--1:#403F53">: </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#C789D6;--1:#7C5686">run with --help for usage</span><span style="--0:#D9F5DD;--1:#111111">"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">  </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{  &quot;schemaVersion&quot;: &quot;1.1&quot;,  &quot;ok&quot;: false,  &quot;exit&quot;: 2,  &quot;error&quot;: {    &quot;code&quot;: &quot;USAGE&quot;,    &quot;exit&quot;: 2,    &quot;message&quot;: &quot;unexpected argument version&quot;,    &quot;hint&quot;: &quot;run with --help for usage&quot;  }}"><div></div></button></div></figure></div>
+<p><code dir="auto">command</code> is the grammar path, not the literal argv — so <code dir="auto">db rows &lt;file&gt;</code> is
+stable across invocations and safe to switch on.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="completeness-fields">Completeness fields</h3><a class="sl-anchor-link" href="#completeness-fields"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Completeness fields”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>field</th>
+<th>type</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">population</code></td>
+<td>string</td>
+<td><code dir="auto">file</code>, <code dir="auto">index:&lt;name&gt;</code>, <code dir="auto">sub:&lt;file&gt;</code>, <code dir="auto">ien-list(&lt;n&gt;)</code>, <code dir="auto">dic</code>, or <code dir="auto">dic:&lt;file&gt;</code></td>
+</tr>
+<tr>
+<td><code dir="auto">examined</code></td>
+<td>int</td>
+<td>candidates visited, charged per candidate including filter-only projection</td>
+</tr>
+<tr>
+<td><code dir="auto">filtered</code></td>
+<td>int</td>
+<td>candidates rejected by a predicate</td>
+</tr>
+<tr>
+<td><code dir="auto">emitted</code></td>
+<td>int</td>
+<td>rows in this page</td>
+</tr>
+<tr>
+<td><code dir="auto">distinct</code></td>
+<td>int</td>
+<td>distinct IENs in this page — below <code dir="auto">emitted</code> when a population can repeat one (<code dir="auto">index:&lt;name&gt;</code>, <code dir="auto">ien-list</code>)</td>
+</tr>
+<tr>
+<td><code dir="auto">stopped</code></td>
+<td>enum</td>
+<td><code dir="auto">end</code> | <code dir="auto">rows</code> | <code dir="auto">bytes</code> | <code dir="auto">examined</code> | <code dir="auto">elapsed</code> | <code dir="auto">chunk</code> (<code dir="auto">ien-list</code> only: the transport ran out of chunk, not the population)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Emission order is a property of the population</strong>, derivable from that one
+field — there is no <code dir="auto">order</code> field to read and none to keep in step:
+<code dir="auto">file</code> ⇒ row-id order · <code dir="auto">index:&lt;name&gt;</code> ⇒ that key's collation ·
+<code dir="auto">sub:&lt;file&gt;</code> ⇒ parent-major depth order · <code dir="auto">ien-list(n)</code> ⇒ <strong>the order you
+supplied</strong>.</p>
+<p>On an <code dir="auto">ien-list</code> page one more block rides beside these: <code dir="auto">misses</code>, the
+requested IENs with no record, each with the list position that asked for it —
+present and empty when nothing was missing.</p>
+<p>Beside it, <code dir="auto">page</code>:</p>
+<table>
+<thead>
+<tr>
+<th>field</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">more</code></td>
+<td>is there data behind this page</td>
+</tr>
+<tr>
+<td><code dir="auto">next</code></td>
+<td>the opaque continuation token, present only when <code dir="auto">more</code> is true</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h3"><h3 id="recurring-flag-families">Recurring flag families</h3><a class="sl-anchor-link" href="#recurring-flag-families"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Recurring flag families”</span></a></div>
+<p>Named once here; the summary table marks membership.</p>
+<ul>
+<li><strong>Budgets</strong> (<code dir="auto">B</code>): <code dir="auto">--max</code> (rows) · <code dir="auto">--bytes</code> · <code dir="auto">--examined</code> · <code dir="auto">--elapsed</code> — §2.4, defaults §6.6.</li>
+<li><strong>Cursor</strong> (<code dir="auto">C</code>): <code dir="auto">--token</code> · <code dir="auto">--one-page</code> · <code dir="auto">--pace</code> (on the fold verbs,
+<code dir="auto">--pace</code> spaces the fold's own pages).</li>
+<li><strong>Artifact</strong> (<code dir="auto">A</code>): <code dir="auto">--out DIR</code> (JSONL + manifest) · <code dir="auto">--max-pages</code>
+(named-incompleteness bound) · <code dir="auto">--pace</code> (politeness gap between the walk's
+engine visits). On <code dir="auto">rows</code>/<code dir="auto">find</code> the two walk dials belong to <code dir="auto">--out</code> and
+<strong>refuse without it</strong> (<code dir="auto">BAD_OUT_DIAL</code>) — a bound or a pace on a single-page
+read would be accepted and silently inert.</li>
+<li><strong>Projection</strong> (<code dir="auto">P</code>): <code dir="auto">--fields '&lt;n&gt;;&lt;n&gt;;…'|'*'</code> · <code dir="auto">--tier external|internal|raw</code>.</li>
+<li><strong>Filter</strong> (<code dir="auto">W</code>): <code dir="auto">--where '&lt;field&gt; &lt;op&gt; &lt;value&gt;'</code>, repeatable = AND; §6.4.</li>
+<li><strong>Seek</strong> (<code dir="auto">K</code>): <code dir="auto">--from</code> · <code dir="auto">--to</code> · <code dir="auto">--prefix</code> (stored key space; <code dir="auto">--prefix</code> excludes <code dir="auto">--from</code>/<code dir="auto">--to</code>).</li>
+<li><strong>Plan</strong> (<code dir="auto">X</code>): <code dir="auto">--explain</code> (+ artifact citations <code dir="auto">--census</code> · <code dir="auto">--indexes</code> ·
+<code dir="auto">--profile</code>). The citations are plan inputs: naming one <strong>without</strong>
+<code dir="auto">--explain</code> refuses (<code dir="auto">BAD_EXPLAIN</code>) rather than running the read with the
+artifact silently ignored.</li>
+<li><strong>Reference map</strong> (<code dir="auto">I</code>): <code dir="auto">--ids</code> (and <code dir="auto">get --ref</code>).</li>
+<li><strong>Confirmation</strong> (<code dir="auto">Y</code>): <code dir="auto">--yes</code>, required by every mutation, client- and engine-side.</li>
+</ul>
+<div class="sl-heading-wrapper level-h3"><h3 id="projection-tiers">Projection tiers</h3><a class="sl-anchor-link" href="#projection-tiers"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Projection tiers”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>tier</th>
+<th>value shown</th>
+<th>property</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">external</code> (default)</td>
+<td>FileMan's rendered form (via FileMan's own retriever)</td>
+<td>human-faithful; <strong>instance-specific</strong> — the portability warning on every page is real</td>
+</tr>
+<tr>
+<td><code dir="auto">internal</code></td>
+<td>the stored value (a pointer is an IEN, a date is FileMan internal)</td>
+<td>portable across instances; what <code dir="auto">--where</code> evaluates against; makes <code dir="auto">--ids</code> free</td>
+</tr>
+<tr>
+<td><code dir="auto">raw</code></td>
+<td>the record's data nodes</td>
+<td>byte truth; excludes <code dir="auto">--fields</code> and <code dir="auto">--ids</code> by construction</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h3"><h3 id="filter-operators">Filter operators</h3><a class="sl-anchor-link" href="#filter-operators"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Filter operators”</span></a></div>
+<p>The closed table — no client M is ever <code dir="auto">XECUTE</code>d:</p>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">=</code></td>
+<td>equal</td>
+</tr>
+<tr>
+<td><code dir="auto">'=</code></td>
+<td>not equal</td>
+</tr>
+<tr>
+<td><code dir="auto">&gt;</code> <code dir="auto">&lt;</code> <code dir="auto">&gt;=</code> <code dir="auto">&lt;=</code></td>
+<td>ordered comparison, in the engine's own collation</td>
+</tr>
+<tr>
+<td><code dir="auto">contains</code></td>
+<td>M <code dir="auto">[</code> containment</td>
+</tr>
+<tr>
+<td><code dir="auto">starts</code></td>
+<td>byte-prefix test</td>
+</tr>
+<tr>
+<td><code dir="auto">bound</code></td>
+<td>the field has a stored value node at all — <strong>takes no value</strong></td>
+</tr>
+<tr>
+<td><code dir="auto">'bound</code></td>
+<td>it does not — the negation of the above</td>
+</tr>
+</tbody>
+</table>
+<p>Two constraints:</p>
+<ul>
+<li><strong>Stored fields only.</strong> A computed field is refused, because filtering on it
+would execute site DD M once per candidate.</li>
+<li><strong>Predicates run against the INTERNAL value</strong>, not the external one. A filter
+on a pointer field takes an <strong>IEN</strong>, not a name; a filter on a date takes
+FileMan internal date form. This is deliberate — the external value is the
+retriever's product, and requiring it per candidate would price every filter at
+the projection rate.</li>
+</ul>
+<p><strong><code dir="auto">bound</code> is the one predicate that reads storage rather than a value.</strong> An
+absent node, a stored empty string and FileMan's <code dir="auto">@</code> are three different states
+that every other operator sees identically, and <code dir="auto">bound</code> names exactly one of
+them: <em>is there a node here at all</em>. Two consequences worth knowing:</p>
+<ul>
+<li>It is the <strong>only operator admissible on a multiple</strong> — a multiple is bound iff
+its <code dir="auto">0</code> node is set, which answers "does this record have any sub-entries?"
+without enumerating them. Every other operator on a multiple refuses
+<code dir="auto">U-VSL-ROW-FLTFIELD</code>.</li>
+<li>It is a <strong>two-token clause</strong> — <code dir="auto">--where '9.3 bound'</code>. Supplying a value
+(<code dir="auto">--where '9.3 bound X'</code>) is a typed refusal, never an ignored argument.</li>
+</ul>
+<p>Every verb that takes <code dir="auto">--where</code> takes the same table: <code dir="auto">rows</code>, <code dir="auto">find</code>, <code dir="auto">count</code>
+and <code dir="auto">distribution</code>. There is one grammar, so a predicate you can express in one
+you can express in all of them.</p>
+<p><strong>A clause is ONE shell argument, taken byte-for-byte.</strong> VistA values carry
+commas (<code dir="auto">SMITH,JOHN</code> is one name), and every <code dir="auto">--where</code> treats a comma as data,
+never as a list separator — repeat the flag for AND:
+<code dir="auto">--where '.01 = SMITH,JOHN' --where '9.3 bound'</code> is two predicates;
+<code dir="auto">--where '.01 = SMITH,JOHN'</code> is one.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="default-bounds">Default bounds</h3><a class="sl-anchor-link" href="#default-bounds"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Default bounds”</span></a></div>
+<p>Engine defaults, overridable per invocation:</p>
+<table>
+<thead>
+<tr>
+<th>verb</th>
+<th>rows</th>
+<th>bytes</th>
+<th>examined</th>
+<th>elapsed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">rows</code> / <code dir="auto">find</code></td>
+<td>4000</td>
+<td>786432</td>
+<td>75000</td>
+<td>10000 ms</td>
+</tr>
+<tr>
+<td><code dir="auto">count</code></td>
+<td>—</td>
+<td>—</td>
+<td>300000 / page</td>
+<td>10000 ms / page</td>
+</tr>
+<tr>
+<td><code dir="auto">census</code></td>
+<td>—</td>
+<td>engine default</td>
+<td>engine default</td>
+<td>10000 ms / page</td>
+</tr>
+<tr>
+<td><code dir="auto">distribution</code></td>
+<td>—</td>
+<td>engine default</td>
+<td>engine default</td>
+<td>10000 ms / page</td>
+</tr>
+<tr>
+<td><code dir="auto">text --show</code></td>
+<td>—</td>
+<td>786432</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><code dir="auto">bytes</code> is derived from the <strong>smaller</strong> of the two engines' maximum string
+lengths (YottaDB 1,048,576 against IRIS 3,641,144), which is why there is no
+engine branch anywhere in the byte accounting.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="what-each-exit-class-means-here">What each exit class means here</h3><a class="sl-anchor-link" href="#what-each-exit-class-means-here"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “What each exit class means here”</span></a></div>
+<p>The platform ladder, identical across every <code dir="auto">v</code> domain:</p>
+<table>
+<thead>
+<tr>
+<th>code</th>
+<th>meaning</th>
+<th>typical <code dir="auto">v db</code> causes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>ok</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>runtime error</td>
+<td>a genuine engine fault (<code dir="auto">verb X faulted</code>), an engine-class refusal (site-M/substrate failure), IO, parse</td>
+</tr>
+<tr>
+<td>2</td>
+<td>usage error</td>
+<td>bad flag/argument — <strong>including usage-shaped engine refusals</strong> (no such file/record/field/index, bad operator, bad token — since <code dir="auto">VSL*1.0*64</code> these exit 2, not 1)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>check/gate failed</td>
+<td><code dir="auto">estimate</code> over <code dir="auto">--cap</code> · an <code dir="auto">INCOMPLETE</code> artifact · a capability floor</td>
+</tr>
+<tr>
+<td>4</td>
+<td>refused / substrate unavailable</td>
+<td>no engine resolved · run-lock timeout · missing <code dir="auto">--yes</code> · <strong>a policy/instance/audit denial or record-lock timeout</strong> (since <code dir="auto">VSL*1.0*64</code>)</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h3"><h3 id="typed-refusals-explained">Typed refusals, explained</h3><a class="sl-anchor-link" href="#typed-refusals-explained"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Typed refusals, explained”</span></a></div>
+<p>Engine-side refusals are typed, and (since <code dir="auto">VSL*1.0*64</code>, the
+typed-refusal-class patch) they <strong>render as refusals</strong>: the message is the
+module's own reason alone — <code dir="auto">file 99999 has no data dictionary</code> — at a
+classified exit (usage-shaped → 2 · policy/instance/audit/lock → 4 ·
+site-M/substrate failures → 1). The classification is per-code, default
+<code dir="auto">usage</code>, carried in the generated <code dir="auto">dist/errors.json</code> (<code dir="auto">class</code> field) with the
+runtime truth in <code dir="auto">$$classOf^VSLAPI</code>. Only a <strong>genuine engine fault</strong> — a real
+crash — wears the trap prose <code dir="auto">verb &lt;label&gt;^VSL… faulted:</code> at exit 1; that
+wrapper now means what it says. Branch on the typed <code dir="auto">error.code</code>, never the
+prose. The ones you will actually meet:</p>
+<table>
+<thead>
+<tr>
+<th>code</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">U-VSL-ROW-NOFILE</code></td>
+<td>no such file number, no DD, or no data root on this instance</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-NOTFOUND</code></td>
+<td>no record at that IEN</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-BADFIELD</code></td>
+<td>not a field number, or the file has no such field</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-FLTFIELD</code></td>
+<td>filter target is computed, a multiple, or has no storage location</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-FILTER</code></td>
+<td>malformed filter, or an operator outside the closed table</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-VALUE</code></td>
+<td>a control byte in a value</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-IENS</code></td>
+<td>malformed IENS, or the wrong shape for the verb (<code dir="auto">put</code> creates, <code dir="auto">edit</code> files)</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-DINUM</code></td>
+<td>the file forces its own record numbers — <code dir="auto">put</code> refuses it</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-LAYGO</code></td>
+<td>a lookup node in the IENS without <code dir="auto">--laygo</code></td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-NOINDEX</code></td>
+<td>no such index on that file</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-IXTYPE</code></td>
+<td>the index cannot be walked safely — the refusal names its measured kind (<code dir="auto">mumps</code>, <code dir="auto">trigger</code>, <code dir="auto">dangling</code>, <code dir="auto">compound</code>, <code dir="auto">record-level</code>, <code dir="auto">computed-key</code>, <code dir="auto">foreign-root</code>), the same vocabulary <code dir="auto">schema</code> reports. <strong>The kind vocabulary is OPEN</strong> — see below. The refusal also signposts <a href="find.md"><code dir="auto">find … --raw</code></a>, which reads the stored entries of exactly these</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-NOSUBTREE</code></td>
+<td>the name is declared but stores nothing under this file's data root <strong>on this instance</strong> (measured: 70% of non-walkable cross-references) — a finding, refused loudly rather than served as an empty page</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-FOREIGN</code></td>
+<td>a new-style FOREIGN-ROOT registration: its entries live at another file's root, and which file its subscripts number is unmeasured</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-AT</code></td>
+<td><code dir="auto">find --raw --at</code> was given something other than a contiguous <code dir="auto">1..k</code> list of leading subscripts</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-IENPOS</code></td>
+<td>a pinned record-id position is not a positive integer, or a projection was asked for where no position measurably holds a record number</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-TOOWIDE</code></td>
+<td><code dir="auto">fields-profile</code>: the dictionary needs more envelope bytes than the budget allows — refused <strong>before</strong> the walk, because a per-field tally cannot drop fields without lying</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-IENLIST</code></td>
+<td>the supplied IEN set is defective: a non-IEN entry, a gap in the chunk keys, an empty list, a chunk overrunning its declared total, a chunked list with no whole-list hash, or an IEN set combined with a parent scope or a sub-file</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-CHUNK</code></td>
+<td>the supplied chunk does not carry the list position the cursor needs — the refusal names both; send the chunk that covers it</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-PARENT</code></td>
+<td>the parent scope is defective: given for a top-level file, wrong arity for the sub-file's depth, a non-IEN piece, a missing trailing comma, or an unresolvable DD chain</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-DEPTH</code></td>
+<td>a <code dir="auto">**</code> field spec (sub-file depth) was requested</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-HDRLESS</code></td>
+<td>the multiple's <code dir="auto">node;0</code> header is missing <strong>and</strong> filters were requested — filter evaluation runs through FileMan's retriever, which measurably cannot address a headerless multiple (DIERR 401). Without filters the page serves, each unprojectable sub-row a typed in-stream fault</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-NRFIELD</code></td>
+<td>a nested-root branch projection asked for a field the location decode cannot serve (computed, storage-less, extract-location, or a multiple)</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-WFIELD</code></td>
+<td>the file is a word-processing sub-file — its records are lines; read them with <a href="text.md"><code dir="auto">text --show</code></a></td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-TIER</code></td>
+<td>unknown projection tier</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-INSTANCE</code> / <code dir="auto">U-VSL-ROW-AUDIT</code></td>
+<td>the instance gate refused (class undeclared or unrecognized, a real-data instance, the Kernel PROD tripwire), or the real-data read-audit write failed and the read fails closed with it</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-NESTEDROOT</code></td>
+<td>the file is in the measured nested-root table (<code dir="auto">#1.1</code>, <code dir="auto">#.6</code>): its top-level IENs are file numbers, so a top-level read would render wrong-level values</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-TREESIZE</code></td>
+<td>a record's subtree exceeded the bytes budget under <code dir="auto">--with-multiples</code> — the row is a typed stub naming the record, the multiple and the paged alternative; distinct from <code dir="auto">U-VSL-ROW-TOOBIG</code> (one oversize value)</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-SUBFILE</code></td>
+<td>the sub-file's parent chain does not resolve — over 20 levels, or a cycle in the dictionary. <strong>Nesting depth alone no longer refuses</strong>: a sub-file at any depth walks file-wide (<a href="rows.md">§8.8</a>)</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-RAWFIELDS</code></td>
+<td><code dir="auto">--fields</code> combined with <code dir="auto">--tier raw</code> — raw returns the record's data nodes, which a fields spec cannot select</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-PROJFAULT</code></td>
+<td>the retriever hard-faulted mid-projection (typically a computed field's site M against malformed data) — typed, never a bare M fault</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-SEEK</code></td>
+<td>malformed key bound, or <code dir="auto">--prefix</code> combined with <code dir="auto">--from</code>/<code dir="auto">--to</code></td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-TOKEN</code></td>
+<td>malformed token</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-STALE</code></td>
+<td>the token's binding fingerprint does not match this request shape</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-BOUNDS</code></td>
+<td>a bound is out of range</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-TOOBIG</code></td>
+<td>a single value exceeds what the envelope can carry</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-DIERR</code></td>
+<td>FileMan itself refused — its text is projected verbatim</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-POLICY</code></td>
+<td>the declared policy denies this verb on this file</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-POL-ARG</code> / <code dir="auto">U-VSL-POL-KEY</code></td>
+<td>a malformed policy declaration</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-API-CONFIRM</code> / <code dir="auto">U-VSL-API-ATTRIB</code></td>
+<td>the <code dir="auto">@mutates</code> gate: missing confirmation or attribution</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-ARG</code></td>
+<td>a malformed argument to a <code dir="auto">text</code> write: a bad mode, an empty line set outside <code dir="auto">--clear</code>, lines supplied <em>with</em> <code dir="auto">--clear</code>, or a non-numeric line key</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-LOCKTIMEOUT</code></td>
+<td>the record's bounded LOCK timed out — another process holds it (multi-process contention; retry)</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-DD-NOTFOUND</code></td>
+<td>the dictionary read (<code dir="auto">schema</code>, <code dir="auto">export</code>, the <code dir="auto">--ids</code> companion) found no data dictionary for that file number</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-DD-INSTANCE</code> / <code dir="auto">U-VSL-DD-AUDIT</code></td>
+<td>the raw dictionary read's instance gate refused — the same M6 door and rungs as <code dir="auto">U-VSL-ROW-INSTANCE</code>/<code dir="auto">-AUDIT</code>, in the dictionary module's namespace (the raw <code dir="auto">^DD</code> register serves stored bytes, so it is gated where the interpreted schema reads are not; no <code dir="auto">v db</code> verb reaches it today — it serves the read-fidelity harness)</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-DD-POLICY</code></td>
+<td>the declared policy denies the raw dictionary read on that file's top-level ancestor — the DD-plane twin of <code dir="auto">U-VSL-ROW-POLICY</code></td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-POL-WRITE</code></td>
+<td>a <code dir="auto">policy --declare</code>/<code dir="auto">--revoke</code> could not be filed — the underlying VSLFS write failed</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-INTEG-INSTANCE</code> / <code dir="auto">U-VSL-INTEG-AUDIT</code></td>
+<td>the instance-integrity sweeps' instance gate refused, or their real-data read-audit write failed and the sweep fails closed with it — the same M6 door and rungs as <code dir="auto">U-VSL-ROW-INSTANCE</code>/<code dir="auto">-AUDIT</code>, in the integrity module's (VSLINTEG) namespace</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-INTEG-ADMIT</code></td>
+<td>an audit-class file's first-level subtree headers no longer claim its own number — the pinned A4/D108 file-subscripted-storage contract failed on-engine, and every sweep refuses rather than walking a population it can no longer exclude</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-INTEG-KEY</code></td>
+<td>two KEY register entries share one (file, name) identity on this instance — the keys sweep's per-key emission identity would collide, so it fails closed rather than silently overwriting a row (a register defect, shipped at <code dir="auto">VSL*1.0*75</code>; the host face consuming the sweep is part 3 of the 3x-b expansion)</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-INTEG-ARG</code></td>
+<td>a defective <code dir="auto">indexb</code> population feed: no population, both the explicit and naive populations at once, an explicit feed combined with a walk bound, or a malformed / out-of-vocabulary / duplicate / inadmissible population row</td>
+</tr>
+<tr>
+<td><code dir="auto">U-VSL-ROW-PROFFIELD</code></td>
+<td><code dir="auto">distribution</code>'s field is computed, has no storage location, or was supplied <strong>together with</strong> <code dir="auto">--index</code> — a field and an index are two different distributions</td>
+</tr>
+</tbody>
+</table>
+<p>Host-side codes — the <strong>complete</strong> catalog, grouped by exit class so a script
+can branch on <code dir="auto">error.exit</code> first and <code dir="auto">error.code</code> second. Completeness here is
+mechanical, not a promise: <code dir="auto">make error-gate</code> reds when a code is raised in
+source and missing from this section, documented under the wrong exit, or left
+behind after a rename — and <code dir="auto">dist/error-catalog.json</code> is the generated registry
+for a consumer that would rather read JSON than this prose. It carries <strong>three
+layers</strong>: <code dir="auto">host</code> (raised in v-db), <code dir="auto">lowerLayer</code> (raised by the org packages
+v-db links — v-base and clikit — derived from its own imports, with the raising
+file and line), and <code dir="auto">engineClasses</code> (the <code dir="auto">U-VSL-*</code> half, classed by v-stdlib).
+Every entry carries <code dir="auto">documented</code>, which says whether <em>this section</em> names it:
+the host and engine halves are total by gate, and <strong>the lower layer is
+inventoried rather than documented</strong> — the codes below are the ones a <code dir="auto">v db</code>
+user is most likely to meet, and the registry is where you look up one that
+isn't here.
+Every one carries <code dir="auto">code</code>, <code dir="auto">exit</code>, <code dir="auto">message</code> and (where a one-flag fix exists)
+<code dir="auto">hint</code> in the JSON envelope. <strong>In JSON mode every envelope rides
+stdout</strong> — ok and error alike, one stream to read (since clikit v0.11.3,
+ruled 2026-08-15); a refusal after an engine visit additionally carries
+<code dir="auto">data.instance</code>. Text mode keeps the human <code dir="auto">Error:</code> line on stderr. Exactly
+one <code dir="auto">ok:false</code> envelope per failing invocation.</p>
+<p><strong>Usage — exit 2</strong> (a flaw in the request; raised before any engine visit,
+naming the flag rather than the engine):</p>
+<table>
+<thead>
+<tr>
+<th>code</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">UNKNOWN_ENGINE</code></td>
+<td><code dir="auto">--engine</code> names no registered profile (the standing ones are <code dir="auto">vehu</code> and <code dir="auto">foia</code>)</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_MAX</code></td>
+<td>non-positive <code dir="auto">--max</code> — the engine would silently remap it to the default page size</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_IENS</code> / <code dir="auto">BAD_TOKEN</code></td>
+<td>the supplied-IEN-set doors: both input faces at once, an empty cohort, <code dir="auto">--iens</code> with <code dir="auto">--parent</code>, a token from the other population, a parser-dropped empty element — <a href="rows.md">§8.8</a></td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_OUT_DIAL</code></td>
+<td><code dir="auto">--max-pages</code> or <code dir="auto">--pace</code> without <code dir="auto">--out</code> on <code dir="auto">rows</code>/<code dir="auto">find</code> — the walk dials have nothing to dial on a single-page read</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_EXPLAIN</code></td>
+<td><code dir="auto">--explain</code> with <code dir="auto">--out</code> (a plan writes nothing) or <code dir="auto">--token</code> (a walk under way is past planning) — <strong>or</strong> an artifact citation (<code dir="auto">--census</code>/<code dir="auto">--indexes</code>/<code dir="auto">--profile</code>) <em>without</em> <code dir="auto">--explain</code>, which would otherwise run the read with the artifact silently ignored. On <a href="bundle.md"><code dir="auto">bundle</code></a> the same rule for the same reason: describing a run set writes nothing</td>
+</tr>
+<tr>
+<td><code dir="auto">RAW_ONLY</code> / <code dir="auto">RAW_SEEK</code> / <code dir="auto">RAW_WHERE</code> / <code dir="auto">BAD_AT</code> / <code dir="auto">BAD_IEN_AT</code></td>
+<td><code dir="auto">find</code>'s two-population doors: <code dir="auto">--at</code>/<code dir="auto">--ien-at</code> need <code dir="auto">--raw</code>; seeks and <code dir="auto">--where</code> refuse under <code dir="auto">--raw</code>; a parser-dropped empty <code dir="auto">--at</code>; a non-positive <code dir="auto">--ien-at</code></td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_AXIS</code></td>
+<td><code dir="auto">distribution</code> was given both a field and <code dir="auto">--index</code>, or neither</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_SEEK</code></td>
+<td><code dir="auto">--from</code>/<code dir="auto">--to</code>/<code dir="auto">--prefix</code> with no <code dir="auto">--index</code> to position — a record walk has no keys to bound, so the constraint would be accepted and ignored</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_SCOPE</code></td>
+<td>the two-scope doors on <code dir="auto">refs</code> and <code dir="auto">indexes</code>: <code dir="auto">--all</code> beside a file number, neither scope, a flag that belongs to the other scope — and <code dir="auto">refs --scope</code> without <code dir="auto">--verify</code>, or a <code dir="auto">--scope</code> entry that is not a file number</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_FILES</code></td>
+<td>a malformed <code dir="auto">--files</code> expression on <code dir="auto">estimate</code>/<code dir="auto">export</code> (the offending token is named)</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_KEY_SAMPLE</code> / <code dir="auto">BAD_SAMPLE</code></td>
+<td>a negative sample size on <code dir="auto">indexes</code> (0 skips the key pass)</td>
+</tr>
+<tr>
+<td><code dir="auto">NO_TARGET</code> / <code dir="auto">NO_IEN</code> / <code dir="auto">REF_AND_ARGS</code> / <code dir="auto">BAD_REF</code></td>
+<td><code dir="auto">get</code>'s addressing doors: nothing named, a file with no IEN, both spellings of one address, a malformed <code dir="auto">&lt;file&gt;-&lt;ien&gt;</code> reference — <a href="get.md">§8.9</a></td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_VALUE</code></td>
+<td>a <code dir="auto">--value</code> that is not <code dir="auto">FIELD=VALUE</code> (<code dir="auto">put</code>/<code dir="auto">edit</code>; the value half may itself contain <code dir="auto">=</code>)</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_LINES</code> / <code dir="auto">BAD_MODE</code></td>
+<td><code dir="auto">text</code>'s doors: <code dir="auto">--line</code> and <code dir="auto">--from-file</code> are exclusive; a parser-dropped empty <code dir="auto">--line</code>; <code dir="auto">--append</code> with <code dir="auto">--clear</code>; an empty line set (never an implicit clear); <code dir="auto">--show</code> with write flags</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_DECL</code></td>
+<td><code dir="auto">policy</code>: <code dir="auto">--declare</code> with <code dir="auto">--revoke</code>, a declaration that is not <code dir="auto">KEY=VALUE</code>, or <code dir="auto">--yes</code> with nothing to confirm</td>
+</tr>
+<tr>
+<td><code dir="auto">IDS_RAW_TIER</code></td>
+<td><code dir="auto">--ids</code> with <code dir="auto">--tier raw</code> — the raw tier returns data <em>nodes</em>, which carry no field types to resolve references from</td>
+</tr>
+<tr>
+<td><code dir="auto">ARTIFACT_READ</code> / <code dir="auto">ARTIFACT_MANIFEST</code> / <code dir="auto">ARTIFACT_VERB</code> / <code dir="auto">ARTIFACT_DIGEST</code> / <code dir="auto">ARTIFACT_INSTANCE</code> / <code dir="auto">ARTIFACT_SCOPE</code></td>
+<td>an artifact named to <code dir="auto">--census</code>/<code dir="auto">--indexes</code>/<code dir="auto">--profile</code> that cannot be cited: unreadable, no manifest beside it, written by a different verb, a stream that no longer matches its sha256, measured on another instance, or a profile of another file</td>
+</tr>
+<tr>
+<td><code dir="auto">COMPARE_INPUT</code></td>
+<td><code dir="auto">integrity-compare</code> was given no expectation (<code dir="auto">--base</code> and/or <code dir="auto">--ledger</code> is required — red is only ever a delta against a NAMED expectation), <code dir="auto">--assert</code> with no <code dir="auto">--base</code>, an artifact directory that is missing/unparseable/written by another verb, a damaged row, or a ledger that is malformed or names fewer than two source builds</td>
+</tr>
+<tr>
+<td><code dir="auto">WRONG_INSTANCE</code></td>
+<td>the subject and the <code dir="auto">--base</code> artifact measure different instances (engine or station) — comparisons are same-instance, stated-build; two sites' damage is not a delta. Cross-build shipped state is the ledger's job</td>
+</tr>
+<tr>
+<td><code dir="auto">UNKNOWN_VERB</code></td>
+<td>the (hidden) explain shim was asked about an engine verb the pinned manifest does not carry</td>
+</tr>
+<tr>
+<td><code dir="auto">SET_READ</code></td>
+<td><code dir="auto">bundle</code>: the run set could not be read — no such file, or TOML this format does not know. A key it cannot place is named rather than ignored, because a key read past is an operator's written intent dropped</td>
+</tr>
+<tr>
+<td><code dir="auto">SET_UNRESOLVED</code></td>
+<td><code dir="auto">bundle</code>: one or more components do not resolve against the generated command contract — an unknown verb, an unknown flag, a flag belonging to a <em>different</em> verb, a run-owned flag (<code dir="auto">--out</code>/<code dir="auto">--engine</code>/<code dir="auto">--lock-wait</code>/<code dir="auto">--timeout</code>), a verb that can mutate, a verb that lands no artifact, a verb with no registered record schema (its stream could not be certified), a set naming the verb that runs it, a duplicate component name, or an exclusion with no reason. <strong>Every</strong> problem is reported, not the first, and nothing was run — resolution happens before any engine visit, so a typo costs a second rather than thirty-seven minutes</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_GROUP</code></td>
+<td><code dir="auto">bundle --group</code> names a group no component carries. Refused rather than run, because a misspelled group would select nothing and report a clean, complete, EMPTY bundle; the refusal lists the groups the set does declare</td>
+</tr>
+<tr>
+<td><code dir="auto">NO_OUT</code></td>
+<td><code dir="auto">bundle</code> with neither <code dir="auto">--out</code> nor <code dir="auto">--explain</code> — a bundle must land somewhere</td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_BASE</code></td>
+<td><code dir="auto">bundle --base</code> names a directory that is not a bundle (no <code dir="auto">bundle.json</code>). A named base is an assertion of comparability, and "drift clean against nothing" must never certify — refused before anything touches an engine</td>
+</tr>
+<tr>
+<td><code dir="auto">SELECTION_READ</code></td>
+<td><code dir="auto">selection compile</code>/<code dir="auto">explain</code>/<code dir="auto">size</code>: the selection could not be read — no such file, or TOML this format does not know. The unknown key is named, for the same reason <code dir="auto">SET_READ</code> names one</td>
+</tr>
+<tr>
+<td><code dir="auto">SELECTION_UNRESOLVED</code></td>
+<td><code dir="auto">selection compile</code>/<code dir="auto">explain</code>/<code dir="auto">size</code>: one or more entries do not compile or do not resolve. The compiler's own refusals are a file number that is not one (a verb invocation is not a selection — it is a passthrough entry), a passthrough naming the rows verb (which would stop the selection saying which table it reads), a table entry with no file, a passthrough with no verb, an entry with no name, a name used twice across the two kinds, a selection that selects nothing, a catalog reference with no rule, a catalog supplied for a selection that declares none, and a declared build that disagrees with the artifact. The rest are the run set's own, since the compiled set is resolved against the generated contract exactly as <code dir="auto">bundle</code> resolves a hand-written one. <strong>Every</strong> problem is reported, not the first, and <strong>nothing is written</strong> — a refused compile leaves no half-valid run set on disk. Each problem's own code and message are in <code dir="auto">data.problems</code>, and §5.25 of the technical reference names them</td>
+</tr>
+<tr>
+<td><code dir="auto">NOT_A_CATALOG</code></td>
+<td><code dir="auto">selection compile</code>/<code dir="auto">explain --catalog</code> names a directory that is not a catalog build (no readable <code dir="auto">manifest.json</code>, or one naming no build). Refused rather than skipped, because a lineage verified against nothing is worse than one that says it was not verified</td>
+</tr>
+<tr>
+<td><code dir="auto">SIZING_INPUT</code></td>
+<td><code dir="auto">selection size</code>: an input artifact could not be read as what the flag names — <code dir="auto">--catalog</code> is not a certified catalog build (or is marked refused), <code dir="auto">--integrity</code> is not an integrity capture or is <strong>not the capture the catalog build was joined from</strong> (its manifest records the sha256; N and the row-id ceiling must describe one instance state), <code dir="auto">--prior</code> is not a bundle directory. The message names which</td>
+</tr>
+<tr>
+<td><code dir="auto">PACKET_INPUT</code></td>
+<td><code dir="auto">packet</code>: an input could not be read as what the flag names — <code dir="auto">--bundle</code> is not a directory <code dir="auto">v db bundle --out</code> wrote, or its <code dir="auto">bundle.json</code> does not parse. Named before anything is bound, because the packet's every other refusal presupposes a readable extraction</td>
+</tr>
+<tr>
+<td><code dir="auto">CATALOG_INPUT</code></td>
+<td><code dir="auto">catalog build</code> refused an input before writing anything: the bundle is missing, incomplete or marked refused; a component is absent, uncertified, or its stream no longer hashes to what its manifest claims; the integrity capture is of another instance; or the two inputs were captured under different source pins. Nothing is joined that cannot be re-verified</td>
+</tr>
+<tr>
+<td><code dir="auto">CATALOG_DIR</code></td>
+<td><code dir="auto">catalog browse</code>/<code dir="auto">search</code> was pointed at a directory that is not a catalog (no readable <code dir="auto">manifest.json</code> written by <code dir="auto">catalog build</code>, or no <code dir="auto">catalog.jsonl</code>)</td>
+</tr>
+<tr>
+<td><code dir="auto">USAGE</code></td>
+<td>the platform's parse-level refusal (unknown flag, missing argument) — kong's message, before any verb runs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Check — exit 3</strong> (a verdict or a floor, for scripts to branch on):</p>
+<table>
+<thead>
+<tr>
+<th>code</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">AGG_SINCE</code></td>
+<td>this engine's VSL build predates <code dir="auto">--where</code>/<code dir="auto">--index</code> on <code dir="auto">count</code>/<code dir="auto">distribution</code> (needs <code dir="auto">VSL*1.0*55</code>; <strong><code dir="auto">distribution --index</code> needs <code dir="auto">VSL*1.0*56</code></strong> — see below). Refused here rather than sent because an older engine does <strong>not</strong> refuse the flag — it never binds it and answers the <em>wider</em> question with <code dir="auto">ok:true</code></td>
+</tr>
+<tr>
+<td><code dir="auto">IENS_SINCE</code></td>
+<td>the same floor for <code dir="auto">--iens</code> (needs <code dir="auto">VSL*1.0*54</code>) — below it the engine reads the WHOLE file instead</td>
+</tr>
+<tr>
+<td><code dir="auto">OVER_CAP</code></td>
+<td><code dir="auto">estimate</code> — the selection exceeds <code dir="auto">--cap</code>; <code dir="auto">selection size</code> — the whole sizing interval is above <code dir="auto">--cap</code></td>
+</tr>
+<tr>
+<td><code dir="auto">CAP_UNDECIDED</code></td>
+<td><code dir="auto">selection size</code> — the <code dir="auto">--cap</code> falls inside the sizing interval, so the measurement does not decide it: raise or lower the cap past the interval, or narrow the selection</td>
+</tr>
+<tr>
+<td><code dir="auto">UNSIZED</code></td>
+<td><code dir="auto">selection size</code> — the selection holds a component that cannot be sized from the committed artifacts, so there is no size and no verdict (VD-D119); every such component is named in <code dir="auto">data.sizing.unsized[]</code> with a per-component code — NO_PRIOR_RUN (a sweep with no <code dir="auto">--prior</code> run, or a prior pass with different arguments), NO_COUNT (no committed count: <code dir="auto">uncovered</code>), NOT_IN_CATALOG, NO_CEILING (no header-ledger row-id ceiling for a top-level file), WP_UNSIZED (a word-processing sub-file; demand-triggered, VD-D119 rev 5) — which is a field of the report, not an <code dir="auto">error.code</code>. Decided offline, before any engine visit</td>
+</tr>
+<tr>
+<td><code dir="auto">PACKET_STALE_AUDIT</code></td>
+<td><code dir="auto">packet</code>: the audit was written BEFORE the extraction began, so it describes the instance as of an earlier moment — the stale slice VD-D122 forbids, and the one that would look right, because a gold instance is byte-stable within a day. Run <code dir="auto">v db integrity --out</code> after the extraction and assemble against that</td>
+</tr>
+<tr>
+<td><code dir="auto">PACKET_SESSION</code></td>
+<td><code dir="auto">packet</code>: the audit was written outside the extraction's session window (<code dir="auto">--session-window</code>, default 1h, always stated in the packet). The condition rows must be measured in the same session as the data they describe — re-run the audit, or state a wider window if the ordering was legitimate</td>
+</tr>
+<tr>
+<td><code dir="auto">PACKET_REFERENT</code></td>
+<td><code dir="auto">packet</code>: a referent does not hash, or is ABSENT — the set that traveled inside the bundle against <code dir="auto">bundle.json</code>'s digest, a component manifest against the pass row's, a missing <code dir="auto">manifest.json</code> or <code dir="auto">certification.json</code>, or a stream digest its three independent writers (the manifest, the bundle record, the certifier's own re-read) spell differently. Absent reds like wrong does: a check that skips a missing artifact goes green over a part with nothing behind it</td>
+</tr>
+<tr>
+<td><code dir="auto">PACKET_UNDECLARED</code></td>
+<td><code dir="auto">packet</code>: a component the run set declares is neither run nor named as not-run, or the bundle's own reconciliation carries a missing/unasked entry. An excluded component is DECLARED, never discovered later as an absence (VD-D122) — give the set an <code dir="auto">[[excluded]]</code> entry with its reason, or re-run so the component lands</td>
+</tr>
+<tr>
+<td><code dir="auto">PACKET_STOPPED</code></td>
+<td><code dir="auto">packet</code> formed no condition: the extraction did not complete (a stopped or failed bundle), or the audit is incomplete/scope-bounded. The packet still reports, with its condition outcome the fourth pinned word <code dir="auto">stopped</code> rather than a silence — recapture without the bound</td>
+</tr>
+<tr>
+<td><code dir="auto">PACKET_WRONG_INSTANCE</code></td>
+<td><code dir="auto">packet</code>: the audit measured a different engine or station than the extraction read. Two instances' condition is not one packet's</td>
+</tr>
+<tr>
+<td><code dir="auto">PACKET_PIN_MOVED</code></td>
+<td><code dir="auto">packet</code>: the extraction ran under one source pin and the audit measured under another, so the rows do not describe the bytes in hand. Re-run the audit under the pin the extraction ran on</td>
+</tr>
+<tr>
+<td><code dir="auto">PACKET_GRAIN</code></td>
+<td><code dir="auto">packet</code>: an audit row carries a class whose <code dir="auto">file</code> grain is not declared, so the packet cannot say which table it is about. It refuses rather than dropping the row — a slice that silently drops what it cannot read reports a cleaner instance than the audit measured. Declare the grain in <code dir="auto">internal/packet</code>, beside the contract-guide row it comes from</td>
+</tr>
+<tr>
+<td><code dir="auto">INCOMPLETE</code></td>
+<td>a verb finished without covering everything it was asked to cover, with no more specific cause: an artifact-writing verb whose manifest is not <code dir="auto">complete</code> (every reason named in <code dir="auto">manifest.incomplete</code>; the records written are still valid), or <code dir="auto">estimate</code> withholding its verdict because the selection holds a <code dir="auto">skipped</code> or <code dir="auto">unsized</code> file (VD-D85 — the measured files are still reported)</td>
+</tr>
+<tr>
+<td><code dir="auto">SOURCE_PIN</code></td>
+<td>the engine's installed VSL sources could not be <strong>verified</strong>: its build is below the source-pin floor (<code dir="auto">VSL*1.0*68</code>), it did not answer for a routine, its answer was malformed, or its engine family has no measured fold semantics. Raised before the first dispatch, so nothing was read</td>
+</tr>
+<tr>
+<td><code dir="auto">SOURCE_DRIFT</code></td>
+<td>they were verified and they <strong>differ</strong>: a routine is absent from the engine, or its installed source folds to a value other than the build this host was generated against — a stale routine, a partial install, or an unregistered load (a container restart reverts those). The refusal names the routine and both folds</td>
+</tr>
+<tr>
+<td><code dir="auto">DELTA</code></td>
+<td><code dir="auto">integrity-compare</code>'s red — the ONLY red the integrity audit has (VD-D106a): one or more rows differ from the named base, reported per <code dir="auto">(class, file, sub, value)</code> row with the expectation's identity beside the verdict, never as an aggregate count. A sanctioned install legitimately moves rows: re-baseline, then re-compare</td>
+</tr>
+<tr>
+<td><code dir="auto">STOPPED</code></td>
+<td><code dir="auto">integrity-compare</code> formed no verdict (VD-D106c): the subject or base artifact is incomplete or scope-bounded (<code dir="auto">--to</code>), and certifying against a partial audit would launder it — recapture without the bound</td>
+</tr>
+<tr>
+<td><code dir="auto">BUNDLE_INCOMPLETE</code></td>
+<td><code dir="auto">bundle</code>: the run finished and the bundle is not whole. Findings that survive to the end of a run, each named in <code dir="auto">bundle.json</code> — a <strong>declared component with no complete artifact</strong>; an <strong>artifact no component asked for</strong> (the direction nothing used to check: a directory left by an earlier, larger set reads as part of this bundle); or components measuring <strong>more than one instance</strong>, which nothing downstream can untangle</td>
+</tr>
+<tr>
+<td><code dir="auto">COMPONENT_REFUSED</code></td>
+<td><code dir="auto">bundle</code>: the run <strong>stopped at a component</strong> (VD-D121) — the component itself failed, or its certification refused at a named layer (integrity, shape, completeness, density, drift). The refusal names the component and the check that fired; that component's <code dir="auto">certification.json</code> carries the five-layer result, every component already written is marked refused (<code dir="auto">refused.json</code>), and the components after it were never dispatched (<code dir="auto">bundle.json</code>'s <code dir="auto">stopped.notDispatched</code>). Fix the cause and re-run — a green run re-certifies and clears the marks</td>
+</tr>
+<tr>
+<td><code dir="auto">CATALOG_REFUSED</code></td>
+<td>the join failed its own certification (VD-D126) — a dropped plane, an entry fact that traces to no component row, a density collapse against the named previous build, a dangling or missing index document, a ranking fixture that does not replay — and the artifact is marked <code dir="auto">refused.json</code>; a reader (<code dir="auto">catalog browse</code>/<code dir="auto">search</code>) raises the same code on a directory so marked or lacking a certified <code dir="auto">certification.json</code></td>
+</tr>
+<tr>
+<td><code dir="auto">BAD_DEFAULT_ORDER</code></td>
+<td>the artifact's manifest declares a class-absent default browse order other than <code dir="auto">attribution-first</code> — size especially — and no reader opens it (VD-D116 rev 4)</td>
+</tr>
+<tr>
+<td><code dir="auto">CATALOG_DENOMINATOR</code></td>
+<td><code dir="auto">catalog search</code> was about to emit an answer with no corpus denominator or no build age — a negative answer without its denominator is a claim about the instance, not about the search (VD-D117) — and refused instead</td>
+</tr>
+<tr>
+<td><code dir="auto">CATALOG_RANKING</code></td>
+<td><code dir="auto">catalog search</code> found the artifact's <code dir="auto">ranking.json</code> or <code dir="auto">index.jsonl</code> missing or unreadable; a reader never ranks by a rule the artifact does not carry</td>
+</tr>
+<tr>
+<td><code dir="auto">COMPARE_CHECKSUM</code></td>
+<td>an input's data file does not match its manifest's sha256 — a base or subject that is not the artifact its manifest describes, or a ledger that drifted from its derivation. A deliberately edited expectation is passed with <code dir="auto">--assert</code>, which labels it an assertion instead</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Refused — exit 4</strong> (the substrate, not the request): <code dir="auto">ENGINE_UNRESOLVED</code>
+(profile resolves, driver or container does not), plus v-base's own codes —
+<code dir="auto">NEEDS_CONFIRM</code> (a mutation without <code dir="auto">--yes</code>) and the run-lock/transport
+refusals.</p>
+<p><strong>Runtime — exit 1</strong> (a broken contract between host and engine — each one
+names what the engine actually sent; meeting one usually means the engine's
+VSL build is not the one this host was built against):
+<code dir="auto">NO_COMPLETENESS</code> / <code dir="auto">BAD_COMPLETENESS</code> · <code dir="auto">BAD_ROW</code> / <code dir="auto">BAD_ORDINAL</code> /
+<code dir="auto">BAD_FOLD</code> · <code dir="auto">NO_MISSES</code> / <code dir="auto">BAD_MISSES</code> · <code dir="auto">WRONG_POPULATION</code> (the engine
+answered a different population than asked — refused rather than relabelled) ·
+<code dir="auto">NO_PROFILE</code> / <code dir="auto">BAD_PROFILE</code> · <code dir="auto">NO_RAWINDEX</code> / <code dir="auto">BAD_RAWINDEX</code> · <code dir="auto">SHORT_PAGE</code> ·
+<code dir="auto">BAD_LINE</code> (a <code dir="auto">text</code> line outside the value contract) · <code dir="auto">IDS_NO_DICTIONARY</code> /
+<code dir="auto">BAD_IDS</code> · <code dir="auto">INTEGRITY_FAIL</code> (the envelope failed its delivery digest — the
+engine's stamp and this host's recomputation disagree, so bytes were lost or
+changed in between; the refusal prints both folds and both entry counts) /
+<code dir="auto">INTEGRITY_MISSING</code> (the engine answered with no delivery digest at all, at a
+build that owes one) · <code dir="auto">OUT</code> (the artifact could not be written — a local disk
+problem, not the engine) · <code dir="auto">SIZING_INVALID</code> (<code dir="auto">selection size</code> produced a row
+its own validator refuses — a defect in v-db, not in the selection or the
+engine). Two exit-1 codes are <strong>findings about the data</strong>, not
+defects: <code dir="auto">OVERFLOW</code> (<code dir="auto">distribution</code> past its distinct cap — the verdict rides
+the envelope with the measured lower bound) and any engine-typed <code dir="auto">U-VSL-*</code>
+refusal relayed from the tables above.</p>
+<p><strong>Four of those codes are raised by a lower layer, and they are about the
+ENGINE'S IDENTITY rather than your request.</strong> <code dir="auto">SOURCE_PIN</code> / <code dir="auto">SOURCE_DRIFT</code>
+(exit 3) and <code dir="auto">INTEGRITY_FAIL</code> / <code dir="auto">INTEGRITY_MISSING</code> (exit 1) come from
+<strong>v-base</strong>, the shared client — not from this repo and not from the engine's
+own refusal table. Every <code dir="auto">v db</code> invocation verifies the installed source bytes
+of the whole VSL build <strong>before its first dispatch</strong>, and every success
+envelope carries a digest stamped by the engine that the host recomputes from
+the decoded values <strong>before any consumer sees it</strong>. Both fail closed. The
+reason they exist: on 2026-08-18 an engine ran one routine older than the
+build this host was generated against, and every gate the producer had passed
+while 7,166 tables silently lost their field descriptions. A build-version
+floor did not catch it — an exact source check does, and a digest catches the
+bytes that go missing after the engine is done being right. If you meet one,
+the engine and the host are not the pair they think they are: converge the
+build (<code dir="auto">v pkg install</code>) and re-run rather than reading the answer.</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="the-kind-vocabulary-is-open">The kind vocabulary is open</h4><a class="sl-anchor-link" href="#the-kind-vocabulary-is-open"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “The kind vocabulary is open”</span></a></div>
+<p><code dir="auto">U-VSL-ROW-IXTYPE</code> above names seven kinds, and <code dir="auto">indexes</code> reports them as a
+column — but <strong>the set is not closed</strong>, and treating it as closed is how a
+consumer ends up silently mis-handling a kind nobody anticipated. The
+classifier emits whatever the dictionary declares. Measured instance-wide on
+vehu (9,739 cross-references), three kinds fall outside the documented set:</p>
+<table>
+<thead>
+<tr>
+<th>kind</th>
+<th style="text-align: right">vehu</th>
+<th>what it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">kwic</code></td>
+<td style="text-align: right">45</td>
+<td>keyword-in-context — one entry per word of the indexed value</td>
+</tr>
+<tr>
+<td><code dir="auto">soundex</code></td>
+<td style="text-align: right">3</td>
+<td>a phonetic key, so the stored key is deliberately not the value</td>
+</tr>
+<tr>
+<td><code dir="auto">unlisted</code></td>
+<td style="text-align: right">1</td>
+<td>declared with no classifiable type, usually on a sub-file</td>
+</tr>
+</tbody>
+</table>
+<p>The rule everywhere they appear: an unknown kind <strong>rides through by name and is
+counted</strong> — <code dir="auto">indexes</code> publishes it, the sweep's <code dir="auto">kinds</code> histogram tallies it,
+and <code dir="auto">kindDocumented:false</code> marks it. Every <em>derivation</em> from kind
+(walkable / enumerable / seek licensing) <strong>default-refuses</strong> a kind it does not
+know rather than guessing a safe-looking answer. A sub-file-heavy instance
+probably holds more than these three; that is the point of the design, not a
+gap in it.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="the-umbrellas-own-verbs">The umbrella's own verbs</h3><a class="sl-anchor-link" href="#the-umbrellas-own-verbs"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “The umbrella's own verbs”</span></a></div>
+<p>These two live on the <strong>standalone <code dir="auto">v-db</code> binary</strong> and on the <code dir="auto">v</code> umbrella
+itself — not under <code dir="auto">v db</code>. Mounting a domain contributes its domain verbs, not a
+second copy of the umbrella's utilities, so <code dir="auto">v db version</code> is a usage error
+(exit 2) and <code dir="auto">v version</code> is what you want.</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="console"><code><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">$ ./dist/v-db version</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">{</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">  </span></span><span style="--0:#D6DEEB;--1:#403F53">"schemaVersion": "1.1",</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">  </span></span><span style="--0:#D6DEEB;--1:#403F53">"command": "version",</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">  </span></span><span style="--0:#D6DEEB;--1:#403F53">"ok": true,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">  </span></span><span style="--0:#D6DEEB;--1:#403F53">"exit": 0,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">  </span></span><span style="--0:#D6DEEB;--1:#403F53">"data": {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">"version": "v0.1.0",</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">"commit": "59fc144",</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">"date": "2026-08-09",</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">"go": "go1.26.5"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">  </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$ ./dist/v-db version{  &quot;schemaVersion&quot;: &quot;1.1&quot;,  &quot;command&quot;: &quot;version&quot;,  &quot;ok&quot;: true,  &quot;exit&quot;: 0,  &quot;data&quot;: {    &quot;version&quot;: &quot;v0.1.0&quot;,    &quot;commit&quot;: &quot;59fc144&quot;,    &quot;date&quot;: &quot;2026-08-09&quot;,    &quot;go&quot;: &quot;go1.26.5&quot;  }}"><div></div></button></div></figure></div>
+<p><code dir="auto">menu</code> opens an interactive palette over the command surface — the same grammar,
+browsable. It needs a TTY. Use <code dir="auto">v menu</code> under the umbrella, or <code dir="auto">./dist/v-db menu</code>
+standalone.</p>
+<p>The domain also emits its own machine-readable contract, which is what the <code dir="auto">v</code>
+umbrella aggregates and what a drift gate checks:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="console"><code><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">$ jq -r </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">.domain, .version, .contractVersion</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53"> dist/v-contract.json</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">db</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">0.1.0</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">1.0</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$ jq -r &#x27;.domain, .version, .contractVersion&#x27; dist/v-contract.jsondb0.1.01.0"><div></div></button></div></figure></div>
+</div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"><a href="/forge-docs/v/v-db/concepts/further-reading/" rel="prev" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-jgq3vlii">Previous<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Further reading</span></span></a><a href="/forge-docs/v/v-db/commands/analyze/" rel="next" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-jgq3vlii">Next<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Analyze</span></span></a></div></footer></div></div></main></div></div></div></div></body></html>
