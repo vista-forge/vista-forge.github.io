@@ -52,7 +52,9 @@ own Shared-foundations table).
 Because nothing checks them, they rot silently: at the 2026-08-14 re-measure every
 figure was low, some by more than half (3,200+ → 5,445 assertions, 1,300+ → 2,857 Go
 tests, 21 → 34 repos), and the M-test row still said "MSL + VSL" months after
-f-stdlib existed.
+f-stdlib existed. (It says "MSL + VSL" again since 2026-09-08, for the opposite
+reason: f-stdlib is retired. A hand-written figure is wrong in both directions
+— the row was stale when the band arrived and stale again when it left.)
 
 **Re-measure, don't copy the profile README** — it is hand-written too, and its
 numbers carry the same staleness. The counting method, validated against

@@ -2,7 +2,7 @@
    Palette is semantic, not decorative — one cool spectrum, read top-down in
    the order the landing page's layer cake stacks:
      violet = you + your agent (the working surface)  -- also the brand accent
-     blue   = the standard-library layer (MSL / FSL / VSL)
+     blue   = the standard-library layer (MSL / VSL)
      cyan   = classic VistA (Kernel, FileMan, KIDS, Broker)
      teal   = the M engines
    Keep that mapping intact when adding sections. Token names are LAYERS, not
@@ -758,9 +758,10 @@ td strong, td a { font-weight: 600; }
 .vfm__layer--v .vfm__name { color: var(--vista); }
 .vfm__layer--v .vfm__tag { color: var(--vista); box-shadow: inset 0 0 0 1px var(--vista-line); }
 
-.vfm__layer--f { background: var(--fm-wash); border-left-color: var(--fm); }
-.vfm__layer--f .vfm__name { color: var(--fm); }
-.vfm__layer--f .vfm__tag { color: var(--fm); box-shadow: inset 0 0 0 1px var(--fm-line); }
+
+.vfm__layer--lib { background: var(--fm-wash); border-left-color: var(--fm); }
+.vfm__layer--lib .vfm__name { color: var(--fm); }
+.vfm__layer--lib .vfm__tag { color: var(--fm); box-shadow: inset 0 0 0 1px var(--fm-line); }
 
 .vfm__layer--m { background: var(--cyan-wash); border-left-color: var(--cyan); }
 .vfm__layer--m .vfm__name { color: var(--cyan); }

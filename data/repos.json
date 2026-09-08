@@ -5,126 +5,119 @@
     {
       "name": "clikit",
       "layer": "m",
-      "role": "Shared CLI convention layer — Kong grammar, JSON envelope, exit-code ladder — for the m-* / v-* Go toolchain (engine-neutral; no engine transport)",
+      "role": "Shared CLI convention layer \u2014 Kong grammar, JSON envelope, exit-code ladder \u2014 for the m-* / v-* Go toolchain (engine-neutral; no engine transport)",
       "tag": "v0.12.1",
-      "public": false
-    },
-    {
-      "name": "f-stdlib",
-      "layer": "f",
-      "role": "FSL, the FileMan Standard Library — f-band FSL* routines: JSON-shaped, web-era wrappers over FileMan's documented DBS API (needs standalone FileMan, nothing above it)",
-      "tag": "",
       "public": false
     },
     {
       "name": "go-cli-template",
       "layer": "m",
-      "role": "REPLACE-ME — one-line role of this tool (scaffolded from go-cli-template)",
+      "role": "REPLACE-ME \u2014 one-line role of this tool (scaffolded from go-cli-template)",
       "tag": "v0.1.0",
       "public": false
     },
     {
       "name": "m-cli",
       "layer": "m",
-      "role": "Cross-engine M toolchain — the `m` busybox (fmt/lint/lsp/test/coverage/watch/engine/arch)",
+      "role": "Cross-engine M toolchain \u2014 the `m` busybox (fmt/lint/lsp/test/coverage/watch/engine/arch)",
       "tag": "v0.1.0",
       "public": false
     },
     {
       "name": "m-devbox",
       "layer": "m",
-      "role": "Portable, container-delivered M development environment — YottaDB + native callouts + the m toolchain + MSL + a browser IDE in one pinned image",
+      "role": "Portable, container-delivered M development environment \u2014 YottaDB + native callouts + the m toolchain + MSL + a browser IDE in one pinned image",
       "tag": "",
       "public": false
     },
     {
       "name": "m-driver-sdk",
       "layer": "m",
-      "role": "M engine-driver SDK — the seam contract + reference engine Client (mdriver.Client)",
+      "role": "M engine-driver SDK \u2014 the seam contract + reference engine Client (mdriver.Client)",
       "tag": "v0.17.0",
       "public": false
     },
     {
       "name": "m-iris",
       "layer": "m",
-      "role": "InterSystems IRIS engine driver — the m-iris binary producing the driver envelope",
+      "role": "InterSystems IRIS engine driver \u2014 the m-iris binary producing the driver envelope",
       "tag": "v0.1.0",
       "public": false
     },
     {
       "name": "m-parse",
       "layer": "m",
-      "role": "Engine-neutral M parse substrate — tree-sitter-m over wazero; the foundation fmt/lint/lsp sit on (spec §4)",
+      "role": "Engine-neutral M parse substrate \u2014 tree-sitter-m over wazero; the foundation fmt/lint/lsp sit on (spec \u00a74)",
       "tag": "v0.5.2",
       "public": false
     },
     {
       "name": "m-rsm",
       "layer": "m",
-      "role": "Reference Standard M engine driver — the m-rsm binary producing the driver envelope",
+      "role": "Reference Standard M engine driver \u2014 the m-rsm binary producing the driver envelope",
       "tag": "",
       "public": false
     },
     {
       "name": "m-stdlib",
       "layer": "m",
-      "role": "Pure-M runtime standard library — STD* modules",
+      "role": "Pure-M runtime standard library \u2014 STD* modules",
       "tag": "v0.13.0",
       "public": false
     },
     {
       "name": "m-ydb",
       "layer": "m",
-      "role": "YottaDB engine driver — the m-ydb binary producing the driver envelope",
+      "role": "YottaDB engine driver \u2014 the m-ydb binary producing the driver envelope",
       "tag": "",
       "public": false
     },
     {
       "name": "v-base",
       "layer": "v",
-      "role": "Host base library for v-<domain> CLIs — VSLAPI dispatch client (envelope codec, engine profiles, pagination, attribution/--yes) + the vslgen binding generator (vista-sysadmin-base §5)",
+      "role": "Host base library for v-<domain> CLIs \u2014 VSLAPI dispatch client (envelope codec, engine profiles, pagination, attribution/--yes) + the vslgen binding generator (vista-sysadmin-base \u00a75)",
       "tag": "v0.19.0",
       "public": false
     },
     {
       "name": "v-cli",
       "layer": "v",
-      "role": "The `v` CLI umbrella — VistA developer tooling (v pkg/db/config/…) aggregated under one binary",
+      "role": "The `v` CLI umbrella \u2014 VistA developer tooling (v pkg/db/config/\u2026) aggregated under one binary",
       "tag": "",
       "public": false
     },
     {
       "name": "v-db",
       "layer": "v",
-      "role": "VistA FileMan data-dictionary / PIKS profiler — the `v db` domain (read-only inspect/profile over the m engine seam via v-base)",
+      "role": "VistA FileMan data-dictionary / PIKS profiler \u2014 the `v db` domain (read-only inspect/profile over the m engine seam via v-base)",
       "tag": "v0.8.0",
       "public": false
     },
     {
       "name": "v-pkg",
       "layer": "v",
-      "role": "VistA KIDS packaging — the `v pkg` domain (build/install/verify/uninstall over the m engine seam)",
+      "role": "VistA KIDS packaging \u2014 the `v pkg` domain (build/install/verify/uninstall over the m engine seam)",
       "tag": "v0.12.0",
       "public": false
     },
     {
       "name": "v-rpc-log",
       "layer": "v",
-      "role": "VistA RPC Broker log viewer — the `v rpc-log` domain (renamed from `v rpc-debug` 2026-09-07, rpc-development RD-D16). Reads the Broker's native XWBDEBUG log over the m engine seam to view/save the RPC traffic a LIVE client generates: a zero-install, byte-clean observer for a site maintainer, and the independent oracle for the `v rpc-tap` capture. Not a developer's client and not for v-devbox — it intercepts nothing and needs a client to observe. The two integrate only at the v-cli busybox.",
+      "role": "VistA RPC Broker log viewer \u2014 the `v rpc-log` domain (renamed from `v rpc-debug` 2026-09-07, rpc-development RD-D16). Reads the Broker's native XWBDEBUG log over the m engine seam to view/save the RPC traffic a LIVE client generates: a zero-install, byte-clean observer for a site maintainer, and the independent oracle for the `v rpc-tap` capture. Not a developer's client and not for v-devbox \u2014 it intercepts nothing and needs a client to observe. The two integrate only at the v-cli busybox.",
       "tag": "v0.5.0",
       "public": false
     },
     {
       "name": "v-rpc-tap",
       "layer": "v",
-      "role": "VistA scalable RPC tap — the `v rpc-tap` domain. A durable, full-payload RPC-broker tap (XWBPRS splice -> per-job bounded ring -> read-only drain to S3) for high-volume capture. Ships the VSL RPC TAP M package (VSLRT* routines + KIDS build) plus the host arm/drain/validate tooling and the load-proof harness. High-risk, national Class-1-adjacent; built and proven dual-engine on our own gold-master engines before any VA offer. Sibling of the safe, read-only v-rpc-log XWBDEBUG oracle (renamed from v-rpc-debug 2026-09-07); the two integrate only at the v-cli busybox as `v rpc-log` / `v rpc-tap`.",
+      "role": "VistA scalable RPC tap \u2014 the `v rpc-tap` domain. A durable, full-payload RPC-broker tap (XWBPRS splice -> per-job bounded ring -> read-only drain to S3) for high-volume capture. Ships the VSL RPC TAP M package (VSLRT* routines + KIDS build) plus the host arm/drain/validate tooling and the load-proof harness. High-risk, national Class-1-adjacent; built and proven dual-engine on our own gold-master engines before any VA offer. Sibling of the safe, read-only v-rpc-log XWBDEBUG oracle (renamed from v-rpc-debug 2026-09-07); the two integrate only at the v-cli busybox as `v rpc-log` / `v rpc-tap`.",
       "tag": "",
       "public": false
     },
     {
       "name": "v-stdlib",
       "layer": "v",
-      "role": "VistA Standard Library — VSL* routines (VistA-specific; consumes the engine-neutral STD* base upward)",
+      "role": "VistA Standard Library \u2014 VSL* routines (VistA-specific; consumes the engine-neutral STD* base upward)",
       "tag": "v1.0.25",
       "public": false
     }

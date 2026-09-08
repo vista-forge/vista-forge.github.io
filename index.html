@@ -167,7 +167,7 @@ try {
           </thead>
           <tbody>
             <tr>
-              <td><strong>M unit tests</strong> (MSL + FSL + VSL)</td>
+              <td><strong>M unit tests</strong> (MSL + VSL)</td>
               <td><strong>84 suites · 1,700+ test cases · 5,400+ assertions</strong>, every suite run on <strong>both</strong> VistA engines</td>
             </tr>
             <tr>
@@ -238,9 +238,9 @@ try {
             <code>STDREGEX</code>), encoding, testing (<code>STDASSERT</code>, <code>STDMOCK</code>),
             crypto and auth (<code>STDCRYPTO</code>, <code>STDJWT</code>), networking
             (<code>STDHTTP</code>, <code>STDS3</code>), plus dates, logging, collections, strings,
-            math, and filesystem. Above the waterline, <code>f-stdlib</code> adds 7
-            <code>FSL*</code> modules and <code>v-stdlib</code> 22 <code>VSL*</code> ones —
-            <strong>69 modules and 579 public entry points</strong> in all.
+            math, and filesystem. Above the waterline, <code>v-stdlib</code> adds 24
+            <code>VSL*</code> modules — <strong>62 modules</strong> across the two
+            libraries.
           </p>
         </div>
 
@@ -311,7 +311,7 @@ try {
         <p>Nobody reaches into VistA's internals any more. Work happens against a standard library — and everything in it is something a developer already knows.</p>
         <ul>
           <li><strong>JSON, HTTP(S), crypto — the ordinary toolkit.</strong> The <strong>M Standard Library</strong> (MSL) gives M what every mainstream language ships: JSON, HTTP(S), JWT, crypto digests, UUIDs, base64, regex, S3, testing — conformance-tested against the test vectors published with the standards themselves, and identical on both engines.</li>
-          <li><strong>VistA in plain nouns.</strong> The <strong>VistA Standard Library</strong> (VSL) overlays the bespoke technology — Kernel, KIDS, the RPC Broker — and the <strong>FileMan Standard Library</strong> (FSL) does the same for the data engine. <strong>69 modules, 579 public entry points.</strong></li>
+          <li><strong>VistA in plain nouns.</strong> The <strong>VistA Standard Library</strong> (VSL) overlays the bespoke technology — Kernel, KIDS, FileMan, the RPC Broker — in ordinary terms. <strong>62 modules across the two libraries.</strong></li>
           <li><strong>A shallow learning curve, deliberately.</strong> Working against VistA becomes working against an ordinary, well-typed API, with a command surface named in plain language rather than VA insider vocabulary. That is what accelerates <strong>both</strong> AI-driven and human development — the same interface serves both.</li>
           <li><strong>Standards all the way down.</strong> <code>m-standard</code> reconciles the Annotated M Standard, YottaDB, IRIS and the VA's own rules into one citable, machine-readable reference; <a href="https://github.com/vista-forge/tree-sitter-m">tree-sitter-m</a> is generated from it and parses the full ~39k-routine VistA corpus at over 99% clean, driving the first real formatter, linter and Language Server Protocol (LSP) server M has ever had.</li>
           <li><strong>Mainstream delivery.</strong> Git-canonical <code>.m</code> source, static Go binaries, container-delivered engines, and a full gate on every push.</li>
@@ -344,10 +344,10 @@ try {
           <span class="vfm__wl">you call the library</span>
         </div>
 
-        <div class="vfm__layer vfm__layer--f">
+        <div class="vfm__layer vfm__layer--lib">
           <span class="vfm__tag">≡</span>
           <span class="vfm__name">standard libraries</span>
-          <span class="vfm__desc"><strong>MSL</strong> — JSON, HTTP(S), crypto, and the rest of the ordinary toolkit. <strong>FSL</strong> — FileMan as a database you can call. <strong>VSL</strong> — VistA in plain nouns. 69 modules, 579 entry points.</span>
+          <span class="vfm__desc"><strong>MSL</strong> — JSON, HTTP(S), crypto, and the rest of the ordinary toolkit. <strong>VSL</strong> — VistA in plain nouns. 69 modules, 579 entry points.</span>
         </div>
 
         <div class="vfm__line">
@@ -378,9 +378,8 @@ try {
         Every one of those boundaries used to be crossed by knowing things: which global to reach into,
         which Kernel entry point to call, which side effect to expect. Each is now a documented call
         with a test behind it. The <strong>M Standard Library (MSL)</strong> makes <strong>M</strong> a
-        peer of other mainstream languages instead of a special case; the <strong>FileMan Standard
-        Library (FSL)</strong> turns VistA's data engine into a database you can call from a bare M
-        engine; and the <strong>VistA Standard Library (VSL)</strong> reframes Kernel, KIDS and the
+        peer of other mainstream languages instead of a special case; and the <strong>VistA Standard
+        Library (VSL)</strong> reframes Kernel, KIDS and the
         remote-procedure-call (RPC) Broker in modern mainstream terms, with a command surface in plain
         nouns. The learning curve drops from <em>years of institutional apprenticeship</em> to
         <em>reading an API</em> — which is exactly what lets an AI agent be productive here, and a new
@@ -548,18 +547,6 @@ try {
           <tr><td><strong>m-rsm</strong></td><td>Reference Standard M engine driver — the m-rsm binary producing the driver envelope</td><td class="tag">—</td></tr>
           <tr><td><strong>m-stdlib</strong></td><td>Pure-M runtime standard library — STD* modules</td><td class="tag tag--has">v0.13.0</td></tr>
           <tr><td><strong>m-ydb</strong></td><td>YottaDB engine driver — the m-ydb binary producing the driver envelope</td><td class="tag">—</td></tr>
-<!-- gen:end -->
-        </tbody>
-      </table>
-    </div>
-
-    <h3>FileMan toolchain <span class="tag">— requires standalone FileMan, nothing above it</span></h3>
-    <div class="table-scroll" style="margin:0.8rem 0 2.5rem">
-      <table>
-        <thead><tr><th scope="col">Repo</th><th scope="col">Delivers</th><th scope="col">Latest</th></tr></thead>
-        <tbody>
-<!-- gen:begin block=repos-f -->
-          <tr><td><strong>f-stdlib</strong></td><td>FSL, the FileMan Standard Library — f-band FSL* routines: JSON-shaped, web-era wrappers over FileMan's documented DBS API (needs standalone FileMan, nothing above it)</td><td class="tag">—</td></tr>
 <!-- gen:end -->
         </tbody>
       </table>
