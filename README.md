@@ -53,9 +53,27 @@ anything here:
   returning to the view they came from. The first load of a freshly inserted
   frame replaces instead of pushing. Measured here; it is not the obvious
   one-liner.
-* **The wait is bounded and named.** A cross-origin frame that never answers is
-  a blank rectangle with no error anywhere, so after 12 s the bar says the host
-  is probably off and offers the direct link.
+* **Nothing sits between the banner and the application.** The framed view has
+  no strip of its own: the banner already says which view this is and the
+  application says its own name, so a bar repeating both was chrome charged
+  against the thing it framed. A word appears over the empty frame while it
+  loads, and a notice appears only when something is wrong.
+* **The wait is bounded, and names WHICH failure.** A cross-origin frame reports
+  neither success nor failure to the page around it, so the two are told apart
+  by asking the frame whether it ever navigated: a frame that has not is still
+  this page's own `about:blank` and its location reads back; once the
+  cross-origin document commits, the same read throws. Still same-origin after
+  6 s means the browser refused to send the request (see below); navigated but
+  unfinished after 20 s means the host is slow or down. Both carry the direct
+  link. A timeout alone blames the wrong party — it did, on the first day.
+* ⚠️ **From inside the tailnet, the frames do not load, and nothing here can fix
+  that.** `minty.warg-torino.ts.net` resolves to a tailnet address on this
+  network and to Tailscale's public ingress everywhere else, and a page served
+  from the public internet may not embed a host that resolves to a private
+  address. The operator is the only reader affected — which also means a result
+  from this box is not evidence about the published site. Measured, with the
+  four alternatives ruled out, in
+  `docs/memory/a-tailnet-published-origin-cannot-be-embedded.md`.
 * **A cross-origin frame cannot be styled or read from here.** Two things follow
   and neither is fixable from this repo: the framed reference carries its own
   copy of this banner, so that view shows two; and the light/dark choice does

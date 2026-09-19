@@ -760,20 +760,15 @@ document.documentElement.className += " js";
      here — it carries its own chrome and its own theme — so the banner is the
      only thing that has to stay constant, and it does. -->
 <section id="view-frame" class="frameview" hidden aria-label="Embedded application">
-  <div class="framebar">
-    <span class="framebar__title" id="frame-title"></span>
-    <span class="framebar__status" id="frame-status">Loading…</span>
-    <!-- The footer goes with the document view, and the disclaimer goes with
-         it — so the short form rides here, where a reader looking at VistA
-         data can see it. It wraps rather than hides: a notice that disappears
-         on a narrow screen is worse than one that takes a second line. -->
-    <span class="framebar__note">Not affiliated with or endorsed by the US Department of Veterans Affairs · fictitious test data only</span>
-    <a class="framebar__out" id="frame-out" href="#" target="_blank" rel="noopener noreferrer">Open in a new tab <span aria-hidden="true">&#8599;</span></a>
-  </div>
-  <!-- Two different failures, and they need different sentences. A cross-origin
+  <!-- No bar. The banner already says which view this is, and the application
+       says its own name — a strip repeating both, plus a link out, was chrome
+       charged against the thing it framed. What is left appears only when
+       something is wrong, and the way out lives there instead.
+
+       Two different failures, and they need different sentences. A cross-origin
        frame gives no error to this page either way, so they are told apart by
        ASKING THE FRAME WHETHER IT EVER NAVIGATED (see the router). -->
-  <p class="framebar__down" id="frame-down" hidden>
+  <p class="frameview__notice" id="frame-down" hidden>
     <span id="frame-down-text"></span>
     <a id="frame-down-link" href="#" target="_blank" rel="noopener noreferrer">Open it directly</a>.
   </p>
@@ -863,9 +858,6 @@ document.documentElement.className += " js";
   var viewDoc  = document.getElementById("view-doc");
   var viewFrm  = document.getElementById("view-frame");
   var slot     = document.getElementById("frame-slot");
-  var fTitle   = document.getElementById("frame-title");
-  var fStatus  = document.getElementById("frame-status");
-  var fOut     = document.getElementById("frame-out");
   var fDown    = document.getElementById("frame-down");
   var fDownTxt = document.getElementById("frame-down-text");
   var fDownLnk = document.getElementById("frame-down-link");
@@ -936,9 +928,23 @@ document.documentElement.className += " js";
 
   function say(which) {
     if (watching) { clearInterval(watching); watching = null; }
-    fStatus.hidden = true;
+    unwait();
     fDownTxt.textContent = SAID[which] + " ";
     fDown.hidden = false;
+  }
+
+  /* A word while the frame is empty, inside the frame's own box rather than in
+     a strip above it — so it costs nothing once the application is up. */
+  function waitMark() {
+    var m = document.createElement("p");
+    m.className = "frameview__loading";
+    m.id = "frame-loading";
+    m.textContent = "Loading\u2026";
+    return m;
+  }
+  function unwait() {
+    var m = document.getElementById("frame-loading");
+    if (m && m.parentNode) m.parentNode.removeChild(m);
   }
 
   /* Degrade LOUD, and name the RIGHT failure. A blank rectangle with no error
@@ -968,7 +974,7 @@ document.documentElement.className += " js";
     f.setAttribute("referrerpolicy", "no-referrer");
     f.addEventListener("load", function () {
       if (watching) { clearInterval(watching); watching = null; }
-      fStatus.hidden = true;
+      unwait();
       fDown.hidden = true;
     });
     f.src = app.url;
@@ -982,8 +988,6 @@ document.documentElement.className += " js";
     body.classList.add("is-framed");
     window.scrollTo(0, 0);
 
-    fTitle.textContent = app.title;
-    fOut.href = app.url;
     fDownLnk.href = app.url;
 
     /* Degrade LOUD. A cross-origin frame that never answers is a blank
@@ -992,9 +996,8 @@ document.documentElement.className += " js";
        probably off and here is the direct link. */
     clearFrame();
     fDown.hidden = true;
-    fStatus.hidden = false;
-    fStatus.textContent = "Loading\u2026";
     var f = makeFrame(app);
+    slot.appendChild(waitMark());
     slot.appendChild(f);
     watch(f);
   }

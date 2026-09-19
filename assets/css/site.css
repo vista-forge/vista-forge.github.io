@@ -447,37 +447,9 @@ body.is-framed {
   background: var(--bg-elev);
 }
 
-.framebar {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.15rem 0.75rem;
-  flex: none;
-  padding: 0.3rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-  font-size: 0.78rem;
-}
-.framebar__title {
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: -0.005em;
-}
-.framebar__status { color: var(--text-faint); }
-.framebar__note {
-  color: var(--text-faint);
-  margin-inline-start: auto;
-}
-/* pushed right by ITS OWN margin, so it stays right whether or not the status
-   beside the title is showing */
-.framebar__out {
-  flex: none;
-  color: var(--text-dim);
-  white-space: nowrap;
-}
-.framebar__out:hover { color: var(--text); }
-
-.framebar__down {
+/* Nothing sits between the banner and the application. The only strip this
+   view can grow appears when something is wrong, and it carries the way out. */
+.frameview__notice {
   flex: none;
   margin: 0;
   max-width: 68ch;
@@ -488,11 +460,25 @@ body.is-framed {
   font-size: 0.85rem;
 }
 
+/* OVER the frame's box, not above it: laid out in flow it pushed the frame
+   down and the frame jumped up again the moment it loaded. */
+.frameview__loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0.9rem 1.5rem;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+
 /* the slot is what flexes; the frame is replaced inside it on every view */
 .frameview__slot {
+  position: relative;
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
+  flex-direction: column;
 }
 .frameview__frame {
   flex: 1 1 auto;
