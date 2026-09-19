@@ -60,6 +60,11 @@
 
   --maxw: 1080px;
   --radius: 10px;
+
+  /* the banner is permanent, so its height is what the frame view subtracts
+     from the viewport — one declaration, or the frame drifts a few pixels off
+     the bottom of the screen */
+  --header-h: 60px;
 }
 
 /* Dark: DARK, not black (2026-08-30). The page ground was #000 with the
@@ -107,6 +112,11 @@
 }
 
 * { box-sizing: border-box; }
+
+/* `hidden` is a display:none of the weakest kind — any `display` rule on the
+   element beats it. Both views set their own display, so without this the
+   router hides nothing. */
+[hidden] { display: none !important; }
 
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
@@ -187,7 +197,7 @@ p code, li code, td code {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  height: 60px;
+  height: var(--header-h);
 }
 .site-header .brand,
 .site-header .theme-toggle { flex: none; }
@@ -225,29 +235,27 @@ p code, li code, td code {
 
 /* The banner is thin, fixed to the top, and carries EVERY primary item at
    every width. It used to drop two of them below 860px (.nav--opt), which made
-   the menu a function of the viewport; now the strip scrolls sideways instead,
-   so nothing is ever unreachable. The theme control sits outside .nav, so it
-   cannot be scrolled out of reach either. */
+   the menu a function of the viewport; then it scrolled sideways, which kept
+   six flat links reachable. It is THREE menus now, which fit at any width — and
+   the sideways scroll had to go regardless: a scroll container clips its
+   descendants, absolutely-positioned ones included, so the dropdown panels
+   would have been sliced off at the banner's edge. */
 .nav {
   display: flex;
   align-items: center;
   gap: 1.4rem;
   min-width: 0;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  /* room for a focus ring inside the scroll box */
   padding: 4px 0;
 }
-.nav::-webkit-scrollbar { display: none; }
-.nav a {
+/* direct children only: the nav contains menu PANELS now, and a panel's
+   descriptions are sentences that must wrap */
+.nav > a {
   color: var(--text-dim);
   font-size: 0.9rem;
   font-weight: 500;
   white-space: nowrap;
 }
-.nav a:hover { color: var(--text); text-decoration: none; }
+.nav > a:hover { color: var(--text); text-decoration: none; }
 
 /* dark/light toggle: moon shown in light ("switch to dark"), sun in dark */
 .theme-toggle {
@@ -275,7 +283,231 @@ p code, li code, td code {
 }
 @media (max-width: 560px) {
   .nav { gap: 0.9rem; }
-  .nav a { font-size: 0.85rem; }
+  .nav a, .menu__btn { font-size: 0.85rem; }
+}
+
+/* ---------- the megamenus ---------- */
+
+/* Three menus instead of six flat links. The panel is positioned against the
+   HEADER, not against its button, so a three-column panel is not clipped by a
+   narrow button and never runs off the edge on a small screen. That is why
+   .menu is static and the panel is absolute to .site-header's wrap. */
+
+/* The panel is positioned against the HEADER's wrap, not against its own
+   button: a three-column panel hung off a narrow button either overflows the
+   viewport on one side or has to know which menu it is. Anchored to the wrap's
+   right padding it lines up under the theme control every time, and its
+   max-width keeps its left edge on screen at any width. */
+.site-header .wrap { position: relative; }
+.menu { display: flex; align-items: center; }
+
+.menu__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.menu__btn:hover,
+.menu.is-open .menu__btn,
+.menu.is-current .menu__btn { color: var(--text); }
+
+.menu__chev {
+  width: 0.42em;
+  height: 0.42em;
+  border-right: 1.6px solid currentColor;
+  border-bottom: 1.6px solid currentColor;
+  transform: translateY(-0.16em) rotate(45deg);
+  transition: transform 0.15s ease;
+}
+.menu.is-open .menu__chev { transform: translateY(0.06em) rotate(-135deg); }
+
+/* the current section's menu keeps a mark in the banner, so the banner says
+   where you are even while a frame fills everything below it */
+.menu__btn { position: relative; }
+.menu.is-current .menu__btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0.75rem;
+  bottom: -0.5rem;
+  height: 2px;
+  background: var(--vista);
+  border-radius: 2px;
+}
+
+.menu__panel {
+  display: none;
+  position: absolute;
+  top: calc(100% - 0.35rem);
+  right: 1.5rem;
+  z-index: 60;
+  min-width: 16rem;
+  max-width: min(42rem, calc(100vw - 2rem));
+  padding: 1rem 1.1rem;
+  background: var(--bg-elev);
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.16);
+}
+:root[data-theme="dark"] .menu__panel { box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5); }
+
+.menu.is-open .menu__panel { display: block; }
+/* Without scripting the buttons do nothing, so the panels answer to the
+   pointer and the keyboard instead. `html.js` is set pre-paint, so this
+   never double-opens on a scripted page. */
+html:not(.js) .menu:hover .menu__panel,
+html:not(.js) .menu:focus-within .menu__panel { display: block; }
+
+.menu__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 21rem) minmax(0, 13rem);
+  gap: 0.4rem 1.6rem;
+}
+.menu__panel--one .menu__cols,
+.menu[data-menu="explore"] .menu__cols,
+.menu[data-menu="docs"] .menu__cols { grid-template-columns: minmax(0, 24rem); }
+
+.menu__head {
+  margin: 0 0 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.menu__item {
+  display: block;
+  white-space: normal;
+  padding: 0.5rem 0.6rem;
+  margin: 0 -0.6rem;
+  border-radius: 7px;
+  color: var(--text);
+}
+.menu__item:hover { background: var(--vista-wash); text-decoration: none; }
+.menu__item[aria-current="true"] { background: var(--vista-wash); box-shadow: inset 2px 0 0 var(--vista); }
+
+.menu__name {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+.menu__desc {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+.menu__desc code { font-size: 0.95em; }
+
+.menu__link {
+  display: block;
+  white-space: normal;
+  padding: 0.34rem 0.6rem;
+  margin: 0 -0.6rem;
+  border-radius: 7px;
+  font-size: 0.86rem;
+  color: var(--text-dim);
+}
+.menu__link:hover { background: var(--vista-wash); color: var(--text); text-decoration: none; }
+.menu__link[aria-current="true"] { color: var(--text); background: var(--vista-wash); }
+
+@media (max-width: 720px) {
+  .menu__cols { grid-template-columns: minmax(0, 1fr); }
+  .menu__col--thin { margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--border); }
+  .menu__panel { padding: 0.85rem 0.9rem; }
+}
+
+/* ---------- the frame view ---------- */
+
+/* When a frame is showing, the PAGE does not scroll — the banner stays put and
+   the embedded application scrolls inside its own box. `100dvh` and not `100vh`
+   so a mobile browser's collapsing toolbar does not leave a strip of the frame
+   permanently below the fold. */
+body.is-framed {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.frameview {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - var(--header-h));
+  background: var(--bg-elev);
+}
+
+.framebar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.75rem;
+  flex: none;
+  padding: 0.3rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 0.78rem;
+}
+.framebar__title {
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.005em;
+}
+.framebar__status { color: var(--text-faint); }
+.framebar__note {
+  color: var(--text-faint);
+  margin-inline-start: auto;
+}
+/* pushed right by ITS OWN margin, so it stays right whether or not the status
+   beside the title is showing */
+.framebar__out {
+  flex: none;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.framebar__out:hover { color: var(--text); }
+
+.framebar__down {
+  flex: none;
+  margin: 0;
+  padding: 0.7rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--vista-wash);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* the slot is what flexes; the frame is replaced inside it on every view */
+.frameview__slot {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+}
+.frameview__frame {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+  display: block;
+  background: var(--bg);
+}
+
+.noscript-note {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 1rem 1.5rem 2rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
 }
 
 /* ---------- hero ---------- */

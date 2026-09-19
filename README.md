@@ -7,7 +7,7 @@ serves this repo's `main` branch at root, so a push to `main` is a deploy. The
 `.nojekyll` file keeps Pages from running the content through Jekyll.
 
 ```
-index.html            the whole site — one page
+index.html            the banner, the landing content, and the frame shell
 assets/css/site.css   all styling; no framework, no CDN
 assets/img/logo.png   the org mark (see "The logo" below)
 scripts/site-gen.py   generates the m/v repo tables from the ecosystem registry
@@ -15,6 +15,58 @@ data/repos.json       the committed registry snapshot the tables render from
 .nojekyll             serve files as-is  ⚠️ load-bearing: Astro's _astro/ dies without it
 forge-docs/           DEPLOYED ARTIFACT — do not hand-edit
 ```
+
+## One address, two views
+
+The banner is permanent. Everything under it is one of two views, chosen by the
+**hash route** — never by navigating away, so the address bar always reads
+`vista-forge.github.io`, the back button steps one view at a time, and any view
+can be linked to:
+
+| Route | What shows |
+|---|---|
+| `#/architecture` (the default) | the landing content, in the page itself |
+| `#/architecture/<section>` | the same, scrolled to that section, fold opened |
+| `#/explore/vdb-explorer` | the dd-bundle browser, in a frame |
+| `#/explore/cprs-configuration` | the CPRS configuration dashboard, in a frame |
+| `#/docs/forge-reference` | the generated `m`/`v` surface reference, in a frame |
+| `#<section>` | a bare legacy anchor — read as `#/architecture/<section>` |
+
+That last row is load-bearing: the published reference's own nav links back here
+with bare anchors (`#repos`, `#stack`), and so do older links. They keep working.
+
+**The landing content is still in `index.html`, not in a frame.** Only the three
+applications are framed. Two reasons, and both are the point: the page a crawler
+and a reader get at the root URL is the same document it always was, and
+`site-gen.py`'s generated repo tables stay where the gate looks for them.
+
+### The frames
+
+The three applications are served from the project's own machine over a public
+Tailscale Funnel (`minty.warg-torino.ts.net`), and are shown under this banner
+rather than linked away to theirs. Consequences worth knowing before changing
+anything here:
+
+* **A new frame is built for every view, never `iframe.src = …` on a live one.**
+  Re-pointing a frame that has already loaded pushes a session-history entry, so
+  the reader's next Back press undoes the *frame's* navigation instead of
+  returning to the view they came from. The first load of a freshly inserted
+  frame replaces instead of pushing. Measured here; it is not the obvious
+  one-liner.
+* **The wait is bounded and named.** A cross-origin frame that never answers is
+  a blank rectangle with no error anywhere, so after 12 s the bar says the host
+  is probably off and offers the direct link.
+* **A cross-origin frame cannot be styled or read from here.** Two things follow
+  and neither is fixable from this repo: the framed reference carries its own
+  copy of this banner, so that view shows two; and the light/dark choice does
+  not cross the origin boundary, because `localStorage` is per-origin. The fix
+  for the first is a build flag in the `forge-docs` repo that drops `OrgNav`
+  when embedded — not an edit to the deployed copy here.
+* **Nothing here sets `X-Frame-Options` or a `frame-ancestors` policy**, on
+  either side. If the publish origin ever grows one, these views go blank.
+
+Without JavaScript the landing page is unchanged, the menus fall back to
+hover/focus, and a `<noscript>` note links the three applications directly.
 
 ## `forge-docs/` — a deployed copy, not source
 
@@ -67,9 +119,17 @@ So the same token values are restated in `forge-docs/site/src/styles/forge.css`
 
 **Nothing gates the agreement.** A change to a token here is a change there as
 well, and the only way to see a drift is to look at the two pages side by side.
-The same goes for the header: the nav items in `index.html` are mirrored by that
-repo's `src/components/OrgNav.astro`, and both toggles write both theme keys
-(`theme` here, `starlight-theme` there) so one click holds across the boundary.
+The same goes for the header: that repo's `src/components/OrgNav.astro` mirrors
+this one's, and both toggles write both theme keys (`theme` here,
+`starlight-theme` there) so one click holds across the boundary.
+
+⚠️ **The two navs no longer agree, and that is now visible.** This banner is
+three menus (Architecture / Explore / Docs); `OrgNav.astro` is still the five
+flat links it mirrored before. Because the reference is shown *inside* this
+site's Docs view, a reader sees both at once. Its links still resolve — they are
+bare anchors, which the router reads as sections of the landing page — but the
+two bars are the same brand disagreeing with itself. Reconciling them is a
+change in the `forge-docs` repo.
 
 ## What is generated, and what is not
 

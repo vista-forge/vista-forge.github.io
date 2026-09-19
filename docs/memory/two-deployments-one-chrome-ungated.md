@@ -33,6 +33,43 @@ would be an off-host load, which that repo's `make offline-check` forbids
 outright — and it would not survive an airgapped read either. Vendoring the
 values is the deliberate cost of the offline guarantee, not an oversight.
 
+## ⚠️ 2026-09-19: the drift is now in ONE VIEWPORT, and the theme trick does not reach the third copy
+
+The landing page became a **shell**: a permanent banner of three menus over
+either the landing content or a **frame** holding one of the three published
+applications, the reference among them. Two things this table said were
+*invisible* stopped being invisible, and one thing it said was *solved* turned
+out to be solved only for one of two copies.
+
+**The nav row is now read side by side, by everyone.** The reference is shown
+*inside* the Docs view, so its `OrgNav` renders directly under this banner —
+one brand, two disagreeing bars, in one screenshot. The row above stopped being
+a drift nobody can see and became the first thing a reader of that view sees.
+(Its links still resolve: they are bare anchors, and the shell's router reads
+`#repos` as a section of the landing page. That back-compat is deliberate — the
+router must keep accepting bare anchors for exactly this reason.)
+
+**The theme key holds across the two ORIGINS it was written for, and no
+further.** `localStorage` is per-origin. Writing both `theme` and
+`starlight-theme` works because the Pages copy of the reference is served from
+`vista-forge.github.io` — the *same* origin as the landing page. The copy that
+the Docs view actually frames is served from the Funnel host, a **third
+origin**, which shares no storage with either. So a framed reference is always
+on its own default, whatever the reader chose in the banner above it, and
+nothing in this repo can change that.
+
+⚠️ **The two copies of the reference are not interchangeable.** Measured
+2026-09-19: the Funnel copy carries `concepts/`, `errors/` and `guides/`
+directories the Pages copy does not (240 vs 262 HTML files, different vintages).
+Picking whichever is same-origin to get the theme back would silently serve
+different documentation.
+
+**Also measured:** the publish origin (`vdb-explorer`'s `tools/publish/origin.py`)
+sets no `X-Frame-Options` and no `frame-ancestors`, and the Funnel passes its
+headers through unchanged — which is the only reason any of this frames at all.
+A security header added there blanks three views here, with no error on this
+side.
+
 ## The theme key is the one duplication that MUST stay in step
 
 Starlight persists the choice under `starlight-theme`; this site uses `theme`.
@@ -51,7 +88,7 @@ reader would land dark on a site whose default is light.
 ## Nav rule: every item, every width
 
 `.nav--opt` used to hide Tools and Architecture below 860px, making the menu a
-function of the viewport. The strip now scrolls sideways instead, and the
+function of the viewport. The strip then scrolled sideways instead, and the
 reference gets the same items in Starlight's mobile-menu footer (its
 `SocialIcons` slot renders in both places, which is why the nav lives there
 rather than in a bespoke bar).
@@ -60,3 +97,10 @@ rather than in a bespoke bar).
 content spilling past the *start* edge cannot be scrolled back to in Chrome, so
 the first item silently becomes unreachable. Push the strip right with
 `margin-inline-start: auto`, which collapses to 0 once it overflows.
+
+⚠️ **The sideways scroll had to go when the flat links became menus, and not
+for the reason it looks like.** Three items fit at any width, so the scroll was
+merely unnecessary — but it was also *fatal*: a scroll container clips its
+descendants, **absolutely-positioned ones included**, so a dropdown panel
+inside it is sliced off at the banner's edge. A menu cannot live inside an
+`overflow-x: auto` strip at all.

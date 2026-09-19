@@ -26,6 +26,9 @@ try {
   var t = localStorage.getItem("theme") || localStorage.getItem("starlight-theme");
   if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
 } catch (e) {}
+/* The menus open on click, which needs scripting. Without it the panels fall
+   back to hover/focus in CSS — so the class, not its absence, is the flag. */
+document.documentElement.className += " js";
 </script>
 </head>
 <body>
@@ -34,20 +37,87 @@ try {
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="/">
+    <a class="brand" href="#/architecture">
       <img class="brand__mark" src="assets/img/mark.png" alt="" width="26" height="26" decoding="async">
       VistA Forge
     </a>
-    <!-- Every item stays in the banner at every width: the nav scrolls sideways
-         rather than dropping links, and the theme control sits outside it so it
-         is never scrolled away. -->
-    <nav class="nav" aria-label="Primary">
-      <a href="#hardened">Hardened</a>
-      <a href="#standardized">Standardized</a>
-      <a href="#ai-integrated">AI-Integrated</a>
-      <a href="#architecture">Architecture</a>
-      <a href="#repos">Repos</a>
-      <a href="/forge-docs/">Docs</a>
+    <!-- Three menus, and every destination in the banner at every width: the
+         nav scrolls sideways rather than dropping items, and the theme control
+         sits outside it so it is never scrolled away. Architecture's items are
+         sections of THIS page; Explore's and Docs' are separate applications
+         shown in the frame below the banner, under this address. -->
+    <nav class="nav" id="nav" aria-label="Primary">
+
+      <div class="menu" data-menu="architecture">
+        <button class="menu__btn" type="button" aria-expanded="false" aria-controls="menu-architecture">
+          Architecture<span class="menu__chev" aria-hidden="true"></span>
+        </button>
+        <div class="menu__panel" id="menu-architecture">
+          <div class="menu__cols">
+            <div class="menu__col">
+              <p class="menu__head">The three claims</p>
+              <a class="menu__item" href="#/architecture/hardened">
+                <span class="menu__name">Hardened</span>
+                <span class="menu__desc">The quality bar — CI on every push, test-first as a rule, coverage floors, provable reversibility.</span>
+              </a>
+              <a class="menu__item" href="#/architecture/standardized">
+                <span class="menu__name">Standardized</span>
+                <span class="menu__desc">The tools every other language takes for granted, on M: format, lint, language server, tests, packages.</span>
+              </a>
+              <a class="menu__item" href="#/architecture/ai-integrated">
+                <span class="menu__name">AI-Integrated</span>
+                <span class="menu__desc">Every surface an agent needs is a generated, gated artifact — not prose it has to infer.</span>
+              </a>
+            </div>
+            <div class="menu__col menu__col--thin">
+              <p class="menu__head">Deeper on this page</p>
+              <a class="menu__link" href="#/architecture/stack">The stack, layer by layer</a>
+              <a class="menu__link" href="#/architecture/architecture">Why registries</a>
+              <a class="menu__link" href="#/architecture/repos">Every repo in the org</a>
+              <a class="menu__link" href="#/architecture/principles">Design principles</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu" data-menu="explore">
+        <button class="menu__btn" type="button" aria-expanded="false" aria-controls="menu-explore">
+          Explore<span class="menu__chev" aria-hidden="true"></span>
+        </button>
+        <div class="menu__panel" id="menu-explore">
+          <div class="menu__cols">
+            <div class="menu__col">
+              <p class="menu__head">Live from a demonstration instance</p>
+              <a class="menu__item" href="#/explore/vdb-explorer">
+                <span class="menu__name">vdb explorer</span>
+                <span class="menu__desc">The FileMan schema a VistA instance measurably has — files, fields, storage, pointer edges, menus, RPCs, HL7 protocols.</span>
+              </a>
+              <a class="menu__item" href="#/explore/cprs-configuration">
+                <span class="menu__name">CPRS configuration</span>
+                <span class="menu__desc">The configuration a VistA instance actually carries — parameters, order sets, note titles, reminders, consult services, alerts.</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu" data-menu="docs">
+        <button class="menu__btn" type="button" aria-expanded="false" aria-controls="menu-docs">
+          Docs<span class="menu__chev" aria-hidden="true"></span>
+        </button>
+        <div class="menu__panel" id="menu-docs">
+          <div class="menu__cols">
+            <div class="menu__col">
+              <p class="menu__head">Generated from the tools themselves</p>
+              <a class="menu__item" href="#/docs/forge-reference">
+                <span class="menu__name">Forge reference</span>
+                <span class="menu__desc">Every page of the <code>m</code> and <code>v</code> surface assembled from the contract artifacts each tool ships — so it cannot describe a flag that does not exist.</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </nav>
     <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
@@ -55,6 +125,20 @@ try {
     </button>
   </div>
 </header>
+
+<!-- ══════════════ the two views ══════════════
+     The banner above is permanent. Everything below it is one of two views,
+     chosen by the hash route (#/architecture… or #/explore/… | #/docs/…):
+
+       view-doc    this page — the landing content, scrolling normally
+       view-frame  another application, shown in a frame under this address
+
+     The route lives in the hash so the address bar never leaves
+     vista-forge.github.io and the back button still works. A bare legacy
+     anchor (#repos, and the links the published reference still emits) is
+     read as a section of the document view, so nothing that used to work
+     stopped working. -->
+<div id="view-doc">
 
 <main id="main">
 
@@ -76,7 +160,7 @@ try {
 
     <div class="cta-row">
       <a class="btn btn--primary" href="https://github.com/orgs/vista-forge/packages/container/package/vista-iris">Run a VistA</a>
-      <a class="btn" href="#stack">See the stack</a>
+      <a class="btn" href="#/architecture/stack">See the stack</a>
       <a class="btn" href="https://github.com/vista-forge">Browse the org</a>
     </div>
 
@@ -87,7 +171,7 @@ try {
 
     <p class="hero__note">
       A fully installed VistA-on-IRIS, public and pullable today. The toolchain repos are
-      opening as they stabilize — see <a href="#repos">what's available now</a>.
+      opening as they stabilize — see <a href="#/architecture/repos">what's available now</a>.
     </p>
   </div>
 </section>
@@ -602,7 +686,7 @@ try {
           <tr><td><strong>docs</strong></td><td>ADRs, design corpus, and cross-repo coordination</td></tr>
           <tr><td><strong>workspace</strong></td><td>Clone-all manifest + idempotent <code>bootstrap.sh</code> for machine setup</td></tr>
           <tr><td><a href="https://github.com/orgs/vista-forge/packages/container/package/vista-iris">vista-iris</a></td><td>Pre-built VistA-on-IRIS container, fictitious test data only — the image is public; the build repo is not yet</td></tr>
-          <tr><td><strong>forge-docs</strong></td><td>The generator behind <a href="/forge-docs/">the published documentation</a> — every page assembled from the contract, doc plane and error index each tool ships, so it cannot describe a flag that does not exist</td></tr>
+          <tr><td><strong>forge-docs</strong></td><td>The generator behind <a href="#/docs/forge-reference">the published documentation</a> — every page assembled from the contract, doc plane and error index each tool ships, so it cannot describe a flag that does not exist</td></tr>
           <tr><td><strong>.github</strong></td><td>Shared gate scripts and git hooks, the docs standard, the org repo registry, and the scheduled meta-gate</td></tr>
         </tbody>
       </table>
@@ -668,6 +752,43 @@ try {
   </div>
 </footer>
 
+</div><!-- /#view-doc -->
+
+<!-- The frame view. The three applications are served from the project's own
+     host; they are shown HERE, under this banner and this address, rather than
+     linked away to theirs. A cross-origin frame cannot be styled or read from
+     here — it carries its own chrome and its own theme — so the banner is the
+     only thing that has to stay constant, and it does. -->
+<section id="view-frame" class="frameview" hidden aria-label="Embedded application">
+  <div class="framebar">
+    <span class="framebar__title" id="frame-title"></span>
+    <span class="framebar__status" id="frame-status">Loading…</span>
+    <!-- The footer goes with the document view, and the disclaimer goes with
+         it — so the short form rides here, where a reader looking at VistA
+         data can see it. It wraps rather than hides: a notice that disappears
+         on a narrow screen is worse than one that takes a second line. -->
+    <span class="framebar__note">Not affiliated with or endorsed by the US Department of Veterans Affairs · fictitious test data only</span>
+    <a class="framebar__out" id="frame-out" href="#" target="_blank" rel="noopener noreferrer">Open in a new tab <span aria-hidden="true">&#8599;</span></a>
+  </div>
+  <p class="framebar__down" id="frame-down" hidden>
+    This view is served from the project's own machine and has not answered.
+    It is most likely offline — try again later, or
+    <a id="frame-down-link" href="#" target="_blank" rel="noopener noreferrer">open it directly</a>.
+  </p>
+  <div class="frameview__slot" id="frame-slot"></div>
+</section>
+
+<noscript>
+  <p class="noscript-note">
+    The <strong>Explore</strong> and <strong>Docs</strong> views are shown in a frame under this
+    banner, which needs JavaScript. Without it, open them directly:
+    <a href="https://minty.warg-torino.ts.net/vdb-explorer/">vdb explorer</a> ·
+    <a href="https://minty.warg-torino.ts.net/cprs-configuration/">CPRS configuration</a> ·
+    <a href="https://minty.warg-torino.ts.net/forge-docs/">Forge reference</a>.
+    Everything on this page works as it is.
+  </p>
+</noscript>
+
 <script>
 (function () {
   var root = document.documentElement;
@@ -694,23 +815,234 @@ try {
 </script>
 
 <script>
-/* Architecture / Repos / Design principles ship COLLAPSED — they are reference
-   depth, not the first read. A link to one (the nav, the hero's "what's
-   available now") must still land open, or the anchor jumps to a shut summary
-   and the page looks broken. */
+/* Break OUT of a frame, before anything else.
+   The published reference carries its own nav whose links are absolute back to
+   this origin. Clicked inside our frame they would load this shell INTO it —
+   banner inside banner. `window.top` is same-origin in exactly that case, so
+   the escape works; when it is not ours, the access throws and we leave the
+   frame alone. */
 (function () {
-  function openTarget(hash) {
-    if (!hash || hash.length < 2) return;
-    var el;
-    try { el = document.getElementById(decodeURIComponent(hash.slice(1))); } catch (e) { return; }
-    if (!el) return;
-    var d = el.closest("details.fold") || el.querySelector("details.fold");
-    if (!d || d.open) return;
-    d.open = true;
+  if (window.top === window.self) return;
+  try { window.top.location.replace(location.href); } catch (e) {}
+})();
+</script>
+
+<script>
+/* ────────────────────────────────────────────────────────────────────────────
+   The router, and the menus.
+
+   ONE address for the whole site. A view is chosen by the hash, never by
+   navigating away, so the banner is continuous and the address bar always
+   reads vista-forge.github.io — including while a frame is showing something
+   this origin does not serve.
+
+     #/architecture[/<section>]   the document view (the default)
+     #/explore/<app>              a framed application
+     #/docs/<app>                 a framed application
+     #<section>                   legacy bare anchor -> the document view
+   ──────────────────────────────────────────────────────────────────────────── */
+(function () {
+  "use strict";
+
+  /* Where the framed applications actually live. They are served from the
+     project's own host over a public HTTPS tunnel; the host is a deployment
+     detail, so it appears here and in the "open in a new tab" escape hatch,
+     and nowhere a reader has to read it. */
+  var ORIGIN = "https://minty.warg-torino.ts.net";
+  var FRAMES = {
+    "explore/vdb-explorer":       { title: "vdb explorer",       url: ORIGIN + "/vdb-explorer/" },
+    "explore/cprs-configuration": { title: "CPRS configuration", url: ORIGIN + "/cprs-configuration/" },
+    /* the publish root serves the built reference at /forge-docs/ */
+    "docs/forge-reference":       { title: "Forge reference",    url: ORIGIN + "/forge-docs/" }
+  };
+  var DEFAULT_ROUTE = "architecture";
+
+  var body     = document.body;
+  var viewDoc  = document.getElementById("view-doc");
+  var viewFrm  = document.getElementById("view-frame");
+  var slot     = document.getElementById("frame-slot");
+  var fTitle   = document.getElementById("frame-title");
+  var fStatus  = document.getElementById("frame-status");
+  var fOut     = document.getElementById("frame-out");
+  var fDown    = document.getElementById("frame-down");
+  var fDownLnk = document.getElementById("frame-down-link");
+
+  /* ---------- routes ---------- */
+
+  function parse(hash) {
+    var raw = (hash || "").replace(/^#/, "");
+    if (!raw) return { view: "doc", section: "" };
+    if (raw.charAt(0) !== "/") return { view: "doc", section: decode(raw) };
+    var parts = raw.slice(1).split("/").filter(Boolean).map(decode);
+    if (parts[0] === "architecture") return { view: "doc", section: parts[1] || "" };
+    var key = parts.join("/");
+    if (FRAMES[key]) return { view: "frame", key: key };
+    /* an unknown route is not an error page — it is the landing page */
+    return { view: "doc", section: "" };
+  }
+
+  function decode(s) { try { return decodeURIComponent(s); } catch (e) { return s; } }
+
+  /* ---------- the document view ---------- */
+
+  /* Architecture / Repos / Design principles ship COLLAPSED — they are
+     reference depth, not the first read. A link to one must still land OPEN,
+     or the anchor jumps to a shut summary and the page looks broken. */
+  function showDoc(section) {
+    body.classList.remove("is-framed");
+    viewFrm.hidden = true;
+    viewDoc.hidden = false;
+    /* Take the frame OUT, rather than blanking it. A hidden frame keeps its
+       page alive — timers, sockets, whatever the application is doing — and
+       leaves a stale render to flash on the way back in. */
+    clearFrame();
+
+    if (!section) { window.scrollTo(0, 0); return; }
+    var el = document.getElementById(section);
+    if (!el) { window.scrollTo(0, 0); return; }
+    var fold = el.closest("details.fold") || el.querySelector("details.fold");
+    if (fold && !fold.open) fold.open = true;
     el.scrollIntoView();
   }
-  openTarget(location.hash);
-  window.addEventListener("hashchange", function () { openTarget(location.hash); });
+
+  /* ---------- the frame view ---------- */
+
+  var waiting = null;
+
+  function clearFrame() {
+    if (waiting) { clearTimeout(waiting); waiting = null; }
+    while (slot.firstChild) slot.removeChild(slot.firstChild);
+  }
+
+  /* A NEW element every time, never `frame.src = …` on a live one.
+     Re-pointing an iframe that has already loaded a page PUSHES a session
+     history entry, so the reader's next Back press undoes the frame's
+     navigation instead of returning to the view they came from — measured
+     here, and the reason this is not the obvious one-liner. The first load of
+     a freshly inserted frame replaces instead of pushing. */
+  function makeFrame(app) {
+    var f = document.createElement("iframe");
+    f.className = "frameview__frame";
+    f.title = app.title;
+    f.setAttribute("referrerpolicy", "no-referrer");
+    f.addEventListener("load", function () {
+      if (waiting) { clearTimeout(waiting); waiting = null; }
+      fStatus.hidden = true;
+      fDown.hidden = true;
+    });
+    f.src = app.url;
+    return f;
+  }
+
+  function showFrame(key) {
+    var app = FRAMES[key];
+    viewDoc.hidden = true;
+    viewFrm.hidden = false;
+    body.classList.add("is-framed");
+    window.scrollTo(0, 0);
+
+    fTitle.textContent = app.title;
+    fOut.href = app.url;
+    fDownLnk.href = app.url;
+
+    /* Degrade LOUD. A cross-origin frame that never answers is a blank
+       rectangle with no error anywhere, so the wait is bounded and named:
+       "loading" while it is plausible, then a sentence saying the host is
+       probably off and here is the direct link. */
+    clearFrame();
+    fDown.hidden = true;
+    fStatus.hidden = false;
+    fStatus.textContent = "Loading\u2026";
+    waiting = setTimeout(function () {
+      fStatus.hidden = true;
+      fDown.hidden = false;
+    }, 12000);
+    slot.appendChild(makeFrame(app));
+  }
+
+  /* ---------- marking where you are ---------- */
+
+  function mark(hash) {
+    var links = document.querySelectorAll(".menu__panel a[href^='#']");
+    var r = parse(hash);
+    var here = r.view === "frame" ? "#/" + r.key
+             : "#/" + DEFAULT_ROUTE + (r.section ? "/" + r.section : "");
+    for (var i = 0; i < links.length; i++) {
+      var on = links[i].getAttribute("href") === here;
+      if (on) links[i].setAttribute("aria-current", "true");
+      else links[i].removeAttribute("aria-current");
+    }
+    var menus = document.querySelectorAll(".menu");
+    for (var j = 0; j < menus.length; j++) {
+      var within = menus[j].querySelector("[aria-current='true']");
+      menus[j].classList.toggle("is-current", !!within);
+    }
+  }
+
+  function route() {
+    var r = parse(location.hash);
+    if (r.view === "frame") showFrame(r.key); else showDoc(r.section);
+    mark(location.hash);
+    closeMenus();
+  }
+
+  /* ---------- the menus ---------- */
+
+  var open = null;
+
+  function closeMenus() {
+    if (!open) return;
+    open.classList.remove("is-open");
+    open.querySelector(".menu__btn").setAttribute("aria-expanded", "false");
+    open = null;
+  }
+
+  function openMenu(menu) {
+    if (open === menu) return;
+    closeMenus();
+    menu.classList.add("is-open");
+    menu.querySelector(".menu__btn").setAttribute("aria-expanded", "true");
+    open = menu;
+  }
+
+  var menus = document.querySelectorAll(".menu");
+  for (var i = 0; i < menus.length; i++) (function (menu) {
+    var btn = menu.querySelector(".menu__btn");
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (open === menu) closeMenus(); else openMenu(menu);
+    });
+    /* On a pointer device a megamenu is expected to follow the cursor once
+       one of them is open. It never OPENS on hover from cold — that makes the
+       banner twitch at every pass. */
+    menu.addEventListener("mouseenter", function () { if (open && open !== menu) openMenu(menu); });
+  })(menus[i]);
+
+  document.addEventListener("click", function (e) {
+    if (open && !open.contains(e.target)) closeMenus();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape" || !open) return;
+    var btn = open.querySelector(".menu__btn");
+    closeMenus();
+    btn.focus();
+  });
+  /* tab out of the panel = close it */
+  document.addEventListener("focusin", function (e) {
+    if (open && !open.contains(e.target)) closeMenus();
+  });
+
+  /* ---------- go ---------- */
+
+  window.addEventListener("hashchange", route);
+  /* A click on the route you are already on produces no hashchange, so the
+     menu would stay open and a repeat anchor would not re-scroll. */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("a[href^='#']") : null;
+    if (!a) return;
+    if (a.getAttribute("href") === location.hash) { e.preventDefault(); route(); }
+  });
+  route();
 })();
 </script>
 
