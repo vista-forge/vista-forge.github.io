@@ -770,10 +770,12 @@ document.documentElement.className += " js";
     <span class="framebar__note">Not affiliated with or endorsed by the US Department of Veterans Affairs · fictitious test data only</span>
     <a class="framebar__out" id="frame-out" href="#" target="_blank" rel="noopener noreferrer">Open in a new tab <span aria-hidden="true">&#8599;</span></a>
   </div>
+  <!-- Two different failures, and they need different sentences. A cross-origin
+       frame gives no error to this page either way, so they are told apart by
+       ASKING THE FRAME WHETHER IT EVER NAVIGATED (see the router). -->
   <p class="framebar__down" id="frame-down" hidden>
-    This view is served from the project's own machine and has not answered.
-    It is most likely offline — try again later, or
-    <a id="frame-down-link" href="#" target="_blank" rel="noopener noreferrer">open it directly</a>.
+    <span id="frame-down-text"></span>
+    <a id="frame-down-link" href="#" target="_blank" rel="noopener noreferrer">Open it directly</a>.
   </p>
   <div class="frameview__slot" id="frame-slot"></div>
 </section>
@@ -865,7 +867,25 @@ document.documentElement.className += " js";
   var fStatus  = document.getElementById("frame-status");
   var fOut     = document.getElementById("frame-out");
   var fDown    = document.getElementById("frame-down");
+  var fDownTxt = document.getElementById("frame-down-text");
   var fDownLnk = document.getElementById("frame-down-link");
+
+  /* A frame that has not navigated is still this page's own about:blank, so
+     reading its location SUCCEEDS. Once the cross-origin document commits, the
+     same read throws. That is the only signal this page gets, and it is enough
+     to tell "the browser refused to ask" from "the host did not answer". */
+  var NOT_SENT_MS = 6000;   /* still on about:blank -> the request never left */
+  var NO_ANSWER_MS = 20000; /* navigated, never finished -> the host is slow or down */
+
+  var SAID = {
+    blocked:
+      "Your browser did not send this request. That happens when a page served " +
+      "from the public internet embeds a host your machine resolves to a " +
+      "private address \u2014 on this project's own network, it resolves to one.",
+    silent:
+      "This view is served from the project's own machine and has not answered. " +
+      "It is most likely offline \u2014 try again later."
+  };
 
   /* ---------- routes ---------- */
 
@@ -907,11 +927,32 @@ document.documentElement.className += " js";
 
   /* ---------- the frame view ---------- */
 
-  var waiting = null;
+  var watching = null;
 
   function clearFrame() {
-    if (waiting) { clearTimeout(waiting); waiting = null; }
+    if (watching) { clearInterval(watching); watching = null; }
     while (slot.firstChild) slot.removeChild(slot.firstChild);
+  }
+
+  function say(which) {
+    if (watching) { clearInterval(watching); watching = null; }
+    fStatus.hidden = true;
+    fDownTxt.textContent = SAID[which] + " ";
+    fDown.hidden = false;
+  }
+
+  /* Degrade LOUD, and name the RIGHT failure. A blank rectangle with no error
+     anywhere is the thing this exists to prevent. */
+  function watch(f) {
+    var t0 = Date.now();
+    watching = setInterval(function () {
+      if (!f.isConnected) { clearInterval(watching); watching = null; return; }
+      var navigated = false;
+      try { void f.contentWindow.location.href; } catch (e) { navigated = true; }
+      var age = Date.now() - t0;
+      if (!navigated && age > NOT_SENT_MS) say("blocked");
+      else if (navigated && age > NO_ANSWER_MS) say("silent");
+    }, 500);
   }
 
   /* A NEW element every time, never `frame.src = …` on a live one.
@@ -926,7 +967,7 @@ document.documentElement.className += " js";
     f.title = app.title;
     f.setAttribute("referrerpolicy", "no-referrer");
     f.addEventListener("load", function () {
-      if (waiting) { clearTimeout(waiting); waiting = null; }
+      if (watching) { clearInterval(watching); watching = null; }
       fStatus.hidden = true;
       fDown.hidden = true;
     });
@@ -953,11 +994,9 @@ document.documentElement.className += " js";
     fDown.hidden = true;
     fStatus.hidden = false;
     fStatus.textContent = "Loading\u2026";
-    waiting = setTimeout(function () {
-      fStatus.hidden = true;
-      fDown.hidden = false;
-    }, 12000);
-    slot.appendChild(makeFrame(app));
+    var f = makeFrame(app);
+    slot.appendChild(f);
+    watch(f);
   }
 
   /* ---------- marking where you are ---------- */

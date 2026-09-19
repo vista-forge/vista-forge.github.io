@@ -480,6 +480,7 @@ body.is-framed {
 .framebar__down {
   flex: none;
   margin: 0;
+  max-width: 68ch;
   padding: 0.7rem 1.5rem;
   border-bottom: 1px solid var(--border);
   background: var(--vista-wash);
