@@ -74,12 +74,18 @@ anything here:
   from this box is not evidence about the published site. Measured, with the
   four alternatives ruled out, in
   `docs/memory/a-tailnet-published-origin-cannot-be-embedded.md`.
-* **A cross-origin frame cannot be styled or read from here.** Two things follow
-  and neither is fixable from this repo: the framed reference carries its own
-  copy of this banner, so that view shows two; and the light/dark choice does
-  not cross the origin boundary, because `localStorage` is per-origin. The fix
-  for the first is a build flag in the `forge-docs` repo that drops `OrgNav`
-  when embedded — not an edit to the deployed copy here.
+* **A cross-origin frame cannot be styled or read from here**, so anything the
+  framed page must do differently is the framed page's own job. The reference
+  used to render its own copy of this banner directly under it; since
+  2026-09-19 it detects being framed (`window.self !== window.top`, pre-paint)
+  and drops its brand and its org nav, keeping its search box and its theme
+  control — the two things this banner cannot provide across an origin. That
+  is a change in the `forge-docs` repo and a republish, never an edit to the
+  deployed copy here.
+* **The light/dark choice does not cross the origin boundary**, because
+  `localStorage` is per-origin. The framed reference is on its own default
+  until the reader uses the control inside it, which is why that control stays
+  when the rest of its header goes.
 * **Nothing here sets `X-Frame-Options` or a `frame-ancestors` policy**, on
   either side. If the publish origin ever grows one, these views go blank.
 
@@ -141,13 +147,14 @@ The same goes for the header: that repo's `src/components/OrgNav.astro` mirrors
 this one's, and both toggles write both theme keys (`theme` here,
 `starlight-theme` there) so one click holds across the boundary.
 
-⚠️ **The two navs no longer agree, and that is now visible.** This banner is
-three menus (Architecture / Explore / Docs); `OrgNav.astro` is still the five
-flat links it mirrored before. Because the reference is shown *inside* this
-site's Docs view, a reader sees both at once. Its links still resolve — they are
-bare anchors, which the router reads as sections of the landing page — but the
-two bars are the same brand disagreeing with itself. Reconciling them is a
-change in the `forge-docs` repo.
+⚠️ **The two navs no longer agree, and the drift is now hidden rather than
+reconciled.** This banner is three menus (Architecture / Explore / Docs);
+`OrgNav.astro` is still the five flat links it mirrored before. Inside the Docs
+view that nav is no longer rendered at all (see the frames section above), so a
+reader never sees the two disagree — but they still disagree for anyone who
+opens the reference directly, and its links still point at bare anchors this
+router happens to accept. Reconciling them is a change in the `forge-docs`
+repo; hiding one of them is not the same thing.
 
 ## What is generated, and what is not
 

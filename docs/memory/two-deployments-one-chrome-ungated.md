@@ -41,13 +41,28 @@ applications, the reference among them. Two things this table said were
 *invisible* stopped being invisible, and one thing it said was *solved* turned
 out to be solved only for one of two copies.
 
-**The nav row is now read side by side, by everyone.** The reference is shown
-*inside* the Docs view, so its `OrgNav` renders directly under this banner —
-one brand, two disagreeing bars, in one screenshot. The row above stopped being
-a drift nobody can see and became the first thing a reader of that view sees.
-(Its links still resolve: they are bare anchors, and the shell's router reads
-`#repos` as a section of the landing page. That back-compat is deliberate — the
-router must keep accepting bare anchors for exactly this reason.)
+**The nav row was read side by side, by everyone — for one afternoon.** The
+reference is shown *inside* the Docs view, so its `OrgNav` rendered directly
+under this banner: one brand, two disagreeing bars, in one screenshot.
+
+**Fixed the same day, at the source, not here.** The reference now detects
+being framed (`window.self !== window.top`, set pre-paint in `head` for the
+same reason the theme seed is) and drops its brand and its org nav. A
+cross-origin frame cannot be styled from outside, so **the only place an
+embedded mode can live is in the embedded page** — a build flag there, a
+republish, never an edit to the deployed copy.
+
+⚠️ **Hiding a duplicate is not reconciling it.** The two navs still disagree
+for anyone who opens the reference directly; what changed is that the framed
+reader no longer sees both. Its links also still point at bare anchors, which
+the shell's router deliberately accepts as landing-page sections — that
+back-compat is load-bearing precisely because this row was never reconciled.
+
+**What must NOT be hidden with it:** the search box and the theme control. The
+banner around the frame is a different origin, so it can neither search those
+pages nor set their theme — hiding either takes away a capability nothing can
+give back. The rule for an embedded mode is *drop what the frame provides,
+keep what it cannot reach*.
 
 **The theme key holds across the two ORIGINS it was written for, and no
 further.** `localStorage` is per-origin. Writing both `theme` and
