@@ -201,17 +201,18 @@ document.documentElement.className += " js";
     <h2>Hardened — a change has to prove itself before it can reach anyone</h2>
 
     <p class="lede">
-      In most of the software world, a change is reviewed, merged and released. In a hospital
-      system that is not enough: you need to know, before it lands, that it works — and know,
-      afterwards, that you can take it out again cleanly if it does not.
-      <strong>Every change here has to get through the same four layers, and any one of them can stop it.</strong>
+      Every hospital knows the fear: an update goes in overnight, and in the morning something a
+      clinician depends on behaves differently. The usual defences are testing done by hand, a
+      change-control meeting, and a rollback plan nobody has rehearsed — all of which rely on
+      people being careful on the day. <strong>Here the defences are automatic, they are the same
+      every time, and a change that cannot prove itself does not go in.</strong>
     </p>
 
     <figure class="fig">
       <figcaption class="fig__cap">What a change has to get through to reach VistA</figcaption>
       <div class="vault">
         <svg class="vault__svg" viewBox="0 0 340 200" role="img"
-             aria-label="Four nested rings of protection around VistA: a failing test first, the full gate, install and verify on a live system, and removal proven byte-clean.">
+             aria-label="Four nested layers of protection around VistA: write the check first, check everything, try it on a real system, then take it back out and prove nothing was left behind.">
           <g fill="none" stroke-width="1.5">
             <rect x="2"  y="24" width="336" height="152" rx="28" class="vault__ring vault__ring--4"/>
             <rect x="12" y="37" width="316" height="126" rx="24" class="vault__ring vault__ring--3"/>
@@ -230,50 +231,57 @@ document.documentElement.className += " js";
         <ol class="vault__legend">
           <li class="vault__item vault__item--4">
             <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 8 14.5 16 5.5"/><path d="M3 16.5h14"/></svg>
-            <span class="vault__name">A test, proven to fail</span>
-            <span class="vault__d">Written before the code, and it must fail first — otherwise it is not testing anything.</span>
+            <span class="vault__name">Write the alarm before the thing it guards</span>
+            <span class="vault__d">Before the work is done, someone writes the check that would catch the mistake — and proves it really does catch it. A check that passes no matter what is worse than no check at all.</span>
           </li>
           <li class="vault__item vault__item--3">
             <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="M3 8h14M8 8v9"/></svg>
-            <span class="vault__name">The full gate</span>
-            <span class="vault__d">Build, style, the whole suite, coverage — on both database engines, before the change can be saved.</span>
+            <span class="vault__name">Check everything, every time</span>
+            <span class="vault__d">Not a sample, and not a judgement call about whether this one looks risky — thousands of checks, all of them, on both of the database systems VistA runs on.</span>
           </li>
           <li class="vault__item vault__item--2">
             <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9"/><path d="M6.5 8.5 10 12l3.5-3.5"/><path d="M3.5 14.5h13"/></svg>
-            <span class="vault__name">Installed, then verified</span>
-            <span class="vault__d">On two complete, live VistA systems. Not a mock and not a copy.</span>
+            <span class="vault__name">Try it on the real thing</span>
+            <span class="vault__d">Not a simulation and not a slice: the change is put into two complete, working VistA systems and used there.</span>
           </li>
           <li class="vault__item vault__item--1">
             <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 10a6.5 6.5 0 1 1-2-4.7"/><path d="M16.5 3v3.6h-3.6"/></svg>
-            <span class="vault__name">Removed again, byte-clean</span>
-            <span class="vault__d">The system is compared to how it started. Anything left behind is a failure.</span>
+            <span class="vault__name">Then take it back out</span>
+            <span class="vault__d">And prove the system is exactly as it was before. One trace left behind and the change has failed — because a change you cannot undo is one you can never safely make.</span>
           </li>
         </ol>
       </div>
       <p class="fig__note fig__note--stop">
-        <strong>A failure at any layer is a full stop.</strong> Not a warning, not a ticket — the
-        change cannot be committed, cannot be published, and cannot become a release.
+        <strong>Failing any one of these stops the change dead.</strong> Not a warning, not a note
+        for someone to look at later, and not something a deadline can overrule.
       </p>
     </figure>
 
     <div class="worth">
       <div class="worth__col">
         <h3>What it is</h3>
-        <p>A fixed quality regime applied to every line of code in the toolchain — the same
-        discipline regulated industries apply to production software, made automatic.</p>
+        <p>A pre-flight checklist for software. Not someone's judgement about whether this
+        particular change looks dangerous, but a fixed routine every change goes through, in the
+        same order, whoever made it and however small it is.</p>
       </div>
       <div class="worth__col">
         <h3>How it works</h3>
-        <p>The checks live inside the tools, not in a policy document. They run before a change
-        can be saved to the project's history, and they run again before anything is released.
-        No one can wave a change through.</p>
+        <p>The checks are built into the tools people work with rather than written down in a
+        policy. That is the whole difference: a rule in a document depends on someone following it
+        under pressure; a rule inside the tool does not. There is no override, and no meeting
+        where an exception gets granted.</p>
       </div>
       <div class="worth__col">
         <h3>What it is worth</h3>
         <ul class="worth__list">
-          <li>A change that fails anything never reaches a running system.</li>
-          <li>Anything installed can be taken back out and <strong>proven</strong> to have left nothing behind.</li>
-          <li>The evidence ships with the release instead of living in someone's memory.</li>
+          <li><strong>You can change a forty-year-old hospital system without holding your
+          breath.</strong> That is what all of it is for.</li>
+          <li>A change that fails a check never reaches a live system — the failure happens on a
+          developer's machine, not in front of a clinician.</li>
+          <li>If something does have to come out, it comes out completely, and you can show that
+          it did rather than hoping so.</li>
+          <li>The evidence arrives with the change, so nobody has to take anyone's word for it
+          months later.</li>
         </ul>
       </div>
     </div>
