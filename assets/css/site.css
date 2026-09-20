@@ -527,105 +527,119 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   border-inline-start: 3px solid var(--vista);
 }
 
-/* figure 1 — the sequence every change runs */
-.flow {
+/* figure 1 — layers of protection around a VistA core.
+   Geometry in SVG, words in HTML: SVG text does not wrap, and a legend beside
+   the drawing keeps the labels real text at a readable size. */
+.vault {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.6rem;
+  grid-template-columns: minmax(0, 250px) minmax(0, 1fr);
+  gap: 1.6rem;
+  align-items: center;
+}
+.vault__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* the rings step INWARD in strength — the outermost is the first thing a
+   change meets, the core is what it is protecting */
+.vault__ring { stroke: var(--vista); }
+.vault__ring--4 { stroke-opacity: 0.42; }
+.vault__ring--3 { stroke-opacity: 0.58; }
+.vault__ring--2 { stroke-opacity: 0.76; }
+.vault__ring--1 { stroke-opacity: 0.95; }
+.vault__core {
+  fill: var(--cyan-wash);
+  stroke: var(--cyan);
+  stroke-width: 1.5;
+}
+.vault__core-label {
+  fill: var(--cyan-bright);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+  letter-spacing: -0.01em;
+}
+
+.vault__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   margin: 0;
   padding: 0;
   list-style: none;
   counter-reset: none;
 }
-.flow__step {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.85rem 0.85rem 0.95rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
+.vault__item {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+  gap: 0.1rem 0.7rem;
+  align-items: start;
 }
-/* the gate is the step that stops things, and it is marked as such — not by
-   colour alone: it carries a heavier border and its own label */
-.flow__step--gate {
-  border-color: var(--vista-line);
-  box-shadow: inset 0 0 0 1px var(--vista-line);
-}
-.flow__n {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 50%;
-  background: var(--vista-wash);
-  color: var(--vista);
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-.flow__t {
-  font-size: 0.88rem;
+.vault__name {
+  grid-column: 2;
+  font-size: 0.9rem;
   font-weight: 650;
   line-height: 1.35;
 }
-.flow__d {
-  font-size: 0.8rem;
-  line-height: 1.45;
+.vault__d {
+  grid-column: 2;
+  font-size: 0.83rem;
+  line-height: 1.5;
   color: var(--text-dim);
 }
+/* the legend's icon tint matches its ring, so the list and the drawing read
+   as one figure without needing numbers on both */
+.ico {
+  grid-row: span 2;
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: none;
+  stroke: var(--vista);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.vault__item--4 .ico { stroke-opacity: 0.55; }
+.vault__item--3 .ico { stroke-opacity: 0.7; }
+.vault__item--2 .ico { stroke-opacity: 0.85; }
 
-/* figure 2 — the line between the two kinds of knowledge */
-.strata {
-  display: flex;
-  flex-direction: column;
+/* figure 2 — the three-layer stack: classic VistA at the bottom, the
+   standardization layer above it, mainstream interfaces on top */
+.stack__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-width: 34rem;
+  margin-inline: auto;
 }
-.strata__band {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  padding: 1.05rem 1.1rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
+.stack__slab rect {
+  stroke-width: 1.5;
 }
-.strata__band--top { border-top: 3px solid var(--fm); }
-.strata__band--bottom { border-top: 3px solid var(--cyan); }
-.strata__label {
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-faint);
+.stack__slab--top rect { fill: var(--vista-wash); stroke: var(--vista); }
+.stack__slab--mid rect { fill: var(--fm-wash); stroke: var(--fm); }
+.stack__slab--base rect { fill: var(--cyan-wash); stroke: var(--cyan); }
+.stack__ico {
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
-.strata__body {
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: var(--text-dim);
+.stack__slab--top .stack__ico { stroke: var(--vista); }
+.stack__slab--mid .stack__ico { stroke: var(--fm); }
+.stack__slab--base .stack__ico { stroke: var(--cyan); }
+.stack__t {
+  fill: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
 }
-.strata__line {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.55rem 0;
-}
-.strata__line::before,
-.strata__line::after {
-  content: "";
-  flex: 1 1 auto;
-  height: 1px;
-  background: var(--border-bright);
-}
-.strata__line-text {
-  /* shrinkable, not `flex: none` — at phone width the sentence cannot fit on
-     one line, and an unshrinkable flex item does not wrap, it overhangs: it
-     was exactly the 16px of horizontal scroll the page had at 390px. */
-  flex: 0 1 auto;
-  min-width: 0;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-dim);
-  text-align: center;
+.stack__s {
+  fill: var(--text-dim);
+  font-family: var(--sans);
+  font-size: 10.5px;
 }
 .shift {
   display: inline-flex;
@@ -640,12 +654,14 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
 .rails {
   display: flex;
   align-items: stretch;
-  gap: 0.6rem;
+  /* minimal space between the layers (operator, 2026-09-20) — they are one
+     path, and wide gaps read as four separate things */
+  gap: 0.2rem;
 }
 .rails__in {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
   justify-content: center;
   flex: 0 0 auto;
 }
@@ -692,8 +708,11 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
 .rails__arrow {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex: none;
+  width: 0.9rem;
   color: var(--text-faint);
+  font-size: 0.85rem;
 }
 
 /* ---------- what it is / how it works / what it is worth ---------- */
@@ -730,14 +749,15 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
 @media (max-width: 900px) {
   .triad,
   .worth { grid-template-columns: 1fr; }
-  .flow { grid-template-columns: repeat(2, 1fr); }
+  .vault { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .vault__svg { max-width: 15rem; }
+  .vault__legend { width: 100%; }
   .rails { flex-direction: column; }
   .rails__in { flex-direction: row; }
   .rails__who { flex: 1 1 auto; }
   .rails__arrow { justify-content: center; transform: rotate(90deg); }
 }
 @media (max-width: 560px) {
-  .flow { grid-template-columns: 1fr; }
   .rails__in { flex-direction: column; }
 }
 
