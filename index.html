@@ -210,45 +210,50 @@ document.documentElement.className += " js";
     </p>
 
     <figure class="fig">
-      <figcaption class="fig__cap">What a change has to get through to reach VistA</figcaption>
-      <div class="vault">
-        <svg class="vault__svg" viewBox="0 0 340 200" role="img"
-             aria-label="Four nested layers of protection around VistA: write the check first, check everything, try it on a real system, then take it back out and prove nothing was left behind.">
-          <g fill="none" stroke-width="1.5">
-            <rect x="2"  y="24" width="336" height="152" rx="28" class="vault__ring vault__ring--4"/>
-            <rect x="12" y="37" width="316" height="126" rx="24" class="vault__ring vault__ring--3"/>
-            <rect x="22" y="50" width="296" height="100" rx="20" class="vault__ring vault__ring--2"/>
-            <rect x="32" y="63" width="276" height="74"  rx="16" class="vault__ring vault__ring--1"/>
+      <figcaption class="fig__cap">The loop every change goes round — and why it can go round often</figcaption>
+      <div class="figrow">
+        <svg class="figrow__svg" viewBox="0 0 340 200" role="img"
+             aria-label="A loop of four numbered steps arcing over VistA — write the check, check everything, try it on the real system, take it back out — with an arrow bringing each completed lap down into VistA, ready to go round again.">
+          <!-- the loop the work goes round, and round: an arrow over the top of
+               the system it is changing, not a wall in front of it -->
+          <path class="cycle__arc" d="M68 86 A104 48 0 1 1 272 86"/>
+          <path class="cycle__arc" d="M272 96 L272 128"/>
+          <path class="cycle__head" d="M265 121 L272 130 L279 121"/>
+          <g class="cycle__stop">
+            <circle cx="68"  cy="86" r="10"/><text x="68"  y="89.5">1</text>
+            <circle cx="118" cy="36" r="10"/><text x="118" y="39.5">2</text>
+            <circle cx="222" cy="36" r="10"/><text x="222" y="39.5">3</text>
+            <circle cx="272" cy="86" r="10"/><text x="272" y="89.5">4</text>
           </g>
           <g class="stack__slab stack__slab--base">
-            <rect x="40" y="76" width="260" height="48" rx="12"/>
-            <g class="stack__ico" transform="translate(58 90)">
+            <rect x="40" y="144" width="260" height="48" rx="12"/>
+            <g class="stack__ico" transform="translate(58 158)">
               <ellipse cx="10" cy="4" rx="10" ry="3.4"/>
               <path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
             </g>
-            <text x="94" y="105" class="stack__t">VistA</text>
+            <text x="94" y="173" class="stack__t">VistA</text>
           </g>
         </svg>
-        <ol class="vault__legend">
-          <li class="vault__item vault__item--4">
-            <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 8 14.5 16 5.5"/><path d="M3 16.5h14"/></svg>
-            <span class="vault__name">Write the alarm before the thing it guards</span>
-            <span class="vault__d">Before the work is done, someone writes the check that would catch the mistake — and proves it really does catch it. A check that passes no matter what is worse than no check at all.</span>
+        <ol class="figrow__legend">
+          <li class="figrow__item figrow__item--4">
+            <span class="figrow__num">1</span>
+            <span class="figrow__name">Write the alarm before the thing it guards</span>
+            <span class="figrow__d">Before the work is done, someone writes the check that would catch the mistake — and proves it really does catch it. A check that passes no matter what is worse than no check at all.</span>
           </li>
-          <li class="vault__item vault__item--3">
-            <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="M3 8h14M8 8v9"/></svg>
-            <span class="vault__name">Check everything, every time</span>
-            <span class="vault__d">Not a sample, and not a judgement call about whether this one looks risky — thousands of checks, all of them, on both of the database systems VistA runs on.</span>
+          <li class="figrow__item figrow__item--3">
+            <span class="figrow__num">2</span>
+            <span class="figrow__name">Check everything, every time</span>
+            <span class="figrow__d">Not a sample, and not a judgement call about whether this one looks risky — thousands of checks, all of them, on both of the database systems VistA runs on.</span>
           </li>
-          <li class="vault__item vault__item--2">
-            <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9"/><path d="M6.5 8.5 10 12l3.5-3.5"/><path d="M3.5 14.5h13"/></svg>
-            <span class="vault__name">Try it on the real thing</span>
-            <span class="vault__d">Not a simulation and not a slice: the change is put into two complete, working VistA systems and used there.</span>
+          <li class="figrow__item figrow__item--2">
+            <span class="figrow__num">3</span>
+            <span class="figrow__name">Try it on the real thing</span>
+            <span class="figrow__d">Not a simulation and not a slice: the change is put into two complete, working VistA systems and used there.</span>
           </li>
-          <li class="vault__item vault__item--1">
-            <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 10a6.5 6.5 0 1 1-2-4.7"/><path d="M16.5 3v3.6h-3.6"/></svg>
-            <span class="vault__name">Then take it back out</span>
-            <span class="vault__d">And prove the system is exactly as it was before. One trace left behind and the change has failed — because a change you cannot undo is one you can never safely make.</span>
+          <li class="figrow__item figrow__item--1">
+            <span class="figrow__num">4</span>
+            <span class="figrow__name">Then take it back out</span>
+            <span class="figrow__d">And prove the system is exactly as it was before. One trace left behind and the change has failed — because a change you cannot undo is one you can never safely make.</span>
           </li>
         </ol>
       </div>
@@ -308,34 +313,48 @@ document.documentElement.className += " js";
 
     <figure class="fig">
       <figcaption class="fig__cap">The line between the knowledge you need and the knowledge you don't</figcaption>
-      <div class="stack">
-        <svg class="stack__svg" viewBox="0 0 340 200" role="img"
-             aria-label="Three stacked layers: VistA, unchanged, at the bottom; an industry standardization layer above it; and modern mainstream interfaces and management on top.">
+      <div class="figrow">
+        <svg class="figrow__svg" viewBox="0 0 340 184" role="img"
+             aria-label="Three stacked layers: the tools people already know on top, an industry standardization layer in the middle, and VistA unchanged at the bottom.">
           <g class="stack__slab stack__slab--top">
-            <rect x="40" y="8" width="260" height="56" rx="12"/>
-            <g class="stack__ico" transform="translate(58 26)">
+            <rect x="40" y="8" width="260" height="48" rx="12"/>
+            <g class="stack__ico" transform="translate(58 25)">
               <rect x="0" y="0" width="20" height="16" rx="3"/><path d="M0 5.5h20"/>
             </g>
-            <text x="94" y="31" class="stack__t">The tools people already know</text>
-            <text x="94" y="47" class="stack__s">ordinary tools, used the ordinary way</text>
+            <text x="94" y="37" class="stack__t">The tools people already know</text>
           </g>
           <g class="stack__slab stack__slab--mid">
-            <rect x="40" y="76" width="260" height="56" rx="12"/>
-            <g class="stack__ico" transform="translate(58 94)">
+            <rect x="40" y="66" width="260" height="48" rx="12"/>
+            <g class="stack__ico" transform="translate(58 83)">
               <path d="M0 4h20M0 12h20"/>
             </g>
-            <text x="94" y="99" class="stack__t">Industry standardization</text>
-            <text x="94" y="115" class="stack__s">written down, not held in people’s heads</text>
+            <text x="94" y="95" class="stack__t">Industry standardization</text>
           </g>
           <g class="stack__slab stack__slab--base">
-            <rect x="40" y="144" width="260" height="48" rx="12"/>
-            <g class="stack__ico" transform="translate(58 158)">
-              <ellipse cx="10" cy="4" rx="10" ry="3.4"/>
-              <path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
+            <rect x="40" y="124" width="260" height="48" rx="12"/>
+            <g class="stack__ico" transform="translate(58 141)">
+              <ellipse cx="10" cy="4" rx="10" ry="3.4"/><path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
             </g>
-            <text x="94" y="173" class="stack__t">VistA</text>
+            <text x="94" y="153" class="stack__t">VistA</text>
           </g>
         </svg>
+        <ul class="figrow__legend">
+          <li class="figrow__item">
+            <svg class="ico ico--top" viewBox="0 0 20 20" aria-hidden="true"><rect x="0" y="0" width="20" height="16" rx="3"/><path d="M0 5.5h20"/></svg>
+            <span class="figrow__name">The tools people already know</span>
+            <span class="figrow__d">Ordinary, current technology — the same tools, formats and habits any developer already uses. Nothing at this level is peculiar to VistA, which is the whole point.</span>
+          </li>
+          <li class="figrow__item">
+            <svg class="ico ico--mid" viewBox="0 0 20 20" aria-hidden="true"><path d="M0 4h20M0 12h20"/></svg>
+            <span class="figrow__name">Industry standardization</span>
+            <span class="figrow__d">VistA’s hard-won expertise, written down as working code with tests behind it, under names that say what they do. This is the layer that did not exist before.</span>
+          </li>
+          <li class="figrow__item">
+            <svg class="ico ico--base" viewBox="0 0 20 20" aria-hidden="true"><ellipse cx="10" cy="4" rx="10" ry="3.4"/><path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/></svg>
+            <span class="figrow__name">VistA</span>
+            <span class="figrow__d">Running exactly as it does today — untouched, and not queued up to be replaced. The knowledge about it moved; it did not.</span>
+          </li>
+        </ul>
       </div>
       <p class="fig__note">
         <strong>VistA at the bottom is running exactly as it does today, untouched.</strong>
@@ -392,52 +411,71 @@ document.documentElement.className += " js";
 
     <figure class="fig">
       <figcaption class="fig__cap">One way in, and the same checks, whoever is working</figcaption>
-      <div class="stack stack--ai">
-        <svg class="stack__svg stack__svg--ai" viewBox="0 0 340 240" role="img"
-             aria-label="A human and an AI agent both enter one command surface, pass the same gates, and reach VistA.">
+      <div class="figrow">
+        <svg class="figrow__svg" viewBox="0 0 340 230" role="img"
+             aria-label="A human and an AI both enter one way in, pass the same checks, and reach VistA.">
           <g class="stack__slab stack__slab--top">
-            <rect x="40" y="6" width="125" height="46" rx="11"/>
-            <g class="stack__ico" transform="translate(52 19)">
+            <rect x="40" y="6" width="125" height="46" rx="12"/>
+            <g class="stack__ico" transform="translate(58 22)">
               <circle cx="10" cy="5.5" r="3.6"/><path d="M3 17c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/>
             </g>
-            <text x="86" y="34" class="stack__t">A human</text>
+            <text x="94" y="34" class="stack__t">A human</text>
           </g>
           <g class="stack__slab stack__slab--top">
-            <rect x="175" y="6" width="125" height="46" rx="11"/>
-            <g class="stack__ico" transform="translate(187 19)">
+            <rect x="175" y="6" width="125" height="46" rx="12"/>
+            <g class="stack__ico" transform="translate(193 22)">
               <path d="M10 2.2 17.2 10 10 17.8 2.8 10z"/>
             </g>
-            <text x="221" y="34" class="stack__t">An AI agent</text>
+            <text x="229" y="34" class="stack__t">An AI</text>
           </g>
           <g class="stack__join" aria-hidden="true">
             <path d="M102.5 52v5M98 55.5l4.5 4.5 4.5-4.5"/>
             <path d="M237.5 52v5M233 55.5l4.5 4.5 4.5-4.5"/>
           </g>
           <g class="stack__slab stack__slab--surface">
-            <rect x="40" y="64" width="260" height="52" rx="12"/>
-            <g class="stack__ico" transform="translate(58 80)">
+            <rect x="40" y="66" width="260" height="48" rx="12"/>
+            <g class="stack__ico" transform="translate(58 83)">
               <rect x="0" y="1" width="20" height="18" rx="3"/><path d="M4.5 8 7.5 10.5 4.5 13M11 13.5h5"/>
             </g>
-            <text x="94" y="87" class="stack__t">One way in</text>
-            <text x="94" y="103" class="stack__s">the same commands a person uses</text>
+            <text x="94" y="95" class="stack__t">One way in</text>
           </g>
           <g class="stack__slab stack__slab--gate">
-            <rect x="40" y="124" width="260" height="52" rx="12"/>
-            <g class="stack__ico" transform="translate(58 140)">
+            <rect x="40" y="124" width="260" height="48" rx="12"/>
+            <g class="stack__ico" transform="translate(58 141)">
               <rect x="0" y="1" width="20" height="18" rx="3"/><path d="M0 7h20M8 7v12"/>
             </g>
-            <text x="94" y="147" class="stack__t">The same checks</text>
-            <text x="94" y="163" class="stack__s">the four layers from claim one</text>
+            <text x="94" y="153" class="stack__t">The same checks</text>
           </g>
           <g class="stack__slab stack__slab--base">
-            <rect x="40" y="184" width="260" height="48" rx="12"/>
-            <g class="stack__ico" transform="translate(58 198)">
-              <ellipse cx="10" cy="4" rx="10" ry="3.4"/>
-              <path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
+            <rect x="40" y="182" width="260" height="48" rx="12"/>
+            <g class="stack__ico" transform="translate(58 199)">
+              <ellipse cx="10" cy="4" rx="10" ry="3.4"/><path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
             </g>
-            <text x="94" y="213" class="stack__t">VistA</text>
+            <text x="94" y="211" class="stack__t">VistA</text>
           </g>
         </svg>
+        <ul class="figrow__legend">
+          <li class="figrow__item">
+            <svg class="ico ico--top" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="5.5" r="3.6"/><path d="M3 17c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg>
+            <span class="figrow__name">A human, or an AI</span>
+            <span class="figrow__d">Both start in the same place. Neither is given a private entrance, and neither is trusted more than the other.</span>
+          </li>
+          <li class="figrow__item">
+            <svg class="ico ico--surface" viewBox="0 0 20 20" aria-hidden="true"><rect x="0" y="1" width="20" height="18" rx="3"/><path d="M4.5 8 7.5 10.5 4.5 13M11 13.5h5"/></svg>
+            <span class="figrow__name">One way in</span>
+            <span class="figrow__d">The same commands, in the same shape, whoever is typing them — and they explain themselves, so an AI can find out what is possible instead of guessing at it.</span>
+          </li>
+          <li class="figrow__item">
+            <svg class="ico ico--gate" viewBox="0 0 20 20" aria-hidden="true"><rect x="0" y="1" width="20" height="18" rx="3"/><path d="M0 7h20M8 7v12"/></svg>
+            <span class="figrow__name">The same checks</span>
+            <span class="figrow__d">The four steps from the first claim. An AI cannot skip one that a person cannot skip, and nobody has to remember to apply them.</span>
+          </li>
+          <li class="figrow__item">
+            <svg class="ico ico--base" viewBox="0 0 20 20" aria-hidden="true"><ellipse cx="10" cy="4" rx="10" ry="3.4"/><path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/></svg>
+            <span class="figrow__name">VistA</span>
+            <span class="figrow__d">Reached only through those checks — by either of them, on the same terms.</span>
+          </li>
+        </ul>
       </div>
       <p class="fig__note">
         And it works from sources it has to cite, so
