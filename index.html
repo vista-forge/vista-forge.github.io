@@ -212,36 +212,24 @@ document.documentElement.className += " js";
     <figure class="fig">
       <figcaption class="fig__cap">How a change actually moves — and where the speed comes from</figcaption>
       <div class="figrow">
-        <svg class="figrow__svg" viewBox="0 0 340 200" role="img"
-             aria-label="A four-step process running left to right — decide, build and test repeatedly, prove it on a real system, then deliver or undo — with the second step looping back on itself, and the finished work turning down into VistA.">
+        <svg class="figrow__svg" viewBox="0 0 340 88"
+             fill="none" stroke="currentColor" role="img"
+             fill="none" stroke="currentColor"
+             aria-label="A four-step process running left to right — decide, build and test repeatedly, prove it on a real system, then deliver or undo — with the second step looping back on itself.">
           <!-- left to right, the way the work actually moves -->
           <g class="rad__node">
-            <rect x="32" y="40" width="56" height="44" rx="10"/><text x="60" y="69">1</text>
-            <rect x="108" y="40" width="56" height="44" rx="10"/><text x="136" y="69">2</text>
-            <rect x="184" y="40" width="56" height="44" rx="10"/><text x="212" y="69">3</text>
-            <rect x="260" y="40" width="56" height="44" rx="10"/><text x="288" y="69">4</text>
+            <rect x="32" y="34" width="56" height="44" rx="10"/><text x="60" y="63" fill="currentColor" stroke="none">1</text>
+            <rect x="108" y="34" width="56" height="44" rx="10"/><text x="136" y="63" fill="currentColor" stroke="none">2</text>
+            <rect x="184" y="34" width="56" height="44" rx="10"/><text x="212" y="63" fill="currentColor" stroke="none">3</text>
+            <rect x="260" y="34" width="56" height="44" rx="10"/><text x="288" y="63" fill="currentColor" stroke="none">4</text>
           </g>
           <!-- step two loops back on itself: build, test, feedback, again -->
-          <path class="rad__loop" d="M164 38 C164 6, 108 6, 108 38"/>
-          <path class="rad__head" d="M102 31 L108 40 L114 31"/>
-          <!-- and the steps run on -->
+          <path class="rad__loop" d="M164 32 C164 2, 108 2, 108 32"/>
+          <path class="rad__head" d="M102 25 L108 34 L114 25"/>
           <g class="rad__link">
-            <path d="M90 62 L102 62"/><path class="rad__head" d="M98 57 L104 62 L98 67"/>
-            <path d="M166 62 L178 62"/><path class="rad__head" d="M174 57 L180 62 L174 67"/>
-            <path d="M242 62 L254 62"/><path class="rad__head" d="M250 57 L256 62 L250 67"/>
-          </g>
-          <!-- the finished work turns down into the system -->
-          <g class="rad__link">
-            <path d="M288 84 L288 116 L170 116 L170 132"/>
-            <path class="rad__head" d="M163 125 L170 134 L177 125"/>
-          </g>
-          <g class="stack__slab stack__slab--base">
-            <rect x="40" y="144" width="260" height="48" rx="12"/>
-            <g class="stack__ico" transform="translate(58 158)">
-              <ellipse cx="10" cy="4" rx="10" ry="3.4"/>
-              <path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
-            </g>
-            <text x="94" y="173" class="stack__t">VistA</text>
+            <path d="M90 56 L102 56"/><path class="rad__head" d="M98 51 L104 56 L98 61"/>
+            <path d="M166 56 L178 56"/><path class="rad__head" d="M174 51 L180 56 L174 61"/>
+            <path d="M242 56 L254 56"/><path class="rad__head" d="M250 51 L256 56 L250 61"/>
           </g>
         </svg>
         <ol class="figrow__legend">
@@ -324,28 +312,29 @@ document.documentElement.className += " js";
     <figure class="fig">
       <figcaption class="fig__cap">The line between the knowledge you need and the knowledge you don't</figcaption>
       <div class="figrow">
-        <svg class="figrow__svg" viewBox="0 0 340 184" role="img"
+        <svg class="figrow__svg" viewBox="0 0 340 184"
+             fill="none" stroke="currentColor" role="img"
              aria-label="Three stacked layers: the tools people already know on top, an industry standardization layer in the middle, and VistA unchanged at the bottom.">
           <g class="stack__slab stack__slab--top">
             <rect x="40" y="8" width="260" height="48" rx="12"/>
             <g class="stack__ico" transform="translate(58 25)">
               <rect x="0" y="0" width="20" height="16" rx="3"/><path d="M0 5.5h20"/>
             </g>
-            <text x="94" y="37" class="stack__t">The tools people already know</text>
+            <text x="94" y="37" class="stack__t" fill="currentColor" stroke="none">The tools people already know</text>
           </g>
           <g class="stack__slab stack__slab--mid">
             <rect x="40" y="66" width="260" height="48" rx="12"/>
             <g class="stack__ico" transform="translate(58 83)">
               <path d="M0 4h20M0 12h20"/>
             </g>
-            <text x="94" y="95" class="stack__t">Industry standardization</text>
+            <text x="94" y="95" class="stack__t" fill="currentColor" stroke="none">Industry standardization</text>
           </g>
           <g class="stack__slab stack__slab--base">
             <rect x="40" y="124" width="260" height="48" rx="12"/>
             <g class="stack__ico" transform="translate(58 141)">
               <ellipse cx="10" cy="4" rx="10" ry="3.4"/><path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
             </g>
-            <text x="94" y="153" class="stack__t">VistA</text>
+            <text x="94" y="153" class="stack__t" fill="currentColor" stroke="none">VistA</text>
           </g>
         </svg>
         <ul class="figrow__legend">
@@ -422,21 +411,22 @@ document.documentElement.className += " js";
     <figure class="fig">
       <figcaption class="fig__cap">One way in, and the same checks, whoever is working</figcaption>
       <div class="figrow">
-        <svg class="figrow__svg" viewBox="0 0 340 230" role="img"
+        <svg class="figrow__svg" viewBox="0 0 340 230"
+             fill="none" stroke="currentColor" role="img"
              aria-label="A human and an AI both enter one way in, pass the same checks, and reach VistA.">
           <g class="stack__slab stack__slab--top">
             <rect x="40" y="6" width="125" height="46" rx="12"/>
             <g class="stack__ico" transform="translate(58 22)">
               <circle cx="10" cy="5.5" r="3.6"/><path d="M3 17c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/>
             </g>
-            <text x="94" y="34" class="stack__t">A human</text>
+            <text x="94" y="34" class="stack__t" fill="currentColor" stroke="none">A human</text>
           </g>
           <g class="stack__slab stack__slab--top">
             <rect x="175" y="6" width="125" height="46" rx="12"/>
             <g class="stack__ico" transform="translate(193 22)">
               <path d="M10 2.2 17.2 10 10 17.8 2.8 10z"/>
             </g>
-            <text x="229" y="34" class="stack__t">An AI</text>
+            <text x="229" y="34" class="stack__t" fill="currentColor" stroke="none">An AI</text>
           </g>
           <g class="stack__join" aria-hidden="true">
             <path d="M102.5 52v5M98 55.5l4.5 4.5 4.5-4.5"/>
@@ -447,21 +437,21 @@ document.documentElement.className += " js";
             <g class="stack__ico" transform="translate(58 83)">
               <rect x="0" y="1" width="20" height="18" rx="3"/><path d="M4.5 8 7.5 10.5 4.5 13M11 13.5h5"/>
             </g>
-            <text x="94" y="95" class="stack__t">One way in</text>
+            <text x="94" y="95" class="stack__t" fill="currentColor" stroke="none">One way in</text>
           </g>
           <g class="stack__slab stack__slab--gate">
             <rect x="40" y="124" width="260" height="48" rx="12"/>
             <g class="stack__ico" transform="translate(58 141)">
               <rect x="0" y="1" width="20" height="18" rx="3"/><path d="M0 7h20M8 7v12"/>
             </g>
-            <text x="94" y="153" class="stack__t">The same checks</text>
+            <text x="94" y="153" class="stack__t" fill="currentColor" stroke="none">The same checks</text>
           </g>
           <g class="stack__slab stack__slab--base">
             <rect x="40" y="182" width="260" height="48" rx="12"/>
             <g class="stack__ico" transform="translate(58 199)">
               <ellipse cx="10" cy="4" rx="10" ry="3.4"/><path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
             </g>
-            <text x="94" y="211" class="stack__t">VistA</text>
+            <text x="94" y="211" class="stack__t" fill="currentColor" stroke="none">VistA</text>
           </g>
         </svg>
         <ul class="figrow__legend">
