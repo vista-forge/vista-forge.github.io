@@ -73,11 +73,25 @@ origin**, which shares no storage with either. So a framed reference is always
 on its own default, whatever the reader chose in the banner above it, and
 nothing in this repo can change that.
 
-⚠️ **The two copies of the reference are not interchangeable.** Measured
-2026-09-19: the Funnel copy carries `concepts/`, `errors/` and `guides/`
-directories the Pages copy does not (240 vs 262 HTML files, different vintages).
-Picking whichever is same-origin to get the theme back would silently serve
-different documentation.
+⚠️ ~~**The two copies of the reference are not interchangeable.**~~ **WRONG, and
+corrected 2026-09-20 — read this before repeating the reasoning.** The
+2026-09-19 measurement saw `concepts/`, `errors/` and `guides/` on the Funnel
+copy and not on the Pages copy, and concluded the two were different vintages.
+They were not. Those directories held **149 `.gz` files and nothing else** —
+the gzipped corpses of pages the build had stopped emitting, left behind
+because `rsync --delete` does **not** delete a destination file an `--exclude`
+matches, and the publish excluded `*.gz`. A directory of debris read as newer
+content.
+
+The lesson is the general one: **a file census answers a question about FILES,
+not about content.** Two deployments that differ only in leftovers are the same
+deployment. Look inside before concluding a vintage — `find <dir> -type f
+! -name '*.gz'` would have answered it in one line.
+
+Both copies are now the same build, the publish target carries
+`--delete-excluded`, and **Docs frames the same-origin Pages copy** — which is
+what brings the theme across (see the paragraph above, now happily out of
+date for that one view).
 
 **Also measured:** the publish origin (`vdb-explorer`'s `tools/publish/origin.py`)
 sets no `X-Frame-Options` and no `frame-ancestors`, and the Funnel passes its
