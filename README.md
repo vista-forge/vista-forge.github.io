@@ -42,9 +42,16 @@ and a reader get at the root URL is the same document it always was, and
 
 ### The frames
 
-The three applications are served from the project's own machine over a public
-Tailscale Funnel (`minty.warg-torino.ts.net`), and are shown under this banner
-rather than linked away to theirs. Consequences worth knowing before changing
+The two **Explore** applications are served from the project's own machine over
+a public Tailscale Funnel (`minty.warg-torino.ts.net`). **Docs frames this
+site's own `/forge-docs/`** — the copy in this repo, refreshed from the same
+build the publish host serves, so it is the same bytes without an origin
+boundary. That is worth three things: it loads from inside the project's own
+network, where a public page may not embed the publish host; it does not
+depend on the home server being up; and the light/dark choice carries into it,
+because `localStorage` is per-origin and this is now the same origin.
+
+All three are shown under this banner rather than linked away to theirs. Consequences worth knowing before changing
 anything here:
 
 * **A new frame is built for every view, never `iframe.src = …` on a live one.**
@@ -83,10 +90,12 @@ anything here:
   site tree. Under this banner it is two panes and nothing else. That is a
   change in the `forge-docs` repo and a republish, never an edit to the
   deployed copy here.
-* **The light/dark choice does not cross the origin boundary**, because
-  `localStorage` is per-origin. The framed reference is on its own default
-  until the reader uses the control in its rail — which is why that control had
-  to survive the move rather than go with the banner.
+* **The light/dark choice does not cross an origin boundary**, because
+  `localStorage` is per-origin. It reaches the Docs view, which is same-origin;
+  it does not reach the two Explore views, which are on the publish host and
+  stay on their own default. The control in the reference's own rail is what
+  covers the case where it does not — which is why that control had to survive
+  the move rather than go with the banner.
 * **Nothing here sets `X-Frame-Options` or a `frame-ancestors` policy**, on
   either side. If the publish origin ever grows one, these views go blank.
 
