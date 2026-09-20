@@ -812,7 +812,10 @@ body.is-framed {
 /* ---------- hero ---------- */
 
 .hero {
-  padding: 1.75rem 0 4rem;
+  /* the lead paragraph is the last thing here now — the button row and the
+     "below:" note that used to follow it are gone, so the page reaches the
+     three claims sooner (operator, 2026-09-20) */
+  padding: 1.75rem 0 2.75rem;
   border-bottom: 1px solid var(--border);
   background:
     radial-gradient(60rem 26rem at 18% -8%, var(--vista-wash), transparent 68%),
