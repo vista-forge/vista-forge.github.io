@@ -476,10 +476,80 @@ document.documentElement.className += " js";
       </summary>
       <div class="fold__body">
         <p class="section__intro">
-          The mechanism behind the three claims: the numbers the gates enforce, the tools a
-          developer uses, the shape of the stack, why it is built on registries, every repository
-          in the organisation, and the design rules the whole thing agrees on.
+          The mechanism behind the three claims: why the rigour is what makes it fast, the numbers
+          the gates enforce, the tools a developer uses, the shape of the stack, why it is built on
+          registries, every repository in the organisation, and the design rules the whole thing
+          agrees on.
         </p>
+
+        <div class="subsection" id="why-fast">
+          <p class="subsection__kicker">The bridge</p>
+          <h3 class="subsection__title">Speed and safety are not a trade-off here — they are the same mechanism.</h3>
+          <p class="section__intro">
+            What slows a critical system down is not the work. It is <strong>uncertainty</strong>.
+            Every change needs a human to judge whether it is risky, and that judgement is slow,
+            scarce and fallible — so changes are batched up, shipped rarely, and each release is
+            bigger and riskier than the last, which justifies shipping even more rarely. That is
+            the loop a forty-year-old system ends up in, and it is why it stops evolving.
+          </p>
+          <p class="section__intro">
+            Every technology below kills one specific source of uncertainty and replaces it with
+            <strong>evidence a machine produces on demand</strong>. Once uncertainty is cheap,
+            frequent change becomes affordable — and small frequent changes are far safer than big
+            rare ones. Aviation got safer <em>and</em> more frequent at the same time, through
+            checklists, instrumentation, simulators and mandatory procedure. Nobody thinks a
+            pre-flight checklist slows aviation down.
+          </p>
+
+          <table>
+            <caption>What each layer answers, permanently, so nobody has to decide it again</caption>
+            <thead>
+              <tr><th>The layer</th><th>The question it answers</th><th>In one picture</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Version control</strong></td>
+                <td>What changed, who changed it, and what was it before?</td>
+                <td>Every revision of the blueprints, kept for ever, and you can go back to any of them.</td>
+              </tr>
+              <tr>
+                <td><strong>Test-driven design</strong></td>
+                <td>Does it do what we meant?</td>
+                <td>Fit the smoke alarm before the wiring — and hold a match under it once, to prove it really sounds. An alarm nobody has tested is worse than none, because you trust it.</td>
+              </tr>
+              <tr>
+                <td><strong>Continuous integration</strong></td>
+                <td>Did it break anything else?</td>
+                <td>Every time anyone touches anything, every alarm in the building is tested again — automatically, in seconds, not a sample.</td>
+              </tr>
+              <tr>
+                <td><strong>Static checks</strong></td>
+                <td>Is it self-contradictory?</td>
+                <td>Found by reading the plan, before anything is built.</td>
+              </tr>
+              <tr>
+                <td><strong>Reproducible environments</strong></td>
+                <td>Does it work anywhere but the machine it was written on?</td>
+                <td>Every mechanic works on an identical copy of the actual aircraft, not a drawing of one.</td>
+              </tr>
+              <tr>
+                <td><strong>Install on a live system</strong></td>
+                <td>Does it work on the real thing, not a model of it?</td>
+                <td>Two complete, working VistA systems — and the change is used there, not simulated.</td>
+              </tr>
+              <tr>
+                <td><strong>Provable back-out</strong></td>
+                <td>Can we undo it — provably, not hopefully?</td>
+                <td>Fit the part, run it, remove it, and confirm the aircraft is exactly as you found it — <em>before</em> the part counts as ready.</td>
+              </tr>
+              <tr>
+                <td><strong>Generated documentation</strong></td>
+                <td>Does the manual still match the machine?</td>
+                <td>The manual is printed from the machine itself, so it cannot describe a button that does not exist.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
 <div class="subsection" id="numbers">
       <p class="subsection__kicker">By the numbers</p>
