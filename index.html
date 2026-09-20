@@ -219,13 +219,13 @@ document.documentElement.className += " js";
           <!-- left to right, the way the work actually moves -->
           <g class="rad__node">
             <rect x="32" y="34" width="56" height="44" rx="10"/><text x="60" y="63" fill="currentColor" stroke="none">1</text>
-            <rect x="108" y="34" width="56" height="44" rx="10"/><text x="136" y="63" fill="currentColor" stroke="none">2</text>
+            <circle cx="136" cy="56" r="20"/><text x="136" y="63" fill="currentColor" stroke="none">2</text>
             <rect x="184" y="34" width="56" height="44" rx="10"/><text x="212" y="63" fill="currentColor" stroke="none">3</text>
             <rect x="260" y="34" width="56" height="44" rx="10"/><text x="288" y="63" fill="currentColor" stroke="none">4</text>
           </g>
-          <!-- step two loops back on itself: build, test, feedback, again -->
-          <path class="rad__loop" d="M164 32 C164 2, 108 2, 108 32"/>
-          <path class="rad__head" d="M102 25 L108 34 L114 25"/>
+          <!-- step two is the one that turns: build, test, read, go again -->
+          <path class="rad__spin" d="M156.7 73.4 A27 27 0 1 1 161.4 46.8"/>
+          <path class="rad__spinhead" d="M163.8 53.3 L156.0 46.6 L165.4 43.2 Z"/>
           <g class="rad__link">
             <path d="M90 56 L102 56"/><path class="rad__head" d="M98 51 L104 56 L98 61"/>
             <path d="M166 56 L178 56"/><path class="rad__head" d="M174 51 L180 56 L174 61"/>

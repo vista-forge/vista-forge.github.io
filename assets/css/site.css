@@ -551,7 +551,8 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
    back on itself — build, test, read the result, go again. The numbers are the
    only text in it; every word lives in the legend on the right, where it can
    wrap. */
-.rad__node rect {
+.rad__node rect,
+.rad__node circle {
   fill: var(--vista-wash);
   stroke: var(--vista);
   stroke-width: 1.8;
@@ -563,7 +564,7 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   font-weight: 700;
   text-anchor: middle;
 }
-.rad__loop,
+.rad__spin,
 .rad__link path,
 .rad__head {
   fill: none;
@@ -572,9 +573,10 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-/* the loop is the step that repeats, so it is drawn heavier than the run-on
-   arrows between steps — it is where the time goes */
-.rad__loop { stroke-width: 2.2; }
+/* the turning step is drawn heavier than the run-on arrows between steps —
+   it is where the time actually goes */
+.rad__spin { stroke-width: 2.2; }
+.rad__spinhead { fill: var(--vista); stroke: none; }
 .rad__link path { stroke: var(--text-faint); }
 .rad__link .rad__head { stroke: var(--text-faint); }
 
