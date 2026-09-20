@@ -650,69 +650,28 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
 .shift__from { color: var(--text-faint); text-decoration: line-through; }
 .shift__to { color: var(--text); font-weight: 650; }
 
-/* figure 3 — one surface, two kinds of worker */
-.rails {
-  display: flex;
-  align-items: stretch;
-  /* minimal space between the layers (operator, 2026-09-20) — they are one
-     path, and wide gaps read as four separate things */
-  gap: 0.2rem;
+/* figure 3 — the same stack shape as figure 2, narrow and centred: two kinds
+   of worker on top, one surface, the same gates, VistA underneath. Sharing the
+   `.stack` vocabulary is the point — the reader has already learnt to read it
+   one section earlier. */
+.stack__svg--ai { max-width: 25rem; }
+.stack__slab--surface rect { fill: var(--vista-wash); stroke: var(--vista); }
+.stack__slab--surface .stack__ico { stroke: var(--vista); }
+/* the gate layer is marked by weight, not by colour alone — it is the one
+   thing on this page that stops a change */
+.stack__slab--gate rect {
+  fill: var(--vista-wash);
+  stroke: var(--vista);
+  stroke-width: 2.5;
 }
-.rails__in {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  justify-content: center;
-  flex: 0 0 auto;
-}
-.rails__who,
-.rails__out {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
-  font-size: 0.86rem;
-  font-weight: 650;
-  white-space: nowrap;
-}
-.rails__mid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  flex: 1 1 0;
-  padding: 0.8rem 0.9rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
-}
-.rails__mid--gate {
-  border-color: var(--vista-line);
-  box-shadow: inset 0 0 0 1px var(--vista-line);
-}
-.rails__label {
-  font-size: 0.86rem;
-  font-weight: 650;
-}
-.rails__body {
-  font-size: 0.8rem;
-  line-height: 1.45;
-  color: var(--text-dim);
-}
-.rails__out {
-  flex: 0 0 auto;
-  border-top: 3px solid var(--cyan);
-}
-.rails__arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-  width: 0.9rem;
-  color: var(--text-faint);
-  font-size: 0.85rem;
+.stack__slab--gate .stack__ico { stroke: var(--vista); }
+/* the two workers join one path */
+.stack__join {
+  fill: none;
+  stroke: var(--text-faint);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* ---------- what it is / how it works / what it is worth ---------- */
@@ -752,14 +711,8 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   .vault { grid-template-columns: minmax(0, 1fr); justify-items: center; }
   .vault__svg { max-width: 15rem; }
   .vault__legend { width: 100%; }
-  .rails { flex-direction: column; }
-  .rails__in { flex-direction: row; }
-  .rails__who { flex: 1 1 auto; }
-  .rails__arrow { justify-content: center; transform: rotate(90deg); }
 }
-@media (max-width: 560px) {
-  .rails__in { flex-direction: column; }
-}
+
 
 /* ---------- the frame view ---------- */
 

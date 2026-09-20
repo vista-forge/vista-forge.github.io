@@ -370,27 +370,57 @@ document.documentElement.className += " js";
 
     <figure class="fig">
       <figcaption class="fig__cap">One set of rails, two kinds of worker</figcaption>
-      <div class="rails">
-        <div class="rails__in">
-          <span class="rails__who">A developer</span>
-          <span class="rails__who">An AI agent</span>
-        </div>
-        <span class="rails__arrow" aria-hidden="true">→</span>
-        <div class="rails__mid">
-          <span class="rails__label">One command surface</span>
-          <span class="rails__body">Every tool answers in the same shape, and can describe itself —
-          so an agent can discover what is possible instead of guessing.</span>
-        </div>
-        <span class="rails__arrow" aria-hidden="true">→</span>
-        <div class="rails__mid rails__mid--gate">
-          <span class="rails__label">The same gates</span>
-          <span class="rails__body">The checks from claim one. An agent cannot skip one a person
-          cannot skip.</span>
-        </div>
-        <span class="rails__arrow" aria-hidden="true">→</span>
-        <div class="rails__out">
-          <span class="rails__label">VistA</span>
-        </div>
+      <div class="stack stack--ai">
+        <svg class="stack__svg stack__svg--ai" viewBox="0 0 340 240" role="img"
+             aria-label="A developer and an AI agent both enter one command surface, pass the same gates, and reach VistA.">
+          <!-- two kinds of worker, side by side -->
+          <g class="stack__slab stack__slab--top">
+            <rect x="20" y="6" width="145" height="46" rx="11"/>
+            <g class="stack__ico" transform="translate(34 19)">
+              <circle cx="10" cy="5.5" r="3.6"/><path d="M3 17c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/>
+            </g>
+            <text x="68" y="34" class="stack__t">A developer</text>
+          </g>
+          <g class="stack__slab stack__slab--top">
+            <rect x="175" y="6" width="145" height="46" rx="11"/>
+            <g class="stack__ico" transform="translate(189 19)">
+              <path d="M10 2.2 17.2 10 10 17.8 2.8 10z"/>
+            </g>
+            <text x="223" y="34" class="stack__t">An AI agent</text>
+          </g>
+          <!-- both enter the same path -->
+          <g class="stack__join" aria-hidden="true">
+            <path d="M92.5 52v5M88 55.5l4.5 4.5 4.5-4.5"/>
+            <path d="M247.5 52v5M243 55.5l4.5 4.5 4.5-4.5"/>
+          </g>
+          <!-- one surface -->
+          <g class="stack__slab stack__slab--surface">
+            <rect x="20" y="64" width="300" height="52" rx="12"/>
+            <g class="stack__ico" transform="translate(40 80)">
+              <rect x="0" y="1" width="20" height="18" rx="3"/><path d="M4.5 8 7.5 10.5 4.5 13M11 13.5h5"/>
+            </g>
+            <text x="76" y="87" class="stack__t">One command surface</text>
+            <text x="76" y="103" class="stack__s">the same commands, and it can describe itself</text>
+          </g>
+          <!-- the same gates -->
+          <g class="stack__slab stack__slab--gate">
+            <rect x="20" y="124" width="300" height="52" rx="12"/>
+            <g class="stack__ico" transform="translate(40 140)">
+              <rect x="0" y="1" width="20" height="18" rx="3"/><path d="M0 7h20M8 7v12"/>
+            </g>
+            <text x="76" y="147" class="stack__t">The same gates</text>
+            <text x="76" y="163" class="stack__s">an agent cannot skip one a person cannot skip</text>
+          </g>
+          <!-- and VistA underneath, as in the stack above -->
+          <g class="stack__slab stack__slab--base">
+            <rect x="20" y="184" width="300" height="46" rx="12"/>
+            <g class="stack__ico" transform="translate(40 197)">
+              <ellipse cx="10" cy="4" rx="10" ry="3.4"/>
+              <path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
+            </g>
+            <text x="76" y="212" class="stack__t">VistA</text>
+          </g>
+        </svg>
       </div>
       <p class="fig__note">
         Facts about VistA come from sources the agent must cite, so
