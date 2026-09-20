@@ -532,7 +532,7 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
    the drawing keeps the labels real text at a readable size. */
 .vault {
   display: grid;
-  grid-template-columns: minmax(0, 250px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
   gap: 1.6rem;
   align-items: center;
 }
@@ -540,6 +540,10 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   width: 100%;
   height: auto;
   display: block;
+  /* the same 340 box as the two stacks — the drawing is 250 wide and padded
+     into it — so all three shrink together and the glyph stays one size at
+     every width, not just the wide ones */
+  max-width: 340px;
 }
 /* the rings step INWARD in strength — the outermost is the first thing a
    change meets, the core is what it is protecting */
@@ -548,19 +552,11 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
 .vault__ring--3 { stroke-opacity: 0.58; }
 .vault__ring--2 { stroke-opacity: 0.76; }
 .vault__ring--1 { stroke-opacity: 0.95; }
-.vault__core {
-  fill: var(--cyan-wash);
-  stroke: var(--cyan);
-  stroke-width: 1.5;
-}
-.vault__core-label {
-  fill: var(--cyan-bright);
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 700;
-  text-anchor: middle;
-  letter-spacing: -0.01em;
-}
+/* The VistA mark is ONE thing, drawn the same way in all three figures
+   (operator, 2026-09-20): the same cyan, the same cylinder glyph at the same
+   size, the same 13px label. It carries no rules of its own — it wears
+   `.stack__slab--base`, exactly as the VistA layer does in the other two, so
+   the three cannot drift apart by being styled in three places. */
 
 .vault__legend {
   display: flex;
@@ -607,11 +603,18 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
 
 /* figure 2 — the three-layer stack: classic VistA at the bottom, the
    standardization layer above it, mainstream interfaces on top */
+/* ONE SCALE for all three figures. Each SVG renders at most at its own
+   viewBox width, so a user unit IS a CSS pixel — which is what makes the 20
+   unit glyph and the 13 unit label the same SIZE on screen in all three.
+   They were 20px, 32px and 24px before, because the same drawing was being
+   scaled 1.0x, 1.6x and 1.18x by three different max-widths (operator,
+   2026-09-20). The AI stack stays visually narrower by having narrower slabs
+   inside the same box, not by being scaled down. */
 .stack__svg {
   width: 100%;
   height: auto;
   display: block;
-  max-width: 34rem;
+  max-width: 340px;
   margin-inline: auto;
 }
 /* A BASE FILL, so a slab can never render black. An SVG <rect> with no `fill`
@@ -662,7 +665,7 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
    of worker on top, one surface, the same gates, VistA underneath. Sharing the
    `.stack` vocabulary is the point — the reader has already learnt to read it
    one section earlier. */
-.stack__svg--ai { max-width: 25rem; }
+.stack__svg--ai { max-width: 340px; }
 .stack__slab--surface rect { fill: var(--vista-wash); stroke: var(--vista); }
 .stack__slab--surface .stack__ico { stroke: var(--vista); }
 /* the gate layer is marked by weight, not by colour alone — it is the one
@@ -717,7 +720,7 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   .triad,
   .worth { grid-template-columns: 1fr; }
   .vault { grid-template-columns: minmax(0, 1fr); justify-items: center; }
-  .vault__svg { max-width: 15rem; }
+  .vault__svg { max-width: 340px; }
   .vault__legend { width: 100%; }
 }
 

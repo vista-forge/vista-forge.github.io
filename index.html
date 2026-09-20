@@ -210,16 +210,26 @@ document.documentElement.className += " js";
     <figure class="fig">
       <figcaption class="fig__cap">What a change has to get through to reach VistA</figcaption>
       <div class="vault">
-        <svg class="vault__svg" viewBox="0 0 250 250" role="img"
+        <svg class="vault__svg" viewBox="0 0 340 250" role="img"
              aria-label="Four nested rings of protection around a VistA core: a failing test first, the full gate, install and verify on a live system, and removal proven byte-clean.">
+          <g transform="translate(45 0)">
           <g fill="none" stroke-width="1.5">
             <rect x="3"  y="3"  width="244" height="244" rx="30" class="vault__ring vault__ring--4"/>
             <rect x="27" y="27" width="196" height="196" rx="26" class="vault__ring vault__ring--3"/>
             <rect x="51" y="51" width="148" height="148" rx="22" class="vault__ring vault__ring--2"/>
             <rect x="75" y="75" width="100" height="100" rx="18" class="vault__ring vault__ring--1"/>
           </g>
-          <rect x="99" y="99" width="52" height="52" rx="14" class="vault__core"/>
-          <text x="125" y="129" class="vault__core-label">VistA</text>
+          <!-- the VistA mark, identical in all three figures: cyan, the same
+               cylinder glyph at the same 20x20, the same 13px label -->
+          <g class="stack__slab stack__slab--base vault__core">
+            <rect x="82" y="101" width="86" height="48" rx="12"/>
+            <g class="stack__ico" transform="translate(95 115)">
+              <ellipse cx="10" cy="4" rx="10" ry="3.4"/>
+              <path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
+            </g>
+            <text x="123" y="130" class="stack__t">VistA</text>
+          </g>
+          </g>
         </svg>
         <ol class="vault__legend">
           <li class="vault__item vault__item--4">
@@ -291,7 +301,7 @@ document.documentElement.className += " js";
       <figcaption class="fig__cap">The line between the knowledge you need and the knowledge you don't</figcaption>
       <div class="stack">
         <svg class="stack__svg" viewBox="0 0 340 208" role="img"
-             aria-label="Three stacked layers: classic VistA at the bottom, an industry standardization layer above it, and modern mainstream interfaces and management on top.">
+             aria-label="Three stacked layers: VistA, unchanged, at the bottom; an industry standardization layer above it; and modern mainstream interfaces and management on top.">
           <!-- top: where your people work -->
           <g class="stack__slab stack__slab--top">
             <rect x="20" y="8" width="300" height="56" rx="12"/>
@@ -317,8 +327,8 @@ document.documentElement.className += " js";
               <ellipse cx="10" cy="4" rx="10" ry="3.4"/>
               <path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
             </g>
-            <text x="76" y="167" class="stack__t">Classic VistA</text>
-            <text x="76" y="183" class="stack__s">running exactly as it does today, untouched</text>
+            <text x="76" y="167" class="stack__t">VistA</text>
+            <text x="76" y="183" class="stack__s">classic VistA, running exactly as it does today</text>
           </g>
         </svg>
       </div>
@@ -375,50 +385,50 @@ document.documentElement.className += " js";
              aria-label="A human and an AI agent both enter one command surface, pass the same gates, and reach VistA.">
           <!-- two kinds of worker, side by side -->
           <g class="stack__slab stack__slab--top">
-            <rect x="20" y="6" width="145" height="46" rx="11"/>
-            <g class="stack__ico" transform="translate(34 19)">
+            <rect x="40" y="6" width="125" height="46" rx="11"/>
+            <g class="stack__ico" transform="translate(52 19)">
               <circle cx="10" cy="5.5" r="3.6"/><path d="M3 17c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/>
             </g>
-            <text x="68" y="34" class="stack__t">A human</text>
+            <text x="86" y="34" class="stack__t">A human</text>
           </g>
           <g class="stack__slab stack__slab--top">
-            <rect x="175" y="6" width="145" height="46" rx="11"/>
-            <g class="stack__ico" transform="translate(189 19)">
+            <rect x="175" y="6" width="125" height="46" rx="11"/>
+            <g class="stack__ico" transform="translate(187 19)">
               <path d="M10 2.2 17.2 10 10 17.8 2.8 10z"/>
             </g>
-            <text x="223" y="34" class="stack__t">An AI agent</text>
+            <text x="221" y="34" class="stack__t">An AI agent</text>
           </g>
           <!-- both enter the same path -->
           <g class="stack__join" aria-hidden="true">
-            <path d="M92.5 52v5M88 55.5l4.5 4.5 4.5-4.5"/>
-            <path d="M247.5 52v5M243 55.5l4.5 4.5 4.5-4.5"/>
+            <path d="M102.5 52v5M98 55.5l4.5 4.5 4.5-4.5"/>
+            <path d="M237.5 52v5M233 55.5l4.5 4.5 4.5-4.5"/>
           </g>
           <!-- one surface -->
           <g class="stack__slab stack__slab--surface">
-            <rect x="20" y="64" width="300" height="52" rx="12"/>
-            <g class="stack__ico" transform="translate(40 80)">
+            <rect x="40" y="64" width="260" height="52" rx="12"/>
+            <g class="stack__ico" transform="translate(58 80)">
               <rect x="0" y="1" width="20" height="18" rx="3"/><path d="M4.5 8 7.5 10.5 4.5 13M11 13.5h5"/>
             </g>
-            <text x="76" y="87" class="stack__t">One command surface</text>
-            <text x="76" y="103" class="stack__s">the same commands, and it can describe itself</text>
+            <text x="94" y="87" class="stack__t">One command surface</text>
+            <text x="94" y="103" class="stack__s">the same commands; it can describe itself</text>
           </g>
           <!-- the same gates -->
           <g class="stack__slab stack__slab--gate">
-            <rect x="20" y="124" width="300" height="52" rx="12"/>
-            <g class="stack__ico" transform="translate(40 140)">
+            <rect x="40" y="124" width="260" height="52" rx="12"/>
+            <g class="stack__ico" transform="translate(58 140)">
               <rect x="0" y="1" width="20" height="18" rx="3"/><path d="M0 7h20M8 7v12"/>
             </g>
-            <text x="76" y="147" class="stack__t">The same gates</text>
-            <text x="76" y="163" class="stack__s">an agent cannot skip one a person cannot skip</text>
+            <text x="94" y="147" class="stack__t">The same gates</text>
+            <text x="94" y="163" class="stack__s">cannot skip a gate a person cannot skip</text>
           </g>
           <!-- and VistA underneath, as in the stack above -->
           <g class="stack__slab stack__slab--base">
-            <rect x="20" y="184" width="300" height="46" rx="12"/>
-            <g class="stack__ico" transform="translate(40 197)">
+            <rect x="40" y="184" width="260" height="46" rx="12"/>
+            <g class="stack__ico" transform="translate(58 197)">
               <ellipse cx="10" cy="4" rx="10" ry="3.4"/>
               <path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
             </g>
-            <text x="76" y="212" class="stack__t">VistA</text>
+            <text x="94" y="212" class="stack__t">VistA</text>
           </g>
         </svg>
       </div>
