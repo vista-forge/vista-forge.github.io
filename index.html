@@ -201,11 +201,12 @@ document.documentElement.className += " js";
     <h2>Hardened — any change must be proven before it reaches anyone</h2>
 
     <p class="lede">
-      Every hospital knows the fear: an update goes in overnight, and in the morning something a
-      clinician depends on behaves differently. The usual defences are testing done by hand, a
-      change-control meeting, and a rollback plan nobody has rehearsed — all of which rely on
-      people being careful on the day. <strong>Here the defences are automatic, they are the same
-      every time, and a change that cannot prove itself does not go in.</strong>
+      A forty-year-old system nobody dares touch is not safe — it is stuck. That is where critical
+      systems usually end up: no one can show a change is safe, so the safe answer becomes no, and
+      the system slowly falls behind the care it is supposed to support.
+      <strong>Proving every change is what makes the opposite possible. Because each one is fully
+      tested and can be taken straight back out, the system can change often and quickly — safe,
+      tested, rapid, reversible.</strong>
     </p>
 
     <figure class="fig">
@@ -253,16 +254,18 @@ document.documentElement.className += " js";
       </div>
       <p class="fig__note fig__note--stop">
         <strong>Failing any one of these stops the change dead.</strong> Not a warning, not a note
-        for someone to look at later, and not something a deadline can overrule.
+        for someone to look at later, and not something a deadline can overrule — and that is
+        exactly why the pace can be quick. Nobody has to slow down to be careful, because the
+        care is built in.
       </p>
     </figure>
 
     <div class="worth">
       <div class="worth__col">
         <h3>What it is</h3>
-        <p>A pre-flight checklist for software. Not someone's judgement about whether this
-        particular change looks dangerous, but a fixed routine every change goes through, in the
-        same order, whoever made it and however small it is.</p>
+        <p>A pre-flight checklist for software — and, like a pre-flight checklist, it exists so
+        the thing can fly often, not so it stays on the ground. A fixed routine every change goes
+        through, in the same order, whoever made it and however small it is.</p>
       </div>
       <div class="worth__col">
         <h3>How it works</h3>
@@ -274,14 +277,15 @@ document.documentElement.className += " js";
       <div class="worth__col">
         <h3>What it is worth</h3>
         <ul class="worth__list">
-          <li><strong>You can change a forty-year-old hospital system without holding your
-          breath.</strong> That is what all of it is for.</li>
+          <li><strong>The system can evolve — safely, quickly, and reversibly.</strong> That is
+          what all of it is for. The proof is not overhead; it is what makes frequent change
+          possible at all.</li>
+          <li>Improvements can land in weeks rather than waiting years for a moment when everyone
+          feels brave enough.</li>
           <li>A change that fails a check never reaches a live system — the failure happens on a
           developer's machine, not in front of a clinician.</li>
-          <li>If something does have to come out, it comes out completely, and you can show that
-          it did rather than hoping so.</li>
-          <li>The evidence arrives with the change, so nobody has to take anyone's word for it
-          months later.</li>
+          <li>Anything that does go wrong comes out completely, and you can show that it did
+          rather than hoping so.</li>
         </ul>
       </div>
     </div>
