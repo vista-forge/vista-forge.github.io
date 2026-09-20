@@ -285,6 +285,12 @@ p code, li code, td code {
   .nav { gap: 0.9rem; }
   .nav a, .menu__btn { font-size: 0.85rem; }
 }
+/* three menus, a brand and a theme button do not fit a phone at the wrap's
+   normal gutter — the last chevron sat a few pixels past the edge */
+@media (max-width: 420px) {
+  .site-header .wrap { padding-inline: 1rem; gap: 0.6rem; }
+  .nav { gap: 0.7rem; }
+}
 
 /* ---------- the megamenus ---------- */
 
@@ -427,6 +433,312 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   .menu__cols { grid-template-columns: minmax(0, 1fr); }
   .menu__col--thin { margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--border); }
   .menu__panel { padding: 0.85rem 0.9rem; }
+}
+
+/* ---------- the executive page (operator, 2026-09-20) ---------- */
+/*
+ * The landing page is three claims, each answered for a reader who is deciding
+ * rather than building: what it is, how it works, what it is worth. Every
+ * mechanism, measurement and repository moved into ONE fold at the bottom.
+ * The figures are HTML, not one big SVG, so they reflow instead of scaling
+ * down to unreadable at phone width.
+ */
+
+/* the three claims as cards, one per word of the tagline */
+.triad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.triad__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.3rem 1.3rem 1.4rem;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--vista);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  color: var(--text);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.triad__card:hover {
+  text-decoration: none;
+  transform: translateY(-2px);
+  border-color: var(--border-bright);
+}
+.triad__card--v { border-top-color: var(--vista); }
+.triad__card--fm { border-top-color: var(--fm); }
+.triad__card--cyan { border-top-color: var(--cyan); }
+.triad__word {
+  font-size: 1.05rem;
+  font-weight: 680;
+  letter-spacing: -0.01em;
+}
+.triad__q {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.triad__a {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+/* the opening paragraph of a claim — bigger than body, smaller than a heading */
+.lede {
+  max-width: 46rem;
+  margin: 0 0 2rem;
+  font-size: 1.06rem;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+.lede strong { color: var(--text); }
+
+/* ---------- figures ---------- */
+
+.fig {
+  margin: 0 0 2.25rem;
+  padding: 1.4rem 1.4rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+}
+.fig__cap {
+  margin-bottom: 1.1rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.fig__note {
+  margin: 1.1rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.fig__note--stop {
+  padding: 0.75rem 0.9rem;
+  border-radius: 8px;
+  background: var(--vista-wash);
+  border-inline-start: 3px solid var(--vista);
+}
+
+/* figure 1 — the sequence every change runs */
+.flow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+.flow__step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.85rem 0.85rem 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+/* the gate is the step that stops things, and it is marked as such — not by
+   colour alone: it carries a heavier border and its own label */
+.flow__step--gate {
+  border-color: var(--vista-line);
+  box-shadow: inset 0 0 0 1px var(--vista-line);
+}
+.flow__n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--vista-wash);
+  color: var(--vista);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.flow__t {
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+.flow__d {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+
+/* figure 2 — the line between the two kinds of knowledge */
+.strata {
+  display: flex;
+  flex-direction: column;
+}
+.strata__band {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.05rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+.strata__band--top { border-top: 3px solid var(--fm); }
+.strata__band--bottom { border-top: 3px solid var(--cyan); }
+.strata__label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.strata__body {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+.strata__line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+}
+.strata__line::before,
+.strata__line::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--border-bright);
+}
+.strata__line-text {
+  /* shrinkable, not `flex: none` — at phone width the sentence cannot fit on
+     one line, and an unshrinkable flex item does not wrap, it overhangs: it
+     was exactly the 16px of horizontal scroll the page had at 390px. */
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-align: center;
+}
+.shift {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+.shift__from { color: var(--text-faint); text-decoration: line-through; }
+.shift__to { color: var(--text); font-weight: 650; }
+
+/* figure 3 — one surface, two kinds of worker */
+.rails {
+  display: flex;
+  align-items: stretch;
+  gap: 0.6rem;
+}
+.rails__in {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.rails__who,
+.rails__out {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-size: 0.86rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.rails__mid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1 1 0;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+.rails__mid--gate {
+  border-color: var(--vista-line);
+  box-shadow: inset 0 0 0 1px var(--vista-line);
+}
+.rails__label {
+  font-size: 0.86rem;
+  font-weight: 650;
+}
+.rails__body {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+.rails__out {
+  flex: 0 0 auto;
+  border-top: 3px solid var(--cyan);
+}
+.rails__arrow {
+  display: flex;
+  align-items: center;
+  flex: none;
+  color: var(--text-faint);
+}
+
+/* ---------- what it is / how it works / what it is worth ---------- */
+
+.worth {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem;
+}
+.worth__col h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.worth__col p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.worth__list {
+  margin: 0;
+  padding-inline-start: 1.05rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.worth__list li { margin-bottom: 0.4rem; }
+.worth__list strong { color: var(--text); }
+
+@media (max-width: 900px) {
+  .triad,
+  .worth { grid-template-columns: 1fr; }
+  .flow { grid-template-columns: repeat(2, 1fr); }
+  .rails { flex-direction: column; }
+  .rails__in { flex-direction: row; }
+  .rails__who { flex: 1 1 auto; }
+  .rails__arrow { justify-content: center; transform: rotate(90deg); }
+}
+@media (max-width: 560px) {
+  .flow { grid-template-columns: 1fr; }
+  .rails__in { flex-direction: column; }
 }
 
 /* ---------- the frame view ---------- */
