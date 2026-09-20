@@ -614,7 +614,15 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   max-width: 34rem;
   margin-inline: auto;
 }
+/* A BASE FILL, so a slab can never render black. An SVG <rect> with no `fill`
+   rule falls back to black, and this page's text is near-black — so any moment
+   the modifier rules below are missing (a half-stale stylesheet against newer
+   HTML is the realistic one, and it happened) the figure becomes black boxes
+   with invisible labels rather than a plain, readable one. The modifiers
+   override this; it only ever shows when something else went wrong. */
 .stack__slab rect {
+  fill: var(--bg-elev);
+  stroke: var(--border-bright);
   stroke-width: 1.5;
 }
 .stack__slab--top rect { fill: var(--vista-wash); stroke: var(--vista); }
