@@ -299,10 +299,11 @@ document.documentElement.className += " js";
     <h2>Industry-standardized — the hard part stopped being a prerequisite</h2>
 
     <p class="lede">
-      VistA's difficulty was never that it is bad software. It is that touching it safely required
-      knowing an enormous amount of institutional detail that exists nowhere else — knowledge held
-      by a shrinking number of people. <strong>That knowledge is now written down as code, tested,
-      and put behind an ordinary interface.</strong>
+      The people who can change VistA safely learned how over many years, and there are fewer of
+      them every year. That is the real risk in a forty-year-old system — not that the software
+      fails, but that the understanding of it retires. <strong>That understanding is now written
+      down as working, tested code. Using it no longer requires having spent years learning
+      it.</strong>
     </p>
 
     <figure class="fig">
@@ -315,8 +316,8 @@ document.documentElement.className += " js";
             <g class="stack__ico" transform="translate(58 26)">
               <rect x="0" y="0" width="20" height="16" rx="3"/><path d="M0 5.5h20"/>
             </g>
-            <text x="94" y="31" class="stack__t">Modern interfaces &amp; management</text>
-            <text x="94" y="47" class="stack__s">mainstream tools, used the ordinary way</text>
+            <text x="94" y="31" class="stack__t">The tools people already know</text>
+            <text x="94" y="47" class="stack__s">ordinary tools, used the ordinary way</text>
           </g>
           <g class="stack__slab stack__slab--mid">
             <rect x="40" y="76" width="260" height="56" rx="12"/>
@@ -324,7 +325,7 @@ document.documentElement.className += " js";
               <path d="M0 4h20M0 12h20"/>
             </g>
             <text x="94" y="99" class="stack__t">Industry standardization</text>
-            <text x="94" y="115" class="stack__s">VistA's knowledge, written as tested code</text>
+            <text x="94" y="115" class="stack__s">written down, not held in people’s heads</text>
           </g>
           <g class="stack__slab stack__slab--base">
             <rect x="40" y="144" width="260" height="48" rx="12"/>
@@ -340,7 +341,7 @@ document.documentElement.className += " js";
         <strong>VistA at the bottom is running exactly as it does today, untouched.</strong>
         <span class="shift"><span class="shift__from">years of apprenticeship</span>
         <span class="shift__arrow" aria-hidden="true">→</span>
-        <span class="shift__to">reading an interface</span></span>
+        <span class="shift__to">looking it up</span></span>
         — the same change that lets an AI agent be useful here lets a new hire be useful here.
       </p>
     </figure>
@@ -348,22 +349,27 @@ document.documentElement.className += " js";
     <div class="worth">
       <div class="worth__col">
         <h3>What it is</h3>
-        <p>A standard library: the arcane parts of VistA wrapped in plain, documented operations
-        with ordinary names, so that working against VistA is like working against any modern
-        system.</p>
+        <p>Everything the old hands knew, written down as working code with tests behind it, under
+        names that say what they do. The knowledge is still there — it is just no longer something
+        you have to have lived through to use.</p>
       </div>
       <div class="worth__col">
         <h3>How it works</h3>
-        <p>Each piece of institutional knowledge became a named operation with tests behind it.
-        Developers call the operation. They never need to know which internal structure it touches
-        or what it is called inside the VA.</p>
+        <p>Each hard-won piece of know-how became one named, documented, tested thing that anyone
+        can use. The person using it does not need to know what it touches inside VistA, or what
+        the VA happens to call it. The expertise did not go away; it stopped being a
+        prerequisite.</p>
       </div>
       <div class="worth__col">
         <h3>What it is worth</h3>
         <ul class="worth__list">
-          <li>You hire from the general developer market, not the VistA market.</li>
-          <li>A new developer is productive in days, not after an apprenticeship.</li>
-          <li>Nothing is rewritten or replaced — the risk of a big-bang migration never arises.</li>
+          <li><strong>The expertise stops retiring.</strong> Written down and tested, it outlives
+          the people who worked it out.</li>
+          <li>You hire from the ordinary job market instead of competing for the few people who
+          already know VistA.</li>
+          <li>Someone new is useful in days rather than after years of apprenticeship.</li>
+          <li>Nothing is rewritten or replaced, so there is no migration to survive and no day when
+          everything changes at once.</li>
         </ul>
       </div>
     </div>
@@ -374,17 +380,18 @@ document.documentElement.className += " js";
 <section class="section" id="ai-integrated">
   <div class="wrap">
     <p class="section__kicker">Claim three</p>
-    <h2>AI-Integrated — an agent does the work, on the same rails as a person</h2>
+    <h2>AI-Integrated — an AI does the work, and it is checked the same way a person’s is</h2>
 
     <p class="lede">
-      The interesting question about AI and a hospital system is not whether a model can write
-      code. It is whether its work can be <em>trusted</em> the same way a person's is.
-      <strong>Here it is the same question, because it is the same path:</strong> an agent uses the
-      same commands, and has to clear the same gates, as any developer.
+      The question is not whether AI can write software — it can. It is whether you can accept
+      work you did not watch being done. In a hospital system, normally you cannot.
+      <strong>Here you can, because an AI goes through exactly the same steps a person does and
+      has to pass exactly the same checks.</strong> Its work arrives with the same evidence
+      attached, which is what makes it usable at all.
     </p>
 
     <figure class="fig">
-      <figcaption class="fig__cap">One set of rails, two kinds of worker</figcaption>
+      <figcaption class="fig__cap">One way in, and the same checks, whoever is working</figcaption>
       <div class="stack stack--ai">
         <svg class="stack__svg stack__svg--ai" viewBox="0 0 340 240" role="img"
              aria-label="A human and an AI agent both enter one command surface, pass the same gates, and reach VistA.">
@@ -411,16 +418,16 @@ document.documentElement.className += " js";
             <g class="stack__ico" transform="translate(58 80)">
               <rect x="0" y="1" width="20" height="18" rx="3"/><path d="M4.5 8 7.5 10.5 4.5 13M11 13.5h5"/>
             </g>
-            <text x="94" y="87" class="stack__t">One command surface</text>
-            <text x="94" y="103" class="stack__s">the same commands; it can describe itself</text>
+            <text x="94" y="87" class="stack__t">One way in</text>
+            <text x="94" y="103" class="stack__s">the same commands a person uses</text>
           </g>
           <g class="stack__slab stack__slab--gate">
             <rect x="40" y="124" width="260" height="52" rx="12"/>
             <g class="stack__ico" transform="translate(58 140)">
               <rect x="0" y="1" width="20" height="18" rx="3"/><path d="M0 7h20M8 7v12"/>
             </g>
-            <text x="94" y="147" class="stack__t">The same gates</text>
-            <text x="94" y="163" class="stack__s">cannot skip a gate a person cannot skip</text>
+            <text x="94" y="147" class="stack__t">The same checks</text>
+            <text x="94" y="163" class="stack__s">the four layers from claim one</text>
           </g>
           <g class="stack__slab stack__slab--base">
             <rect x="40" y="184" width="260" height="48" rx="12"/>
@@ -433,29 +440,33 @@ document.documentElement.className += " js";
         </svg>
       </div>
       <p class="fig__note">
-        Facts about VistA come from sources the agent must cite, so
-        <strong>&#8220;not measured&#8221; is an answer it can give</strong> — and guessing is not.
+        And it works from sources it has to cite, so
+        <strong>&#8220;that is not recorded anywhere&#8221; is an answer it can give</strong> —
+        which means it does not have to guess, and you can check where anything came from.
       </p>
     </figure>
 
     <div class="worth">
       <div class="worth__col">
         <h3>What it is</h3>
-        <p>A toolchain built so that a capable AI agent is an ordinary user of it — not something
-        bolted on afterwards, and not something given a private back door.</p>
+        <p>A system built so that an AI is simply another user of it — not bolted on afterwards,
+        and not given a private entrance of its own.</p>
       </div>
       <div class="worth__col">
         <h3>How it works</h3>
-        <p>Everything an agent needs is generated from the code itself and kept in step with it, so
-        what the agent reads is what the system actually does. The guardrails are inside the tools,
-        so they apply to the agent automatically.</p>
+        <p>What the AI reads about the system is produced from the system itself, so it cannot
+        quietly go out of date. And because the checks live inside the tools rather than in a
+        policy, they apply to the AI without anyone having to arrange it.</p>
       </div>
       <div class="worth__col">
         <h3>What it is worth</h3>
         <ul class="worth__list">
-          <li>Modernisation work that was too slow to attempt becomes practical.</li>
-          <li>An agent's work arrives with the same evidence a person's does.</li>
-          <li>The safety story does not change just because the worker did.</li>
+          <li><strong>Work that was never worth starting becomes practical.</strong> The backlog
+          of small improvements that could never justify a project of their own.</li>
+          <li>The work arrives with the same evidence a person's does, so it can be accepted on the
+          same terms rather than on trust.</li>
+          <li>Nothing about the safety of the system changes because of who — or what — did the
+          work.</li>
         </ul>
       </div>
     </div>
