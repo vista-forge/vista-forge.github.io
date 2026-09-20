@@ -547,8 +547,14 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   max-width: 340px;
 }
 
-/* the loop a change goes round — an arrow over the top of the system it
+/* the loop a change goes round — a full circle turning above the system it
    changes, not a wall in front of it */
+.cycle__ring {
+  fill: none;
+  stroke: var(--vista);
+  stroke-width: 2;
+}
+.cycle__dir { fill: var(--vista); }
 .cycle__arc,
 .cycle__head {
   fill: none;

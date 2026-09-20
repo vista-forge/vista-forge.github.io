@@ -212,26 +212,27 @@ document.documentElement.className += " js";
     <figure class="fig">
       <figcaption class="fig__cap">The loop every change goes round — and why it can go round often</figcaption>
       <div class="figrow">
-        <svg class="figrow__svg" viewBox="0 0 340 200" role="img"
-             aria-label="A loop of four numbered steps arcing over VistA — write the check, check everything, try it on the real system, take it back out — with an arrow bringing each completed lap down into VistA, ready to go round again.">
-          <!-- the loop the work goes round, and round: an arrow over the top of
-               the system it is changing, not a wall in front of it -->
-          <path class="cycle__arc" d="M68 86 A104 48 0 1 1 272 86"/>
-          <path class="cycle__arc" d="M272 96 L272 128"/>
-          <path class="cycle__head" d="M265 121 L272 130 L279 121"/>
+        <svg class="figrow__svg" viewBox="0 0 340 220" role="img"
+             aria-label="A circle of four numbered steps turning above VistA — write the check, check everything, try it on the real system, take it back out — with an arrow bringing each completed lap down into VistA, ready to go round again.">
+          <!-- a full circle, turning: the work goes round it and lands in the
+               system, then goes round again. Not a barrier in front of VistA. -->
+          <circle cx="170" cy="76" r="62" class="cycle__ring"/>
+          <path d="M170 8 L182 14 L170 20 Z" class="cycle__dir"/>
+          <path d="M170 138 L170 154" class="cycle__arc"/>
+          <path d="M163 147 L170 156 L177 147" class="cycle__head"/>
           <g class="cycle__stop">
-            <circle cx="68"  cy="86" r="10"/><text x="68"  y="89.5">1</text>
-            <circle cx="118" cy="36" r="10"/><text x="118" y="39.5">2</text>
-            <circle cx="222" cy="36" r="10"/><text x="222" y="39.5">3</text>
-            <circle cx="272" cy="86" r="10"/><text x="272" y="89.5">4</text>
+            <circle cx="126" cy="32"  r="10"/><text x="126" y="35.5">1</text>
+            <circle cx="214" cy="32"  r="10"/><text x="214" y="35.5">2</text>
+            <circle cx="214" cy="120" r="10"/><text x="214" y="123.5">3</text>
+            <circle cx="126" cy="120" r="10"/><text x="126" y="123.5">4</text>
           </g>
           <g class="stack__slab stack__slab--base">
-            <rect x="40" y="144" width="260" height="48" rx="12"/>
-            <g class="stack__ico" transform="translate(58 158)">
+            <rect x="40" y="164" width="260" height="48" rx="12"/>
+            <g class="stack__ico" transform="translate(58 178)">
               <ellipse cx="10" cy="4" rx="10" ry="3.4"/>
               <path d="M0 4v10c0 1.9 4.5 3.4 10 3.4s10-1.5 10-3.4V4"/>
             </g>
-            <text x="94" y="173" class="stack__t">VistA</text>
+            <text x="94" y="193" class="stack__t">VistA</text>
           </g>
         </svg>
         <ol class="figrow__legend">
