@@ -78,14 +78,15 @@ anything here:
   framed page must do differently is the framed page's own job. The reference
   used to render its own copy of this banner directly under it; since
   2026-09-19 it detects being framed (`window.self !== window.top`, pre-paint)
-  and drops its brand and its org nav, keeping its search box and its theme
-  control — the two things this banner cannot provide across an origin. That
-  is a change in the `forge-docs` repo and a republish, never an edit to the
+  and hides its banner entirely, having first moved its search box and its
+  theme control into a left rail that also carries the page's headings and the
+  site tree. Under this banner it is two panes and nothing else. That is a
+  change in the `forge-docs` repo and a republish, never an edit to the
   deployed copy here.
 * **The light/dark choice does not cross the origin boundary**, because
   `localStorage` is per-origin. The framed reference is on its own default
-  until the reader uses the control inside it, which is why that control stays
-  when the rest of its header goes.
+  until the reader uses the control in its rail — which is why that control had
+  to survive the move rather than go with the banner.
 * **Nothing here sets `X-Frame-Options` or a `frame-ancestors` policy**, on
   either side. If the publish origin ever grows one, these views go blank.
 
@@ -150,11 +151,12 @@ this one's, and both toggles write both theme keys (`theme` here,
 ⚠️ **The two navs no longer agree, and the drift is now hidden rather than
 reconciled.** This banner is three menus (Architecture / Explore / Docs);
 `OrgNav.astro` is still the five flat links it mirrored before. Inside the Docs
-view that nav is no longer rendered at all (see the frames section above), so a
-reader never sees the two disagree — but they still disagree for anyone who
-opens the reference directly, and its links still point at bare anchors this
-router happens to accept. Reconciling them is a change in the `forge-docs`
-repo; hiding one of them is not the same thing.
+view that nav is not rendered at all — the whole banner it sits in is hidden
+(see the frames section above) — so a reader never sees the two disagree. They
+still disagree for anyone who opens the reference directly, and its links still
+point at bare anchors this router happens to accept. Reconciling them is a
+change in the `forge-docs` repo; not rendering one of them is not the same
+thing.
 
 ## What is generated, and what is not
 
