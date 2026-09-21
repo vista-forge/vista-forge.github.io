@@ -873,6 +873,13 @@ body.is-framed {
   margin: 0 0 2rem;
 }
 .hero__lead strong { color: var(--text); font-weight: 600; }
+/* the second paragraph is the punch: shorter, tighter to the first, and it is
+   the one sentence a reader in a hurry should leave with */
+.hero__lead--punch {
+  margin-top: -1.2rem;
+  font-size: 1.1rem;
+  color: var(--text);
+}
 
 .cta-row {
   display: flex;
