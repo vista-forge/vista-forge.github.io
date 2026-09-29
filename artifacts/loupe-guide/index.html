@@ -70,37 +70,20 @@
 
   /* masthead */
   .mast { padding-block: 48px 28px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); }
-  .mast h1 { font-size: 1em; line-height: 1; letter-spacing: -0.02em; }
-  /* the mark stands on the title's baseline, as tall as its capitals */
-  .title-row { display: flex; align-items: baseline; gap: 0.22em; font-size: clamp(3.4rem, 13vw, 6rem); }
-  .loupe-mark { flex: none; width: auto; height: 0.7em; height: 1cap; }
-  /* wire-rimmed glasses, a telescope mounted in each lens: its barrel runs
-     forward and down, its objective glass ringed in the accent */
-  .loupe-mark .lens { fill: var(--accent-soft); fill-opacity: 0.55; stroke: var(--ink); stroke-width: 2; }
-  .loupe-mark .wire { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
-  .loupe-mark .padarm { fill: none; stroke: var(--ink2); stroke-width: 1.2; stroke-linecap: round; }
-  .loupe-mark .pad { fill: var(--accent-soft); stroke: var(--ink2); stroke-width: 1; }
-  .loupe-mark .barrel { fill: var(--ink); }
-  .loupe-mark .glass { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 2; }
-  .loupe-mark .iris { fill: var(--accent); opacity: 0.35; }
-  .loupe-mark .glare { fill: none; stroke: var(--surface); stroke-width: 2; stroke-linecap: round; opacity: 0.9; }
+  .mast h1 { font-size: clamp(3.4rem, 13vw, 6rem); line-height: 1; letter-spacing: -0.02em; }
   .mast .tagline { font-size: clamp(1.5rem, 6.2vw, 2.9rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; color: var(--ink); }
   .mast .tagline span { color: var(--accent); }
   .mast .lede { font-size: 1.2rem; color: var(--ink2); max-width: 52ch; }
 
-  /* what a loupe is, and why the name */
+  /* what a loupe is, and what Loupe is */
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .intro-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 20px 48px; padding-block: 36px 32px; align-items: start; }
+  .intro-top { padding-block: 36px 32px; }
   .define { border-left: 3px solid var(--accent); padding-left: 18px; display: grid; gap: 6px; }
   .entry { font-size: 1.5rem; }
   .entry dfn { font-style: normal; font-weight: 700; }
   .entry .say { font-family: var(--mono); font-size: 1.05rem; color: var(--ink2); margin-left: 6px; }
   .entry .pos { font-style: italic; font-size: 1.05rem; color: var(--ink2); margin-left: 6px; }
-  .sense { font-size: 1.08rem; }
-  .why { display: grid; gap: 8px; }
-  .why h3 { font-size: 1.2rem; }
-  .why p { max-width: 62ch; }
-  @media (max-width: 760px) { .intro-top { grid-template-columns: minmax(0, 1fr); } }
+  .sense { font-size: 1.08rem; max-width: 66ch; }
 
   /* at a glance: the overview tiles beside the demo */
   .glance { display: grid; gap: 20px; padding-block: 12px 4px; }
@@ -247,32 +230,7 @@
 <div class="wrap">
   <header class="mast">
     <p class="eyebrow">For clinical staff</p>
-    <div class="title-row">
-      <svg class="loupe-mark" viewBox="1.5 5 117 39.5" role="img" aria-label="Surgical loupes from the front: wire-rimmed glasses with a small magnifying telescope mounted in each lens.">
-        <path class="wire" d="M9.5 19 L3 15.5 M110.5 19 L117 15.5"></path>
-        <ellipse class="lens" cx="31" cy="24" rx="21" ry="17.5"></ellipse>
-        <ellipse class="lens" cx="89" cy="24" rx="21" ry="17.5"></ellipse>
-        <path class="wire" d="M51.5 20 Q60 12.5 68.5 20"></path>
-        <path class="padarm" d="M50 27 L54.5 31 M70 27 L65.5 31"></path>
-        <ellipse class="pad" cx="54.8" cy="32" rx="1.4" ry="2.4"></ellipse>
-        <ellipse class="pad" cx="65.2" cy="32" rx="1.4" ry="2.4"></ellipse>
-        <g class="barrel">
-          <circle cx="33" cy="20" r="9.5"></circle>
-          <circle cx="34" cy="31" r="12.5"></circle>
-          <path d="M23.5 20 L42.5 20 L46.5 31 L21.5 31 Z"></path>
-          <circle cx="87" cy="20" r="9.5"></circle>
-          <circle cx="86" cy="31" r="12.5"></circle>
-          <path d="M77.5 20 L96.5 20 L98.5 31 L73.5 31 Z"></path>
-        </g>
-        <circle class="glass" cx="34" cy="31" r="9"></circle>
-        <circle class="iris" cx="34" cy="31" r="4.3"></circle>
-        <path class="glare" d="M28 28.6 A 6.6 6.6 0 0 1 32.4 24.6"></path>
-        <circle class="glass" cx="86" cy="31" r="9"></circle>
-        <circle class="iris" cx="86" cy="31" r="4.3"></circle>
-        <path class="glare" d="M80 28.6 A 6.6 6.6 0 0 1 84.4 24.6"></path>
-      </svg>
-      <h1>Loupe</h1>
-    </div>
+    <h1>Loupe</h1>
     <p class="tagline">CPRS. <span>In your hand.</span></p>
   </header>
 
@@ -280,11 +238,7 @@
     <h2 id="abstract-h" class="sr-only">What Loupe is</h2>
     <div class="define">
       <p class="entry"><dfn>loupe</dfn> <span class="say">/loop/</span> <span class="pos">noun</span></p>
-      <p class="sense">A small magnifying lens held close to the eye to see fine detail: the jeweler's glass, the watchmaker's eyepiece, the magnifiers surgeons and dentists wear to operate.</p>
-    </div>
-    <div class="why">
-      <h3>Why it's called Loupe</h3>
-      <p>A loupe brings something small up close and shows you more of it than the eye alone can see. Loupe does that with a patient's record: high-precision magnification of a lifetime of the patient's data. It lays decades of visits, notes, vitals and labs on one timeline, lets you sweep across all of it at once, then magnifies any stretch down to a single week, every value exactly as VistA holds it. The name speaks of precision and closeness: the whole record, brought close, in your hand.</p>
+      <p class="sense">A small magnifying lens held close to the eye to see fine detail: the jeweler's glass, the watchmaker's eyepiece, the magnifiers surgeons and dentists wear to operate. Loupe does that with a patient's record: high-precision magnification of a lifetime of the patient's data. It lays decades of visits, notes, vitals and labs on one timeline, lets you sweep across all of it at once, then magnifies any stretch down to a single week, every value exactly as VistA holds it: the whole record, brought close, in your hand.</p>
     </div>
   </section>
 
