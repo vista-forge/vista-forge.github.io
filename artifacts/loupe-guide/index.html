@@ -192,7 +192,7 @@
   }
 
   /* use cases */
-  .cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+  .cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr)); gap: 16px; }
   .case { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 10px; align-content: start; }
   .case h3 { font-size: 1.1rem; }
   .case .sit { color: var(--ink2); font-style: italic; }
@@ -216,7 +216,7 @@
   .tip { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 0.95rem; max-width: var(--read); }
 
   /* safety */
-  .safety { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .safety { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 16px; }
   .guard { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 10px; align-content: start; }
   .guard h3 { font-size: 1.1rem; }
   .guard ul { margin: 0; padding-left: 1.2em; display: grid; gap: 7px; }
@@ -232,6 +232,10 @@
   }
   @media (max-width: 520px) {
     body { font-size: 16px; }
+    /* VistA's longer phrases are wider than a phone's column */
+    .vista { white-space: normal; }
+    /* the demo phones shrink to the column instead of pushing past it */
+    .demo { margin-inline: 0; min-width: 0; grid-template-columns: minmax(0, 1fr); }
     .shot { width: calc(50% - 7px); }
     .safety-shots .shot { width: calc(50% - 7px); }
     .phone { width: 270px; }
