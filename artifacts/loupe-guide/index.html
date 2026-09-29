@@ -102,9 +102,11 @@
   .why p { max-width: 62ch; }
   .glance-head { grid-column: 1 / -1; display: grid; gap: 4px; margin-top: 16px; }
   .glance-head h3 { font-size: clamp(1.4rem, 4vw, 1.9rem); }
-  .tiles { grid-column: 1 / -1; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .overview { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: start; }
+  .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
   .tiles li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; gap: 6px; align-content: start; color: var(--ink2); font-size: 0.97rem; line-height: 1.5; }
   .tiles b { color: var(--ink); font-size: 1.05rem; line-height: 1.3; }
+  @media (max-width: 860px) { .overview { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 760px) { .intro-top { grid-template-columns: minmax(0, 1fr); } }
 
   /* the lifelong record: the key feature, set apart on the accent's tint */
@@ -291,16 +293,27 @@
       <p class="eyebrow">At a glance</p>
       <h3>What Loupe does</h3>
     </div>
-    <ul class="tiles">
-      <li><b>A lifelong record, in one view</b>Every visit, stay, note, vitals day and lab day of a veteran's life on one timeline, from all of it to a single week.</li>
-      <li><b>CPRS in your hand</b>CPRS's own sign-on, patient lists, safety checks and chart, through the same calls CPRS makes.</li>
-      <li><b>The chart, at a glance</b>Allergies, flags, medications, problems, reminders, postings, and the latest vitals and flagged labs.</li>
-      <li><b>One moment, every page</b>Tap any moment on the timeline and the notes, labs and vitals all move to it.</li>
-      <li><b>Notes you can find</b>Filter as you type, search inside the notes' text, read each one line for line.</li>
-      <li><b>Labs and vitals as trends</b>Against the ranges VistA stores, with VistA's flags in red and how long ago each reading was.</li>
-      <li><b>Alerts on the go</b>Your notifications, with CPRS's Process, Remove and Defer.</li>
-      <li><b>Safe by design</b>VistA's own words and nothing else, CPRS's checks before a chart opens, nothing kept on the phone.</li>
-    </ul>
+    <div class="overview">
+      <ul class="tiles">
+        <li><b>A lifelong record, in one view</b>Every visit, stay, note, vitals day and lab day of a veteran's life on one timeline, from all of it to a single week.</li>
+        <li><b>CPRS in your hand</b>CPRS's own sign-on, patient lists, safety checks and chart, through the same calls CPRS makes.</li>
+        <li><b>The chart, at a glance</b>Allergies, flags, medications, problems, reminders, postings, and the latest vitals and flagged labs.</li>
+        <li><b>One moment, every page</b>Tap any moment on the timeline and the notes, labs and vitals all move to it.</li>
+        <li><b>Notes you can find</b>Filter as you type, search inside the notes' text, read each one line for line.</li>
+        <li><b>Labs and vitals as trends</b>Against the ranges VistA stores, with VistA's flags in red and how long ago each reading was.</li>
+        <li><b>Alerts on the go</b>Your notifications, with CPRS's Process, Remove and Defer.</li>
+        <li><b>Safe by design</b>VistA's own words and nothing else, CPRS's checks before a chart opens, nothing kept on the phone.</li>
+      </ul>
+      <figure class="demo" id="demo">
+        <div class="phone">
+          <picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="img/demo-poster.webp">
+            <img src="img/demo-loop.webp" width="540" height="1164" alt="A 15-second loop through Loupe: sign on, find the patient, check their details, the flag window, the glance, the timeline, a chosen note lighting up the notes, labs and vitals, a text search of the notes, the note itself, and the idle timeout window.">
+          </picture>
+        </div>
+        <figcaption>The whole walkthrough in a 15-second loop, 13 screens. <span class="rm-note">Your device asks for reduced motion, so a still of the glance is shown.</span></figcaption>
+      </figure>
+    </div>
   </section>
 
   <section class="lifelong" id="lifelong" aria-labelledby="lifelong-h">
@@ -320,14 +333,14 @@
         <li><strong>Nothing hidden.</strong> Each lane counts what the window shows of all, and how many lie beyond it on either side.</li>
       </ul>
     </div>
-    <figure class="demo" id="demo">
+    <figure class="demo" id="timeline-demo">
       <div class="phone">
         <picture>
-          <source media="(prefers-reduced-motion: reduce)" srcset="img/demo-poster.webp">
-          <img src="img/demo-loop.webp" width="540" height="1164" alt="A 15-second loop through Loupe: sign on, find the patient, check their details, the flag window, the glance, the timeline, a chosen note lighting up the notes, labs and vitals, a text search of the notes, the note itself, and the idle timeout window.">
+          <source media="(prefers-reduced-motion: reduce)" srcset="img/timeline-poster.webp">
+          <img src="img/timeline-loop.webp" width="540" height="1164" alt="A 15-second loop of the timeline: one year, five years, ten years and all 38 years of the record; a ten-year window panned back and forward through time; the DIABETES note of 3/31/04 chosen on the timeline, lit on the Notes page and opened; and the labs at that moment.">
         </picture>
       </div>
-      <figcaption>The whole walkthrough in a 15-second loop, 13 screens. <span class="rm-note">Your device asks for reduced motion, so a still of the glance is shown.</span></figcaption>
+      <figcaption>The timeline in 15 seconds: the spans, a pan through ten-year windows, a note chosen and read, and the labs at that moment. <span class="rm-note">Your device asks for reduced motion, so a still of the whole record is shown.</span></figcaption>
     </figure>
   </section>
 
@@ -383,8 +396,8 @@
     <h2 id="toc-h">Contents</h2>
     <ol>
       <li><a href="#abstract">What Loupe is</a></li>
-      <li><a href="#lifelong">A lifelong record, in one view</a></li>
       <li><a href="#demo">The 15-second demo</a></li>
+      <li><a href="#lifelong">A lifelong record, in one view</a></li>
       <li><a href="#cprs">How Loupe was made</a></li>
       <li><a href="#features">Features and functions</a></li>
       <li><a href="#cases">Use case scenarios</a></li>
