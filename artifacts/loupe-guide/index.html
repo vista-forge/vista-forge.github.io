@@ -134,42 +134,12 @@
   .cprs-h { font-size: clamp(1.5rem, 6.2vw, 2.9rem); letter-spacing: -0.015em; line-height: 1.02; }
   .cprs-h span { color: var(--band-accent); }
   .cprs .lede2 { font-size: 1.15rem; color: var(--band-ink2); max-width: 62ch; }
-  .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
-  .pillar { display: grid; gap: 12px; align-content: start; border-top: 1px solid var(--band-line); padding-top: 18px; min-width: 0; }
-  .pillar h3 { font-size: 1.15rem; }
-  .pillar p, .pillar li { color: var(--band-ink2); font-size: 0.97rem; }
-  .pillar strong { color: var(--band-ink); }
-  .units { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
-  .units li { display: grid; gap: 1px; }
-  .units code { font: 500 0.84rem/1.35 var(--mono); color: var(--band-accent); overflow-wrap: anywhere; }
-  .hero-num { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-  .hero-num b { font-size: 3.2rem; line-height: 1; font-variant-numeric: tabular-nums; color: var(--band-ink); }
-  .hero-num span { color: var(--band-ink2); }
-  .tally { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; }
-  .tally dt { font-weight: 700; font-size: 1.15rem; font-variant-numeric: tabular-nums; color: var(--band-ink); text-align: right; min-width: 1.6em; }
-  .tally dd { margin: 0; color: var(--band-ink2); font-size: 0.97rem; }
-  .pillar ul.plain { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; }
-  .cprs .vista { background: var(--band-line); color: var(--band-ink); }
+  .facts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .facts li { display: grid; gap: 4px; border-top: 1px solid var(--band-line); padding-top: 14px; }
+  .facts b { font-size: 1.6rem; line-height: 1.1; font-variant-numeric: tabular-nums; color: var(--band-ink); }
+  .facts span { color: var(--band-ink2); font-size: 0.97rem; }
+  .cprs a { color: var(--band-accent); }
   .cprs .close { color: var(--band-ink2); font-size: 0.95rem; border-top: 1px solid var(--band-line); padding-top: 16px; }
-  /* the side-by-side check and its measurements, a table that stacks on a phone */
-  .fidelity { display: grid; gap: 14px; border-top: 1px solid var(--band-line); padding-top: 18px; min-width: 0; }
-  .fidelity h3 { font-size: 1.15rem; }
-  .fidelity > p { color: var(--band-ink2); font-size: 0.97rem; max-width: 72ch; }
-  .measures { width: 100%; border-collapse: collapse; font-size: 0.93rem; line-height: 1.45; background: none; border: 0; border-radius: 0; overflow: visible; }
-  .measures thead th { background: none; }
-  .measures td:first-child, .measures td:last-child { font-weight: 400; width: auto; white-space: normal; font-size: inherit; color: var(--band-ink2); }
-  .measures caption { text-align: left; font: 600 0.8rem/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--band-accent); padding-bottom: 8px; }
-  .measures th, .measures td { text-align: left; vertical-align: top; padding: 11px 14px 11px 0; border-bottom: 1px solid var(--band-line); }
-  .measures thead th { font: 600 0.78rem/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--band-ink2); }
-  .measures tbody th { color: var(--band-ink); font-weight: 700; min-width: 9em; }
-  .measures td { color: var(--band-ink2); }
-  .measures td b { color: var(--band-ink); font-variant-numeric: tabular-nums; }
-  @media (max-width: 680px) {
-    .measures thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-    .measures tr { display: grid; gap: 4px; padding: 12px 0; border-bottom: 1px solid var(--band-line); }
-    .measures th, .measures td, .measures td:first-child, .measures td:last-child { display: block; width: auto; padding: 0; border: 0; min-width: 0; }
-    .measures td:last-child::before { content: none; }
-  }
 
   /* opening: abstract and contents beside the phone */
   .opening { display: grid; grid-template-columns: minmax(0, 1fr); padding-block: 36px 28px; }
@@ -367,71 +337,12 @@
     <p class="eyebrow">How Loupe was made</p>
     <h2 class="cprs-h" id="cprs-h">Built from CPRS itself</h2>
     <p class="lede2">For clinicians on the move, Loupe is a drop-in for CPRS's chart review: to VistA, it is CPRS. It was ported from CPRS's own Delphi code, speaks CPRS's own protocol in CPRS's own context, and was checked call by call against CPRS's own traffic. What you know from CPRS holds on the phone, and what VistA enforces for CPRS it enforces for Loupe.</p>
-
-    <div class="pillars">
-      <article class="pillar">
-        <h3>The same code</h3>
-        <p>Each screen was built by reading the CPRS unit that draws it and following it: its order of checks, its lists' sort orders, its lookup patterns and its words. Loupe itself is written in Go and TypeScript; the behaviour is CPRS's.</p>
-        <ul class="units">
-          <li><code>Loginfrm.pas · SelDiv.pas</code>sign-on and the division choice</li>
-          <li><code>fPtSel.pas</code>patient selection, its OK's checks in order, and alerts: Process, Remove, Defer</li>
-          <li><code>mPtSelOptns.pas · rCore.pas</code>CPRS's lists, their sort orders, SSN lookups, Save Settings</li>
-          <li><code>mPtSelDemog.pas</code>the Details preview</li>
-          <li><code>fDupPts.pas · uSimilarNames.pas</code>similar patients and similar provider names</li>
-          <li><code>fFrame.pas</code>opening a patient: the flag window, lookup messages, the version check</li>
-          <li><code>fTimeout.pas</code>the CPRS Timeout window</li>
-          <li><code>fMeds.pas · rMeds.pas · fProbs.pas</code>the Meds and Problems tabs</li>
-          <li><code>fNotes.pas</code>Search for Text in the notes</li>
-          <li><code>fDeferDialog.pas · fAlertsProcessed.pas</code>Defer, and the Processed alerts</li>
-        </ul>
-      </article>
-
-      <article class="pillar">
-        <h3>The same protocol</h3>
-        <ul class="plain">
-          <li>It reaches VistA only the way CPRS does: through the RPC Broker, signed on as you.</li>
-          <li>It signs on in CPRS's own context, <span class="vista">OR CPRS GUI CHART</span>, so VistA applies your menus and keys exactly as it does for CPRS.</li>
-          <li>Its first call declares CPRS's build, <span class="vista">1.33.112.1</span>, as CPRS's does. If VistA expects a different CPRS build, the sign-on stops and says which.</li>
-          <li>CPRS's sign-on and patient selection were listed from its source as 75 capabilities: <strong>57 built</strong>, 18 ruled out as desktop-only or by decision (Forward and Process All among them), <strong>none left unbuilt</strong>.</li>
-          <li>Opening a restricted record was compared with CPRS's own down to VistA's database: the same security-log entry and the same bulletin.</li>
-        </ul>
-      </article>
-
-      <article class="pillar">
-        <h3>The same traffic</h3>
-        <p>CPRS 1.33 was run against VA's demo VistA with an RPC tap recording every call it made, in ten recordings made between 23 and 28 September 2026. Each of Loupe's 63 reads is held against CPRS's call for the same screen, in a test.</p>
-        <div class="hero-num"><b>48 of 63</b><span>identical: the same RPC, the same parameters on the wire, the same reply</span></div>
-        <dl class="tally">
-          <dt>9</dt><dd>the same reply, which CPRS reached through another call or other parameters</dd>
-          <dt>1</dt><dd>one parameter differs, by decision: the Meds tab is read without saving a preference in VistA</dd>
-          <dt>5</dt><dd>no CPRS screen in the recordings shows them, so there is nothing to compare</dd>
-        </dl>
-      </article>
-    </div>
-    <div class="fidelity" id="side-by-side">
-      <h3>Checked side by side</h3>
-      <p>On 29 September 2026, CPRS 1.33 and Loupe were run side by side on VA's demo VistA, signed on at the same time as two people whose settings differ, VEHU,TEN and PROVIDER,FORTY. Each capability of sign-on, patient selection and alerts was walked on both: the same screen in each, the same lists in the same order, the same defaults read from VistA, the same warnings and refusals in the same words. The check found three defects in Loupe, each fixed and seen fixed on the phone before it closed, and two CPRS buttons the capability list had missed, now added to it.</p>
-      <table class="measures">
-        <caption>What was measured</caption>
-        <thead>
-          <tr><th scope="col">Check</th><th scope="col">How it was measured</th><th scope="col">Result</th></tr>
-        </thead>
-        <tbody>
-          <tr><th scope="row">CPRS recorded</th><td>An RPC tap on VistA's Broker recorded CPRS 1.33 in five sittings, 23 to 28 September 2026, as both people, once on a throwaway copy of the demo system</td><td><b>10</b> recordings kept as tests: <b>691</b> CPRS calls, <b>141</b> distinct RPCs</td></tr>
-          <tr><th scope="row">RPC for RPC</th><td>Each of Loupe's reads held, in a test, against CPRS's own call for the same screen: the RPC, its parameters on the wire, and the reply</td><td><b>63</b> reads: <b>48</b> identical, <b>9</b> the same reply reached by CPRS another way, <b>1</b> parameter differs by decision, <b>5</b> with no CPRS screen to compare, <b>0</b> that differ</td></tr>
-          <tr><th scope="row">Function for function</th><td>CPRS's sign-on, patient selection and alerts listed from its Delphi source, one capability a row, each held by Loupe's build gate</td><td><b>75</b> capabilities: <b>57</b> built, <b>18</b> ruled out with the reason written down, <b>0</b> unbuilt</td></tr>
-          <tr><th scope="row">Screen for screen</th><td>CPRS in a Windows VM beside Loupe on a Pixel 8, both signed on at once, walked row by row: <b>5</b> CPRS sessions and <b>6</b> Loupe sessions</td><td><b>73</b> rows walked: <b>43</b> matched on screen, 3 of them after a fix; <b>17</b> ruled out, each reason re-checked; <b>12</b> counted by recorded proofs on a throwaway copy, for states the demo system cannot hold; <b>1</b> counted by its recording</td></tr>
-          <tr><th scope="row">Lists, name for name</th><td><b>48</b> CPRS screens captured and compared with Loupe's page, read from the phone</td><td>Providers, teams, specialties, clinics, wards, and a team's, a specialty's and a ward's patients: the same names in the same order. Loupe shows VistA's own capitals where CPRS re-cases them</td></tr>
-          <tr><th scope="row">Windows, word for word</th><td>Each window's words, buttons and default button compared on both screens: Similar Providers, Similar Patients, Deceased Patient, Restricted Record, Save Patient List Settings, the sign-on error</td><td>The same words and buttons in each; Loupe draws dates in short form</td></tr>
-          <tr><th scope="row">Settings shared both ways</th><td>A default patient list and an alert sort saved in one client and read in the other, then put back from a saved copy</td><td><b>4 of 4</b> crossed; put back and read back identical</td></tr>
-          <tr><th scope="row">The idle timeout</th><td>Loupe's CPRS Timeout window timed on the phone against CPRS's source for it</td><td>The same words and buttons; the count held for 5 seconds, then went down one a second, and the session closed at <b>24</b> seconds, as in CPRS</td></tr>
-          <tr><th scope="row">Every session ended</th><td>VistA's own sign-on log, read after the check</td><td><b>11 of 11</b> sessions with their sign-off time</td></tr>
-          <tr><th scope="row">On the phone</th><td>axe-core 4.11.4 on <b>6</b> screens; every control's size; every text's size; the phone's storage before, during and after sign-on</td><td><b>1</b> serious accessibility finding, fixed; <b>2</b> small targets on the banner, the name and a flag, raised to 44 px; no text under 11 px; no patient data kept on the phone, no VistA reply cached</td></tr>
-          <tr><th scope="row">Defects found</th><td>Each fixed test first, in Loupe's build gate, and seen fixed on the phone</td><td><b>3</b>: a sign-on message's wording, the introductory text's keyboard access, and the banner's primary-care line, raised from 1.10:1 to 4.65:1 contrast</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="close">Each comparison is a test in Loupe's own build gate, so a change that drifts from CPRS fails before it reaches a phone. Loupe covers sign-on, patient selection, alerts and chart review; placing orders and writing notes stay in CPRS on a workstation.</p>
+    <ul class="facts">
+      <li><b>75 of 75</b><span>of CPRS's sign-on, patient selection and alert capabilities matched or ruled out by decision, none left unbuilt</span></li>
+      <li><b>48 of 63</b><span>of Loupe's reads identical to CPRS's own calls, on the wire and in the reply</span></li>
+      <li><b>Side by side</b><span>checked screen for screen against CPRS 1.33 on 29 September 2026</span></li>
+    </ul>
+    <p class="close">How it was done, and every measurement, is in <a href="../building-loupe/">Building Loupe on vista-forge</a>: CPRS's own code read unit by unit, its traffic recorded with an RPC tap, VistA read live, every write proven on a throwaway copy, and the side-by-side check. Loupe covers sign-on, patient selection, alerts and chart review; placing orders and writing notes stay in CPRS on a workstation.</p>
   </section>
 
   <nav class="toc" aria-labelledby="toc-h">
