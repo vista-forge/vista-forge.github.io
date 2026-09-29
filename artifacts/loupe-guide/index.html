@@ -74,14 +74,16 @@
   /* the mark stands on the title's baseline, as tall as its capitals */
   .title-row { display: flex; align-items: baseline; gap: 0.22em; font-size: clamp(3.4rem, 13vw, 6rem); }
   .loupe-mark { flex: none; width: auto; height: 0.7em; height: 1cap; }
-  .loupe-mark .rim { fill: var(--accent-soft); stroke: var(--ink); stroke-width: 2.8; }
-  .loupe-mark .temple { fill: none; stroke: var(--ink); stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; }
+  /* wire-rimmed glasses, a telescope mounted in each lens: its barrel runs
+     forward and down, its objective glass ringed in the accent */
+  .loupe-mark .lens { fill: var(--accent-soft); fill-opacity: 0.55; stroke: var(--ink); stroke-width: 2; }
+  .loupe-mark .wire { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+  .loupe-mark .padarm { fill: none; stroke: var(--ink2); stroke-width: 1.2; stroke-linecap: round; }
+  .loupe-mark .pad { fill: var(--accent-soft); stroke: var(--ink2); stroke-width: 1; }
   .loupe-mark .barrel { fill: var(--ink); }
-  .loupe-mark .band { fill: var(--accent); }
-  .loupe-mark .glass { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 2.2; }
-  /* the far side's temple, lens and telescope, set back in the lighter ink */
-  .loupe-mark .far .temple, .loupe-mark .far .rim { stroke: var(--ink2); }
-  .loupe-mark .far .barrel { fill: var(--ink2); }
+  .loupe-mark .glass { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 2; }
+  .loupe-mark .iris { fill: var(--accent); opacity: 0.35; }
+  .loupe-mark .glare { fill: none; stroke: var(--surface); stroke-width: 2; stroke-linecap: round; opacity: 0.9; }
   .mast .tagline { font-size: clamp(1.5rem, 6.2vw, 2.9rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; color: var(--ink); }
   .mast .tagline span { color: var(--accent); }
   .mast .lede { font-size: 1.2rem; color: var(--ink2); max-width: 52ch; }
@@ -246,23 +248,28 @@
   <header class="mast">
     <p class="eyebrow">For clinical staff</p>
     <div class="title-row">
-      <svg class="loupe-mark" viewBox="4 2 99 50" role="img" aria-label="Surgical loupes seen from the side: an eyeglass frame with a small magnifying telescope projecting forward and down from each lens.">
-        <g class="far">
-          <path class="temple" d="M20 13 L63 10"></path>
-          <g transform="rotate(24 66 17)">
-            <path class="barrel" d="M66 11.5 L97 9 L97 25 L66 22.5 Z"></path>
-            <rect class="band" x="85" y="9.3" width="3" height="15.4" rx="1"></rect>
-            <ellipse class="glass" cx="97" cy="17" rx="3.4" ry="8"></ellipse>
-          </g>
-          <ellipse class="rim" cx="66" cy="17" rx="4" ry="13"></ellipse>
+      <svg class="loupe-mark" viewBox="1.5 5 117 39.5" role="img" aria-label="Surgical loupes from the front: wire-rimmed glasses with a small magnifying telescope mounted in each lens.">
+        <path class="wire" d="M9.5 19 L3 15.5 M110.5 19 L117 15.5"></path>
+        <ellipse class="lens" cx="31" cy="24" rx="21" ry="17.5"></ellipse>
+        <ellipse class="lens" cx="89" cy="24" rx="21" ry="17.5"></ellipse>
+        <path class="wire" d="M51.5 20 Q60 12.5 68.5 20"></path>
+        <path class="padarm" d="M50 27 L54.5 31 M70 27 L65.5 31"></path>
+        <ellipse class="pad" cx="54.8" cy="32" rx="1.4" ry="2.4"></ellipse>
+        <ellipse class="pad" cx="65.2" cy="32" rx="1.4" ry="2.4"></ellipse>
+        <g class="barrel">
+          <circle cx="33" cy="20" r="9.5"></circle>
+          <circle cx="34" cy="31" r="12.5"></circle>
+          <path d="M23.5 20 L42.5 20 L46.5 31 L21.5 31 Z"></path>
+          <circle cx="87" cy="20" r="9.5"></circle>
+          <circle cx="86" cy="31" r="12.5"></circle>
+          <path d="M77.5 20 L96.5 20 L98.5 31 L73.5 31 Z"></path>
         </g>
-        <path class="temple" d="M10 35 Q2 26 12 21 L55 18"></path>
-        <g transform="rotate(24 58 24)">
-          <path class="barrel" d="M58 17 L92 13.5 L92 34.5 L58 31 Z"></path>
-          <rect class="band" x="79" y="14" width="3.6" height="20" rx="1"></rect>
-          <ellipse class="glass" cx="92" cy="24" rx="4.4" ry="10.5"></ellipse>
-        </g>
-        <ellipse class="rim" cx="58" cy="24" rx="4.6" ry="16"></ellipse>
+        <circle class="glass" cx="34" cy="31" r="9"></circle>
+        <circle class="iris" cx="34" cy="31" r="4.3"></circle>
+        <path class="glare" d="M28 28.6 A 6.6 6.6 0 0 1 32.4 24.6"></path>
+        <circle class="glass" cx="86" cy="31" r="9"></circle>
+        <circle class="iris" cx="86" cy="31" r="4.3"></circle>
+        <path class="glare" d="M80 28.6 A 6.6 6.6 0 0 1 84.4 24.6"></path>
       </svg>
       <h1>Loupe</h1>
     </div>
