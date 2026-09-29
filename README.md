@@ -14,6 +14,8 @@ scripts/site-gen.py   generates the m/v repo tables from the ecosystem registry
 data/repos.json       the committed registry snapshot the tables render from
 .nojekyll             serve files as-is  ⚠️ load-bearing: Astro's _astro/ dies without it
 forge-docs/           DEPLOYED ARTIFACT — do not hand-edit
+artifacts/            standalone pages, one folder each; index.html GENERATED
+scripts/artifacts_index.py  generates artifacts/index.html from those folders
 ```
 
 ## One address, two views
@@ -110,12 +112,32 @@ That directory is the built `v` surface reference, served at
 no gate here grades it. To refresh it, follow that repo's
 `docs/guides/publishing.md` — never edit these files in place.
 
+## `artifacts/` — standalone pages, one folder each
+
+Pages first made as Claude artifacts and published here so anyone can read
+them without signing in. Each folder is self-contained: its own `index.html`,
+with a `<title>` and a `<meta name="description">`, and the files it loads.
+The copy here is the one to edit; the artifact on claude.ai is a draft that
+does not update this one, nor this one it.
+
+`artifacts/index.html`, the collection at
+<https://vista-forge.github.io/artifacts/>, is generated from the folders by
+`scripts/artifacts_index.py`, and `make check` reds when it is stale or when a
+folder lacks its page, title or description. **Nothing on the landing page
+links here**: where the collection belongs on the site is still to be decided
+(operator, 2026-09-29).
+
+To add one: put the page in `artifacts/<name>/index.html` with its files
+beside it, run `make artifacts`, then `make check`, and push. The collection
+page is the list of what is published; this README keeps none.
+
 ## Gates
 
 ```
 make site-check       offline, no secrets — the CI gate on every push
 make site-sync        HOST-ONLY — re-harvest the org and rewrite the tables
 make site-freshness   HOST-ONLY — is the snapshot stale vs the live org?
+make artifacts        regenerate artifacts/index.html from its folders
 ```
 
 ## Editing
