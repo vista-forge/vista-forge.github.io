@@ -154,7 +154,7 @@
 
 <div class="notice" role="note" style="margin-top: 28px;">
   <p><b>A demonstration, not a clinical system.</b> It runs on VA's public demo VistA, whose patients are fictitious. Do not use it for patient care.</p>
-  <p><b>Never type your real VA access or verify codes.</b> Rafael sends you demo codes for this system with your invitation.</p>
+  <p><b>Never type your real VA access or verify codes.</b> Rafael sends you demo codes for this system with your invitation. You sign on to a copy of the demo system made for you alone.</p>
   <p><b>Certo is the planned name.</b> On your phone the app is still called by its working name, Loupe: that is the name under its home-screen icon.</p>
 </div>
 
@@ -414,6 +414,7 @@
         <tr><td>The address cannot be found</td><td>Use the whole address, <span class="ui">https://minty.warg-torino.ts.net:8444/</span>. The short name <span class="ui">minty</span> does not work for a machine shared with you.</td></tr>
         <tr><td>Your codes are refused</td><td>Check them against the invitation; Show reveals what you typed. After several wrong tries sign-on locks for a while, as in CPRS.</td></tr>
         <tr><td>"You must change your VERIFY CODE"</td><td>Certo never changes codes. Ask Rafael for new demo codes.</td></tr>
+        <tr><td>"This demonstration has no copy of VistA for …"</td><td>Your copy is made for the Tailscale login you accepted the invitation with. Tell Rafael the login the message names, or sign in to Tailscale with the account you used.</td></tr>
         <tr><td>You were signed off</td><td>After 5 minutes untouched, or a minute away from the app, Certo signs you off in VistA. Sign on again.</td></tr>
         <tr><td>"The connection failed"</td><td>The server dropped your session to keep it in step with VistA. Sign on again.</td></tr>
       </tbody>
@@ -424,7 +425,7 @@
 <section class="block about" id="about" aria-labelledby="about-h">
   <h2 id="about-h">About this demo</h2>
   <p>Certo reads VistA as a client of its RPC Broker, signed on as you, in the same context CPRS uses, and draws VistA's own text and flags. It computes no judgement of its own. The longer story, with use cases and its safety features, is in <a href="../certo-guide/">the Certo guide</a>. How it was built from CPRS and checked against it is in <a href="../building-loupe/">Building Loupe on vista-forge</a>, written under its working name.</p>
-  <p>The demonstration runs on VA's public demo VistA system, with fictitious patients and demo accounts. Other testers use the same system, so what one does there, such as working an alert, the next one sees.</p>
+  <p>The demonstration runs on VA's public demo VistA system, with fictitious patients and demo accounts. You get a copy of it of your own, made for your Tailscale login: what you do there, such as working an alert, no one else sees, and nothing you do reaches the original.</p>
   <p>Certo records which screens are opened and how long each answer takes, so it can be improved. That record never holds a patient's name or any of VistA's words.</p>
   <p>Please tell Rafael what worked, what didn't, and what you reached for and could not find, by replying to your invitation.</p>
 </section>
