@@ -147,14 +147,15 @@
     <p class="eyebrow">Demo guide · for physicians</p>
     <h1>Certo</h1>
     <p class="tagline">The Pocket CPRS.</p>
-    <p class="lede">A patient's VistA chart on your own phone, through the same calls CPRS makes. This guide gets you to the demonstration in about ten minutes and walks through every main screen.</p>
+    <p class="lede">A patient's VistA chart on your own phone, through the same calls CPRS makes. This guide gets you to the demonstration, in about fifteen minutes of your time and a short wait while Rafael sets up your copy, then walks through every main screen.</p>
   </div>
   <figure class="phone"><img src="img/glance.webp" width="600" height="1192" alt="Certo's glance for the demo patient TEN,PATIENT: the banner with allergies, postings and a fall-risk mark, then the latest visit, note, vitals and flagged labs, then medications."></figure>
 </header>
 
 <div class="notice" role="note" style="margin-top: 28px;">
   <p><b>A demonstration, not a clinical system.</b> It runs on VA's public demo VistA, whose patients are fictitious. Do not use it for patient care.</p>
-  <p><b>Never type your real VA access or verify codes.</b> Rafael sends you demo codes for this system with your invitation. You sign on to a copy of the demo system made for you alone.</p>
+  <p><b>Never type your real VA access or verify codes.</b> Rafael sends you demo codes for this system once your copy is ready. You sign on to a copy of the demo system made for you alone.</p>
+  <p><b>Your Tailscale account is your key.</b> Your copy is tied to the account you sign in to Tailscale with. Keep using that one.</p>
   <p><b>Certo is the planned name.</b> On your phone the app is still called by its working name, Loupe: that is the name under its home-screen icon.</p>
 </div>
 
@@ -163,6 +164,7 @@
   <ol>
     <li><a href="#before">Before you start</a></li>
     <li><a href="#tailscale">Install Tailscale</a></li>
+    <li><a href="#login">Send Rafael your Tailscale login</a></li>
     <li><a href="#invite">Accept the invitation</a></li>
     <li><a href="#open">Open Certo</a></li>
     <li><a href="#signon">Sign on</a></li>
@@ -181,14 +183,20 @@
 
 <section class="block" id="before" aria-labelledby="before-h">
   <h2 id="before-h">Before you start</h2>
-  <p class="intro">Certo runs on a server on Rafael's private network. Your phone reaches it through Tailscale, a free app that connects your phone to that one machine and nothing else. Nothing is on the public internet.</p>
+  <p class="intro">Certo runs on a server on Rafael's private network. Your phone reaches it through Tailscale, a free app that connects your phone to Certo on that machine and nothing else. Nothing is on the public internet.</p>
+  <ol class="tries">
+    <li><strong>You</strong> install Tailscale and sign in, which gives you a free Tailscale account.</li>
+    <li><strong>You</strong> send Rafael your Tailscale login.</li>
+    <li><strong>Rafael</strong> makes a copy of the demo system for that login, shares Certo with you, and sends you a Tailscale invite link and your demo codes.</li>
+    <li><strong>You</strong> accept the invite, open Certo and sign on.</li>
+  </ol>
   <div class="os">
     <div class="card">
       <h3>You need</h3>
       <ul>
         <li>An iPhone or an Android phone you may install apps on. A hospital-managed phone may not allow a VPN app; use a personal one.</li>
-        <li>A Google, Microsoft, Apple or GitHub account to sign in to Tailscale with.</li>
-        <li>Rafael's invitation, which carries a Tailscale invite link, and your demo access and verify codes.</li>
+        <li>A Google, Microsoft, Apple or GitHub account to sign in to Tailscale with. Pick the one you will keep using: your copy of the demo system is tied to it.</li>
+        <li>A way to reply to Rafael: the message that sent you this guide.</li>
       </ul>
     </div>
     <div class="card">
@@ -197,6 +205,7 @@
         <li>It appears as a VPN in your phone's settings, because that is how an app makes a private connection.</li>
         <li>Only traffic to the machine shared with you goes through it. Your other browsing and apps are unaffected.</li>
         <li>You can switch it off in the app whenever you are not using Certo, and delete it when the demo ends.</li>
+        <li>Through Tailscale, Rafael sees the name, email and picture of the account you accept with, and when your phone connects to Certo. He cannot see the rest of your Tailscale network or anything else on your phone.</li>
       </ul>
     </div>
   </div>
@@ -226,22 +235,38 @@
       </ol>
     </div>
   </div>
+  <p class="tip">Signing in the first time creates your own small Tailscale network, which is free. Nothing in it is shared with anyone until you accept an invitation.</p>
+</section>
+
+<section class="block" id="login" aria-labelledby="login-h">
+  <h2 id="login-h">2 · Send Rafael your Tailscale login</h2>
+  <ol class="tries">
+    <li>In the Tailscale app, tap your account, the picture or initial at the top of the screen. Your login is shown there.</li>
+    <li>It is an email address for a Google, Microsoft or Apple account, and looks like <span class="ui">name@github</span> for a GitHub account. If you signed in with Apple and chose to hide your email, it is the relay address the app shows.</li>
+    <li>Reply to the message that sent you this guide, saying that you have installed Tailscale, with your login <strong>exactly as the app shows it</strong>.</li>
+  </ol>
+  <p>Rafael then makes your own copy of the demo system for that login, from the latest nightly copy, and shares Certo with you. He replies with:</p>
+  <ul class="tries">
+    <li>a Tailscale invite link, for the next step;</li>
+    <li>your demo <strong>access code</strong> and <strong>verify code</strong>.</li>
+  </ul>
+  <p class="tip">Certo knows you by this login. Sign in to Tailscale with a different account, and Certo will not find a copy for you.</p>
 </section>
 
 <section class="block" id="invite" aria-labelledby="invite-h">
-  <h2 id="invite-h">2 · Accept the invitation</h2>
+  <h2 id="invite-h">3 · Accept the invitation</h2>
   <ol class="tries">
-    <li>On your phone, open the Tailscale invite link from Rafael's invitation.</li>
-    <li>Sign in with the <strong>same account</strong> you used in the Tailscale app, and accept the invitation.</li>
+    <li>On your phone, open the Tailscale invite link from Rafael's reply.</li>
+    <li>Sign in with the <strong>same account</strong>, the login you sent Rafael, and accept the invitation.</li>
     <li>Open the Tailscale app. A machine named <span class="ui">minty</span> appears in its list of machines, shared with you. It can take a minute.</li>
   </ol>
-  <p class="tip">The invitation gives you this one machine, and only for as long as Rafael keeps it shared. You cannot reach anything else on his network, and sharing works one way: his machine cannot connect to your phone.</p>
+  <p class="tip">The invitation gives you Certo on that one machine, and only for as long as Rafael keeps it shared. You cannot reach anything else on it or on his network, and sharing works one way: his machine cannot connect to your phone.</p>
 </section>
 
 <section class="block" id="open" aria-labelledby="open-h">
-  <h2 id="open-h">3 · Open Certo</h2>
+  <h2 id="open-h">4 · Open Certo</h2>
   <ol class="tries">
-    <li>With Tailscale connected, open Safari (iPhone) or Chrome (Android) and go to <span class="ui">https://minty.warg-torino.ts.net:8444/</span>. Type it whole: the full name and the <span class="ui">:8444</span> at the end are both needed. The same link is in your invitation.</li>
+    <li>With Tailscale connected, open Safari (iPhone) or Chrome (Android) and go to <span class="ui">https://minty.warg-torino.ts.net:8444/</span>. Type it whole: the full name and the <span class="ui">:8444</span> at the end are both needed. The same link is in Rafael's reply.</li>
     <li>Put it on your home screen, so it opens full screen like an app:
       <ul>
         <li><strong>iPhone, Safari:</strong> tap the Share button, then <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li>
@@ -258,10 +283,11 @@
 
   <article class="step" id="signon">
     <div class="body">
-      <h3><span class="num">4</span>Sign on</h3>
+      <h3><span class="num">5</span>Sign on</h3>
       <ul>
         <li>The screen says <strong>Test system</strong>, because VistA reports this is not a production account.</li>
-        <li>Type the demo <strong>access code</strong> and <strong>verify code</strong> from your invitation and tap <strong>Sign on</strong>. <strong>Show</strong> reveals what you typed.</li>
+        <li>Type the demo <strong>access code</strong> and <strong>verify code</strong> from Rafael's reply and tap <strong>Sign on</strong>. <strong>Show</strong> reveals what you typed.</li>
+        <li>There is no system to choose: Certo signs you on to your own copy, by your Tailscale login.</li>
         <li>The <strong>Site notice</strong> under the button is the system's sign-on message, as on CPRS's sign-on form. Tap it to read it.</li>
         <li>Your phone's password manager may offer to save the codes. Certo itself keeps them nowhere.</li>
         <li>If alerts are waiting for you, Certo opens on your <strong>Alerts</strong>; the arrow at the top left takes you to Patient Search.</li>
@@ -275,7 +301,7 @@
 
   <article class="step" id="patient">
     <div class="body">
-      <h3><span class="num">5</span>Select a patient</h3>
+      <h3><span class="num">6</span>Select a patient</h3>
       <ul>
         <li><strong>Search:</strong> type a name, or the SSN's last four, in the box under <strong>Patient Search</strong> and press Search on your keyboard. Try <span class="ui">TEN,PATIENT</span> or <span class="ui">EIGHT,PATIENT</span>.</li>
         <li>Each match shows age, sex, birth date and SSN, so like names can be told apart before you open one. <strong>Details</strong> shows CPRS's patient preview without opening the chart.</li>
@@ -292,7 +318,7 @@
 
   <article class="step" id="glance">
     <div class="body">
-      <h3><span class="num">6</span>The glance</h3>
+      <h3><span class="num">7</span>The glance</h3>
       <p>The chart opens on the glance: what you would look at first, on one page. The five pages are in the bar at the foot of the screen: <strong>Glance</strong>, <strong>Timeline</strong>, <strong>Notes</strong>, <strong>Vitals</strong>, <strong>Labs</strong>.</p>
       <ul>
         <li><strong>The banner</strong>, on every page: name, age, sex, birth date and SSN; the allergies; VistA's flags, postings and a fall-risk mark. Tap the identifiers for primary care and how current the data is, the allergies for each one's reactions, a flag or posting to read it. The banner rolls up as you scroll and keeps the name.</li>
@@ -309,7 +335,7 @@
 
   <article class="step" id="timeline">
     <div class="body">
-      <h3><span class="num">7</span>The timeline</h3>
+      <h3><span class="num">8</span>The timeline</h3>
       <p>The whole record on one time axis, in four lanes: visits and stays, notes, days with vitals and days with labs.</p>
       <ul>
         <li><strong>Choose how much time to show</strong> with the row at the foot: <span class="ui">1W 1M 3M 1Y 5Y 10Y All</span>. It opens on five years. <strong>All</strong> shows the patient's whole life in VistA.</li>
@@ -327,7 +353,7 @@
 
   <article class="step" id="vitals">
     <div class="body">
-      <h3><span class="num">8</span>Vitals</h3>
+      <h3><span class="num">9</span>Vitals</h3>
       <ul>
         <li>One graph a vital, on one time axis: BP, HR, RR, Temp, SpO2, Pain, Ht, Wt and BMI. At the right of each, the latest reading, its date and how long ago.</li>
         <li>The grey band is your site's abnormal limits for that vital. A dashed frame means VistA stores no limits for it.</li>
@@ -344,7 +370,7 @@
 
   <article class="step" id="labs">
     <div class="body">
-      <h3><span class="num">9</span>Labs</h3>
+      <h3><span class="num">10</span>Labs</h3>
       <ul>
         <li>The tests are grouped into domains: CBC, Heme, Coag, LFT, Glucose, Electrolytes, Cholesterol, Cardiac, Renal and more. Tap a domain's chip to show or hide it; the number is how many tests it holds.</li>
         <li>A <span class="flagged">red dot</span> on a chip means VistA flagged a latest result in that domain. Those domains open already shown.</li>
@@ -361,7 +387,7 @@
 
   <article class="step" id="notes">
     <div class="body">
-      <h3><span class="num">10</span>Notes</h3>
+      <h3><span class="num">11</span>Notes</h3>
       <ul>
         <li>Every signed note and discharge summary, newest first, with no date limit. One row for each title on each day: <span class="ui">×4</span> means four that day; tap the row to unfold them.</li>
         <li><strong>Search</strong> titles, authors and places as you type. <strong>Titles ▾</strong> switches to searching the notes' own text: type a word, press Search, and Certo reads every note, with progress and a Stop button.</li>
@@ -378,7 +404,7 @@
 
   <article class="step" id="leaving">
     <div class="body">
-      <h3><span class="num">11</span>Moving around and leaving</h3>
+      <h3><span class="num">12</span>Moving around and leaving</h3>
       <ul>
         <li><strong>Back</strong>, on the screen or your phone, goes back one step. From the chart, the arrow at the banner's left goes back to Patient Search and closes the record. Certo never moves from one patient's chart to another's: to see another patient, go back to Patient Search.</li>
         <li><strong>Hide</strong>, in the banner, blanks the screen at once without signing off. Tap it to show the chart again.</li>
@@ -410,11 +436,13 @@
     <table>
       <thead><tr><th>What you see</th><th>What to do</th></tr></thead>
       <tbody>
-        <tr><td>The page does not load</td><td>Open the Tailscale app: it must say connected, and <span class="ui">minty</span> must be in its list. Use the full address with <span class="ui">:8444</span>. If minty is missing, ask Rafael to send the invitation again.</td></tr>
+        <tr><td>The page does not load</td><td>Open the Tailscale app: it must say connected, and <span class="ui">minty</span> must be in its list. Use the full address with <span class="ui">:8444</span>. If minty is missing, the invite was not accepted, or was accepted with another account: ask Rafael to send it again.</td></tr>
         <tr><td>The address cannot be found</td><td>Use the whole address, <span class="ui">https://minty.warg-torino.ts.net:8444/</span>. The short name <span class="ui">minty</span> does not work for a machine shared with you.</td></tr>
-        <tr><td>Your codes are refused</td><td>Check them against the invitation; Show reveals what you typed. After several wrong tries sign-on locks for a while, as in CPRS.</td></tr>
+        <tr><td>Your codes are refused</td><td>Check them against Rafael's reply; Show reveals what you typed. After several wrong tries your copy locks sign-on for a while, as CPRS does; it affects no one else.</td></tr>
         <tr><td>"You must change your VERIFY CODE"</td><td>Certo never changes codes. Ask Rafael for new demo codes.</td></tr>
-        <tr><td>"This demonstration has no copy of VistA for …"</td><td>Your copy is made for the Tailscale login you accepted the invitation with. Tell Rafael the login the message names, or sign in to Tailscale with the account you used.</td></tr>
+        <tr><td>"This demonstration has no copy of VistA for …"</td><td>The message names the login Tailscale gave Certo. If it is not the one you sent Rafael, switch to that account in the Tailscale app. If it is, your copy is not ready yet, or was removed: tell Rafael.</td></tr>
+        <tr><td>A new phone, or another Tailscale account</td><td>Your copy follows your Tailscale account, not your phone: on a new phone, sign in to Tailscale with the same account. Another account needs a copy of its own: send Rafael its login.</td></tr>
+        <tr><td>You want to start again</td><td>Ask Rafael for a fresh copy. He replaces yours with a new copy of the demo system; what you did in the old one is gone.</td></tr>
         <tr><td>You were signed off</td><td>After 5 minutes untouched, or a minute away from the app, Certo signs you off in VistA. Sign on again.</td></tr>
         <tr><td>"The connection failed"</td><td>The server dropped your session to keep it in step with VistA. Sign on again.</td></tr>
       </tbody>
@@ -427,7 +455,7 @@
   <p>Certo reads VistA as a client of its RPC Broker, signed on as you, in the same context CPRS uses, and draws VistA's own text and flags. It computes no judgement of its own. The longer story, with use cases and its safety features, is in <a href="../certo-guide/">the Certo guide</a>. How it was built from CPRS and checked against it is in <a href="../building-loupe/">Building Loupe on vista-forge</a>, written under its working name.</p>
   <p>The demonstration runs on VA's public demo VistA system, with fictitious patients and demo accounts. You get a copy of it of your own, made for your Tailscale login: what you do there, such as working an alert, no one else sees, and nothing you do reaches the original.</p>
   <p>Certo records which screens are opened and how long each answer takes, so it can be improved. That record never holds a patient's name or any of VistA's words.</p>
-  <p>Please tell Rafael what worked, what didn't, and what you reached for and could not find, by replying to your invitation.</p>
+  <p>Please tell Rafael what worked, what didn't, and what you reached for and could not find, by replying to his message. When you are done, tell him too: he removes your copy and stops sharing Certo with you, and you can delete Tailscale from your phone.</p>
 </section>
 
 </div>
