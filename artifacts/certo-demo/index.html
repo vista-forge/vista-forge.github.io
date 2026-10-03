@@ -125,6 +125,10 @@
   td:first-child { font-weight: 700; width: 34%; }
 
   .tries { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; max-width: var(--read); }
+  .quick { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0; padding: 18px 22px; display: grid; gap: 10px; max-width: 74ch; margin-top: 20px; }
+  .quick h2 { font-size: 1.25rem; }
+  .quick ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
+  .reply { margin: 0; background: var(--accent-soft); border: 1px dashed var(--accent); border-radius: 8px; padding: 12px 14px; font: 500 0.95rem/1.5 var(--mono); white-space: pre-wrap; max-width: 60ch; }
   .about p { max-width: var(--read); color: var(--ink2); }
 
   @media (max-width: 860px) {
@@ -159,6 +163,20 @@
   <p><b>Certo is the planned name.</b> On your phone the app is still called by its working name, Loupe: that is the name under its home-screen icon.</p>
 </div>
 
+<section class="quick" id="quick" aria-labelledby="quick-h">
+  <h2 id="quick-h">The whole path, on one screen</h2>
+  <ol>
+    <li><a href="#tailscale">Install Tailscale</a> on your phone and sign in. Five minutes.</li>
+    <li><a href="#login">Reply to Rafael</a> with your Tailscale login, as the app shows it.</li>
+    <li>Wait for Rafael's reply: a Tailscale invite link and your demo codes.</li>
+    <li><a href="#invite">Accept the invite</a> with the same Tailscale account.</li>
+    <li><a href="#open">Open Certo</a> at <span class="ui">https://minty.warg-torino.ts.net:8444/</span> and add it to your home screen.</li>
+    <li><a href="#signon">Sign on</a> with your demo codes, then follow <a href="#walk-h">the tour</a>.</li>
+    <li>When you are done, <a href="#done">tell Rafael</a> and delete Tailscale.</li>
+  </ol>
+  <p>Everything you need is on this page. Rafael's messages bring only two things it cannot: your invite link and your demo codes.</p>
+</section>
+
 <nav class="toc" aria-label="Contents">
   <h2>Contents</h2>
   <ol>
@@ -175,6 +193,7 @@
     <li><a href="#labs">Labs</a></li>
     <li><a href="#notes">Notes</a></li>
     <li><a href="#leaving">Moving around and leaving</a></li>
+    <li><a href="#done">When you are done</a></li>
     <li><a href="#try">Five things to try</a></li>
     <li><a href="#trouble">If something goes wrong</a></li>
     <li><a href="#about">About this demo</a></li>
@@ -197,6 +216,14 @@
         <li>An iPhone or an Android phone you may install apps on. A hospital-managed phone may not allow a VPN app; use a personal one.</li>
         <li>A Google, Microsoft, Apple or GitHub account to sign in to Tailscale with. Pick the one you will keep using: your copy of the demo system is tied to it.</li>
         <li>A way to reply to Rafael: the message that sent you this guide.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What Rafael sends you</h3>
+      <ul>
+        <li><strong>First:</strong> the link to this guide.</li>
+        <li><strong>Once your copy is ready:</strong> a Tailscale invite link, and your demo access code and verify code.</li>
+        <li>Nothing else. He never asks for a VA code, a password or anything about a real patient.</li>
       </ul>
     </div>
     <div class="card">
@@ -243,8 +270,11 @@
   <ol class="tries">
     <li>In the Tailscale app, tap your account, the picture or initial at the top of the screen. Your login is shown there.</li>
     <li>It is an email address for a Google, Microsoft or Apple account, and looks like <span class="ui">name@github</span> for a GitHub account. If you signed in with Apple and chose to hide your email, it is the relay address the app shows.</li>
-    <li>Reply to the message that sent you this guide, saying that you have installed Tailscale, with your login <strong>exactly as the app shows it</strong>.</li>
+    <li>Reply to the message that sent you this guide, with your login <strong>exactly as the app shows it</strong>. You can copy this and fill it in:</li>
   </ol>
+  <p class="reply">I've installed Tailscale and I'm ready to try Certo.
+My Tailscale login is: ____________
+My phone is: iPhone / Android</p>
   <p>Rafael then makes your own copy of the demo system for that login, from the latest nightly copy, and shares Certo with you. He replies with:</p>
   <ul class="tries">
     <li>a Tailscale invite link, for the next step;</li>
@@ -275,6 +305,7 @@
     </li>
     <li>From now on, open it from its icon, named <strong>Loupe</strong>. Tailscale must be on.</li>
   </ol>
+  <p class="tip">Tailscale is on when its app shows you connected. Your phone shows it too: <span class="ui">VPN</span> in the iPhone's status bar, a key icon in Android's.</p>
 </section>
 
 <section class="block" aria-labelledby="walk-h">
@@ -419,6 +450,15 @@
   </article>
 </section>
 
+<section class="block" id="done" aria-labelledby="done-h">
+  <h2 id="done-h">When you are done</h2>
+  <ol class="tries">
+    <li>Tell Rafael what worked, what didn't, and what you reached for and could not find, by replying to his message. That is what the demo is for.</li>
+    <li>Tell him you are finished. He removes your copy of the demo system and stops sharing Certo with you.</li>
+    <li>Delete the Loupe icon from your home screen, and uninstall Tailscale. If you want your Tailscale account gone too, delete it from Tailscale's admin console at <span class="ui">login.tailscale.com</span>.</li>
+  </ol>
+</section>
+
 <section class="block" id="try" aria-labelledby="try-h">
   <h2 id="try-h">Five things to try</h2>
   <ol class="tries">
@@ -441,6 +481,7 @@
         <tr><td>Your codes are refused</td><td>Check them against Rafael's reply; Show reveals what you typed. After several wrong tries your copy locks sign-on for a while, as CPRS does; it affects no one else.</td></tr>
         <tr><td>"You must change your VERIFY CODE"</td><td>Certo never changes codes. Ask Rafael for new demo codes.</td></tr>
         <tr><td>"This demonstration has no copy of VistA for …"</td><td>The message names the login Tailscale gave Certo. If it is not the one you sent Rafael, switch to that account in the Tailscale app. If it is, your copy is not ready yet, or was removed: tell Rafael.</td></tr>
+        <tr><td>No reply from Rafael yet</td><td>Your copy is set up by hand. If a day has passed, reply to his message again with your Tailscale login.</td></tr>
         <tr><td>A new phone, or another Tailscale account</td><td>Your copy follows your Tailscale account, not your phone: on a new phone, sign in to Tailscale with the same account. Another account needs a copy of its own: send Rafael its login.</td></tr>
         <tr><td>You want to start again</td><td>Ask Rafael for a fresh copy. He replaces yours with a new copy of the demo system; what you did in the old one is gone.</td></tr>
         <tr><td>You were signed off</td><td>After 5 minutes untouched, or a minute away from the app, Certo signs you off in VistA. Sign on again.</td></tr>
@@ -455,7 +496,7 @@
   <p>Certo reads VistA as a client of its RPC Broker, signed on as you, in the same context CPRS uses, and draws VistA's own text and flags. It computes no judgement of its own. The longer story, with use cases and its safety features, is in <a href="../certo-guide/">the Certo guide</a>. How it was built from CPRS and checked against it is in <a href="../building-loupe/">Building Loupe on vista-forge</a>, written under its working name.</p>
   <p>The demonstration runs on VA's public demo VistA system, with fictitious patients and demo accounts. You get a copy of it of your own, made for your Tailscale login: what you do there, such as working an alert, no one else sees, and nothing you do reaches the original.</p>
   <p>Certo records which screens are opened and how long each answer takes, so it can be improved. That record never holds a patient's name or any of VistA's words.</p>
-  <p>Please tell Rafael what worked, what didn't, and what you reached for and could not find, by replying to his message. When you are done, tell him too: he removes your copy and stops sharing Certo with you, and you can delete Tailscale from your phone.</p>
+  <p>Questions at any point: reply to Rafael's message.</p>
 </section>
 
 </div>
