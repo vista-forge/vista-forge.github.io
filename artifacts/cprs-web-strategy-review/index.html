@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="An adversarial review, in two rounds, of the CPRS Web Strategy. Round 1 re-tested every number in the plan against the source, live VistA and the code model. Round 2 ran seven tests live on a throwaway copy of VistA, built a label-level scan of the M code, and stress-tested the plan's own measurements. What held, what was wrong, and what changed in the plan.">
+<style>:root { color-scheme: light; } body { margin: 0; } img { max-width: 100%; } [hidden] { display: none !important; }</style>
+<title>CPRS Web Strategy Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a specification. Sticky contents rail on wide screens, one reading column, wide tables scroll in place. */
+:root {
+  --bg: #f3f5f7; --surface: #ffffff; --ink: #17202a; --ink-2: #3e4a56; --muted: #66717d; --line: #d8dde3;
+  --accent: #0b5d7a; --accent-soft: #e2eff4; --code: #e9edf1; --bar: #2f7f9c; --bar-hi: #0b5d7a;
+  --m: #0f6b63; --m-bg: #ddf1ed; --d: #8a520a; --d-bg: #f9edd6; --x: #475569; --x-bg: #e7ebf0;
+  --p: #64399a; --p-bg: #eee6f8; --r: #1e6b38; --r-bg: #dff1e4; --warn: #a1351e; --warn-bg: #fae6e0;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --text: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0f1418; --surface: #161d23; --ink: #e5eaef; --ink-2: #bcc6cf; --muted: #8f9ba6; --line: #2a333c;
+    --accent: #62b8d5; --accent-soft: #12303b; --code: #1d252d; --bar: #3f93b1; --bar-hi: #7cc9e2;
+    --m: #5fcdbf; --m-bg: #0f2e2a; --d: #e4b25c; --d-bg: #322610; --x: #aab6c3; --x-bg: #222a33;
+    --p: #c3a2ee; --p-bg: #291f39; --r: #80d29c; --r-bg: #15301f; --warn: #ef8a72; --warn-bg: #3a1d16;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1418; --surface: #161d23; --ink: #e5eaef; --ink-2: #bcc6cf; --muted: #8f9ba6; --line: #2a333c;
+  --accent: #62b8d5; --accent-soft: #12303b; --code: #1d252d; --bar: #3f93b1; --bar-hi: #7cc9e2;
+  --m: #5fcdbf; --m-bg: #0f2e2a; --d: #e4b25c; --d-bg: #322610; --x: #aab6c3; --x-bg: #222a33;
+  --p: #c3a2ee; --p-bg: #291f39; --r: #80d29c; --r-bg: #15301f; --warn: #ef8a72; --warn-bg: #3a1d16;
+}
+body { background: var(--bg); color: var(--ink); font: 400 1rem/1.62 var(--text); padding-inline: 18px; padding-block: 36px 96px; }
+.page { max-width: 1220px; margin-inline: auto; display: grid; gap: 36px; }
+@media (min-width: 1120px) {
+  .page { grid-template-columns: 250px minmax(0, 1fr); align-items: start; }
+  .page > header { grid-column: 1 / -1; }
+  nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); max-height: calc(100vh - 40px); overflow-y: auto; }
+}
+header { max-width: 900px; display: grid; gap: 14px; }
+.eyebrow { font: 600 0.78rem/1 var(--display); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 700 clamp(2.1rem, 4.6vw, 3.2rem)/1.04 var(--display); margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.lede { font-size: 1.2rem; line-height: 1.5; color: var(--ink-2); margin: 0; max-width: 64ch; text-wrap: pretty; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 500 0.78rem/1 var(--mono); padding: 6px 9px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--muted); }
+.chip b { color: var(--ink); font-weight: 500; }
+.chip.warn { color: var(--warn); border-color: var(--warn); background: var(--warn-bg); }
+nav.toc { font-size: 0.9rem; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 14px 16px; }
+nav.toc .label { font: 600 0.72rem/1 var(--display); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+nav.toc ol { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 5px; counter-reset: t; }
+nav.toc li { margin: 0; }
+nav.toc a { color: var(--ink); text-decoration: none; display: block; }
+nav.toc a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+nav.toc .n { font-family: var(--mono); color: var(--muted); font-size: 0.8em; display: inline-block; min-width: 2.2em; }
+@media (max-width: 1119px) { nav.toc ol { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); } }
+article { max-width: 860px; min-width: 0; }
+h2 { font: 700 1.6rem/1.18 var(--display); margin: 2.4em 0 0.6em; padding-top: 1em; border-top: 1px solid var(--line); text-wrap: balance; scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 18px); }
+h2 .n { font-family: var(--mono); font-weight: 500; font-size: 0.7em; color: var(--muted); margin-right: 0.5em; vertical-align: 0.12em; }
+h3 { font: 600 1.18rem/1.3 var(--display); margin: 1.8em 0 0.5em; text-wrap: balance; scroll-margin-top: 18px; }
+h4 { font: 600 0.98rem/1.35 var(--text); margin: 1.4em 0 0.4em; }
+p, ul, ol { margin: 0 0 1em; }
+p { max-width: 70ch; }
+ul, ol { padding-left: 1.3em; }
+li { margin: 0.3em 0; max-width: 68ch; }
+strong { font-weight: 600; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+code { font-family: var(--mono); font-size: 0.84em; background: var(--code); padding: 0.06em 0.32em; border-radius: 4px; overflow-wrap: anywhere; }
+.abstract { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px; }
+.abstract h2 { margin-top: 0; padding-top: 0; border-top: 0; }
+.abstract p { max-width: none; }
+.callout { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 0 0 1.2em; }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+.callout.warn { background: var(--warn-bg); border-left-color: var(--warn); }
+.pv { display: inline-block; font: 500 0.68rem/1 var(--mono); letter-spacing: 0.03em; padding: 3px 5px 3px; border-radius: 3px; vertical-align: 0.14em; white-space: nowrap; margin-right: 2px; }
+.pv.m { color: var(--m); background: var(--m-bg); }
+.pv.d { color: var(--d); background: var(--d-bg); }
+.pv.x { color: var(--x); background: var(--x-bg); }
+.pv.p { color: var(--p); background: var(--p-bg); }
+.pv.r { color: var(--r); background: var(--r-bg); }
+.legend-row { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.86rem; color: var(--ink-2); margin: 0 0 1.4em; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 0 0 1.4em; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 14px 12px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.tile .k { font: 600 0.72rem/1.2 var(--display); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.tile .v { font: 600 1.7rem/1.05 var(--display); font-variant-numeric: tabular-nums; }
+.tile .s { font-size: 0.84rem; color: var(--ink-2); line-height: 1.4; }
+.table-wrap { overflow-x: auto; margin: 0 0 1.4em; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; line-height: 1.45; font-variant-numeric: tabular-nums; }
+th { text-align: left; font: 600 0.72rem/1.3 var(--display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 9px 11px; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--surface); }
+td { padding: 9px 11px; vertical-align: top; border-top: 1px solid var(--line); }
+tr:first-child td { border-top: 0; }
+td.num, th.num { text-align: right; white-space: nowrap; }
+td code { font-size: 0.78rem; }
+td.w { min-width: 15em; }
+td.ww { min-width: 22em; }
+.kind { font: 500 0.7rem/1 var(--mono); padding: 3px 5px; border-radius: 3px; white-space: nowrap; background: var(--code); color: var(--ink-2); }
+.kind.i { background: var(--accent-soft); color: var(--accent); }
+figure { margin: 0 0 1.6em; }
+.fig { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 14px; }
+.fig svg { display: block; width: 100%; height: auto; }
+.fig.arch svg { min-width: 760px; }
+.fig.bars svg { min-width: 560px; }
+figcaption { font-size: 0.86rem; color: var(--muted); margin-top: 8px; max-width: 75ch; }
+svg .t { fill: var(--ink); font: 400 12.5px var(--text); }
+svg .tb { fill: var(--ink); font: 600 13px var(--text); }
+svg .th { fill: var(--ink); font: 700 14px var(--display); letter-spacing: 0.02em; }
+svg .tm { fill: var(--muted); font: 400 11.5px var(--text); }
+svg .ta { fill: var(--accent); font: 700 13px var(--display); letter-spacing: 0.06em; }
+svg .box { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+svg .boxa { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.4; }
+svg .boxp { fill: var(--p-bg); stroke: var(--p); stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .boxm { fill: var(--m-bg); stroke: var(--m); stroke-width: 1.2; }
+svg .band { fill: var(--bg); stroke: none; }
+svg .ln { fill: none; stroke: var(--muted); stroke-width: 1.4; }
+svg .lnd { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 4 4; }
+svg .ah { fill: var(--muted); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .bar { fill: var(--bar); }
+svg .bar.hot { fill: var(--bar-hi); }
+svg .hit { fill: transparent; cursor: default; }
+.tip { position: fixed; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font-size: 0.82rem; line-height: 1.4; box-shadow: 0 4px 16px rgba(0,0,0,0.12); max-width: 300px; z-index: 10; }
+.tip b { font-weight: 600; }
+.dl { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; margin: 0 0 1.2em; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.dl > div { padding: 12px 14px; border-top: 1px solid var(--line); }
+.dl > div:first-child { border-top: 0; }
+.dl .h { font-weight: 600; display: block; margin-bottom: 2px; }
+.dl p { margin: 0.2em 0 0; max-width: none; }
+.dl .tag { font: 500 0.72rem/1 var(--mono); color: var(--muted); margin-left: 6px; }
+footer.src { max-width: 860px; font-size: 0.86rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+@media (min-width: 1120px) { footer.src { grid-column: 2; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+
+.vd { display: inline-block; font: 500 0.7rem/1 var(--mono); letter-spacing: 0.03em; padding: 4px 6px; border-radius: 3px; white-space: nowrap; vertical-align: 0.1em; }
+.vd.hold { color: var(--m); background: var(--m-bg); }
+.vd.corr { color: var(--d); background: var(--d-bg); }
+.vd.wrong { color: var(--warn); background: var(--warn-bg); }
+.vd.unsup { color: var(--x); background: var(--x-bg); }
+.vd.miss { color: var(--p); background: var(--p-bg); }
+.vd.meas { color: var(--r); background: var(--r-bg); }
+.abstract ol { padding-left: 1.3em; }
+.abstract li { max-width: none; margin: 0.5em 0; }
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <div class="eyebrow">vista-forge · adversarial review · two rounds · 2026-10-03</div>
+  <h1>CPRS Web Strategy Review</h1>
+  <p class="lede">Two rounds. Round 1 re-tested every number in version 1 of the plan. Round 2 ran the open tests live on a throwaway copy of VistA, built a label-level scan of the M code, and turned the same scrutiny on version 2.</p>
+  <div class="meta">
+    <span class="chip">round 1 reviewed <b>version 1</b></span>
+    <span class="chip">round 2 tested <b>version 2</b></span>
+    <span class="chip">measured <b>2026-10-03</b></span>
+    <span class="chip">docs@<b>d6b326e</b></span>
+    <span class="chip">gold engines <b>read-only</b>; writes on a throwaway copy</span>
+    <span class="chip">the plan is now at <b><a href="../cprs-web-strategy/">version 3</a></b>, amended to both rounds</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <div class="label">Round 2: live tests, on version 2</div>
+  <ol>
+    <li><a href="#v2"><span class="n">—</span>Round 2 verdict</a></li>
+    <li><a href="#t1"><span class="n">T1</span>Live tests on a throwaway copy</a></li>
+    <li><a href="#t2"><span class="n">T2</span>The M behind the RPCs</a></li>
+    <li><a href="#t3"><span class="n">T3</span>The engine test, stress-tested</a></li>
+    <li><a href="#t4"><span class="n">T4</span>The allowlist, tested</a></li>
+    <li><a href="#t5"><span class="n">T5</span>The journal is a replay</a></li>
+    <li><a href="#t6"><span class="n">T6</span>Agents, second jobs, licences</a></li>
+    <li><a href="#t7"><span class="n">T7</span>Rows and grammar features</a></li>
+    <li><a href="#t8"><span class="n">T8</span>Outside claims checked</a></li>
+    <li><a href="#t9"><span class="n">T9</span>Changes for version 2</a></li>
+    <li><a href="#t10"><span class="n">T10</span>Still not measured</a></li>
+    <li><a href="#t11"><span class="n">T11</span>How round 2 was taken</a></li>
+  </ol>
+  <div class="label" style="margin-top:14px">Round 1: on version 1</div>
+  <ol>
+    <li><a href="#verdict"><span class="n">—</span>Round 1 verdict</a></li>
+    <li><a href="#r1"><span class="n">1</span>What was tested</a></li>
+    <li><a href="#r2"><span class="n">2</span>What held</a></li>
+    <li><a href="#r3"><span class="n">3</span>Numbers corrected</a></li>
+    <li><a href="#r4"><span class="n">4</span>The metric at 100%</a></li>
+    <li><a href="#r5"><span class="n">5</span>Duties and engines missed</a></li>
+    <li><a href="#r6"><span class="n">6</span>Outside connections</a></li>
+    <li><a href="#r7"><span class="n">7</span>One stateful session holder</a></li>
+    <li><a href="#r8"><span class="n">8</span>Industry evidence</a></li>
+    <li><a href="#r9"><span class="n">9</span>Scale and governance</a></li>
+    <li><a href="#r10"><span class="n">10</span>Order of work</a></li>
+    <li><a href="#r11"><span class="n">11</span>Changes for version 1</a></li>
+    <li><a href="#r12"><span class="n">12</span>Not measured</a></li>
+    <li><a href="#r13"><span class="n">13</span>How each number was taken</a></li>
+  </ol>
+</nav>
+
+<article>
+
+<section class="abstract" id="v2">
+<h2>Round 2 verdict</h2>
+<p><strong>The plan's two central safety claims are no longer code readings. They were run, on a throwaway copy of vehu, and both are true.</strong> VistA signed an order, and released a discontinue, on a signature code it had just declared invalid. It let a user whose write access is "no" create a note and sign an order. Round 2 also built a label-level scan of the M code, stress-tested version 2's own new measurements, and checked four outside claims against primary documents.</p>
+<ol>
+  <li><strong>Order signing does not check the code</strong> <span class="vd meas">measured</span>. <code>ORWU VALIDSIG</code> answered 0 for a made-up code. <code>ORWDX SEND</code> with the same code answered "signed" and filed the signature. A second send released an unsigned discontinue and the lab order became discontinued. A note signature with the same code was refused.</li>
+  <li><strong>Write access is not enforced by the server</strong> <span class="vd meas">measured</span>. With Notes and Orders set to "no" for a user, the server reported the restriction to the client, then created the note and signed the order when asked.</li>
+  <li><strong>The server serves any patient to a user restricted to a patient list</strong> <span class="vd meas">measured</span>. This exposes a rule version 2 lacks: every patient-scoped call must name the patient the session selected and checked. 217 of the RPCs CPRS uses take a patient parameter, and 107 of those write.</li>
+  <li><strong>Locks vanish within three seconds of a dropped connection</strong> <span class="vd meas">measured</span>, and hold while the session lives. Version 2's work-in-progress journal is therefore a replay protocol: after a restart the locks are gone and may be held by someone else.</li>
+  <li><strong>A second job for the same person is refused where multiple sign-on is not allowed</strong> <span class="vd meas">measured</span>. That blocks version 2's "agents get their own VistA job", and the web client beside CPRS, for those users.</li>
+  <li><strong>The M behind CPRS's RPCs is about 157,000 code lines in 2,637 routines</strong> by a label-level scan, with FileMan not entered and 2,407 indirection sites unresolved. This replaces the 37,000-to-a-million range.</li>
+  <li><strong>Version 2's "six interpreters" is fragile.</strong> Three sit exactly on the threshold. Only two survive every variant of the test.</li>
+  <li><strong>Version 2's allowlist holds against everything recorded</strong> (217 of 217 RPCs), with two gaps: RPC names passed inside remote calls, and add-in calls among the "unused" set.</li>
+</ol>
+<p>Three round-1 statements are refined in §T8: keyboard parity has a third route, the licence concern is narrower than stated, and controlled-substance signing has a confirmed audit requirement. The changes for the plan are in §T9, and version 3 of the plan carries them.</p>
+</section>
+
+<div class="legend-row" aria-label="Verdict labels">
+  <span><span class="vd meas">measured</span> run live on the throwaway copy</span>
+  <span><span class="vd hold">holds</span> re-tested and reproduced</span>
+  <span><span class="vd corr">corrected</span> right in substance, number or wording off</span>
+  <span><span class="vd wrong">wrong</span> contradicted by measurement</span>
+  <span><span class="vd unsup">unsupported</span> asserted beyond the evidence</span>
+  <span><span class="vd miss">missing</span> absent from the plan</span>
+</div>
+
+<h2 id="t1"><span class="n">T1</span>Live tests on a throwaway copy</h2>
+<p>The copy was made with the org's own script from last night's backup of vehu, on an internal network that nothing leaves, and removed in the same session. Gold was not touched. Calls were sent as two demo clinicians through v-base's Broker client, several calls to a session where the test needed it. State on the copy was set through the driver stack. Nothing was written into any repository.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>test</th><th>what was sent</th><th>what VistA did</th></tr></thead>
+<tbody>
+<tr><td><strong>A. Sign an order with a wrong code</strong></td><td class="ww">As a provider holding the ORES key. <code>ORWU VALIDSIG</code> with a made-up code. Then <code>ORWDX SEND</code> with that code, signature status "signed", on an unsigned radiology order another provider had entered</td><td class="ww">Validation answered <code>0</code>. The send answered <code>36160;1^S</code>. The order action went from "not signed" to "electronically signed", signed by the caller, with today's time</td></tr>
+<tr><td><strong>E. Release a discontinue with a wrong code</strong></td><td class="ww">The same call on an unsigned, unreleased discontinue of a pending lab order</td><td class="ww"><code>36345;2^RS</code>: released and signed. The order's status went from pending to discontinued</td></tr>
+<tr><td><strong>D. Sign a note with a wrong code</strong> (contrast)</td><td class="ww"><code>TIU SIGN RECORD</code> with the same made-up code</td><td class="ww">Refused: "You have entered an incorrect Electronic Signature Code". The note stayed unsigned</td></tr>
+<tr><td><strong>B. Write with write access "no"</strong></td><td class="ww">On the copy, a clinician's Notes and Orders write access were set to "no" at user level. As that clinician: the access report, then <code>TIU CREATE RECORD</code>, then <code>ORWDX SEND</code> with a wrong code</td><td class="ww">The access report listed Consults, Discharge Summaries, Meds, Problems and Surgery as writable, left out Notes and Orders, and named what depends on them. The note was created (a new document, authored by that clinician). The order was signed by that clinician</td></tr>
+<tr><td><strong>G. Restricted patient list</strong></td><td class="ww">The clinician was restricted to a list of two patients. Then patient selection and a problem-list read for a patient outside it</td><td class="ww">The user-information reply reported the restriction. Selection returned the outside patient's name, sex, date of birth, SSN and ICN. The problem list answered. Only the restricted lookup call honoured the list</td></tr>
+<tr><td><strong>C. Locks when a client drops</strong></td><td class="ww">Clinician 1 took the patient lock and a note lock. Clinician 2 tried both. Clinician 1's socket was closed with no sign-off. Three seconds later clinician 2 tried again</td><td class="ww">While session 1 lived: "VEHU,TEN has this patient locked with another session" and "Another session has this record locked". After the drop: both locks granted</td></tr>
+<tr><td><strong>F. A second job for one person</strong></td><td class="ww">The clinician's multiple sign-on was set to "not allowed". One session opened, then a second as the same person</td><td class="ww">The second was refused: "MULTIPLE SIGNONS NOT ALLOWED"</td></tr>
+</tbody></table></div>
+<p>What these settle:</p>
+<ul>
+  <li><strong>Duty 1 (order signature) and duty 2 (write access) are the client's alone.</strong> Round 1 and version 2 said "by the code" and "to be tested". They are tested. A service that forwards <code>ORWDX SEND</code> without validating the code first files legal signatures on anything it is handed.</li>
+  <li><strong>The server tells the client the rules and then does not apply them.</strong> In tests B and G the restriction was in the reply the client reads at sign-on. The enforcement is whatever the client does with it.</li>
+  <li><strong>Test A also shows a provider signing another provider's order.</strong> The server allowed it. Whether CPRS would offer that order for signature is a client rule to be read from the source.</li>
+  <li><strong>The September review's lock finding is confirmed.</strong> A service that keeps a job alive after its browser has gone is what would hold a lock.</li>
+</ul>
+
+<h2 id="t2"><span class="n">T2</span>The M behind the RPCs, at label level</h2>
+<p>Round 1 showed that the routine-level call graph gives anything from 37,000 lines to a million. Version 2 printed that range and listed a label-level graph as an unknown. Round 2 built one: a scanner that splits each routine into labels, follows calls label to label with fall-through, and records writes, locks, queued tasks and indirection.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>measure</th><th class="num">value</th><th>note</th></tr></thead>
+<tbody>
+<tr><td>code lines reachable from the 1,190 RPCs</td><td class="num">156,509</td><td class="w">in 14,916 labels of 2,637 routines, 60 packages. Comment and blank lines are not counted</td></tr>
+<tr><td>FileMan entry points called</td><td class="num">72</td><td class="w">not entered: FileMan runs code held in the data dictionary, which no static scan can follow</td></tr>
+<tr><td>indirection sites in reach</td><td class="num">2,407</td><td class="w">1,925 indirect calls or references and 482 <code>XECUTE</code> commands. What they run is unresolved, so the figure above is a floor</td></tr>
+<tr><td>per RPC, median</td><td class="num">130 lines</td><td class="w">three quarters reach under 340 lines; one in ten reaches over 3,700</td></tr>
+<tr><td>largest reaches</td><td class="num">≈60,000</td><td class="w">the order-check calls, then order save (56,940) and order send (55,130)</td></tr>
+</tbody></table></div>
+<p><strong>A first effect class for every RPC</strong>, from what its reach writes:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>class</th><th class="num">of the 1,190</th><th class="num">of the 1,024 used</th><th class="num">of the 166 unused</th></tr></thead>
+<tbody>
+<tr><td>writes stored data (a global outside the temp globals, a FileMan filer, a parameter save)</td><td class="num">341</td><td class="num">304</td><td class="num">37</td></tr>
+<tr><td>queues a task, alert or mail only</td><td class="num">19</td><td class="num">15</td><td class="num">4</td></tr>
+<tr><td>touches only job state: temp globals or locks</td><td class="num">194</td><td class="num">158</td><td class="num">36</td></tr>
+<tr><td>no write found</td><td class="num">636</td><td class="num">547</td><td class="num">89</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>The scanner was checked against known answers.</strong> Dialog definition: 21 lines, no write. Order save and send, note sign: stored writes, filers, locks, mail. The sensitive-record check: writes the security log. Patient selection: kills temp globals. Signature validation: 15 lines, no write. Window-layout save: a parameter write. An early version missed <code>ORWDX SEND</code> entirely because its label holds only comments and falls through to the next; that bug was found by the known answers and fixed.</li>
+  <li><strong>It is a first cut.</strong> 211 of the 636 "no write found" have unresolved indirection in reach, and 550 of the 1,024 used RPCs do. September's heuristic gave 468 writers; this gives 360 writers and 194 that only touch job state, which the earlier scan did not separate.</li>
+  <li><strong>53 RPCs reach the web-service client and 30 the remote-RPC machinery.</strong> September's figure was 33 by a different method.</li>
+</ul>
+
+<h2 id="t3"><span class="n">T3</span>Version 2's engine test, stress-tested</h2>
+<p>Version 2 classed a group as an interpreter when it constructs at least 10 controls at run time and its RPCs read a definition file. Round 2 varied each part of that test.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>group</th><th class="num">controls constructed</th><th class="num">controls parented</th><th>threshold 10</th><th>threshold 15</th><th>by parenting, 10</th></tr></thead>
+<tbody>
+<tr><td>Note template engine</td><td class="num">18</td><td class="num">15</td><td>interpreter</td><td>interpreter</td><td>interpreter</td></tr>
+<tr><td>Immunization engine</td><td class="num">18</td><td class="num">14</td><td>interpreter</td><td>interpreter</td><td>interpreter</td></tr>
+<tr><td>Order dialog engine</td><td class="num">10</td><td class="num">32</td><td>interpreter</td><td>drops out</td><td>interpreter</td></tr>
+<tr><td>Reminder dialog engine</td><td class="num">10</td><td class="num">11</td><td>interpreter</td><td>drops out</td><td>interpreter</td></tr>
+<tr><td>Pathology order builder</td><td class="num">10</td><td class="num">17</td><td>interpreter</td><td>drops out</td><td>interpreter</td></tr>
+<tr><td>Cover sheet engine</td><td class="num">32</td><td class="num">5</td><td>interpreter</td><td>interpreter</td><td>drops out</td></tr>
+<tr><td>Application shell and chart core</td><td class="num">1</td><td class="num">12</td><td>definition-driven</td><td>definition-driven</td><td>interpreter</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>Three of the six sit exactly on the threshold of 10.</strong> Raise it to 15 and they drop out. The threshold was chosen after the counts were seen.</li>
+  <li><strong>A second signal disagrees on two groups.</strong> Counting where a control is given a parent at run time, the cover sheet drops out and the application shell comes in.</li>
+  <li><strong>Only the template and immunization engines are interpreters under every variant.</strong> Five groups pass both signals at 10: those two, order dialogs, reminder dialogs and the pathology builder.</li>
+  <li><strong>The definition-file half of the test is robust.</strong> Rescanned with the label-level scanner at one, two and three calls deep and with no limit, only graphing changes class, at depth one. Version 2's scan did not follow calls within a routine; the corrected scan raises the counts and changes no class.</li>
+</ul>
+<p><strong>Fix:</strong> print both signals, call the five that pass both "interpreters", list the cover sheet and the shell as "one signal only", and stop presenting six as a measured result.</p>
+
+<h2 id="t4"><span class="n">T4</span>Version 2's allowlist, tested</h2>
+<p>Version 2 defines the allowlist as the 1,067 RPCs CPRS and its Vitals DLL use, and refuses the 166 others the context admits.</p>
+<ul>
+  <li><strong>It holds against everything CPRS was recorded sending</strong> <span class="vd hold">holds</span>. The September tap list and every committed recording through 2026-09-28 name 217 distinct RPCs. All 217 are inside the used set.</li>
+  <li><strong>Remote calls carry an RPC name inside a parameter</strong> <span class="vd miss">missing</span>. Five call sites send <code>XWB REMOTE RPC</code> with the RPC to run at the other site as an argument: one literal (<code>ORWCIRN RESTRICT</code>) and four that pass a variable supplied by the Reports and Labs tabs. An allowlist that checks only the outer name passes any inner name.</li>
+  <li><strong>The "unused" 166 include writers that an add-in may send</strong> <span class="vd miss">missing</span>. 37 of them write stored data. Among them are a mental-health save and results call and an imaging import. No CPRS unit names them, and who sends them is unknown: an add-in without source, or nobody. Refusing them by default is right. It also means an add-in may not work through the service until its calls are recorded and admitted.</li>
+  <li><strong>The allowlist is per site.</strong> Eight of vehu's used names come only from its report definitions. Another site's definitions name others.</li>
+  <li><strong>A name list is not enough</strong> <span class="vd miss">missing</span>. Test G shows the server answers for any patient number. The session core has to hold the selected, checked patient and refuse a patient-scoped call that names another: 217 used RPCs take a patient parameter by name, a lower bound, and 107 of them write stored data. The security study in the operator's archive listed the same check ("invalid patient for session").</li>
+</ul>
+
+<h2 id="t5"><span class="n">T5</span>The work-in-progress journal is a replay protocol</h2>
+<p>Version 2 recommends that the session service journal each unsaved interaction "so a restarted service or a reloaded page can rebuild the dialog". The measurements say what rebuilding involves.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>group</th><th class="num">RPCs it names</th><th class="num">no write found</th><th class="num">touch job state or locks</th><th class="num">write stored data</th></tr></thead>
+<tbody>
+<tr><td>Order dialog engine</td><td class="num">143</td><td class="num">103</td><td class="num">37</td><td class="num">20</td></tr>
+<tr><td>Order management and release</td><td class="num">181</td><td class="num">107</td><td class="num">64</td><td class="num">52</td></tr>
+<tr><td>Encounter engine</td><td class="num">63</td><td class="num">38</td><td class="num">25</td><td class="num">4</td></tr>
+<tr><td>Reminder dialog engine</td><td class="num">39</td><td class="num">19</td><td class="num">16</td><td class="num">16</td></tr>
+<tr><td>Note template engine</td><td class="num">37</td><td class="num">19</td><td class="num">15</td><td class="num">9</td></tr>
+</tbody></table></div>
+<p>The classes overlap, since one call can do both. After a restart the VistA job is gone, and with it its temp globals and its locks (test C). Rebuilding a half-filled order dialog means re-sending the state-building calls in order, never re-sending the ones that write stored data, and re-taking a lock that someone else may now hold. A reloaded browser page is easier, because the job is still alive. Version 2 treats the two cases as one.</p>
+<p><strong>Fix:</strong> specify the two cases apart. For a restart, say what the clinician sees when the lock cannot be re-taken, and add that case to phase 2's exit test.</p>
+
+<h2 id="t6"><span class="n">T6</span>Agents, second jobs and licences</h2>
+<ul>
+  <li><strong>Multiple sign-on</strong> <span class="vd meas">measured</span>. Test F: a second session for a person whose setting is "not allowed" is refused. In the code, every Broker sign-on path runs the same check, the one-time token path included, and a third setting counts sign-ons per network address. On vehu 8 users have "not allowed" (measured in September). For them an agent cannot have its own job, and the web client cannot run beside CPRS.</li>
+  <li><strong>Patient context</strong>. Re-read today: patient selection deletes the job's order-check session, encounter cache and allergy data. So an agent inside the clinician's job would clear the clinician's order checks. With its own job refused for some users, version 2's agent design has no safe path for them. The remaining option is an agent that reads only through calls the clinician's own session makes on its behalf while no workflow is open, which needs to be designed and ruled.</li>
+  <li><strong>Licences</strong> <span class="vd corr">corrected</span>. The vendor's documentation confirms the rule round 1 cited from memory: a licence unit covers up to 25 connections from one user, and beyond that "the user is now consuming one license unit per connection". A user is identified by address unless the application names one, and neither Kernel nor the Broker does in this source. So through a middle tier every connection past the 25th costs a unit. For one connection per clinician that is no worse than one workstation each. What changes is that a clinician's extra connections, an agent's job or a second connection for speed, each cost a unit where a workstation's were free. Round 1 overstated this as a general increase.</li>
+</ul>
+
+<h2 id="t7"><span class="n">T7</span>Rows and grammar features</h2>
+<ul>
+  <li><strong>The row projection survives a second basis</strong> <span class="vd hold">holds</span>. The 17 units Loupe's 75 rows mainly cover hold 6,999 lines and 114 event bindings: 0.66 rows per binding. Applied to the 4,834 compiled bindings that is about 3,200 rows, inside version 2's range of 1,300 to 4,400. Loupe's rows were written for a phone client, and 18 were ruled out; a drop-in replacement would have more rows per screen, so the upper half of the range is the safer reading.</li>
+  <li><strong>vehu's data exercises the first level of every grammar</strong> <span class="vd hold">holds</span>, so version 2's "matched" gate can be met there:
+    <ul>
+      <li>template fields: all 10 creatable types are present (text 319, check boxes 292, radio 239, edit 140, word processing 133, combo 130, hyperlink 119, button 45, date 37, number 16), and all 6 date subtypes;</li>
+      <li>templates: 3,006 groups, 2,689 templates, 90 classes, the folder types; 3,269 of 5,837 contain a field and 373 an object marker;</li>
+      <li>reminder dialogs: all 7 entry types (6,261 elements, 3,357 groups, 185 dialogs, 183 prompts, 67 result elements, 26 forced values, 20 result groups); 5,951 entries have components, the largest 39;</li>
+      <li>order prompts: 8 data types across 127 prompts.</li>
+    </ul>
+    What the gate cannot yet cover is combinations of features, and anything another site uses that vehu does not.</li>
+</ul>
+
+<h2 id="t8"><span class="n">T8</span>Outside claims checked against primary documents</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>claim</th><th>what the document says</th><th>effect</th></tr></thead>
+<tbody>
+<tr><td class="w">a browser tab will not release Ctrl+N and the like, so keyboard parity needs the installed host (round 1)</td><td class="ww">Chrome's documentation: "certain keys like Esc, Alt + Tab … and Ctrl + N are not available to web applications because they are captured by the browser or the underlying operating system", and its Keyboard Lock API lets a page in full screen capture them</td><td class="w"><span class="vd corr">corrected</span> There is a third route: full screen with Keyboard Lock in a Chromium browser. Not tested here</td></tr>
+<tr><td class="w">the companion's host can hand every key to the page (version 2)</td><td class="ww">Microsoft's WebView2 reference: a setting disables the browser's accelerator keys, and an event gives the host each accelerator key press to handle. The project's issue tracker has reports of the setting having no effect in some runtime versions</td><td class="w"><span class="vd hold">holds</span>, with a version risk to test</td></tr>
+<tr><td class="w">licence units are counted per connecting user (round 1, from memory)</td><td class="ww">InterSystems' documentation: up to 25 connections per licence unit; past that, one unit per connection</td><td class="w"><span class="vd corr">corrected</span> as in §T6</td></tr>
+<tr><td class="w">controlled-substance signing is a regulated function of the application (round 1, unresearched)</td><td class="ww">Federal rule: the provider of a prescribing application "must have a third-party audit of the application" before it is used to sign controlled-substance prescriptions, again whenever that functionality is altered, and at least every two years; a certification approved by the regulator may stand in</td><td class="w"><span class="vd hold">holds</span> A web client that signs these orders needs its own audit or certification. Read through a search summary of the rule</td></tr>
+</tbody></table></div>
+
+<h2 id="t9"><span class="n">T9</span>What should change in version 2</h2>
+<ol>
+  <li><strong>Mark duties 1, 2, 4 and 6 as measured,</strong> with the test results, and take them out of the unknowns. Note that test A had one provider sign another's order.</li>
+  <li><strong>Add a duty: bind every patient-scoped call to the selected, checked patient</strong> (§T4). It belongs beside the sensitive-record rule.</li>
+  <li><strong>Replace the 37k-to-1M range</strong> with the label-level figure and its two limits, and carry the effect class as a column of the RPC registry (§T2).</li>
+  <li><strong>Restate the engine classification</strong> with both signals and the five-plus-two result (§T3).</li>
+  <li><strong>Extend the allowlist:</strong> inner names of remote calls, a per-site list, and a named plan for add-in calls among the refused set (§T4).</li>
+  <li><strong>Split the journal into reload and restart,</strong> and specify restart as a replay with its failure cases (§T5).</li>
+  <li><strong>Redesign the agent path</strong> for users who cannot have a second job, and state the licence cost of each extra connection (§T6).</li>
+  <li><strong>Add the full-screen route</strong> to the keyboard options, and the WebView2 version risk (§T8).</li>
+  <li><strong>Move controlled-substance signing from "unknown" to "requires an audit or certification"</strong> in track B.</li>
+  <li><strong>Add the bindings-based projection</strong> (about 3,200 rows) beside the lines-based range, and say the grammar's first level is present on vehu (§T7).</li>
+</ol>
+
+<h2 id="t10"><span class="n">T10</span>Still not measured</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>open</th><th>what would settle it</th></tr></thead>
+<tbody>
+<tr><td class="w">what the 2,407 indirection sites run</td><td class="w">resolve the dispatch tables from site data: report routines, TIU objects, computed findings, order-check rules</td></tr>
+<tr><td class="w">whether the one-time token sign-on is refused like the code sign-on in test F</td><td class="w">a token sign-on on a throwaway copy; the code says the same check runs</td></tr>
+<tr><td class="w">the remaining duty candidates: order-check acknowledgement, encounter prompting, copy/paste tracking</td><td class="w">skip each on a throwaway copy, as tests A and B did</td></tr>
+<tr><td class="w">how the reserved keys behave in Edge, in an installed web app, in full screen with Keyboard Lock, and in a WebView2 host</td><td class="w">a test page on a Windows machine with Edge</td></tr>
+<tr><td class="w">whether CPRS rebuilds from this source</td><td class="w">an attempt in the Windows guest</td></tr>
+<tr><td class="w">restart replay of a half-filled order dialog</td><td class="w">phase 2 of the plan</td></tr>
+<tr><td class="w">what CPRS itself offers for signature when the order is another provider's</td><td class="w">a source read of the signing forms</td></tr>
+<tr><td class="w">everything in track B</td><td class="w">not answerable here</td></tr>
+</tbody></table></div>
+
+<h2 id="t11"><span class="n">T11</span>How round 2 was taken</h2>
+<ul>
+  <li><strong>The throwaway copy:</strong> <code>loupe/scripts/throwaway.sh up</code>, from the backup written 2026-10-03 01:49, at a pinned address on an internal Docker network; <code>down</code> the same session, which measured that no container, network, directory or listener was left.</li>
+  <li><strong>The Broker client:</strong> a scratch test laid over v-rpc's client package with <code>go test -overlay</code>, so no file entered the repository. It refuses any profile whose broker is not the throwaway's address. Identities were the two demo clinicians in the credentials file.</li>
+  <li><strong>State on the copy:</strong> through <code>m engine exec --docker</code> on the copy. Write access was set through the parameter API; the multiple sign-on field and the restricted-list node were set directly; orders and documents were read before and after.</li>
+  <li><strong>The label-level scanner:</strong> each routine in vista-meta's source split at labels; commands tokenised after strings and comments are removed; <code>DO</code>, <code>GOTO</code>, <code>JOB</code> and extrinsic calls followed label to label, within and between routines, with fall-through when a label does not end in an unconditional quit; FileMan routines recorded and not entered; <code>SET</code>, <code>KILL</code> and <code>MERGE</code> targets recorded by global, with the three temp globals kept apart; indirection and <code>XECUTE</code> counted.</li>
+  <li><strong>Engine-test variants:</strong> control constructors and <code>.Parent :=</code> assignments per compiled unit; definition files per RPC from the scanner at depths 1, 2, 3 and unlimited.</li>
+  <li><strong>Allowlist test:</strong> the tap's 199 names of 2026-09-23 and every call in Loupe's committed CPRS recordings.</li>
+  <li><strong>Grammar features:</strong> tallies of the type fields of the template, template-field, reminder-dialog and order-dialog files on vehu, read-only.</li>
+  <li><strong>Code read today:</strong> patient selection's deletions (<code>SELECT^ORWPT</code>), the multiple sign-on check (<code>USER^XUS1A</code>, called from the Broker's sign-on), the Broker's one-message-at-a-time loop and its halt on a read error (<code>XWBTCPM</code>).</li>
+  <li><strong>Documents:</strong> <a href="https://developer.chrome.com/docs/capabilities/web-apis/keyboard-lock">Chrome, Keyboard Lock</a>; <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.web.webview2.core.corewebview2settings.arebrowseracceleratorkeysenabled">Microsoft, WebView2 accelerator keys</a> and <a href="https://github.com/MicrosoftEdge/WebView2Feedback/issues/4278">an issue report</a>; <a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSA_license">InterSystems, licensing</a>; <a href="https://www.ecfr.gov/current/title-21/chapter-II/part-1311/subpart-C">21 CFR 1311, subpart C</a>. All four through search summaries of the pages.</li>
+  <li><strong>Kept:</strong> the scripts, lists and a record of the seven tests are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed.</li>
+</ul>
+
+<h2 id="round1" style="margin-top:3.2em">Round 1, on version 1 of the plan</h2>
+<p>What follows is the first review, unchanged. Its thirteen changes were folded into version 2 of the plan. Where round 2 has since measured or corrected a point, the round 2 section says so.</p>
+
+<section class="abstract" id="verdict">
+<h2>Round 1 verdict</h2>
+<p><strong>The direction stands. The plan should not be ruled as written.</strong> Calling VistA's rules instead of rewriting them, interpreting each site's definitions, running every call as the signed-on person and holding the new client to CPRS's recorded behaviour all survive this review. Most of the plan's counts reproduce, and three attacks on its census failed outright (§2).</p>
+<p>Seven findings change the plan:</p>
+<ol>
+  <li><strong>The fidelity metric can reach 100% while the product is wrong.</strong> Its unit is the Delphi routine, and single routines run past 1,100 lines. Its "definitions rendered" gate has no CPRS output to compare against except where CPRS was recorded. Its RPC count is by name, while 89% of RPCs are called from one place and vary only in their parameters. The org already has a working unit the plan ignores: Loupe's register of one CPRS capability per row, each proven by a test or closed by a ruling (§4).</li>
+  <li><strong>The plan missed a client-side permission engine.</strong> <code>uWriteAccess.pas</code> decides whether a person may write, by 18 areas and 24 actions, at 174 call sites in 34 units. The five server routines behind order, note and encounter writes never consult those rules. This is the mechanism that makes CPRS read-only at a site moved to the new EHR (§5).</li>
+  <li><strong>The "domain services" are modules of one stateful session holder.</strong> A person's Broker connection answers one request at a time, and workflow state lives in that VistA job. The services cannot run, scale or fail independently, and the plan never says where unfinished work lives (§7).</li>
+  <li><strong>AI and third-party clients cannot safely share the person's session.</strong> Patient context belongs to the VistA job, so an agent selecting a patient changes it under the clinician. A draft order saved to VistA is a real unsigned order (§7).</li>
+  <li><strong>Classic mode cannot be faithful in a plain browser tab.</strong> 29 of CPRS's 244 keyboard shortcuts use keys a tab will not release, including Ctrl+N (Notes tab) and Ctrl+T (Consults tab). The "optional" desktop companion is required for keyboard parity (§6).</li>
+  <li><strong>Two claims about vehu were wrong or unsupported.</strong> vehu has no usable printer, so none of the 22 print RPCs can be tested there. The "about 45 calls for a cover sheet" figure cannot be derived from the recordings (§3).</li>
+  <li><strong>The plan has no effort estimate and blurs two projects.</strong> A reference implementation proven on demo VistA is something this org can build. Deployment at VA depends on approvals, licensing and data volumes that nothing here can measure. Only 21 of the 1,190 RPCs are marked public (§9).</li>
+</ol>
+<p>The fixes are listed in §11. None requires new architecture. Most are a change of unit, a missing row, or a claim reduced to what was measured.</p>
+</section>
+
+
+
+<h2 id="r1"><span class="n">1</span>What was tested</h2>
+<p>The review asked two questions of every section. Is the number or claim true? If the plan were followed exactly, how could the result still fail?</p>
+<ul>
+  <li><strong>The Delphi census,</strong> re-run with a stricter scanner: conditional compilation under the Release build, routine counting, routine sizes, form bindings, component classes, keyboard shortcuts, call sites per RPC, and behaviour signals per unit (controls created at run time, reply parsing).</li>
+  <li><strong>Live vehu,</strong> read-only through the driver stack: record counts for thirteen definition files counted one by one, the device file by type, the 18 outbound web servers, the 13 RPC names CPRS calls that the server may lack, the write-access parameters.</li>
+  <li><strong>The server routines</strong> in vista-meta's source copy: the two order-signing entry points, and where the write-access rules are consulted.</li>
+  <li><strong>vista-meta's model:</strong> the M call graph by depth, RPC availability and return types.</li>
+  <li><strong>The documentation corpus:</strong> the write-access parameters, VA's integration adapter.</li>
+  <li><strong>The org's own precedent:</strong> Loupe's repository, coverage register and recordings.</li>
+  <li><strong>The web sources</strong> behind the plan's industry section, re-read where a page could be fetched.</li>
+</ul>
+<p>Nothing was written to either gold engine. No write workflow was run anywhere, and CPRS was not rebuilt. §12 lists what that leaves open.</p>
+
+<h2 id="r2"><span class="n">2</span>What held</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>attack</th><th>result</th><th>verdict</th></tr></thead>
+<tbody>
+<tr><td class="w">The census stripped compiler directives, so it counted code that the Release build never compiles</td><td class="w">Evaluating every conditional under Release and Win32 removes <strong>209 lines and 4 routines</strong> from 264,892, in 24 units. The largest block is debug code (138 lines); the patient-selection history feature is 35</td><td><span class="vd hold">holds</span></td></tr>
+<tr><td class="w">The forms depend on third-party components that are not in the tree, so a rebuild would fail</td><td class="w">402 component classes are used in compiled forms. All but 9 are declared in the tree or are stock VCL and TeeChart; the 9 are stock database and action classes</td><td><span class="vd hold">holds</span></td></tr>
+<tr><td class="w">The RPC census is unreliable</td><td class="w">1,190 in the context, 1,017 named by live code, 191 never named: all reproduced. The census found 12 names at live call forms that vehu lacks, where the September review said 13. The census is right: <code>ORPDMPNT CHECK</code> is called only inside a commented-out function. All 13 names are absent from vehu today</td><td><span class="vd hold">holds</span></td></tr>
+<tr><td class="w">The definition counts came from file headers, which can be stale</td><td class="w">Thirteen files counted record by record. Eleven match their headers exactly</td><td><span class="vd hold">holds</span> (two corrected, §3)</td></tr>
+<tr><td class="w">The order-signing duties were copied from September without re-reading</td><td class="w">Re-read today: <code>SEND^ORWDX</code> names its signature-code parameter on its entry line and in one comment and nowhere else. <code>SIGN^ORWD</code> tests only the ORES key. <code>ORWD SIGN</code> is in CPRS's context on vehu and no client code names it</td><td><span class="vd hold">holds</span></td></tr>
+<tr><td class="w">Routines are double-counted</td><td class="w">380 of 14,005 headers are method declarations inside classes declared in implementation sections. Routine bodies number <strong>13,625</strong>, 2.8% fewer than the plan's 14,014</td><td><span class="vd corr">corrected</span></td></tr>
+</tbody></table></div>
+<p>The design points that survive: VistA's rules are called and not rewritten; every call runs as the person; conformance is judged under a written equivalence; there is no data migration; classic mode is generated from CPRS's 312 text forms; CPRS stays available throughout.</p>
+
+<h2 id="r3"><span class="n">3</span>Numbers corrected</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>the plan says</th><th>measured today</th><th>verdict</th></tr></thead>
+<tbody>
+<tr><td class="w">vehu defines 70 devices, "37 of printer type, one real printer"</td><td class="w">70 devices: 21 virtual terminals, 18 resources, 17 terminals, 9 host files, 3 hunt groups, 1 spool, 1 untyped. Of the 17 terminals, 16 are null devices. The seventeenth, "S-HP LASERJET 4050", has the device name <code>|PRN|</code>, a Windows-style name on a Linux engine. <strong>vehu has no usable printer.</strong> The "37" counted every subtype whose name starts with P-, which includes resources and null devices</td><td><span class="vd wrong">wrong</span></td></tr>
+<tr><td class="w">"36 calls to select a patient and about 45 for a cover sheet"</td><td class="w">The 36 is the September review's figure and was not re-derived. The 45 cannot be derived: the committed recordings keep only the calls Loupe compares. The 2026-09-28 recording shows something the plan omits: <code>ORWPT SELECT</code> is the 139th kept call, so CPRS makes well over a hundred calls between sign-on and the first patient</td><td><span class="vd unsup">unsupported</span></td></tr>
+<tr><td class="w">"≈998k lines of M reached", shown as a headline tile</td><td class="w">The arithmetic reproduces. The meaning is weak: see the chart below. The entry routines hold 36,894 lines. One call deep it is 111,809. The set then grows through shared hubs until it stops at 998,433</td><td><span class="vd corr">corrected</span></td></tr>
+<tr><td class="w">note templates 5,836; parameter values 15,580</td><td class="w">5,837 templates and 15,858 parameter values, counted. The plan printed the file headers, which lag by 1 and by 278</td><td><span class="vd corr">corrected</span></td></tr>
+<tr><td class="w">4,431 event bindings as the user-action population</td><td class="w">4,312 are in compiled forms. 119 are in 15 forms that never compile (the old cover sheet, the Broker debug forms, five order forms and others)</td><td><span class="vd corr">corrected</span></td></tr>
+<tr><td class="w">19 classes of outside connection</td><td class="w">Three more exist (§6): Outlook e-mail from the crash reporter, command-line switches, network-hosted help files</td><td><span class="vd miss">missing</span></td></tr>
+<tr><td class="w">every unit assigned to a functional group, "no unit unassigned"</td><td class="w">True, and about 8,500 lines (2.3%) are in the wrong group (§5). "Unassigned: none" says the rules matched, not that they matched correctly</td><td><span class="vd corr">corrected</span></td></tr>
+<tr><td class="w">941 of "the 995 context RPCs that CPRS's code names" belong to one area</td><td class="w">Today's count of context RPCs named by live code is 999. The 995 comes from a September script with a different extraction. The two denominators were never reconciled</td><td><span class="vd unsup">unsupported</span></td></tr>
+</tbody></table></div>
+
+<figure>
+<div class="fig bars" id="depth-chart" role="img" aria-label="Lines of M code reachable from CPRS's RPC entry routines, by call depth. Depth 0: 36,894 lines. Depth 1: 111,809. Depth 2: 236,424. Depth 4: 502,345. Depth 8: 850,454. Depth 12: 965,602. Fully closed: 998,433."></div>
+<figcaption>Lines of M reachable from the entry routines of CPRS's 1,190 RPCs, by call depth, in vista-meta's routine-level call graph. The graph has no caller labels, so every RPC hosted in a routine inherits every other's calls, and shared utilities pull in whole packages. Billing (704 routines) and Accounts Receivable (277) are in the closed set. An honest statement is a range: at least 37,000 lines, at most about a million, with the true figure unknown until a label-level graph exists. <span class="pv m">measured</span></figcaption>
+</figure>
+
+<h2 id="r4"><span class="n">4</span>The metric can read 100% on a wrong product</h2>
+<p>The plan's §11 promises a "deterministic, measurable" fidelity number. Six defects let that number reach 100% without the product being faithful.</p>
+
+<h3>4.1 The routine is the wrong unit</h3>
+<p>The plan gives each Delphi routine one disposition. Routine sizes make that too coarse where it matters most <span class="pv m">measured</span>:</p>
+<ul>
+  <li>The median routine is 10 lines. The 998 routines of 50 lines or more (7.3%) hold 37.7% of the code, and the 252 of 100 lines or more hold 18.3%.</li>
+  <li><code>TfrmLabs.tvReportsClick</code> is 1,258 lines and <code>TfrmReports.tvReportsClick</code> is 1,101. Each is one event handler that interprets every report definition type. "Ported: yes" for either hides dozens of separate behaviours.</li>
+  <li>Nested helper routines split their parents, so some dispositions would attach to fragments.</li>
+</ul>
+<p><strong>The org already has a unit that works.</strong> Loupe's <code>internal/coverage/signon-selection.tsv</code> holds one CPRS capability per row, read from the source and the first recording. Each row is built (evidence: the tests that prove it), not built, or ruled out (evidence: the ruling), and a test gates the table against the repository. Seventy-five rows carried sign-on and patient selection to a passed side-by-side test on 2026-09-29. The plan never mentions this register and invents a different unit <span class="pv m">measured</span>.</p>
+<p><strong>Fix:</strong> make the capability row the unit of proof, derived engine by engine from a source read. Keep the routine census as a completeness check: every routine maps to at least one row, or to a named non-behaviour class.</p>
+
+<h3>4.2 "Presentation" is a cheap exit</h3>
+<p>The plan lets a routine count as replaced when "a classic-mode screenshot comparison … reaches the form". About 2,370 compiled routine bodies (17%) sit in the control library and the accessibility framework alone. One screenshot per form would clear most of them. The control library is where CPRS's sorting rules, incremental list paging and date entry live, and the plan itself says those "are carried exactly". A screenshot proves none of that.</p>
+<p><strong>Fix:</strong> a control class counts when its behaviours are rows with tests (keyboard, paging, sorting, date parsing). A screenshot proves layout only.</p>
+
+<h3>4.3 "Definitions rendered" has no CPRS output to compare against</h3>
+<p>The plan gates each engine at "100% … parses, renders and round-trips to the same response strings as CPRS … over the site's whole census". CPRS's output exists only where CPRS was driven and recorded. For 5,837 templates and 10,099 reminder elements, nothing produces CPRS's rendering of each one. Driving CPRS through each in the Windows guest is the only source, and the plan gives no method or budget for it. As written, the gate can only prove that the new interpreter accepts every record.</p>
+<p><strong>Fix:</strong> two gates with different names. <em>Accepted:</em> the interpreter parses the whole census with no unknown construct. <em>Matched:</em> every feature of the definition grammar (field type, prompt type, nesting, object, required flag) is exercised by at least one case recorded in CPRS. The second is finite and can be planned.</p>
+
+<h3>4.4 RPC coverage is by name; variation is in the parameters</h3>
+<p>965 RPCs have a parsed call site in compiled code. 856 of them (89%) are called from exactly one place, and only 29 are called with more than one argument count <span class="pv m">measured</span>. CPRS wraps each RPC once and varies what it sends. <code>ORWDX SAVE</code> files every kind of order through one call site. One scenario would mark it "delegated" although it covers one dialog type of dozens.</p>
+<p><strong>Fix:</strong> for RPCs whose behaviour depends on a parameter (the save, sign, lock and dialog-definition calls first), list the parameter classes and count each class, not the name.</p>
+
+<h3>4.5 The denominators are not the populations the request named</h3>
+<ul>
+  <li><strong>RPCs:</strong> the request says "the RPCs that Delphi CPRS uses". The plan counts the 1,190 the context <em>admits</em>. 191 of those are never named by the client and 136 have no explanation. Each would need a ruling to leave the "unknown" class, and the plan does not say who makes 191 rulings or on what evidence. RPCs sent in other contexts (the Vitals DLL's, the mental-health DLL's, Event Capture's) are outside the count.</li>
+  <li><strong>Delphi code:</strong> the count excludes the Vitals client, whose source is on this box and which the plan says to port: <strong>73 units, 32,995 lines, 42 forms</strong> <span class="pv m">measured</span>. It also excludes the screen-reader framework's own DLL project.</li>
+  <li><strong>Site definitions:</strong> "25,000+" is not a number a gate can test. The table beside it sums to 27,705 with orderable items and leaves out business rules, encounter forms, health-summary types and parameter values.</li>
+</ul>
+
+<h3>4.6 It is deterministic only after someone assigns 13,625 dispositions</h3>
+<p>The registry is generated, but each disposition is a judgment, and the plan names no rule or reviewer for making it. Two honest reviewers would classify a 300-line event handler differently. A metric whose inputs are unreviewed judgments is repeatable, and it is not objective.</p>
+
+<h3>4.7 The plan quietly changed what "coverage" means</h3>
+<p>The request asks for "objective coverage of 100% of the delphi code". The plan gates on dispositions and only <em>reports</em> how much of CPRS the scenarios execute, and that report needs a rebuild of CPRS that has not been tried. The reasoning is sound: error paths cannot all be executed. But it is a change to the stated requirement, and the plan presents it as a definition. It should be put to the operator as a decision, with the alternative named: an execution floor per engine, set after the first engine shows what is attainable.</p>
+
+<h2 id="r5"><span class="n">5</span>Duties and engines the plan missed</h2>
+
+<h3>5.1 Write access: a permission engine in the client <span class="vd miss">missing</span></h3>
+<div class="callout warn">
+<p><strong>Measured and read in code today.</strong></p>
+<ul>
+  <li><code>uWriteAccess.pas</code> (1,140 lines) defines 18 write-access areas (orders, progress notes, consults, medications, problems, allergies, encounter, immunization, vitals, delayed orders and others) and 24 actions (write, copy, change, renew, hold, discontinue, sign, release without signature, verify, transfer, park and others).</li>
+  <li>Client code tests it at <strong>174 call sites in 34 units</strong>.</li>
+  <li>The rules come from VistA: <code>ORACCESS GETNOTES</code> and the system-parameters call in <code>ORWU</code>. The documentation names the parameters <code>OR CPRS TABS WRITE ACCESS</code>, <code>OR CPRS ORDERS WRITE ACCESS</code> and <code>OR CPRS OTHER WRITE ACCESS</code>, which let a site "control whether or not a user, a division, or the entire system (site) is allowed to write orders". vehu holds 7, 60 and 7 values for them.</li>
+  <li>The server routines behind the main writes (<code>ORWDX</code>, <code>ORWDXA</code>, <code>ORWDXR</code>, <code>TIUSRVP</code>, <code>ORWPCE2</code>) contain <strong>no reference</strong> to the access routine. Six other routines do: <code>ORWU</code> (to hand the rules to the client), <code>ORCB</code>, <code>ORCHART</code>, <code>TIUALRT</code>, <code>PXRMEHR</code>, and one check in <code>ORWDX2</code> for a site that has moved to the new EHR.</li>
+  <li>A companion parameter, <code>OR SIMULATE ON EHR</code>, exists to test behaviour "as if the site migrated to an Electronic Health Record (EHR) system".</li>
+</ul>
+<p>So by the code, the restriction that makes CPRS read-only at a migrated site, or for a restricted user, is applied by the client. A web client that skips it would let those people write. The plan's duty table has no row for it, and its engine table hides the unit inside "application shell". Whether the server refuses such a write was not tested live. It belongs in the duty register directly below order signing, with its negative scenario on a throwaway copy.</p>
+</div>
+
+<h3>5.2 Duty candidates dropped on the way from the surface map</h3>
+<p>The surface map listed these, and the plan's table lost them: the similar-name and duplicate-patient warnings at selection; allergy assessment before a medication order; treatment factors and billing diagnoses per order; the review of unsigned items on patient change and exit. Three more follow from the source read today:</p>
+<ul>
+  <li><strong>Inactivity lock-out.</strong> CPRS counts down and closes on idle (<code>fTimeout</code>). The plan's keep-alive rule covers the VistA session and says nothing about locking an unattended browser.</li>
+  <li><strong>Note autosave.</strong> Notes, consults, discharge summaries and surgery reports save on a timer set from the person's autosave interval (5 minutes by default). A web client that saves at other moments changes what a crash loses and what other people see as unsigned drafts.</li>
+  <li><strong>Deleting an alert once it is processed</strong> is the client's decision. Too eager loses clinical alerts. Too slow leaves them piled up.</li>
+</ul>
+
+<h3>5.3 Engines not named, and labels not measured</h3>
+<p>The plan's engine table groups units by folder and file name, then labels each group "interpreter", "workflow", "presenter" or "platform" by judgment. Two behaviour signals were measured today to test the labels: where controls are created at run time (212 sites in compiled code), and how densely each group parses replies.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>finding</th><th>evidence</th></tr></thead>
+<tbody>
+<tr><td class="w"><strong>An immunization engine</strong> is hidden inside "Encounter" and "Note template engine"</td><td class="ww">about 7,500 lines: the <code>Vimm</code> forms and frames, <code>rVimm</code>, <code>uVimmEditObject</code>, and the generic edit grid (<code>uEditObject</code>, <code>rEditObject</code>, <code>mEditBase</code>), which the plan filed under templates. <code>uEditObject</code> constructs controls at run time in 12 places, as many as the shared dialog components</td></tr>
+<tr><td class="w"><strong>An anatomic-pathology order builder</strong> is hidden inside "Order dialog engine"</td><td class="ww">7,552 lines in six units, with its own builder object and run-time controls</td></tr>
+<tr><td class="w"><strong>The Labs tab is the report engine again,</strong> not a "presenter"</td><td class="ww">its largest routine has the same name and job as the Reports tab's (1,258 and 1,101 lines; 206 identical lines, similarity 0.51), and its reply-parsing density (48 per 1,000 lines) matches Reports (58) and Graphing (55), the highest in the client</td></tr>
+<tr><td class="w"><strong>The shared dialog components</strong> are part of the template and reminder engines</td><td class="ww"><code>uDlgComponents.pas</code> (804 lines, 12 run-time control constructions) was filed under the control library</td></tr>
+<tr><td class="w"><strong>The "interpreter" label has no stated test,</strong> and the two signals disagree</td><td class="ww">run-time control construction, with the edit grid moved to where it belongs: cover sheet 30, order dialogs 19, templates 18, encounter 18, reminders 12; then consults 3, graphing 2, reports 2, notifications 0. By reply parsing, reports and graphing are the heaviest. Notification follow-up is a fixed <code>case</code> over 50 constants in the main frame, which is code and not interpretation</td></tr>
+<tr><td class="w"><strong>Misfiled units,</strong> about 8,500 lines with the two rows above</td><td class="ww"><code>uWriteAccess</code> (shell); the crash reporter and its map parsers, 4,129 lines (control library); <code>rOTH</code>, an eligibility banner (reports); <code>fOptionsReminders</code> (reminder engine); <code>fSpellNotify</code> (notifications); the medication-indication units (control library)</td></tr>
+</tbody></table></div>
+<p><strong>Fix:</strong> define an engine by a test (it reads a site definition and builds controls or response strings from it), apply the test per unit, and regenerate the table. The current one is a reasonable first sort and should say so.</p>
+
+<h2 id="r6"><span class="n">6</span>Outside connections</h2>
+
+<h3>6.1 Classic mode needs keys a browser tab will not release <span class="vd miss">missing</span></h3>
+<p>CPRS's compiled forms assign 244 keyboard shortcuts <span class="pv m">measured</span>:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>class</th><th class="num">assignments</th><th>examples</th></tr></thead>
+<tbody>
+<tr><td>keys a browser tab reserves for itself</td><td class="num">29</td><td class="ww">Ctrl+T ×10, Ctrl+N ×8, Ctrl+W ×6, Ctrl+Shift+N ×3, Ctrl+Tab, Ctrl+Shift+Tab. In CPRS: Ctrl+N opens the Notes tab, Ctrl+T the Consults tab, Ctrl+W previews or prints a template, Ctrl+Shift+N starts a new progress note</td></tr>
+<tr><td>browser shortcuts a page can usually take over</td><td class="num">119</td><td class="ww">Ctrl+R ×15, Ctrl+P ×12, Ctrl+S ×10, Ctrl+O, Ctrl+U, Ctrl+D, Ctrl+L ×8 each</td></tr>
+<tr><td>no collision</td><td class="num">96</td><td class="ww"></td></tr>
+</tbody></table></div>
+<p>CPRS's main menu uses Alt+F, Alt+E, Alt+V, Alt+T and Alt+H; Edge's published shortcut list gives Alt+F and Alt+E to its own menu (not tested here). The request's aim is that classic-mode users learn nothing new, and the plan's §13 calls the companion optional. For a keyboard user both cannot be true in an ordinary tab: the commonest tab-switching keys would close the tab or open a new window. Screen-reader users lose more: CPRS ships its own JAWS configuration, key-map and script files, which do not apply to a web page.</p>
+<p><strong>Fix:</strong> state that keyboard parity needs the installed host, or rule the 29 as named differences with replacement keys. Either is fine. Silence is not.</p>
+
+<h3>6.2 Three connections the pattern scan missed <span class="vd miss">missing</span></h3>
+<ul>
+  <li><strong>Outlook e-mail.</strong> The crash reporter (<code>AVCatcher.pas</code>, compiled) opens a pre-filled Outlook message with the error log. The plan's scan looked for late-bound automation calls and this unit uses the typed Outlook library.</li>
+  <li><strong>Command-line switches.</strong> The manual lists <code>SERVER=</code>, <code>PORT=</code>, <code>DEBUG</code>, <code>SHOWRPCS</code>, <code>CCOW=</code> (disable, force, patient only) and <code>SPLASH=</code> <span class="pv d">documented</span>. The source also reads <code>REZ</code>, <code>CPLOG</code>, <code>CPLOGDEBUG</code> and the COM registration switches. Sites launch CPRS from shortcuts that carry the server and port. Their web successors (a site URL, launch parameters) are not in the plan.</li>
+  <li><strong>Help files on network shares.</strong> <code>uHelpNetworkMGR.pas</code> (679 lines) copies help from a network drive to the workstation.</li>
+</ul>
+
+<h3>6.3 Printing cannot be measured on vehu <span class="vd wrong">wrong</span></h3>
+<p>The request asked about printers and the local network. The plan's answer rests on a device count that was wrong (§3). With no usable device, the 22 server-side print RPCs, the device-selection dialog and the Windows-or-VistA printer choice cannot be exercised on vehu at all. The plan should list printing as unmeasurable here and say what would measure it: a throwaway copy with a host-file or network device defined.</p>
+
+<h3>6.4 The connection counts depend on the pattern</h3>
+<p>CCOW has now been counted three ways: 315 references (September draft), 712 lines in 22 files (September review), 347 lines in 19 files (the plan). Each is a different pattern over a different file set. None is wrong and none is a size. The same holds for "screen readers, 425 lines". These rows should carry the pattern, or be replaced by the list of units.</p>
+
+<h2 id="r7"><span class="n">7</span>The services are one stateful session holder</h2>
+<p>The request asks for "a service based architecture, not piecemeal wrapping of RPCs". The plan answers with fifteen service boxes over an equivalence layer. The measured constraints make that picture misleading.</p>
+<div class="dl">
+  <div><span class="h">7.1 Fifteen boxes, one process per person</span>
+  <p>A Broker connection answers one request at a time, and workflow state lives in the VistA job behind it: the order-check session, the encounter cache, the locks (carried from the September reviews). So every "service" call for one person goes through the same connection in sequence. The services cannot be deployed, scaled or restarted independently, and none can run two requests for one person at once. Opening a second connection by token gives a second job with its own state, which splits a workflow across jobs. What the plan describes is one session service with domain modules. That is a sound design. The diagram and the word "services" promise more.</p></div>
+  <div><span class="h">7.2 Nowhere for unfinished work to live</span>
+  <p>CPRS keeps a half-written note and a half-filled order dialog in its own memory, and autosaves notes on a timer. The plan moves the interpreters server-side and gives the browser only a cookie. It never says where a half-filled order dialog lives. If in the session service, a restart of that service loses every clinician's work in progress at once. If in the browser, a refresh loses it and the server-side interpreter has to be rebuilt from client state. Microsoft's account of the new Teams, as summarized in search, describes a client data layer running in a worker for this class of problem <span class="pv x">external</span>. The plan needs a ruling on state placement before any write workflow.</p></div>
+  <div><span class="h">7.3 Agents cannot share the person's job</span>
+  <p>The plan has third-party and AI clients call "in that person's Broker session". Patient context belongs to the job: selecting a patient clears the job's order-check, encounter and allergy caches (measured in September). An agent that selects another patient changes the context under the clinician's screen. Giving each agent its own job by token is the alternative, and it counts against the volume's process ceiling and against Kernel's multiple-sign-on setting. The plan addresses neither.</p></div>
+  <div><span class="h">7.4 A "draft" order is a real order</span>
+  <p>The plan says "agents draft; people sign". Saving an order in VistA creates an unsigned order in the ORDER file. Other people see it, and it raises unsigned-order alerts. Order checks fire when the dialog is accepted and may need an override reason from a person. So a draft that reaches VistA has clinical effects before anyone signs. The plan should rule where agent drafts are held: in the session service until the person accepts each one, or in VistA as unsigned orders with their consequences accepted.</p></div>
+  <div><span class="h">7.5 The per-site census gate contradicts "no service identity"</span>
+  <p>The plan gates each engine on rendering "the site's whole census" of definitions, per site. It also rules that no call ever runs under a service identity. On vehu the census is read through the driver stack, which does not exist at a real site. Reading ten thousand reminder elements there needs some identity. The plan has to choose: an administrator's read-only export, a ruled exception, or no per-site gate.</p></div>
+  <div><span class="h">7.6 "Enforces the duties" holds only for traffic through the layer</span>
+  <p>The abstract says the layer "enforces the duties VistA leaves to the client". With no VistA change, the Broker stays open to CPRS and to any program with a person's codes. The September review said so; the plan dropped the qualification. The guarantee is a policy for the org's own clients.</p></div>
+  <div><span class="h">7.7 One cell per VistA, about 130 times</span>
+  <p>A cell beside each VistA, each declaring a CPRS version and each passing census gates on its own site's data, is roughly 130 deployments and 130 gate runs per release. The plan states the shape and none of the operations: who runs the gates, on what data, and what a red gate at one site does to the release.</p></div>
+</div>
+
+<h2 id="r8"><span class="n">8</span>Evidence behind the industry lessons</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>the plan says</th><th>what the sources support</th><th>verdict</th></tr></thead>
+<tbody>
+<tr><td class="w">Epic's Hyperdrive is "Chromium-based" and "installed, not a bare browser tab"</td><td class="ww">No page that was read says Chromium; it came from a search summary and from the request itself. One hospital page, re-read today, calls it "a special internet browser … only used to access a web-based version of Epic", used "instead of an application installed on your workstation". A signature-pad vendor's page, as a search summarized it, speaks of local Hyperdrive client installations. The two do not agree, and nothing from Epic was read</td><td><span class="vd unsup">unsupported</span></td></tr>
+<tr><td class="w">Office on the web shows "a shared core of C++ code behind platform abstraction layers"</td><td class="ww">The cited article is about native Office on Windows, Mac and mobile. It is not about Office on the web. The lesson was attached to the wrong product. The Excel Services half (a server-side calculation engine behind a web front end) is correctly sourced and does support running engines on a server</td><td><span class="vd wrong">wrong</span></td></tr>
+<tr><td class="w">The new Teams moved from Electron and AngularJS to WebView2 and React</td><td class="ww">Confirmed today by a search summary of Microsoft's own post, which the plan had cited only through trade sites. The page itself did not load for a direct read. The same summary gives a lesson the plan missed: data handling moved to a client data layer in a separate worker (§7.2)</td><td><span class="vd hold">holds</span></td></tr>
+<tr><td class="w">eHMP shows that "a successor that changed VistA and the workflows at once did not replace CPRS"</td><td class="ww">The sources establish the 2014 contract and the intent. None says why it ended. The cause is the plan's inference</td><td><span class="vd unsup">unsupported</span></td></tr>
+<tr><td class="w">the section covers how others made this move</td><td class="ww">It omits the nearest prior art, VA's own. The documentation corpus shows a VA web application doing exactly this today: the emergency-department system "uses IAM Single Sign-On Internal (SSOi) to authenticate users and VistA Integration Adapter (VIA) and SAML connect to VistA to authorize users" <span class="pv d">documented</span>. VA's adapter, its read-only record viewer, and the commercial and open-source CPRS rewrites were not researched. The operator's own 2016–2019 archive of router and emulation work is still unread</td><td><span class="vd miss">missing</span></td></tr>
+</tbody></table></div>
+
+<h2 id="r9"><span class="n">9</span>Scale, governance and what can be proven here</h2>
+<ul>
+  <li><strong>There is no effort estimate.</strong> The plan has ten phases and no size for any of them. The one in-house data point: Loupe went from its first commit on 2026-09-22 to 351 commits, 32,005 lines of code and 22,793 lines of tests by 2026-10-03, and in that time carried sign-on and patient selection (75 capability rows, read-only) to a passed side-by-side test <span class="pv m">measured</span>. The Delphi behind patient selection is 5,320 of 355,291 lines. Writes are slower than reads: each needs a throwaway copy, CPRS driven by hand in the Windows guest, and a database comparison. The plan should size at least phase 1 in rows before it is ruled.</li>
+  <li><strong>Two projects are written as one.</strong> A reference implementation, held to CPRS on demo VistA, is within this org's reach and its rules. Deployment at VA is a different project: identity-provider registration, a Kernel change, production data volumes, accreditation. The plan moves between them without saying which claims belong to which. Nothing about the second can be tested on this box.</li>
+  <li><strong>RPC governance.</strong> VistA marks each RPC's availability. Of the 1,190 in CPRS's context, <strong>21 are public</strong>, 257 are subscription, 105 restricted, 9 by agreement, and 798 carry no marking <span class="pv m">measured</span>. A client other than CPRS that depends on 1,169 non-public RPCs has a permissions question at VA that the plan does not raise.</li>
+  <li><strong>The target route for identity depends on a change VA has not been asked for.</strong> The plan lists this under unknowns. It should also say plainly that until then the working route at VA is the SAML token path that VA's own web applications use, and that the plan's sign-on design for VA is that path.</li>
+  <li><strong>Licensing on the production engine is unexamined.</strong> VA's VistA runs on InterSystems' engine, which counts licence units per connecting user. A middle tier makes every clinician arrive from one address. Whether that changes licence consumption is general knowledge about the product and was not measured here.</li>
+  <li><strong>Controlled-substance signing is a regulated function.</strong> The plan treats PIV signing as a companion feature. Federal rules for electronic prescribing of controlled substances place requirements on the signing application itself. That was not researched and should be listed as an unknown.</li>
+  <li><strong>CPRS keeps changing.</strong> The plan pins one build and calls a new one "a regeneration". Only one snapshot of the source is on this box (the mirror's history is a single commit), so the size of a release-to-release change is unmeasured.</li>
+  <li><strong>The build notes in the mirror are for an older CPRS.</strong> They describe Delphi 2007 and digital-signature files fetched from a separate repository. The plan's "the tree looks buildable" rests on the project file alone.</li>
+</ul>
+
+<h2 id="r10"><span class="n">10</span>Order of work</h2>
+<p>The plan builds every read screen, then notes, then encounter and reminders, and reaches orders in phase 5. Orders hold the plan's largest risks: the biggest interpreter (48,241 lines), the order-check session state, the unenforced signature, write access, and the agent question. Leaving them to phase 5 means the architecture is proven late.</p>
+<p><strong>Fix:</strong> after the session guard, run one thin path end to end on a throwaway copy before widening: one quick order, through order checks and signature, with the wrong-code and write-access refusals. It needs no classic-mode generator and little screen work. It settles state placement, the duty rules and the equivalence method while they are still cheap to change. The parked service-layer proposal had orders at its phase 3 for the same reason.</p>
+
+<h2 id="r11"><span class="n">11</span>What should change in the plan</h2>
+<ol>
+  <li><strong>Change the unit of proof to the capability row,</strong> as Loupe's register does, with the routine census as a completeness check (§4.1). Size phases in rows.</li>
+  <li><strong>Split "definitions rendered" into accepted and matched,</strong> and plan the matched set by grammar feature (§4.3).</li>
+  <li><strong>Count parameter classes for mode-bearing RPCs</strong> (§4.4), and pin every denominator: add the Vitals client and the other contexts, remove the 119 bindings in forms that never compile, give the definitions an exact total (§4.5).</li>
+  <li><strong>Put the coverage redefinition to the operator</strong> as a decision with its alternative (§4.7).</li>
+  <li><strong>Add write access to the duty register,</strong> second to order signing, and restore the dropped candidates (§5.1, §5.2).</li>
+  <li><strong>Regenerate the engine table from a stated test,</strong> naming the immunization and pathology builders and the Labs report engine (§5.3).</li>
+  <li><strong>Say that keyboard parity needs the installed host,</strong> or rule the 29 keys (§6.1). Add the three missed connections. Mark printing unmeasurable on vehu (§6.3).</li>
+  <li><strong>Describe the back end as one session service with domain modules,</strong> and rule state placement before any write (§7.1, §7.2).</li>
+  <li><strong>Give agents their own job and a ruled home for drafts</strong> (§7.3, §7.4). Resolve the census-identity contradiction (§7.5). Restore "for traffic through the layer" (§7.6).</li>
+  <li><strong>Correct the industry section:</strong> remove the Office-on-the-web lesson or re-source it, mark the Epic details as unconfirmed, drop the eHMP cause, and research VA's adapter and the operator's archive before the shape is ruled (§8).</li>
+  <li><strong>Separate the reference implementation from VA deployment</strong> and add the governance, licensing and regulatory unknowns (§9).</li>
+  <li><strong>Move one order through signature to the front</strong> (§10).</li>
+  <li><strong>Correct the numbers in §3,</strong> and replace the "≈998k" tile with the range.</li>
+</ol>
+
+<h2 id="r12"><span class="n">12</span>Not measured, and what would measure it</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>open</th><th>what would settle it</th></tr></thead>
+<tbody>
+<tr><td class="w">whether the server refuses a write that the write-access rules forbid</td><td class="w">a plain Broker client on a throwaway copy, with a restricted user, sending the save calls</td></tr>
+<tr><td class="w">whether <code>ORWDX SEND</code> files a signed order on a wrong code</td><td class="w">the same throwaway copy; still unrun since September</td></tr>
+<tr><td class="w">whether CPRS rebuilds from this tree, and with which compiler</td><td class="w">an attempt in the Windows guest. The mirror's build notes are for Delphi 2007</td></tr>
+<tr><td class="w">how reserved keys behave in an installed web app or a WebView2 host</td><td class="w">a ten-line test page in each</td></tr>
+<tr><td class="w">the real size of the M behind each RPC</td><td class="w">a label-level call graph with dispatch tables resolved</td></tr>
+<tr><td class="w">licence consumption through a middle tier on the IRIS engine</td><td class="w">a measurement on foia-iris, whose licence units the forge already reports</td></tr>
+<tr><td class="w">any server-side printing path</td><td class="w">a throwaway copy with a working device</td></tr>
+<tr><td class="w">how Epic's client is actually built</td><td class="w">Epic's own material; not public in what was read</td></tr>
+<tr><td class="w">how much a CPRS release changes</td><td class="w">a second build's source</td></tr>
+<tr><td class="w">the three behaviour claims carried from September (one request at a time per connection; job state per workflow; patient selection clears caches)</td><td class="w">not re-run today; the September reviews' evidence stands</td></tr>
+</tbody></table></div>
+
+<h2 id="r13"><span class="n">13</span>How each number was taken</h2>
+<ul>
+  <li><strong>Conditional compilation:</strong> a scanner that keeps <code>{$…}</code> directives, evaluates <code>IFDEF</code>, <code>IFNDEF</code>, <code>IF</code>, <code>IFOPT</code>, <code>ELSE</code> and <code>DEFINE</code> per unit with the Release and Win32 symbols from <code>CPRSChart.dproj</code>, and counts non-blank implementation lines in inactive branches. No <code>$IF</code> expression was left unevaluated.</li>
+  <li><strong>Routine bodies and sizes:</strong> headers after <code>implementation</code>, excluding those inside type declarations; size is non-blank lines to the next header, so a routine with nested helpers is split at each helper.</li>
+  <li><strong>Behaviour signals:</strong> per compiled unit, constructor calls on visual control classes; <code>Piece(</code> and <code>Pieces(</code> calls; the four RPC call forms.</li>
+  <li><strong>Shortcuts:</strong> <code>ShortCut = n</code> in compiled forms, decoded to key and modifiers, compared with two fixed lists of browser keys.</li>
+  <li><strong>Forms outside the build and component classes:</strong> each <code>.dfm</code> whose unit is not in the closure from <code>CPRSChart.dpr</code>; classes in compiled forms not declared in the tree.</li>
+  <li><strong>Write access:</strong> <code>uWriteAccess.pas</code> read; <code>WriteAccess(</code> counted over compiled code; <code>ORACCESS</code> searched in vista-meta's routine source (header: OR*3.0*588); parameters read on vehu; documentation at <code>vdocs://section/CPRS/cprsguitm_0_636/or-cprs-orders-write-access</code> and <code>…/or-simulate-on-ehr</code>. Command-line switches: <code>vdocs://section/CPRS/cprsguitm_0_636/command-line-switches</code>.</li>
+  <li><strong>Live vehu:</strong> <code>m engine exec</code>, read-only. Record counts by walking each file; devices by the type field and device name; file 18.12 for web servers; the RPC file's name index for the 13 names and <code>ORWD SIGN</code>.</li>
+  <li><strong>M closure by depth, availability, return types:</strong> vista-meta data-v1, <code>routine-calls.tsv</code>, <code>rpcs.tsv</code>, <code>routines.tsv</code>. 229 of the 232 entry routines are in the routine table.</li>
+  <li><strong>Loupe:</strong> <code>git log</code> and <code>git ls-files</code> in the repository; <code>internal/coverage/signon-selection.tsv</code>; <code>testdata/cprs/README.md</code> and the 2026-09-28 recording.</li>
+  <li><strong>Vitals client:</strong> <code>.pas</code> and <code>.dfm</code> files under the Vitals package's client folder in the same mirror.</li>
+  <li><strong>Web sources re-read:</strong> <a href="https://it.houstonmethodist.org/get-hyped-for-epic-hyperdrive/">Houston Methodist on Hyperdrive</a>; <a href="https://techcommunity.microsoft.com/blog/microsoftteamsblog/microsoft-teams-advantages-of-the-new-architecture/3775704">Microsoft on the new Teams architecture</a>; <a href="https://www.topazsystems.com/epic">Topaz Systems on Hyperdrive installations</a> (search result); <a href="https://www.itwriting.com/blog/8859-coding-microsoft-office-cross-platform.html">the cross-platform Office article</a> (search result). VIA: <code>vdocs://section/EDIS/edis_2_2_2_tm/iam-single-sign-on-internal-ssoi-and-vista-integration-adapter-via</code>.</li>
+</ul>
+</article>
+
+<footer class="src">
+A rendering of <code>proposals/cprs-web-strategy/cprs-web-strategy-adversarial-review.md</code> in the vista-forge <code>docs</code> repo at commit <code>d6b326e</code>. The repo copy is the one kept current. Round 1 reviewed version 1 of the plan and its thirteen changes made version 2; round 2 tested version 2 and its ten changes made version 3. Quotations and section numbers in round 1 refer to version 1. The scripts, lists and test record are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed.
+</footer>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+<script>
+(function () {
+  var data = [
+    ["entry routines", 36894, 229], ["1 call deep", 111809, 721], ["2", 236424, 1625], ["3", 366789, 2586],
+    ["4", 502345, 3562], ["5", 622717, 4470], ["6", 719818, 5171], ["7", 794295, 5705], ["8", 850454, 6135],
+    ["9", 887488, 6429], ["10", 922049, 6672], ["11", 948883, 6880], ["12", 965602, 6996], ["fully closed", 998433, 7290]
+  ];
+  var host = document.getElementById("depth-chart");
+  if (!host) return;
+  var NS = "http://www.w3.org/2000/svg";
+  var labelW = 120, plotW = 560, rowH = 24, top = 26, right = 90;
+  var W = labelW + plotW + right, H = top + data.length * rowH + 8, max = 1000000;
+  var svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+  svg.setAttribute("aria-hidden", "true");
+  function el(name, attrs, text) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    svg.appendChild(e);
+    return e;
+  }
+  [0, 250000, 500000, 750000, 1000000].forEach(function (v) {
+    var x = labelW + plotW * v / max;
+    el("line", { x1: x, x2: x, y1: top - 6, y2: H - 6, "class": "grid" });
+    el("text", { x: x, y: 14, "class": "tm", "text-anchor": v === 0 ? "start" : "middle" }, v === 0 ? "0" : (v / 1000) + "k lines");
+  });
+  var tip = document.getElementById("tip");
+  data.forEach(function (d, i) {
+    var y = top + i * rowH, w = Math.max(2, plotW * d[1] / max), bh = 15, by = y + 4, r = Math.min(4, w / 2);
+    el("text", { x: labelW - 10, y: y + 16, "class": "t", "text-anchor": "end" }, d[0]);
+    var p = "M" + labelW + "," + by + " H" + (labelW + w - r) + " Q" + (labelW + w) + "," + by + " " + (labelW + w) + "," + (by + r) +
+            " V" + (by + bh - r) + " Q" + (labelW + w) + "," + (by + bh) + " " + (labelW + w - r) + "," + (by + bh) + " H" + labelW + " Z";
+    el("path", { d: p, "class": (i === 0 || i === data.length - 1) ? "bar hot" : "bar" });
+    if (i < 3 || i === data.length - 1) el("text", { x: labelW + w + 6, y: y + 16, "class": "tm" }, d[1].toLocaleString("en-US"));
+    var hit = el("rect", { x: 0, y: y, width: W, height: rowH, "class": "hit" });
+    hit.addEventListener("mousemove", function (ev) {
+      tip.innerHTML = "<b>" + (i === 0 ? "Entry routines" : i === data.length - 1 ? "Fully closed" : "Depth " + d[0].replace(" call deep", "")) + "</b><br>" +
+        d[2].toLocaleString("en-US") + " routines · " + d[1].toLocaleString("en-US") + " lines";
+      tip.hidden = false;
+      tip.style.left = Math.min(window.innerWidth - 310, ev.clientX + 14) + "px";
+      tip.style.top = (ev.clientY + 14) + "px";
+    });
+    hit.addEventListener("mouseleave", function () { tip.hidden = true; });
+  });
+  host.appendChild(svg);
+})();
+</script>
+</body>
+</html>
