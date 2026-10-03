@@ -34,21 +34,29 @@ class Entry:
 
 
 class _Head(HTMLParser):
+    """The page's own title and description. A drawing's <title> (an inline
+    SVG names itself that way) is not the page's, and is never read as one."""
+
     def __init__(self) -> None:
         super().__init__()
         self.title = ""
         self.description: str | None = None
         self._in_title = False
+        self._in_svg = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         a = dict(attrs)
-        if tag == "title":
+        if tag == "svg":
+            self._in_svg += 1
+        elif tag == "title" and not self._in_svg:
             self._in_title = True
         elif tag == "meta" and a.get("name") == "description":
             self.description = a.get("content") or ""
 
     def handle_endtag(self, tag: str) -> None:
-        if tag == "title":
+        if tag == "svg" and self._in_svg:
+            self._in_svg -= 1
+        elif tag == "title":
             self._in_title = False
 
     def handle_data(self, data: str) -> None:

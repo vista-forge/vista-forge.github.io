@@ -53,6 +53,20 @@ class ArtifactsIndexTest(unittest.TestCase):
         with self.assertRaisesRegex(artifacts_index.Refused, "untitled.*description"):
             artifacts_index.entries(self.root)
 
+    def test_the_title_is_the_pages_own_not_a_drawings(self) -> None:
+        drawing = '<svg role="img"><title>Proposed architecture</title><desc>Boxes.</desc></svg>'
+        (self.root / "plan").mkdir()
+        (self.root / "plan" / "index.html").write_text(
+            page("The Plan", "A page with a drawing in it.").replace("<body>", "<body>" + drawing)
+        )
+        self.assertEqual([e.title for e in artifacts_index.entries(self.root)], ["The Plan"])
+        # A drawing's title never stands in for a missing page title.
+        (self.root / "plan" / "index.html").write_text(
+            page("", "Only the drawing is titled.").replace("<body>", "<body>" + drawing)
+        )
+        with self.assertRaisesRegex(artifacts_index.Refused, "plan.*title"):
+            artifacts_index.entries(self.root)
+
     def test_check_is_red_when_the_committed_index_differs(self) -> None:
         self.add("one", "One", "The one.")
         (self.root / "index.html").write_text(artifacts_index.render(artifacts_index.entries(self.root)))
