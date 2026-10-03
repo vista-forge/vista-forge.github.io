@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="How a physician reaches the Certo demonstration on their own phone through Tailscale, then a tour of every main screen, from signing on and choosing a patient to the glance, timeline, vitals, labs and notes, with screenshots.">
+<title>Certo Demo Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: one reading column; each step pairs its instructions with the
+     screens it describes, as the Loupe guide beside this page does. */
+  :root {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --ink: #13202d;
+    --ink2: #4f5d6b;
+    --line: #d7dde5;
+    --accent: #1766d6;
+    --accent-soft: #e6effc;
+    --flag: #c3261f;
+    --warn-bg: #fff4d6;
+    --warn-line: #b88a1c;
+    --bezel: #18212c;
+    --shade: rgba(19, 32, 45, 0.12);
+    --sans: "Atkinson Hyperlegible", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --wide: 1080px;
+    --read: 66ch;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e141a; --surface: #151c24; --ink: #e4eaf1; --ink2: #a0acb9; --line: #28333f;
+      --accent: #7cb0ff; --accent-soft: #172538; --flag: #ff7b72; --warn-bg: #2d2513; --warn-line: #c9a24a;
+      --bezel: #05080b; --shade: rgba(0, 0, 0, 0.45); color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e141a; --surface: #151c24; --ink: #e4eaf1; --ink2: #a0acb9; --line: #28333f;
+    --accent: #7cb0ff; --accent-soft: #172538; --flag: #ff7b72; --warn-bg: #2d2513; --warn-line: #c9a24a;
+    --bezel: #05080b; --shade: rgba(0, 0, 0, 0.45); color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 17px/1.6 var(--sans);
+    padding-inline: 16px; padding-block: 0 64px;
+  }
+  img { max-width: 100%; }
+  .wrap { max-width: var(--wide); margin-inline: auto; }
+  h1, h2, h3 { text-wrap: balance; line-height: 1.2; margin: 0; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.25rem; }
+  p { margin: 0; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .ui {
+    font: 500 0.88em/1.3 var(--mono); background: var(--accent-soft);
+    padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+  }
+  .flagged { color: var(--flag); font-weight: 700; }
+  .eyebrow { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+
+  /* masthead, with the glance beside it */
+  .mast { padding-block: 44px 32px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: center; border-bottom: 1px solid var(--line); }
+  .mast .text { display: grid; gap: 14px; min-width: 0; }
+  .mast h1 { font-size: clamp(3.4rem, 13vw, 6rem); line-height: 1; letter-spacing: -0.02em; }
+  .mast .tagline { font-size: clamp(1.5rem, 6.2vw, 2.6rem); font-weight: 700; line-height: 1.1; color: var(--accent); }
+  .mast .lede { font-size: 1.2rem; color: var(--ink2); max-width: 52ch; }
+  .phone {
+    width: 270px; max-width: 100%; border: 11px solid var(--bezel); border-radius: 38px; overflow: hidden;
+    background: var(--bezel); box-shadow: 0 18px 40px var(--shade); margin: 0;
+  }
+  .phone img { display: block; width: 100%; height: auto; }
+  @media (max-width: 760px) { .mast { grid-template-columns: minmax(0, 1fr); } .phone { width: 240px; } }
+
+  .notice {
+    border-left: 4px solid var(--warn-line); background: var(--warn-bg); border-radius: 0 10px 10px 0;
+    padding: 14px 18px; display: grid; gap: 6px; max-width: 74ch;
+  }
+  .notice b { font-weight: 700; }
+
+  /* contents */
+  nav.toc { padding-block: 32px 8px; }
+  .toc h2 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink2); margin-bottom: 10px; }
+  .toc ol { margin: 0; padding-left: 1.4em; columns: 2 16em; column-gap: 32px; }
+  .toc li { break-inside: avoid; padding-block: 2px; }
+  .toc a { text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* sections and steps */
+  section.block { padding-block: 44px; border-top: 1px solid var(--line); display: grid; gap: 20px; }
+  .intro { max-width: var(--read); color: var(--ink2); }
+  .step { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; padding-block: 26px; border-top: 1px dashed var(--line); align-items: start; }
+  .step:first-of-type { border-top: 0; }
+  .step .body { display: grid; gap: 12px; min-width: 0; }
+  .step h3 { display: flex; gap: 12px; align-items: baseline; }
+  .num {
+    flex: none; font: 700 0.95rem/1 var(--sans); color: var(--surface); background: var(--accent);
+    width: 30px; height: 30px; border-radius: 50%; display: inline-grid; place-items: center; transform: translateY(-2px);
+  }
+  .step ul, .step ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; max-width: var(--read); }
+  .step p { max-width: var(--read); }
+  .shots { display: flex; gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+  .shot { margin: 0; width: 230px; max-width: 100%; display: grid; gap: 6px; align-content: start; }
+  .shot img { width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); box-shadow: 0 6px 18px var(--shade); background: #f5f6f7; }
+  .shot figcaption { font-size: 0.82rem; color: var(--ink2); line-height: 1.4; }
+  .tip { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 0.95rem; max-width: var(--read); }
+
+  /* the two phones, side by side */
+  .os { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 10px; align-content: start; }
+  .card h3 { font-size: 1.1rem; }
+  .card ol, .card ul { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
+
+  /* tables */
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; vertical-align: top; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+  thead th { font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink2); background: var(--bg); }
+  tbody tr:last-child td { border-bottom: 0; }
+  td:first-child { font-weight: 700; width: 34%; }
+
+  .tries { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; max-width: var(--read); }
+  .about p { max-width: var(--read); color: var(--ink2); }
+
+  @media (max-width: 860px) {
+    .step { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .shots { justify-content: flex-start; }
+  }
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    .ui { white-space: normal; }
+    .shot { width: calc(50% - 7px); }
+    td:first-child { width: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <div class="text">
+    <p class="eyebrow">Demo guide · for physicians</p>
+    <h1>Certo</h1>
+    <p class="tagline">The Pocket CPRS.</p>
+    <p class="lede">A patient's VistA chart on your own phone, through the same calls CPRS makes. This guide gets you to the demonstration in about ten minutes and walks through every main screen.</p>
+  </div>
+  <figure class="phone"><img src="img/glance.webp" width="600" height="1192" alt="Certo's glance for the demo patient TEN,PATIENT: the banner with allergies, postings and a fall-risk mark, then the latest visit, note, vitals and flagged labs, then medications."></figure>
+</header>
+
+<div class="notice" role="note" style="margin-top: 28px;">
+  <p><b>A demonstration, not a clinical system.</b> It runs on VA's public demo VistA, whose patients are fictitious. Do not use it for patient care.</p>
+  <p><b>Never type your real VA access or verify codes.</b> Rafael sends you demo codes for this system with your invitation.</p>
+  <p><b>Certo is the planned name.</b> On your phone the app is still called by its working name, Loupe: that is the name under its home-screen icon.</p>
+</div>
+
+<nav class="toc" aria-label="Contents">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#before">Before you start</a></li>
+    <li><a href="#tailscale">Install Tailscale</a></li>
+    <li><a href="#invite">Accept the invitation</a></li>
+    <li><a href="#open">Open Certo</a></li>
+    <li><a href="#signon">Sign on</a></li>
+    <li><a href="#patient">Select a patient</a></li>
+    <li><a href="#glance">The glance</a></li>
+    <li><a href="#timeline">The timeline</a></li>
+    <li><a href="#vitals">Vitals</a></li>
+    <li><a href="#labs">Labs</a></li>
+    <li><a href="#notes">Notes</a></li>
+    <li><a href="#leaving">Moving around and leaving</a></li>
+    <li><a href="#try">Five things to try</a></li>
+    <li><a href="#trouble">If something goes wrong</a></li>
+    <li><a href="#about">About this demo</a></li>
+  </ol>
+</nav>
+
+<section class="block" id="before" aria-labelledby="before-h">
+  <h2 id="before-h">Before you start</h2>
+  <p class="intro">Certo runs on a server on Rafael's private network. Your phone reaches it through Tailscale, a free app that connects your phone to that one machine and nothing else. Nothing is on the public internet.</p>
+  <div class="os">
+    <div class="card">
+      <h3>You need</h3>
+      <ul>
+        <li>An iPhone or an Android phone you may install apps on. A hospital-managed phone may not allow a VPN app; use a personal one.</li>
+        <li>A Google, Microsoft, Apple or GitHub account to sign in to Tailscale with.</li>
+        <li>Rafael's invitation, which carries a Tailscale invite link, and your demo access and verify codes.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What Tailscale does on your phone</h3>
+      <ul>
+        <li>It appears as a VPN in your phone's settings, because that is how an app makes a private connection.</li>
+        <li>Only traffic to the machine shared with you goes through it. Your other browsing and apps are unaffected.</li>
+        <li>You can switch it off in the app whenever you are not using Certo, and delete it when the demo ends.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="tailscale" aria-labelledby="ts-h">
+  <h2 id="ts-h">1 · Install Tailscale</h2>
+  <div class="os">
+    <div class="card">
+      <h3>iPhone</h3>
+      <ol>
+        <li>Open the App Store, search for <span class="ui">Tailscale</span> and tap <strong>Get</strong>.</li>
+        <li>Open Tailscale and tap <strong>Get Started</strong>.</li>
+        <li>When your iPhone asks to add a VPN configuration, tap <strong>Allow</strong> and confirm with Face ID or your passcode. Allowing notifications is optional.</li>
+        <li>Tap <strong>Log in</strong> and sign in with your Google, Microsoft, Apple or GitHub account. Signing in the first time creates your own small Tailscale network, which is free.</li>
+        <li>The app shows you as connected. Leave it on.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Android</h3>
+      <ol>
+        <li>Open the Google Play Store, search for <span class="ui">Tailscale</span> and tap <strong>Install</strong>.</li>
+        <li>Open Tailscale and tap <strong>Get Started</strong>.</li>
+        <li>When Android asks to let Tailscale set up a VPN connection, tap <strong>OK</strong>. Allowing notifications is optional.</li>
+        <li>Tap <strong>Sign in with Google</strong> to use your phone's Google account, or <strong>Sign in with other</strong> for Microsoft, Apple or GitHub.</li>
+        <li>The app shows you as connected. Leave it on.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="invite" aria-labelledby="invite-h">
+  <h2 id="invite-h">2 · Accept the invitation</h2>
+  <ol class="tries">
+    <li>On your phone, open the Tailscale invite link from Rafael's invitation.</li>
+    <li>Sign in with the <strong>same account</strong> you used in the Tailscale app, and accept the invitation.</li>
+    <li>Open the Tailscale app. A machine named <span class="ui">minty</span> appears in its list of machines, shared with you. It can take a minute.</li>
+  </ol>
+  <p class="tip">The invitation gives you this one machine, and only for as long as Rafael keeps it shared. You cannot reach anything else on his network, and sharing works one way: his machine cannot connect to your phone.</p>
+</section>
+
+<section class="block" id="open" aria-labelledby="open-h">
+  <h2 id="open-h">3 · Open Certo</h2>
+  <ol class="tries">
+    <li>With Tailscale connected, open Safari (iPhone) or Chrome (Android) and go to <span class="ui">https://minty.warg-torino.ts.net:8444/</span>. Type it whole: the full name and the <span class="ui">:8444</span> at the end are both needed. The same link is in your invitation.</li>
+    <li>Put it on your home screen, so it opens full screen like an app:
+      <ul>
+        <li><strong>iPhone, Safari:</strong> tap the Share button, then <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li>
+        <li><strong>Android, Chrome:</strong> tap the menu <span class="ui">⋮</span>, then <strong>Add to Home screen</strong> or <strong>Install app</strong>.</li>
+      </ul>
+    </li>
+    <li>From now on, open it from its icon, named <strong>Loupe</strong>. Tailscale must be on.</li>
+  </ol>
+</section>
+
+<section class="block" aria-labelledby="walk-h">
+  <h2 id="walk-h">The tour</h2>
+  <p class="intro">Every screen below is Certo as it stands on 3 October 2026, on TEN,PATIENT, the demo system's fullest record: care in 27 of the years from 1988 to 2016. The patient is fictitious.</p>
+
+  <article class="step" id="signon">
+    <div class="body">
+      <h3><span class="num">4</span>Sign on</h3>
+      <ul>
+        <li>The screen says <strong>Test system</strong>, because VistA reports this is not a production account.</li>
+        <li>Type the demo <strong>access code</strong> and <strong>verify code</strong> from your invitation and tap <strong>Sign on</strong>. <strong>Show</strong> reveals what you typed.</li>
+        <li>The <strong>Site notice</strong> under the button is the system's sign-on message, as on CPRS's sign-on form. Tap it to read it.</li>
+        <li>Your phone's password manager may offer to save the codes. Certo itself keeps them nowhere.</li>
+        <li>If alerts are waiting for you, Certo opens on your <strong>Alerts</strong>; the arrow at the top left takes you to Patient Search.</li>
+      </ul>
+      <p class="tip">Too many wrong codes lock sign-on for a while, as they would at a CPRS workstation. Check your codes before trying again.</p>
+    </div>
+    <div class="shots">
+      <figure class="shot"><img src="img/signon.webp" width="600" height="1192" alt="Sign on to VistA: a Test system badge, the Access code and Verify code fields, the Sign on button and a rolled-up Site notice." loading="lazy"><figcaption>Your demo codes, then Sign on.</figcaption></figure>
+    </div>
+  </article>
+
+  <article class="step" id="patient">
+    <div class="body">
+      <h3><span class="num">5</span>Select a patient</h3>
+      <ul>
+        <li><strong>Search:</strong> type a name, or the SSN's last four, in the box under <strong>Patient Search</strong> and press Search on your keyboard. Try <span class="ui">TEN,PATIENT</span> or <span class="ui">EIGHT,PATIENT</span>.</li>
+        <li>Each match shows age, sex, birth date and SSN, so like names can be told apart before you open one. <strong>Details</strong> shows CPRS's patient preview without opening the chart.</li>
+        <li><strong>Browse lists:</strong> wards, clinics, teams, treating specialties, primary-care teams and a provider's patients, as CPRS lists them. <strong>Your lists</strong> holds your own patients and the patients you opened recently.</li>
+        <li><strong>Alerts</strong> at the top right says how many alerts you have; tap it to work them. <strong>Sign off</strong>, in red, ends your session.</li>
+        <li>Tap the patient's name to open the chart. As in CPRS, VistA may first ask about a restricted record or a patient with a similar name, and a patient's flag can open by itself.</li>
+      </ul>
+    </div>
+    <div class="shots">
+      <figure class="shot"><img src="img/finder.webp" width="600" height="1192" alt="Patient Search: the search box, six Browse lists tiles with counts, and Your lists." loading="lazy"><figcaption>Patient Search at rest.</figcaption></figure>
+      <figure class="shot"><img src="img/search.webp" width="600" height="1192" alt="A search for TEN,PATIENT with one match: 91 M, birth date 4/7/35, the SSN masked, and a Details button." loading="lazy"><figcaption>A search, and its match.</figcaption></figure>
+    </div>
+  </article>
+
+  <article class="step" id="glance">
+    <div class="body">
+      <h3><span class="num">6</span>The glance</h3>
+      <p>The chart opens on the glance: what you would look at first, on one page. The five pages are in the bar at the foot of the screen: <strong>Glance</strong>, <strong>Timeline</strong>, <strong>Notes</strong>, <strong>Vitals</strong>, <strong>Labs</strong>.</p>
+      <ul>
+        <li><strong>The banner</strong>, on every page: name, age, sex, birth date and SSN; the allergies; VistA's flags, postings and a fall-risk mark. Tap the identifiers for primary care and how current the data is, the allergies for each one's reactions, a flag or posting to read it. The banner rolls up as you scroll and keeps the name.</li>
+        <li><strong>Latest:</strong> the last visit, the latest note, the latest vitals and the flagged results of the latest lab day, each with its date and how long ago. Tap a line to go to its page.</li>
+        <li><strong>Medications</strong> (outpatient, inpatient and non-VA, as CPRS's Meds tab), <strong>Problems</strong>, <strong>Clinical reminders</strong> and <strong>Postings</strong> follow. Tap a row for its detail. Each section folds with its heading.</li>
+        <li>VistA's flags are red: <span class="flagged">H</span> or <span class="flagged">L</span> in red text; a red box means VistA marked the result critical.</li>
+      </ul>
+    </div>
+    <div class="shots">
+      <figure class="shot"><img src="img/glance.webp" width="600" height="1192" alt="The glance: the banner, then Latest (visit, note, vitals, labs with flagged values in red), then Medications." loading="lazy"><figcaption>The banner and Latest.</figcaption></figure>
+      <figure class="shot"><img src="img/glance-more.webp" width="600" height="1192" alt="The glance scrolled: the banner rolled up to the name, the problem list with dates, and seven clinical reminders due now." loading="lazy"><figcaption>Scrolled: problems and reminders.</figcaption></figure>
+    </div>
+  </article>
+
+  <article class="step" id="timeline">
+    <div class="body">
+      <h3><span class="num">7</span>The timeline</h3>
+      <p>The whole record on one time axis, in four lanes: visits and stays, notes, days with vitals and days with labs.</p>
+      <ul>
+        <li><strong>Choose how much time to show</strong> with the row at the foot: <span class="ui">1W 1M 3M 1Y 5Y 10Y All</span>. It opens on five years. <strong>All</strong> shows the patient's whole life in VistA.</li>
+        <li><strong>Move through time</strong> by swiping sideways on the lanes, by dragging the blue dot on the strip under the spans, or by tapping the counts at a lane's ends (<span class="ui">&lt; 39</span> means 39 earlier).</li>
+        <li>Under each lane's name is how many it shows, of all (<span class="ui">56 of 95</span>). The small squares there open a key to the colours: a visit is coloured by kind, and a hollow square was cancelled or missed.</li>
+        <li><strong>Tap a square to choose that moment.</strong> Its notes light up on the Notes page, and the Vitals and Labs pages show that day's readings. Tap it again to let it go.</li>
+        <li>The ⓘ beside the strip shows these gestures again.</li>
+      </ul>
+    </div>
+    <div class="shots">
+      <figure class="shot"><img src="img/timeline.webp" width="600" height="1192" alt="The timeline over five years: four lanes of squares, counts beside each lane, and the spans with the strip at the foot." loading="lazy"><figcaption>Five years, as it opens.</figcaption></figure>
+      <figure class="shot"><img src="img/timeline-chosen.webp" width="600" height="1192" alt="The timeline with All chosen, from 1988 to 2026, and a lab day in 2008 chosen, marked by a vertical line through every lane." loading="lazy"><figcaption>All of it, a lab day chosen.</figcaption></figure>
+    </div>
+  </article>
+
+  <article class="step" id="vitals">
+    <div class="body">
+      <h3><span class="num">8</span>Vitals</h3>
+      <ul>
+        <li>One graph a vital, on one time axis: BP, HR, RR, Temp, SpO2, Pain, Ht, Wt and BMI. At the right of each, the latest reading, its date and how long ago.</li>
+        <li>The grey band is your site's abnormal limits for that vital. A dashed frame means VistA stores no limits for it.</li>
+        <li><strong>Tap a graph</strong> to read every vital at that moment, in blue. Hold, then drag, to read along the graphs. Tap again to go back to the latest.</li>
+        <li>The graphs show the stretch of time chosen on the Timeline page. Swipe sideways to move through it. To show more or less time, change the spans on the Timeline page.</li>
+        <li>A day chosen on the timeline means that day here: a vital with no reading that day says <span class="ui">none on 1/30/08</span>.</li>
+      </ul>
+    </div>
+    <div class="shots">
+      <figure class="shot"><img src="img/vitals.webp" width="600" height="1192" alt="Vitals over five years: nine small graphs with the latest reading, date and age at the right of each." loading="lazy"><figcaption>The latest of each.</figcaption></figure>
+      <figure class="shot"><img src="img/vitals-day.webp" width="600" height="1192" alt="Vitals over the whole record with a day chosen on the timeline: each graph's reading that day in blue, or none on 1/30/08." loading="lazy"><figcaption>A day chosen on the timeline.</figcaption></figure>
+    </div>
+  </article>
+
+  <article class="step" id="labs">
+    <div class="body">
+      <h3><span class="num">9</span>Labs</h3>
+      <ul>
+        <li>The tests are grouped into domains: CBC, Heme, Coag, LFT, Glucose, Electrolytes, Cholesterol, Cardiac, Renal and more. Tap a domain's chip to show or hide it; the number is how many tests it holds.</li>
+        <li>A <span class="flagged">red dot</span> on a chip means VistA flagged a latest result in that domain. Those domains open already shown.</li>
+        <li>Each test is a graph against the reference range stored with its results, the grey band, with its latest result, date and age at the right. A test with only one result in view is a single line.</li>
+        <li>As on Vitals: the graphs show the time chosen on the Timeline page, a tap reads a moment, and a day chosen on the timeline shows that day's results.</li>
+        <li>CPRS's own Recent Lab Results line for you is at the foot of the page.</li>
+      </ul>
+    </div>
+    <div class="shots">
+      <figure class="shot"><img src="img/labs.webp" width="600" height="1192" alt="Labs: domain chips with counts and red dots, then CBC tests with their latest results; critical results in red boxes." loading="lazy"><figcaption>Domains, and the latest results.</figcaption></figure>
+      <figure class="shot"><img src="img/labs-day.webp" width="600" height="1192" alt="Labs over the whole record with 1/30/08 chosen: each CBC test's graph and its result that day." loading="lazy"><figcaption>Every result, a day chosen.</figcaption></figure>
+    </div>
+  </article>
+
+  <article class="step" id="notes">
+    <div class="body">
+      <h3><span class="num">10</span>Notes</h3>
+      <ul>
+        <li>Every signed note and discharge summary, newest first, with no date limit. One row for each title on each day: <span class="ui">×4</span> means four that day; tap the row to unfold them.</li>
+        <li><strong>Search</strong> titles, authors and places as you type. <strong>Titles ▾</strong> switches to searching the notes' own text: type a word, press Search, and Certo reads every note, with progress and a Stop button.</li>
+        <li><strong>Date ▾</strong> changes the order. <strong>Kind</strong>, <strong>Author</strong>, <strong>Title</strong>, <strong>Place</strong> and <strong>Status</strong> narrow the list.</li>
+        <li><strong>Tap a note to read it</strong>, line for line as VistA holds it. <strong>previous</strong> and <strong>next</strong> step through the list; the arrow at the left goes back. A note with an assessment and plan opens there, and says so.</li>
+      </ul>
+    </div>
+    <div class="shots">
+      <figure class="shot"><img src="img/notes.webp" width="600" height="1192" alt="Notes: 680 notes, the search box with Titles and Date, five filters, and rows of titles by day with counts." loading="lazy"><figcaption>All 680 notes, one row a title a day.</figcaption></figure>
+      <figure class="shot"><img src="img/notes-search.webp" width="600" height="1192" alt="A search for discharge: 2 of 680 notes, one row, Discharge Summary times two." loading="lazy"><figcaption>A search as you type.</figcaption></figure>
+      <figure class="shot"><img src="img/reader.webp" width="600" height="1192" alt="A note open in the reader: its title line, VistA's text in a fixed-width font, and previous and next buttons, 5 of 680." loading="lazy"><figcaption>A note, read.</figcaption></figure>
+    </div>
+  </article>
+
+  <article class="step" id="leaving">
+    <div class="body">
+      <h3><span class="num">11</span>Moving around and leaving</h3>
+      <ul>
+        <li><strong>Back</strong>, on the screen or your phone, goes back one step. From the chart, the arrow at the banner's left goes back to Patient Search and closes the record. Certo never moves from one patient's chart to another's: to see another patient, go back to Patient Search.</li>
+        <li><strong>Hide</strong>, in the banner, blanks the screen at once without signing off. Tap it to show the chart again.</li>
+        <li><strong>Leaving the app</strong> clears the screen. Back within a minute, your patient reopens; after that you are signed off.</li>
+        <li><strong>After 5 minutes untouched</strong>, CPRS's own timeout window counts down; tap <strong>Don't Close CPRS</strong> to stay.</li>
+        <li>Nothing about a patient is kept on your phone.</li>
+      </ul>
+    </div>
+    <div class="shots">
+      <figure class="shot"><img src="img/hidden.webp" width="600" height="1192" alt="The hidden screen: a blank page saying Hidden. Tap to show." loading="lazy"><figcaption>Hide blanks the screen.</figcaption></figure>
+    </div>
+  </article>
+</section>
+
+<section class="block" id="try" aria-labelledby="try-h">
+  <h2 id="try-h">Five things to try</h2>
+  <ol class="tries">
+    <li><strong>A lifetime on one screen.</strong> Open TEN,PATIENT, go to Timeline and tap <strong>All</strong>. Visits, notes, vitals and labs from 1988 on.</li>
+    <li><strong>One day, every page.</strong> On the timeline, tap a lab day around 2008. Go to Labs, then Vitals: each shows that day.</li>
+    <li><strong>Find a note.</strong> On Notes, type <span class="ui">discharge</span>. Then switch <strong>Titles ▾</strong> to the notes' text and search for a word such as <span class="ui">cardiology</span>.</li>
+    <li><strong>What is abnormal now.</strong> On the glance, read the Latest labs line, then tap it: the flagged domains on Labs are already open.</li>
+    <li><strong>The safety habits.</strong> Tap Hide; leave the app and come back; go back to Patient Search and open another patient.</li>
+  </ol>
+</section>
+
+<section class="block" id="trouble" aria-labelledby="trouble-h">
+  <h2 id="trouble-h">If something goes wrong</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>What you see</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>The page does not load</td><td>Open the Tailscale app: it must say connected, and <span class="ui">minty</span> must be in its list. Use the full address with <span class="ui">:8444</span>. If minty is missing, ask Rafael to send the invitation again.</td></tr>
+        <tr><td>The address cannot be found</td><td>Use the whole address, <span class="ui">https://minty.warg-torino.ts.net:8444/</span>. The short name <span class="ui">minty</span> does not work for a machine shared with you.</td></tr>
+        <tr><td>Your codes are refused</td><td>Check them against the invitation; Show reveals what you typed. After several wrong tries sign-on locks for a while, as in CPRS.</td></tr>
+        <tr><td>"You must change your VERIFY CODE"</td><td>Certo never changes codes. Ask Rafael for new demo codes.</td></tr>
+        <tr><td>You were signed off</td><td>After 5 minutes untouched, or a minute away from the app, Certo signs you off in VistA. Sign on again.</td></tr>
+        <tr><td>"The connection failed"</td><td>The server dropped your session to keep it in step with VistA. Sign on again.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="block about" id="about" aria-labelledby="about-h">
+  <h2 id="about-h">About this demo</h2>
+  <p>Certo reads VistA as a client of its RPC Broker, signed on as you, in the same context CPRS uses, and draws VistA's own text and flags. It computes no judgement of its own. The longer story, with use cases and its safety features, is in <a href="../certo-guide/">the Certo guide</a>. How it was built from CPRS and checked against it is in <a href="../building-loupe/">Building Loupe on vista-forge</a>, written under its working name.</p>
+  <p>The demonstration runs on VA's public demo VistA system, with fictitious patients and demo accounts. Other testers use the same system, so what one does there, such as working an alert, the next one sees.</p>
+  <p>Certo records which screens are opened and how long each answer takes, so it can be improved. That record never holds a patient's name or any of VistA's words.</p>
+  <p>Please tell Rafael what worked, what didn't, and what you reached for and could not find, by replying to your invitation.</p>
+</section>
+
+</div>
+</body>
+</html>
