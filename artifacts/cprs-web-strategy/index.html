@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A measured plan for replacing the Delphi CPRS client with a service-based web client that keeps all of CPRS's behaviour, and for proving it with a deterministic coverage metric: where CPRS's behaviour lives, the engines inside the client, the RPC surface, the duties VistA leaves to the client, a target architecture, classic and modern modes, and a delivery plan. A draft; nothing in it is built.">
+<style>:root { color-scheme: light; } body { margin: 0; } img { max-width: 100%; } [hidden] { display: none !important; }</style>
+<title>CPRS Web Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a specification. Sticky contents rail on wide screens, one reading column, wide tables scroll in place. */
+:root {
+  --bg: #f3f5f7; --surface: #ffffff; --ink: #17202a; --ink-2: #3e4a56; --muted: #66717d; --line: #d8dde3;
+  --accent: #0b5d7a; --accent-soft: #e2eff4; --code: #e9edf1; --bar: #2f7f9c; --bar-hi: #0b5d7a;
+  --m: #0f6b63; --m-bg: #ddf1ed; --d: #8a520a; --d-bg: #f9edd6; --x: #475569; --x-bg: #e7ebf0;
+  --p: #64399a; --p-bg: #eee6f8; --r: #1e6b38; --r-bg: #dff1e4; --warn: #a1351e; --warn-bg: #fae6e0;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --text: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0f1418; --surface: #161d23; --ink: #e5eaef; --ink-2: #bcc6cf; --muted: #8f9ba6; --line: #2a333c;
+    --accent: #62b8d5; --accent-soft: #12303b; --code: #1d252d; --bar: #3f93b1; --bar-hi: #7cc9e2;
+    --m: #5fcdbf; --m-bg: #0f2e2a; --d: #e4b25c; --d-bg: #322610; --x: #aab6c3; --x-bg: #222a33;
+    --p: #c3a2ee; --p-bg: #291f39; --r: #80d29c; --r-bg: #15301f; --warn: #ef8a72; --warn-bg: #3a1d16;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1418; --surface: #161d23; --ink: #e5eaef; --ink-2: #bcc6cf; --muted: #8f9ba6; --line: #2a333c;
+  --accent: #62b8d5; --accent-soft: #12303b; --code: #1d252d; --bar: #3f93b1; --bar-hi: #7cc9e2;
+  --m: #5fcdbf; --m-bg: #0f2e2a; --d: #e4b25c; --d-bg: #322610; --x: #aab6c3; --x-bg: #222a33;
+  --p: #c3a2ee; --p-bg: #291f39; --r: #80d29c; --r-bg: #15301f; --warn: #ef8a72; --warn-bg: #3a1d16;
+}
+body { background: var(--bg); color: var(--ink); font: 400 1rem/1.62 var(--text); padding-inline: 18px; padding-block: 36px 96px; }
+.page { max-width: 1220px; margin-inline: auto; display: grid; gap: 36px; }
+@media (min-width: 1120px) {
+  .page { grid-template-columns: 250px minmax(0, 1fr); align-items: start; }
+  .page > header { grid-column: 1 / -1; }
+  nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); max-height: calc(100vh - 40px); overflow-y: auto; }
+}
+header { max-width: 900px; display: grid; gap: 14px; }
+.eyebrow { font: 600 0.78rem/1 var(--display); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 700 clamp(2.1rem, 4.6vw, 3.2rem)/1.04 var(--display); margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.lede { font-size: 1.2rem; line-height: 1.5; color: var(--ink-2); margin: 0; max-width: 64ch; text-wrap: pretty; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 500 0.78rem/1 var(--mono); padding: 6px 9px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--muted); }
+.chip b { color: var(--ink); font-weight: 500; }
+.chip.warn { color: var(--warn); border-color: var(--warn); background: var(--warn-bg); }
+nav.toc { font-size: 0.9rem; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 14px 16px; }
+nav.toc .label { font: 600 0.72rem/1 var(--display); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+nav.toc ol { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 5px; counter-reset: t; }
+nav.toc li { margin: 0; }
+nav.toc a { color: var(--ink); text-decoration: none; display: block; }
+nav.toc a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+nav.toc .n { font-family: var(--mono); color: var(--muted); font-size: 0.8em; display: inline-block; min-width: 2.2em; }
+@media (max-width: 1119px) { nav.toc ol { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); } }
+article { max-width: 860px; min-width: 0; }
+h2 { font: 700 1.6rem/1.18 var(--display); margin: 2.4em 0 0.6em; padding-top: 1em; border-top: 1px solid var(--line); text-wrap: balance; scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 18px); }
+h2 .n { font-family: var(--mono); font-weight: 500; font-size: 0.7em; color: var(--muted); margin-right: 0.5em; vertical-align: 0.12em; }
+h3 { font: 600 1.18rem/1.3 var(--display); margin: 1.8em 0 0.5em; text-wrap: balance; scroll-margin-top: 18px; }
+h4 { font: 600 0.98rem/1.35 var(--text); margin: 1.4em 0 0.4em; }
+p, ul, ol { margin: 0 0 1em; }
+p { max-width: 70ch; }
+ul, ol { padding-left: 1.3em; }
+li { margin: 0.3em 0; max-width: 68ch; }
+strong { font-weight: 600; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+code { font-family: var(--mono); font-size: 0.84em; background: var(--code); padding: 0.06em 0.32em; border-radius: 4px; overflow-wrap: anywhere; }
+.abstract { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px; }
+.abstract h2 { margin-top: 0; padding-top: 0; border-top: 0; }
+.abstract p { max-width: none; }
+.callout { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 0 0 1.2em; }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+.callout.warn { background: var(--warn-bg); border-left-color: var(--warn); }
+.pv { display: inline-block; font: 500 0.68rem/1 var(--mono); letter-spacing: 0.03em; padding: 3px 5px 3px; border-radius: 3px; vertical-align: 0.14em; white-space: nowrap; margin-right: 2px; }
+.pv.m { color: var(--m); background: var(--m-bg); }
+.pv.d { color: var(--d); background: var(--d-bg); }
+.pv.x { color: var(--x); background: var(--x-bg); }
+.pv.p { color: var(--p); background: var(--p-bg); }
+.pv.r { color: var(--r); background: var(--r-bg); }
+.legend-row { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.86rem; color: var(--ink-2); margin: 0 0 1.4em; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 0 0 1.4em; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 14px 12px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.tile .k { font: 600 0.72rem/1.2 var(--display); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.tile .v { font: 600 1.7rem/1.05 var(--display); font-variant-numeric: tabular-nums; }
+.tile .s { font-size: 0.84rem; color: var(--ink-2); line-height: 1.4; }
+.table-wrap { overflow-x: auto; margin: 0 0 1.4em; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; line-height: 1.45; font-variant-numeric: tabular-nums; }
+th { text-align: left; font: 600 0.72rem/1.3 var(--display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 9px 11px; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--surface); }
+td { padding: 9px 11px; vertical-align: top; border-top: 1px solid var(--line); }
+tr:first-child td { border-top: 0; }
+td.num, th.num { text-align: right; white-space: nowrap; }
+td code { font-size: 0.78rem; }
+td.w { min-width: 15em; }
+td.ww { min-width: 22em; }
+.kind { font: 500 0.7rem/1 var(--mono); padding: 3px 5px; border-radius: 3px; white-space: nowrap; background: var(--code); color: var(--ink-2); }
+.kind.i { background: var(--accent-soft); color: var(--accent); }
+figure { margin: 0 0 1.6em; }
+.fig { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 14px; }
+.fig svg { display: block; width: 100%; height: auto; }
+.fig.arch svg { min-width: 760px; }
+.fig.bars svg { min-width: 560px; }
+figcaption { font-size: 0.86rem; color: var(--muted); margin-top: 8px; max-width: 75ch; }
+svg .t { fill: var(--ink); font: 400 12.5px var(--text); }
+svg .tb { fill: var(--ink); font: 600 13px var(--text); }
+svg .th { fill: var(--ink); font: 700 14px var(--display); letter-spacing: 0.02em; }
+svg .tm { fill: var(--muted); font: 400 11.5px var(--text); }
+svg .ta { fill: var(--accent); font: 700 13px var(--display); letter-spacing: 0.06em; }
+svg .box { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+svg .boxa { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.4; }
+svg .boxp { fill: var(--p-bg); stroke: var(--p); stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .boxm { fill: var(--m-bg); stroke: var(--m); stroke-width: 1.2; }
+svg .band { fill: var(--bg); stroke: none; }
+svg .ln { fill: none; stroke: var(--muted); stroke-width: 1.4; }
+svg .lnd { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 4 4; }
+svg .ah { fill: var(--muted); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .bar { fill: var(--bar); }
+svg .bar.hot { fill: var(--bar-hi); }
+svg .hit { fill: transparent; cursor: default; }
+.tip { position: fixed; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font-size: 0.82rem; line-height: 1.4; box-shadow: 0 4px 16px rgba(0,0,0,0.12); max-width: 300px; z-index: 10; }
+.tip b { font-weight: 600; }
+.dl { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; margin: 0 0 1.2em; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.dl > div { padding: 12px 14px; border-top: 1px solid var(--line); }
+.dl > div:first-child { border-top: 0; }
+.dl .h { font-weight: 600; display: block; margin-bottom: 2px; }
+.dl p { margin: 0.2em 0 0; max-width: none; }
+.dl .tag { font: 500 0.72rem/1 var(--mono); color: var(--muted); margin-left: 6px; }
+footer.src { max-width: 860px; font-size: 0.86rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+@media (min-width: 1120px) { footer.src { grid-column: 2; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+<header>
+  <div class="eyebrow">vista-forge · strategy and specification · draft for ruling</div>
+  <h1>CPRS Web Strategy</h1>
+  <p class="lede">A measured plan for replacing the Delphi CPRS client with a service-based web client that keeps all of CPRS's behaviour, and for proving it does so with a deterministic coverage metric.</p>
+  <div class="meta">
+    <span class="chip warn">nothing in this plan is built</span>
+    <span class="chip">measured <b>2026-10-03</b></span>
+    <span class="chip">CPRS <b>1.33.112.1</b> · OR*3.0*629</span>
+    <span class="chip">engine <b>vehu</b> (YottaDB)</span>
+    <span class="chip">vdocs <b>726d22a4</b> · vista-meta <b>23d037f1</b></span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <div class="label">Contents</div>
+  <ol>
+    <li><a href="#abstract"><span class="n">—</span>Abstract</a></li>
+    <li><a href="#s1"><span class="n">1</span>The request and where it lands</a></li>
+    <li><a href="#s2"><span class="n">2</span>Key findings</a></li>
+    <li><a href="#s3"><span class="n">3</span>Where CPRS's behaviour lives</a></li>
+    <li><a href="#s4"><span class="n">4</span>The engines inside the Delphi client</a></li>
+    <li><a href="#s5"><span class="n">5</span>The RPC surface</a></li>
+    <li><a href="#s6"><span class="n">6</span>Duties the server leaves to the client</a></li>
+    <li><a href="#s7"><span class="n">7</span>Connections outside VistA</a></li>
+    <li><a href="#s8"><span class="n">8</span>How others moved thick clients to the web</a></li>
+    <li><a href="#s9"><span class="n">9</span>Target architecture</a></li>
+    <li><a href="#s10"><span class="n">10</span>Identity and sign-on</a></li>
+    <li><a href="#s11"><span class="n">11</span>The fidelity metric</a></li>
+    <li><a href="#s12"><span class="n">12</span>Classic and modern modes</a></li>
+    <li><a href="#s13"><span class="n">13</span>The desktop companion</a></li>
+    <li><a href="#s14"><span class="n">14</span>Third-party and AI clients</a></li>
+    <li><a href="#s15"><span class="n">15</span>Delivery plan</a></li>
+    <li><a href="#s16"><span class="n">16</span>Technical risks and mitigations</a></li>
+    <li><a href="#s17"><span class="n">17</span>Unknowns</a></li>
+    <li><a href="#s18"><span class="n">18</span>Assumptions</a></li>
+    <li><a href="#s19"><span class="n">19</span>Decisions to rule</a></li>
+    <li><a href="#s20"><span class="n">20</span>What changed since the two artifacts</a></li>
+    <li><a href="#s21"><span class="n">21</span>Sources and how each number was taken</a></li>
+  </ol>
+</nav>
+
+<article>
+
+<section class="abstract" id="abstract">
+<h2>Abstract</h2>
+<p>CPRS is three things in one program: a presenter of VistA's data, an interpreter of each site's clinical definitions, and an orchestrator of multi-step clinical transactions. Measured today, its compiled Delphi code is <strong>355,291 lines in 519 units, holding 14,014 routines</strong>, of which 4,061 are event handlers. It reaches VistA through <strong>1,190 remote procedures</strong> in its context. Those enter VistA through 232 routines whose call graph reaches up to <strong>7,290 routines and about 998,000 lines of M</strong> in 76 packages. It renders tens of thousands of site-defined records: 10,099 reminder-dialog elements, 5,836 note templates and 759 order-dialog entries on vehu. It also leans on the Windows desktop for PIV signing, CCOW, COM extensions, local programs, printers and screen readers.</p>
+<p>This plan keeps VistA's clinical rules where they are and calls them. It moves the client's interpreters and orchestration into server-side domain services, and it presents them in two web front-ends. <strong>Classic mode</strong> reproduces CPRS's screens. <strong>Modern mode</strong> follows the Office-on-the-web look and runs beside Teams and Outlook in Edge. Underneath the services, a CPRS-equivalence layer holds each person's Broker session and sends what CPRS would send. It enforces the duties VistA leaves to the client: the audited sensitive-record check, signature validation before orders are signed, lock release and keep-alive. Identity is OpenID Connect at the front, with access/verify as the baseline. VA's SSOi token path and a proposed JWT verifier inside VistA connect the two. Third-party and AI clients use the same services with scoped, on-behalf-of tokens. They never sign.</p>
+<p>Fidelity is measured, not asserted. Every Delphi routine, every RPC, every user action, every site-definition record, every duty and every outside dependency gets a disposition from a closed list. A disposition counts only when its proof passes on the commit: a ported test, a recorded-traffic conformance scenario, a database diff or a screenshot diff. The headline number is the share of each population that is proven. "100%" means no item is left unknown and every proof is green. It does not mean every line was executed. The plan builds on two parked proposals from 2026-09-23, the CPRS surface map and the CPRS service layer. Both meet their stated conditions for unparking with this request. It corrects several of their snapshot numbers using later measurements, which are listed in §20.</p>
+</section>
+
+<div class="legend-row" aria-label="Provenance labels">
+  <span><span class="pv m">measured</span> taken today, or on the stated date, from source, live vehu or vista-meta</span>
+  <span><span class="pv d">documented</span> VA documentation (vdocs gold corpus)</span>
+  <span><span class="pv x">external</span> public sources on other vendors</span>
+  <span><span class="pv r">ruled</span> an operator ruling in force</span>
+  <span><span class="pv p">proposed</span> this plan; not built</span>
+</div>
+
+<h2 id="s1"><span class="n">1</span>The request and where it lands</h2>
+<p>The request is a drop-in web replacement for CPRS that keeps all of its behaviour. It should be built as services rather than RPC wrappers, measured by coverage of CPRS's Delphi code and of the RPCs CPRS uses, and offered in a classic mode now and a modern mode later. Web, mobile and third-party clients, including AI-driven order entry, consume the same services.</p>
+<p>This is not the first time the question has been asked here. Five earlier efforts bear on it:</p>
+<ul>
+  <li><strong>CPRS surface map</strong> (parked 2026-09-23). It proposed fourteen generated artifacts (an action map, screen specifications, reply schemas, a client-logic inventory, site-definition interpreters, workflows, an authorization matrix, external integrations, a data map, a server-effect register, a conformance suite, a readiness register, a client-obligations register and a facet registry). It was parked because nothing consumed it. Its condition for unparking is "a consumer is named for a whole-surface artifact … or a web-UI effort". <strong>This request names that consumer.</strong></li>
+  <li><strong>CPRS service layer</strong> (parked 2026-09-23, five safeguards ruled). One server holds each person's Broker session and offers clinician-shaped services. Its condition for unparking is "an effort commits to a client that must reach VistA through one server holding people's sessions (a web CPRS …)". <strong>This request meets it.</strong> Its adversarial review recommends ruling a session guard first and coarse services after; §9 follows that.</li>
+  <li><strong>Loupe</strong> (accepted, building). A phone client for clinicians that reaches VistA as the signed-on person through CPRS's own RPCs. It has a passed side-by-side exit test for sign-on and patient selection (2026-09-29). It is the nearest working precedent for a client held to CPRS's behaviour, but it is a phone summary with ruled differences from CPRS, and it should become a <em>client</em> of the services.</li>
+  <li><strong>The retired web-CPRS architecture</strong> (June 2026, retired for having no consumer). It dispatched calls through a new component inside VistA and used pooled workers. The service layer's rulings reject both.</li>
+  <li><strong>An exploratory cprs-web project</strong> outside the org (<code>~/careflows/cprs-web</code>, May to July 2026). It planned an AWS deployment across about 130 VistA instances with a per-site behaviour profile, named six client engines and captured a golden traffic corpus. It is useful as reading. Under the org's boundary rule, nothing here may depend on it.</li>
+</ul>
+<p>The org's settled position on whole-record extracts also applies. VPR and eHMP extracts are not a new client's foundation (ruled 2026-09-23). The client uses CPRS's RPCs.</p>
+
+<h2 id="s2"><span class="n">2</span>Key findings</h2>
+<div class="tiles">
+  <div class="tile"><span class="k">Compiled Delphi</span><span class="v">355,291</span><span class="s">lines in 519 units, excluding generated headers and third-party code <span class="pv m">measured</span></span></div>
+  <div class="tile"><span class="k">Routines to dispose of</span><span class="v">14,014</span><span class="s">procedures and methods in the compiled closure; 4,061 are event handlers <span class="pv m">measured</span></span></div>
+  <div class="tile"><span class="k">RPCs in CPRS's context</span><span class="v">1,190</span><span class="s">none gated by a key; 1,017 named by live code, 191 never named <span class="pv m">measured</span></span></div>
+  <div class="tile"><span class="k">M reached behind them</span><span class="v">≈998k</span><span class="s">lines in 7,290 routines and 76 packages (routine-level upper bound) <span class="pv m">measured</span></span></div>
+  <div class="tile"><span class="k">Site definitions</span><span class="v">25k+</span><span class="s">reminder elements, templates, order dialogs, reports and more, interpreted at run time <span class="pv m">measured</span></span></div>
+  <div class="tile"><span class="k">Desktop dependencies</span><span class="v">19</span><span class="s">classes of non-VistA connection in the client, plus 18 outbound web services on the server <span class="pv m">measured</span></span></div>
+</div>
+<ol>
+  <li><strong>VistA's clinical rules must be called, not rewritten.</strong> CPRS asks the server for dose conversions, days supply, order checks, cosignature and release rules. The M behind CPRS's RPCs reaches about a quarter of VistA's 4.1 million lines. A web CPRS that re-implements any of that is a new EHR, not a replacement.</li>
+  <li><strong>The client's real weight is in its interpreters.</strong> The order-dialog, encounter, note-template, reminder-dialog and consult engines alone hold about 126,000 lines. Each turns site data into screens and into the exact strings VistA expects back. These are the "engines" to isolate (§4).</li>
+  <li><strong>VistA trusts the client for duties it does not enforce.</strong> The sensitive-record check is itself the audited access. <code>ORWDX SEND</code> never reads the signature code it is given. <code>ORWD SIGN</code> signs orders on the ORES key alone and CPRS never calls it. The Restricted Patient List exists only in which lookup the client chooses. A service layer must carry each of these as a rule, with a test that fails a service that skips it (§6).</li>
+  <li><strong>"Call for call" needs a written equivalence.</strong> CPRS's patient-selection preamble is deterministic (36 calls, identical across three sessions). After it, traffic depends on the showing tab, the cache and timers. Conformance compares functional calls under a stated CPRS state, with timers and polls removed and record numbers normalized (ruled 2026-09-23).</li>
+  <li><strong>Half the outside surface is on the server.</strong> All 18 of vehu's outbound web servers point at hosts it cannot reach, so order checks, PDMP, DST and primary-care detail run in outage mode on vehu and on any copy of it. A recording there captures outage behaviour.</li>
+  <li><strong>A full Delphi line-coverage run looks feasible but is unproven.</strong> All 419 units the project file lists are present. Only <code>UJawsLauncher</code> and the open-source FastMM4 are missing from the tree. The other outside units it compiles against (Indy, the Office automation units, TeeChart) normally ship with Delphi, though which edition is needed is unverified. The release build carries no debug map, so instrumented coverage needs a rebuild in a Windows guest with the matching Delphi compiler. That rebuild has not been attempted (§17).</li>
+  <li><strong>Every major vendor that made this move kept a native shell.</strong> Epic's Hyperdrive is an installed Chromium-based client with local helper software for signature pads. The new Outlook and the new Teams run as web apps inside Edge WebView2. The plan is browser-first, with an optional desktop companion for the integrations a browser cannot reach (§13).</li>
+</ol>
+
+<h2 id="s3"><span class="n">3</span>Where CPRS's behaviour lives</h2>
+<p>A replacement has to account for behaviour in four places. Each needs a different treatment, and each has its own population for the fidelity metric (§11).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>layer</th><th>what it holds</th><th>size</th><th>treatment</th></tr></thead>
+<tbody>
+<tr><td><strong>VistA server logic</strong></td><td class="w">the clinical rules: order checks, dose and supply math, cosignature, TIU business rules, release, filing</td><td class="w">1,190 RPCs → 232 entry routines (36,894 lines) → up to 7,290 routines, 998,433 lines, 76 packages <span class="pv m">measured</span></td><td class="w"><strong>Call, unchanged.</strong> No VistA change except by a later ruling for a duty proven impossible to guarantee from outside <span class="pv r">ruled</span></td></tr>
+<tr><td><strong>Delphi client logic</strong></td><td class="w">interpreters, workflows, client-only checks, sorting and formatting, session handling</td><td class="w">355,291 lines; 14,014 routines; 312 forms with 7,559 components and 4,431 event bindings <span class="pv m">measured</span></td><td class="w"><strong>Port</strong> the engines into services; <strong>replace</strong> the VCL presentation with web components</td></tr>
+<tr><td><strong>Site definitions</strong></td><td class="w">order dialogs and quick orders, reminder dialogs, templates and fields, TIU objects, reports, notification types, parameters</td><td class="w">see table below <span class="pv m">measured</span></td><td class="w"><strong>Interpret</strong> at run time from the site's data; never bake a site's definitions into a client</td></tr>
+<tr><td><strong>Desktop environment</strong></td><td class="w">PIV and Windows cryptography, CCOW, COM extensions, Tools-menu programs, DLL add-ons, Word, Excel, embedded browsers, printers, screen readers</td><td class="w">19 connection classes; 9 Tools-menu entries and 4 COM objects on vehu <span class="pv m">measured</span></td><td class="w"><strong>Replace, bridge or retire</strong>, each by a written ruling (§7, §13)</td></tr>
+</tbody></table></div>
+
+<h3>Site definitions on vehu</h3>
+<p>These are FileMan header counts read today through the driver stack. They agree with the census of 2026-09-09 except where noted.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>definition</th><th>file</th><th class="num">records</th><th>interpreted by</th></tr></thead>
+<tbody>
+<tr><td>reminder-dialog elements</td><td><code>801.41</code></td><td class="num">10,099</td><td>reminder dialog engine</td></tr>
+<tr><td>orderable items</td><td><code>101.43</code></td><td class="num">6,326</td><td>order dialog engine</td></tr>
+<tr><td>note templates</td><td><code>8927</code></td><td class="num">5,836</td><td>note template engine (5,837 on 2026-09-23)</td></tr>
+<tr><td>template fields</td><td><code>8927.1</code></td><td class="num">1,470</td><td>note template engine</td></tr>
+<tr><td>parameter definitions / values</td><td><code>8989.51</code> / <code>8989.5</code></td><td class="num">1,219 / 15,580</td><td>every engine; the values figure is the file header, which can lag (15,856 counted 2026-09-23)</td></tr>
+<tr><td>TIU document definitions</td><td><code>8925.1</code></td><td class="num">1,100</td><td>notes: 619 titles, 69 classes, 399 objects that run M into notes</td></tr>
+<tr><td>order-dialog entries</td><td><code>101.41</code></td><td class="num">759</td><td>91 dialogs, 445 quick orders, 55 menus, 29 sets, 127 prompts, 12 actions</td></tr>
+<tr><td>MH tests and surveys</td><td><code>601.71</code></td><td class="num">304</td><td>reminder dialogs and the MH instrument DLL</td></tr>
+<tr><td>reminder definitions</td><td><code>811.9</code></td><td class="num">268</td><td>reminder engine and cover sheet</td></tr>
+<tr><td>report definitions</td><td><code>101.24</code></td><td class="num">177</td><td>cover sheet, Reports and Labs tabs, graphs; 130 run a routine named in the definition</td></tr>
+<tr><td>consult services</td><td><code>123.5</code></td><td class="num">73</td><td>consults engine</td></tr>
+<tr><td>notification types</td><td><code>100.9</code></td><td class="num">70</td><td>notification engine</td></tr>
+<tr><td>registered COM objects</td><td><code>101.15</code></td><td class="num">4</td><td>extension host</td></tr>
+</tbody></table></div>
+<p>The site's patient data is small on vehu: 1,755 patients, 40,972 orders, 13,027 TIU documents, 14,123 visits and 1,271 consults <span class="pv m">measured</span>. Performance work cannot be validated here (§17).</p>
+
+<h2 id="s4"><span class="n">4</span>The engines inside the Delphi client</h2>
+<p>Every unit in the tree was assigned to one functional group by its directory and name, with no unit left unassigned. A group is an <strong>engine</strong> when it interprets site definitions or carries a multi-step clinical transaction. The others are platform: session, controls, accessibility and shell. Seventeen units of generated Windows headers, type libraries and an API-hooking library (42,191 lines) are counted apart and are not ported.</p>
+
+<figure>
+<div class="fig bars" id="engine-chart" role="img" aria-label="Lines of Delphi code by functional group, largest first. Order dialog engine 48,241; UI controls and utilities 38,854; order management 23,867; encounter 22,655; note templates 22,432; down to printing at 968."></div>
+<figcaption>Lines of Delphi code by functional group, all units in CPRS's own code and the VA packages it carries, compiled or not (371,636 lines; 16,345 of them never compile). Darker bars are interpreter engines. Hover a bar for routines and event handlers. The table below holds the same data. <span class="pv m">measured</span></figcaption>
+</figure>
+
+<div class="table-wrap"><table id="engine-table">
+<thead><tr><th>group</th><th>kind</th><th class="num">lines</th><th class="num">routines</th><th class="num">handlers</th><th class="num">RPC names</th><th>what it interprets or carries</th><th>proposed home</th></tr></thead>
+<tbody>
+<tr><td>Order dialog engine</td><td><span class="kind i">interpreter</span></td><td class="num">48,241</td><td class="num">1,814</td><td class="num">695</td><td class="num">146</td><td class="ww">order dialogs, quick orders, sets and menus (759 entries), 6,326 orderable items; builds the response strings (<code>TResponses</code> in <code>fODBase</code>); per-group dialogs for meds, IV, lab, imaging, diet, blood bank, consults; client-only dose checks such as a complex dose's duration against its days supply</td><td>Orders service</td></tr>
+<tr><td>Order management and release</td><td><span class="kind">workflow</span></td><td class="num">23,867</td><td class="num">896</td><td class="num">300</td><td class="num">181</td><td class="ww">discontinue, hold, renew, change, copy, transfer, verify, complete, park, flag, refill, sign on chart; event-delayed orders and release events</td><td>Orders service</td></tr>
+<tr><td>Encounter (PCE) engine</td><td><span class="kind i">interpreter</span></td><td class="num">22,655</td><td class="num">897</td><td class="num">239</td><td class="num">79</td><td class="ww">visit, diagnoses, procedures, exams, health factors, immunizations, skin tests, education; pick lists from 249 encounter forms</td><td>Encounter service</td></tr>
+<tr><td>Note template engine</td><td><span class="kind i">interpreter</span></td><td class="num">22,432</td><td class="num">901</td><td class="num">349</td><td class="num">39</td><td class="ww">5,836 templates of 11 types, 1,470 fields of 11 field types and 7 date types, TIU objects, required-field navigation, template drawers; produces the note text that is later signed</td><td>Notes service</td></tr>
+<tr><td>Notes, discharge summaries, document tree</td><td><span class="kind">workflow</span></td><td class="num">18,707</td><td class="num">611</td><td class="num">289</td><td class="num">66</td><td class="ww">a note's life (create, lock, save, sign, addendum, ID notes), document tree grouping, discharge summaries</td><td>Notes service</td></tr>
+<tr><td>Reminder dialog engine</td><td><span class="kind i">interpreter</span></td><td class="num">18,230</td><td class="num">570</td><td class="num">162</td><td class="num">41</td><td class="ww">10,099 dialog elements with 14 data types (diagnosis, procedure, exam, health factor, immunization, vitals, order, MH test …) and 23 prompt types; writes encounter data, orders, MH results and note text in one pass</td><td>Reminders service</td></tr>
+<tr><td>Consults engine</td><td><span class="kind i">interpreter</span></td><td class="num">15,009</td><td class="num">536</td><td class="num">278</td><td class="num">55</td><td class="ww">service tree (73 services), prerequisites, consult actions, 513 printing, consult-linked notes</td><td>Consults service</td></tr>
+<tr><td>Graphing engine</td><td><span class="kind i">interpreter</span></td><td class="num">12,539</td><td class="num">404</td><td class="num">145</td><td class="num">30</td><td class="ww">28 graph types, graph profiles, date axes; export through Word and Excel</td><td>Reports service; charting in the client</td></tr>
+<tr><td>Cover sheet engine</td><td><span class="kind i">interpreter</span></td><td class="num">8,278</td><td class="num">368</td><td class="num">106</td><td class="num">13</td><td class="ww">panes delivered by <code>ORWCV1 COVERSHEET LIST</code>, each naming its own RPC; vehu's vitals pane names one that appears nowhere in the source</td><td>Chart read service</td></tr>
+<tr><td>Labs display engine</td><td><span class="kind">presenter</span></td><td class="num">8,180</td><td class="num">232</td><td class="num">139</td><td class="num">26</td><td class="ww">cumulative and interim views, grid pivot, test groups</td><td>Chart read service</td></tr>
+<tr><td>Reports and health summary</td><td><span class="kind i">interpreter</span></td><td class="num">8,167</td><td class="num">225</td><td class="num">97</td><td class="num">39</td><td class="ww">report catalog from <code>ORWRP REPORT LISTS</code>; ad hoc health summaries; remote-site reports</td><td>Reports service</td></tr>
+<tr><td>Problem list</td><td><span class="kind">workflow</span></td><td class="num">6,868</td><td class="num">294</td><td class="num">91</td><td class="num">25</td><td class="ww">list ordering and marks, lexicon search, edit</td><td>Chart services</td></tr>
+<tr><td>Billing awareness</td><td><span class="kind">workflow</span></td><td class="num">5,467</td><td class="num">190</td><td class="num">43</td><td class="num">18</td><td class="ww">treatment factors and diagnoses per order</td><td>Orders service</td></tr>
+<tr><td>Patient selection and context</td><td><span class="kind">workflow</span></td><td class="num">5,320</td><td class="num">215</td><td class="num">100</td><td class="num">8</td><td class="ww">lists and their sorting, sensitive-record flow, similar names, duplicates, flags</td><td>Patient context service</td></tr>
+<tr><td>Medications tab</td><td><span class="kind">presenter</span></td><td class="num">4,367</td><td class="num">156</td><td class="num">68</td><td class="num">14</td><td class="ww">placement by order-id letter, per-section columns</td><td>Chart read service</td></tr>
+<tr><td>Signature and review</td><td><span class="kind">workflow</span></td><td class="num">3,901</td><td class="num">93</td><td class="num">39</td><td class="num">4</td><td class="ww">unsigned items across orders, notes and consults; additional signers</td><td>Signature service</td></tr>
+<tr><td>Surgery</td><td><span class="kind">presenter</span></td><td class="num">3,937</td><td class="num">131</td><td class="num">72</td><td class="num">17</td><td class="ww">surgery tab and reports</td><td>Chart read service</td></tr>
+<tr><td>PDMP integration</td><td><span class="kind">workflow</span></td><td class="num">3,123</td><td class="num">133</td><td class="num">32</td><td class="num">9</td><td class="ww">prescription-monitoring query and review</td><td>Orders service</td></tr>
+<tr><td>Order checks and order session</td><td><span class="kind">workflow</span></td><td class="num">2,896</td><td class="num">116</td><td class="num">50</td><td class="num">3</td><td class="ww">acceptance, override reasons, monographs, allergy checks</td><td>Orders service</td></tr>
+<tr><td>Notifications engine</td><td><span class="kind i">interpreter</span></td><td class="num">2,452</td><td class="num">122</td><td class="num">52</td><td class="num">8</td><td class="ww">70 notification types, each with its follow-up action</td><td>Notifications service</td></tr>
+<tr><td>Vitals, allergies, Women's Health, DST</td><td><span class="kind">workflow</span></td><td class="num">7,439</td><td class="num">295</td><td class="num">115</td><td class="num">11</td><td class="ww">vitals entry (plus the separate Vitals DLL), allergy entry, pregnancy and lactation status, decision-support tool</td><td>Chart services</td></tr>
+<tr><td>Copy/paste provenance</td><td><span class="kind">platform</span></td><td class="num">9,750</td><td class="num">212</td><td class="num">11</td><td class="num">0</td><td class="ww">monitors pastes into notes and records their source</td><td>Audit and provenance service</td></tr>
+<tr><td>Digital signature (PKI)</td><td><span class="kind">platform</span></td><td class="num">4,126</td><td class="num">192</td><td class="num">3</td><td class="num">4</td><td class="ww">PIV-card signing of controlled-substance orders</td><td>Signature service and the companion</td></tr>
+<tr><td>Session, sign-on, Broker transport</td><td><span class="kind">platform</span></td><td class="num">18,764</td><td class="num">697</td><td class="num">158</td><td class="num">20</td><td class="ww">sign-on (codes, SSOi/STS token, PIV), CCOW broker, SSH tunnel, keep-alive, contexts</td><td>Identity service and the equivalence layer</td></tr>
+<tr><td>Application shell and chart core</td><td><span class="kind">platform</span></td><td class="num">13,684</td><td class="num">578</td><td class="num">128</td><td class="num">126</td><td class="ww">main frame, tab switching, core state, the core RPC wrappers</td><td>Clients and the equivalence layer</td></tr>
+<tr><td>Options and preferences</td><td><span class="kind">workflow</span></td><td class="num">9,818</td><td class="num">448</td><td class="num">229</td><td class="num">76</td><td class="ww">lists, teams, surrogates, notification settings, defaults</td><td>Preferences service</td></tr>
+<tr><td>Accessibility (Section 508)</td><td><span class="kind">platform</span></td><td class="num">19,372</td><td class="num">1,120</td><td class="num">45</td><td class="num">0</td><td class="ww">screen-reader framework (JAWS, Window-Eyes)</td><td>Replaced by web accessibility</td></tr>
+<tr><td>UI controls and shared utilities</td><td><span class="kind">platform</span></td><td class="num">38,854</td><td class="num">1,978</td><td class="num">121</td><td class="num">3</td><td class="ww">long-list combo boxes with server paging, date entry, sorting rules (Windows word sort versus ASCII), text wrapping</td><td>Client component library</td></tr>
+<tr><td>Extensibility, spell check, printing</td><td><span class="kind">platform</span></td><td class="num">5,193</td><td class="num">292</td><td class="num">31</td><td class="num">9</td><td class="ww">COM extension host and event hooks, Tools menu, client REST call, Word spelling, print routing</td><td>Extensions and printing services; the companion</td></tr>
+</tbody></table></div>
+<p>Two points follow from the table.</p>
+<ul>
+  <li><strong>The interpreters carry the clinical text.</strong> The template engine assembles the note that a clinician signs, and the reminder engine writes encounter data, orders and note text together. A port is acceptable only when, given the same definitions and the same answers, it produces byte-identical text and identical filing calls (§11, oracle 3).</li>
+  <li><strong>The "RPC names" column undercounts real reach.</strong> The forms call wrappers in the core units, so most names sit in a handful of units such as <code>rCore</code> and <code>rOrders</code>. The action map, which traces each user action to the RPCs it reaches, is what assigns RPCs to engines (surface map A1).</li>
+</ul>
+
+<h2 id="s5"><span class="n">5</span>The RPC surface</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>population</th><th class="num">count</th><th>note</th></tr></thead>
+<tbody>
+<tr><td>RPCs in vehu's RPC file</td><td class="num">4,503</td><td>file header and B index agree today <span class="pv m">measured</span></td></tr>
+<tr><td>RPCs CPRS's context admits</td><td class="num">1,190</td><td><code>OR CPRS GUI CHART</code>; 1,005 are Order Entry's, 114 TIU's; no key or rule on any <span class="pv m">measured</span></td></tr>
+<tr><td>names in live (comment-stripped) client code that vehu has</td><td class="num">1,017</td><td>999 inside the context, 18 outside it (sign-on and Broker calls that need no context, and others) <span class="pv m">measured</span></td></tr>
+<tr><td>names CPRS calls that vehu lacks</td><td class="num">12–13</td><td>12 by call form today, 13 with <code>ORPDMPNT CHECK</code> (2026-09-23): HTML order dialogs ×5, DEA and digital-signature detail, MH DLL data, Vitals grid and detail, session info. Each needs a verdict: dead, gated, or broken <span class="pv m">measured</span></td></tr>
+<tr><td>context RPCs the client never names</td><td class="num">191</td><td>17 from the Vitals DLL, 8 named by report definitions, 17 from the retired 16-bit client, 13 only in comments, 136 unexplained (2026-09-23) <span class="pv m">measured</span></td></tr>
+<tr><td>distinct RPCs seen in recorded traffic</td><td class="num">199 / 210</td><td>three guided sessions (2026-09-23) / with the 2026-09-08 capture. Clicking reaches a fifth of the surface <span class="pv m">measured</span></td></tr>
+<tr><td>RPCs in the CPRS manual's appendix</td><td class="num">680</td><td>it misses 485 the source calls; a cross-check only <span class="pv d">documented</span></td></tr>
+</tbody></table></div>
+<p><strong>RPC names arrive at run time through six channels:</strong> report definitions, the cover-sheet list, the Labs tab, graphs, remote sites (<code>XWB REMOTE RPC</code>, <code>XWB DIRECT RPC</code>) and COM extensions, which can call any RPC in any context the person holds. A static census alone is therefore never complete. The census is taken by call form, never by intersecting strings with the RPC file, and every name the server lacks is reported rather than filtered out.</p>
+<p><strong>CPRS is not one context or one connection.</strong> It switches to <code>EC GUI CONTEXT</code> (61 RPCs) for Event Capture. It gives COM extensions <code>SetContext</code> and <code>CallRPC</code>. It opens further Broker connections by one-time token for the debug report, the Vitals DLL and the Event Capture program it launches. Its Broker copy also carries an SSH-tunnel mode (plink) <span class="pv m">measured</span>.</p>
+<p><strong>Every RPC gets a disposition</strong> (§11): delegated to VistA through a named service action, retired, forbidden, or UI state that the new client keeps in its own preferences store. <code>ORWD SIGN</code> is in the context, signs orders with no signature code and is never called by CPRS. It must be forbidden by the equivalence layer's allowlist.</p>
+
+<h2 id="s6"><span class="n">6</span>Duties the server leaves to the client</h2>
+<p>These were measured or read in code on 2026-09-23. Each becomes a rule inside the services, and each has a negative scenario that fails a service which skips it. CPRS's own sequence is the reference.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>duty</th><th>what VistA does</th><th>what the service must do</th></tr></thead>
+<tbody>
+<tr><td><strong>order signature</strong></td><td class="w"><code>ORWDX SEND</code> declares the signature-code parameter and never reads it; with the ORES key, status "signed" is filed as signed by the caller <span class="pv m">read in code</span></td><td class="w">call <code>ORWU VALIDSIG</code> and refuse anything but a valid answer before sending; forbid <code>ORWD SIGN</code>. Ranked first: it is the legal signature</td></tr>
+<tr><td><strong>sensitive-record access</strong></td><td class="w">the check itself writes the security log on a warn, and files a patient-selection audit on every call where VistA Audit Solution is on; after a confirm, logging waits for <code>DG SENSITIVE RECORD BULLETIN</code> <span class="pv m">measured</span></td><td class="w">call the check once per record per session, only before showing data; never in a prefetch, summary pre-screen or retry; send the bulletin after the person confirms <span class="pv r">ruled</span></td></tr>
+<tr><td><strong>restricted patient list</strong></td><td class="w"><code>ORWPT SELECT</code> checks nothing; the restriction lives in the client's choice of the <code>… RPL</code> lookups</td><td class="w">select the restricted lookups whenever the person's settings require them</td></tr>
+<tr><td><strong>authorization by role</strong></td><td class="w">the context gates none of its 1,190 RPCs; CPRS tests server-computed roles about 90 times (who may order, sign, verify, see reports only); 5 literal key checks and 15 key-style checks</td><td class="w">apply every role test in the service before the action; presume each is the client's until a throwaway-copy test shows the server enforces it</td></tr>
+<tr><td><strong>locks</strong></td><td class="w">patient, order and note locks are M locks held by the Broker job; they end with the job, at once on a dropped socket or after the 180-second activity timeout</td><td class="w">release a person's locks when their client goes away; a layer that keeps a session alive is what would leak them</td></tr>
+<tr><td><strong>keep-alive and sign-off</strong></td><td class="w">CPRS sends <code>XWB IM HERE</code> at 45% of the timeout (81 s) whether or not anyone is working</td><td class="w">keep alive only while a client is active; sign off on idle</td></tr>
+<tr><td><strong>order-check acknowledgement, encounter prompting, copy/paste tracking, record flags</strong></td><td class="w">seen in source or traffic; whether the server enforces each is not yet measured</td><td class="w">measure each on a throwaway copy; until then, treat each as the client's duty</td></tr>
+<tr><td><strong>per-session writes</strong></td><td class="w">every recorded CPRS session wrote preferences and queued background jobs (<code>ORWORB SETSORT</code>, <code>ORWCV START</code>, <code>ORWTIU START</code>, the <code>ORWCH SAVE…</code> calls, <code>TIU TEMPLATE SET DEFAULTS</code>)</td><td class="w">rule each: send as CPRS does, or keep the state in the new client's own store</td></tr>
+</tbody></table></div>
+
+<h2 id="s7"><span class="n">7</span>Connections outside VistA</h2>
+<p>The table counts code lines in CPRS's own code and the VA packages, excluding generated headers, by pattern. Each class needs a written answer before classic mode can claim parity.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>connection</th><th class="num">lines</th><th class="num">files</th><th>what is there</th><th>proposed web answer</th></tr></thead>
+<tbody>
+<tr><td>CCOW context sharing</td><td class="num">347</td><td class="num">19</td><td class="w">Vergence contextor through the Broker and the main frame; patient-only mode by command-line switch <span class="pv d">documented</span></td><td class="w">companion bridge to the site's context manager; browser-only users get explicit "not linked" state</td></tr>
+<tr><td>screen-reader support</td><td class="num">425</td><td class="num">95</td><td class="w">508 framework, JAWS scripts, Window-Eyes files; 253 accessibility managers on forms</td><td class="w">WCAG-conformant web semantics; JAWS reads the browser directly; accessibility names carried over from the forms</td></tr>
+<tr><td>smart card and Windows cryptography</td><td class="num">83</td><td class="num">3</td><td class="w"><code>crypt32</code>, <code>cryptui</code>, <code>cryptnet</code>, <code>ncrypt</code>, <code>bcrypt</code>, <code>winscard</code>; PIV signing of controlled-substance orders</td><td class="w">PIV sign-in at the identity provider; order signing with the card through the companion (§13)</td></tr>
+<tr><td>local printing</td><td class="num">52</td><td class="num">14</td><td class="w">Windows printer dialog or a VistA device, chosen by <code>ORWDP WINPRINT DEFAULT</code> <span class="pv d">documented</span>. vehu defines 70 devices, 37 of printer type, one real printer <span class="pv m">measured</span></td><td class="w">VistA devices through the server unchanged; browser print for local; companion for silent printing to a named printer</td></tr>
+<tr><td>clipboard</td><td class="num">52</td><td class="num">23</td><td class="w">copy and paste in notes, consults and templates; feeds copy/paste provenance</td><td class="w">browser clipboard events; provenance recorded server-side</td></tr>
+<tr><td>DLL loading</td><td class="num">51</td><td class="num">14</td><td class="w"><code>GMV_VitalsViewEnter.dll</code> (source in the mirror), the MH instrument DLL (name from a parameter), BCMA's <code>OrderCom.dll</code>, <code>TAR.dll</code> (no source)</td><td class="w">port Vitals entry from its source; MH instruments as a service over the existing RPCs; the two BCMA DLLs ruled after their traffic is recorded</td></tr>
+<tr><td>Windows registry</td><td class="num">44</td><td class="num">7</td><td class="w">Broker server list, settings</td><td class="w">server-side site registry; per-person settings in the preferences service</td></tr>
+<tr><td>local file I/O</td><td class="num">36</td><td class="num">14</td><td class="w">logs, exports, accessibility files</td><td class="w">downloads and server-side storage</td></tr>
+<tr><td>embedded browsers</td><td class="num">28</td><td class="num">7</td><td class="w">Internet Explorer control and Edge WebView2 (DST, PDMP, Women's Health, the web cover-sheet pane)</td><td class="w">native in a web client</td></tr>
+<tr><td>Windows help</td><td class="num">27</td><td class="num">7</td><td class="w">help files and contexts</td><td class="w">web help</td></tr>
+<tr><td>program launches</td><td class="num">24</td><td class="num">18</td><td class="w"><code>ShellExecute</code> and <code>CreateProcess</code>, mostly Tools-menu items and the Event Capture program with a Broker handle</td><td class="w">URLs open in a tab; local programs only through the companion</td></tr>
+<tr><td>COM extension API</td><td class="num">17</td><td class="num">2</td><td class="w"><code>ICPRSExtension</code> objects fired on patient selection, order acceptance and template activation <span class="pv d">documented</span>; 4 registered on vehu: CNT Navigator, MED NOTE IMPORT, two CDSP objects <span class="pv m">measured</span></td><td class="w">a web extension contract (events plus a scoped service token); COM objects only through the companion during transition</td></tr>
+<tr><td>sound, window messages, workstation identity, sockets</td><td class="num">39</td><td class="num">20</td><td class="w">beeps, cross-window messages, computer name, SSH tunnel</td><td class="w">browser notifications; the device identity recorded by the layer</td></tr>
+<tr><td>COM automation</td><td class="num">6</td><td class="num">4</td><td class="w">Word (spelling; graph export), Excel (graph export), Windows Script Host, WMI</td><td class="w">browser spell check; CSV and image export</td></tr>
+<tr><td>direct HTTP from the client</td><td class="num">4</td><td class="num">2</td><td class="w">a REST call to the DST service</td><td class="w">service-side call</td></tr>
+</tbody></table></div>
+
+<h3>The Tools menu on vehu</h3>
+<p>The menu is the parameter <code>ORWT TOOLS MENU</code>, set at user, location, service, division or system level. Each entry is <code>NAME=COMMAND</code>, and "the COMMAND may be a line that can be executed by Windows" <span class="pv d">documented</span>. CPRS substitutes <code>%SRV</code>, <code>%PORT</code>, <code>%DFN</code>, <code>%DUZ</code> and <code>%MREF</code> before launching. vehu holds nine entries <span class="pv m">measured</span>:</p>
+<ul>
+  <li><strong>local programs with a VistA hand-off:</strong> VistA Imaging Display and Capture (<code>%DFN %MREF %SRV %PORT</code>), Mental Health Assistant (<code>s=%SRV p=%PORT c=%DFN u=%DUZ m=%MREF</code>);</li>
+  <li><strong>web pages:</strong> VistaWeb (an intranet URL, user level), Veteran Health Library, two Primary Care Almanac links (one substitutes <code>%DUZ</code>), eHMP and an HMP sandbox.</li>
+</ul>
+<p>Web pages map cleanly to links. The local programs need the companion and a hand-off that does not depend on the CPRS process's Broker connection. <code>%MREF</code> carries a reference for the launched program to reach VistA as the same person. Its web successor is a one-time VistA token minted by the equivalence layer (§10).</p>
+
+<h3>Server-side outside connections</h3>
+<p>Order checks (drug interactions through the PEPS server), PDMP, consult decision support, primary-care detail and the audit service call 18 outbound web servers. All 18 on vehu point at hosts it cannot reach; one "PDMP TEST SERVER" is <code>www.yahoo.com</code> <span class="pv m">measured 2026-09-23</span>. These do not move. The web client inherits them unchanged because it calls the same RPCs, but every scenario recorded on vehu that touches them records outage behaviour and must say so.</p>
+
+<h2 id="s8"><span class="n">8</span>How others moved thick clients to the web</h2>
+<div class="dl">
+  <div><span class="h">Epic: Hyperspace to Hyperdrive <span class="pv x">external</span></span>
+  <p>Hyperdrive is "a specialized web-browser, like Google Chrome or Microsoft Edge, but used exclusively to access a web-based version of Epic", Chromium-based, rolled out from 2022 with migrations continuing through 2024–25. It is installed, not a bare browser tab. Signature pads work through vendor software "installed on the local computer system". Badge-tap sign-in and controlled-substance signing come through Imprivata. Implementers report that COM integrations written for Hyperspace "often need to be updated". <strong>Lesson:</strong> a clinical web client still needs a native foothold for devices, strong authentication and legacy integrations. That foothold should be small and specific.</p></div>
+  <div><span class="h">Microsoft Teams: Electron and AngularJS to WebView2 and React <span class="pv x">external</span></span>
+  <p>The new Teams (general availability 31 October 2023) dropped Electron for Edge WebView2 and moved from AngularJS to React with the Fluent design language. Microsoft reported up to 2× faster and up to 50% less memory. <strong>Lesson:</strong> one web code base inside a thin native host is the current pattern, and the host can be swapped without rewriting the app.</p></div>
+  <div><span class="h">Microsoft Outlook: "One Outlook" <span class="pv x">external</span></span>
+  <p>The new Outlook for Windows is Outlook on the web inside WebView2, one code base and one interface across PC, Mac and web. Microsoft ran it beside classic Outlook for years as an opt-in preview. <strong>Lesson:</strong> parallel run with per-user opt-in, and the old client stays available until parity is proven. Modern mode should look like this family so it sits beside Teams and Outlook tabs in Edge.</p></div>
+  <div><span class="h">Microsoft Office on the web <span class="pv x">external</span></span>
+  <p>Office Web Apps appeared in 2008–09. Microsoft describes cross-platform Office as a shared core of C++ code behind platform abstraction layers, with no platform conditionals in the shared code. Excel Calculation Services ran workbook calculation on a server. <strong>Lesson:</strong> isolate the engines from the presentation and run them in one place. That is the move from Delphi interpreters to server-side engines here.</p></div>
+  <div><span class="h">MEDITECH: MAGIC and Client/Server to Expanse <span class="pv x">external</span></span>
+  <p>Expanse, a web-based EHR, launched in February 2018. Migrating customers found that only a subset of legacy data moves, so the old platform or an archive remains. <strong>Lesson:</strong> here there is no data migration at all. The web client reads and writes the same VistA, which removes the largest risk such migrations carry.</p></div>
+  <div><span class="h">Oracle Health: a rebuilt EHR <span class="pv x">external</span></span>
+  <p>Oracle announced in October 2024 a next-generation EHR built from the ground up on its cloud, ambulatory first, with acute care planned for 2026. It was not built on the existing Millennium client. <strong>Lesson:</strong> a ground-up rebuild trades fidelity for freedom. This plan takes the opposite trade on purpose.</p></div>
+  <div><span class="h">VA's own attempts</span>
+  <p>VA contracted eHMP in 2014 ($162 million to Accenture Federal Services) as CPRS's successor <span class="pv x">external</span>. VA's own Tools menu on vehu still lists eHMP <span class="pv m">measured</span>. eHMP installed its own package inside VistA (43 HMP RPCs, 128 routines) and called 45 RPCs directly from its resource code <span class="pv m">measured 2026-09-23</span>. VA's "Cloud CPRS" streams the existing Delphi client behind Okta multi-factor sign-in for about 32,000 staff a month (VA privacy impact assessment, 2025). <strong>Lesson:</strong> a successor that changed VistA and the workflows at once did not replace CPRS. Streaming the old client is VA's current answer to remote access, and it is not a web client.</p></div>
+</div>
+<p><strong>Patterns this plan uses.</strong> It strangles the old client screen by screen, with both clients live on the same VistA. It runs the two in parallel per person. It pins behaviour with characterization tests taken from the running legacy system (golden masters). It puts an anti-corruption layer between modern services and the RPC protocol, and a per-client backend that holds tokens on the server (the backend-for-frontend pattern the IETF's browser-app guidance recommends).</p>
+
+<h2 id="s9"><span class="n">9</span>Target architecture</h2>
+<figure>
+<div class="fig arch">
+<svg viewBox="0 0 980 700" role="img" aria-labelledby="arch-t arch-d" xmlns="http://www.w3.org/2000/svg">
+<title id="arch-t">Proposed architecture</title>
+<desc id="arch-d">Four client types reach an identity service and gateway, then domain services, then a CPRS-equivalence layer that holds per-person Broker sessions and sends CPRS-shaped calls to the RPC Broker and VistA. An optional desktop companion bridges local devices. A tap records outgoing traffic for conformance, and a fidelity registry is generated from source tags.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<rect class="band" x="0" y="0" width="980" height="96" rx="8"/>
+<text class="ta" x="16" y="22">CLIENTS</text>
+<rect class="box" x="16" y="34" width="210" height="50" rx="7"/><text class="tb" x="30" y="56">Classic mode</text><text class="tm" x="30" y="74">CPRS's screens, keys and order</text>
+<rect class="box" x="240" y="34" width="210" height="50" rx="7"/><text class="tb" x="254" y="56">Modern mode</text><text class="tm" x="254" y="74">Office-style, beside Teams and Outlook</text>
+<rect class="box" x="464" y="34" width="210" height="50" rx="7"/><text class="tb" x="478" y="56">Mobile (Loupe)</text><text class="tm" x="478" y="74">phone, read first</text>
+<rect class="box" x="688" y="34" width="276" height="50" rx="7"/><text class="tb" x="702" y="56">Third-party and AI agents</text><text class="tm" x="702" y="74">scoped, on behalf of a person, never sign</text>
+<rect class="boxp" x="16" y="110" width="320" height="58" rx="7"/><text class="tb" x="30" y="132">Desktop companion (optional)</text><text class="tm" x="30" y="152">PIV signing · CCOW · local programs · COM · devices</text>
+<path class="ln" d="M120,84 L120,108" marker-end="url(#ah)"/>
+<rect class="boxa" x="360" y="110" width="604" height="58" rx="7"/><text class="tb" x="376" y="132">Identity service and gateway</text><text class="tm" x="376" y="152">OpenID Connect sign-in · server-held tokens · per-client backends · scopes · rate and audit</text>
+<path class="ln" d="M345,84 L520,108" marker-end="url(#ah)"/><path class="ln" d="M569,84 L620,108" marker-end="url(#ah)"/><path class="ln" d="M826,84 L826,108" marker-end="url(#ah)"/><path class="lnd" d="M336,139 L358,139"/>
+<text class="ta" x="16" y="200">DOMAIN SERVICES</text><text class="tm" x="170" y="200">workflow-shaped APIs and events; engines run here</text>
+<g>
+<rect class="box" x="16" y="212" width="182" height="54" rx="6"/><text class="tb" x="28" y="234">Patient context</text><text class="tm" x="28" y="252">selection, checks, flags</text>
+<rect class="box" x="208" y="212" width="182" height="54" rx="6"/><text class="tb" x="220" y="234">Chart read</text><text class="tm" x="220" y="252">cover sheet, tabs</text>
+<rect class="boxa" x="400" y="212" width="182" height="54" rx="6"/><text class="tb" x="412" y="234">Notes</text><text class="tm" x="412" y="252">+ template engine</text>
+<rect class="boxa" x="592" y="212" width="182" height="54" rx="6"/><text class="tb" x="604" y="234">Orders</text><text class="tm" x="604" y="252">+ order dialog engine, checks</text>
+<rect class="box" x="784" y="212" width="180" height="54" rx="6"/><text class="tb" x="796" y="234">Signature</text><text class="tm" x="796" y="252">ES, review, PIV</text>
+<rect class="boxa" x="16" y="276" width="182" height="54" rx="6"/><text class="tb" x="28" y="298">Reminders</text><text class="tm" x="28" y="316">+ reminder dialog engine</text>
+<rect class="boxa" x="208" y="276" width="182" height="54" rx="6"/><text class="tb" x="220" y="298">Encounter</text><text class="tm" x="220" y="316">+ PCE engine</text>
+<rect class="boxa" x="400" y="276" width="182" height="54" rx="6"/><text class="tb" x="412" y="298">Consults</text><text class="tm" x="412" y="316">+ service tree</text>
+<rect class="box" x="592" y="276" width="182" height="54" rx="6"/><text class="tb" x="604" y="298">Notifications</text><text class="tm" x="604" y="316">alerts and follow-up</text>
+<rect class="box" x="784" y="276" width="180" height="54" rx="6"/><text class="tb" x="796" y="298">Reports and graphs</text><text class="tm" x="796" y="316">catalog, summaries</text>
+<rect class="box" x="16" y="340" width="182" height="46" rx="6"/><text class="tb" x="28" y="368">Preferences</text>
+<rect class="box" x="208" y="340" width="182" height="46" rx="6"/><text class="tb" x="220" y="368">Printing</text>
+<rect class="box" x="400" y="340" width="182" height="46" rx="6"/><text class="tb" x="412" y="368">Extensions</text>
+<rect class="box" x="592" y="340" width="182" height="46" rx="6"/><text class="tb" x="604" y="368">Audit and provenance</text>
+<rect class="box" x="784" y="340" width="180" height="46" rx="6"/><text class="tb" x="796" y="368">Site registry</text>
+</g>
+<path class="ln" d="M660,168 L660,208" marker-end="url(#ah)"/>
+<path class="ln" d="M490,386 L490,420" marker-end="url(#ah)"/>
+<rect class="boxa" x="16" y="422" width="948" height="88" rx="8"/>
+<text class="ta" x="32" y="446">CPRS-EQUIVALENCE LAYER (SESSION GUARD)</text>
+<text class="t" x="32" y="470">one Broker session per person per client, as that person · CPRS-shaped actions only, by allowlist · duty rules (§6)</text>
+<text class="t" x="32" y="492">declared CPRS version · one-time VistA tokens for extra connections · lock release when a client leaves · no VistA change</text>
+<path class="ln" d="M300,510 L300,548" marker-end="url(#ah)"/>
+<rect class="box" x="16" y="550" width="440" height="66" rx="7"/><text class="tb" x="32" y="574">RPC Broker → VistA</text><text class="tm" x="32" y="594">clinical rules unchanged: 1,190 RPCs, ≈1M lines of M reached; site definitions</text>
+<rect class="boxm" x="480" y="550" width="230" height="66" rx="7"/><text class="tb" x="494" y="574">Tap and database diff</text><text class="tm" x="494" y="594">traffic and writes compared with CPRS</text>
+<path class="lnd" d="M456,583 L478,583"/>
+<rect class="boxm" x="734" y="550" width="230" height="66" rx="7"/><text class="tb" x="748" y="574">Fidelity registry</text><text class="tm" x="748" y="594">generated from source tags; gated</text>
+<path class="lnd" d="M710,583 L732,583"/>
+<rect class="box" x="16" y="630" width="948" height="54" rx="7"/><text class="tb" x="32" y="652">Reference: CPRS 1.33.112.1 in a Windows guest</text><text class="tm" x="32" y="672">scenarios recorded through the tap, screenshots for classic mode, instrumented Delphi coverage (once the rebuild is proven)</text>
+</svg>
+</div>
+<figcaption>Darker boxes hold a ported engine or the equivalence layer. Every client reaches VistA only through the services, and the services reach VistA only through the equivalence layer. VistA itself does not change. <span class="pv p">proposed</span></figcaption>
+</figure>
+
+<h3>Two tiers, so coarse services can still be held to CPRS</h3>
+<p>The service layer's review found that coarse services and call-for-call emulation pull apart. A cover-sheet service that composes thirteen RPCs is not any single CPRS action. This plan separates the two:</p>
+<ul>
+  <li><strong>The equivalence layer offers only CPRS-shaped actions.</strong> Each action is one thing CPRS does, such as opening a chart, loading an order dialog, accepting order checks or signing a note. It is held to CPRS's recorded traffic under the written equivalence. Its allowlist comes from the surface map's census. It applies the duty rules.</li>
+  <li><strong>Domain services compose those actions</strong> into workflow-shaped APIs. A composition with no CPRS counterpart, such as a team's overnight summary, is held to its own contract tests and labelled that way. A service can never send an RPC except through an action. "Not piecemeal wrapping" is therefore a property of the API, while fidelity is a property of the layer beneath it.</li>
+</ul>
+
+<h3>Service boundaries</h3>
+<p>The boundaries come from measurement. 941 of the 995 context RPCs that CPRS's code names are called from exactly one area of the client, and 54 are shared (note text, signing, copy/paste, title lists, remote calls) <span class="pv m">measured 2026-09-23</span>. The shared 54 form the platform services, built first. Each domain service owns one clinical aggregate (a patient's chart context, an order, a document, an encounter, a consult, an alert) and publishes events when it changes. Clients do not poll VistA. A notification or a background job's result is pushed to them.</p>
+
+<h3>Where it runs</h3>
+<p>CPRS's traffic is chatty: 36 calls to select a patient and about 45 for a cover sheet. Each person's session is a VistA process. So the services run as a <strong>cell next to each VistA instance</strong>, on the same network segment, and the browser reaches the cell over HTTPS. "Cloud" means the cells and the identity front door run in VA's cloud next to cloud-hosted VistA. They never sit across a wide-area link from the Broker. One cell serves one VistA instance. A site registry maps a station to its cell and to the CPRS version it emulates.</p>
+
+<h2 id="s10"><span class="n">10</span>Identity and sign-on</h2>
+<p>The operator ruled the credential path on 2026-09-23 <span class="pv r">ruled</span>: access/verify as the baseline, shaped for OAuth from the start, with JWT through OpenID Connect as the target. This plan adds VA's existing token path as a third route.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>route</th><th>how the person proves who they are</th><th>how VistA signs them on</th><th>status</th></tr></thead>
+<tbody>
+<tr><td><strong>baseline</strong></td><td class="w">access and verify codes, typed once</td><td class="w">Kernel's normal sign-on; every further connection by VistA's one-time token (<code>XUS GET TOKEN</code>). No code is stored, logged or cached</td><td class="w"><span class="pv r">ruled</span> works wherever codes are accepted; a site that requires PIV sign-on refuses it</td></tr>
+<tr><td><strong>VA token path (SSOi)</strong></td><td class="w">PIV or Active Directory at VA's IAM; its security token service issues a SAML token</td><td class="w"><code>XUS ESSO VALIDATE</code> → <code>ESSO^XUESSO4</code> <span class="pv d">documented</span>. Its signature check uses IRIS ObjectScript, so it cannot verify on YottaDB; it trusts the issuer by certificate name; STRICT TOKEN VALIDATION (#220) defaults to NO, recording failures as warnings <span class="pv d">documented</span> <span class="pv m">read in code</span></td><td class="w"><span class="pv p">proposed</span> as a VA-production route only, with strict validation on</td></tr>
+<tr><td><strong>target: OpenID Connect</strong></td><td class="w">the staff identity provider (Entra ID or Okta Workforce at VA); PIV presented at the provider, PIV-derived credentials or FIDO2 on phones; phishing-resistant factor required</td><td class="w">the identity service exchanges the person's token for one whose audience is VistA. A new RPC in Kernel's pre-sign-on context verifies it with m-stdlib's JWT verifier and runs Kernel's own post-sign-on steps. Linking by SECID or ADUPN at VA, or by issuer and subject elsewhere</td><td class="w"><span class="pv r">ruled</span> on the assumption that VA approves a verifier inside VistA. Not built</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>The browser never holds a token.</strong> It holds a secure session cookie. The identity service is the OpenID client and keeps the tokens (backend-for-frontend). Native and mobile clients hold short-lived bearer tokens bound to a key where the provider supports it.</li>
+  <li><strong>After sign-on nothing changes.</strong> The person has their own Broker sessions. The electronic-signature code is entered for each signature and then dropped. Kernel's keys, menus, person class and audit apply unchanged, because every call runs as the person. A service identity would also drop out of VistA's patient-selection audit, which skips proxy users <span class="pv m">read in code</span>.</li>
+  <li><strong>Remote sites</strong> keep CPRS's own mechanisms (remote RPCs and the Broker's visitor mechanism, BSE, which "enters the user's information into the NEW PERSON file as a visitor" without codes at the remote site) <span class="pv d">documented</span>.</li>
+  <li><strong>Controlled-substance signing</strong> stays a per-order act with the PIV card (§13). The identity provider's sign-in does not satisfy it.</li>
+</ul>
+
+<h2 id="s11"><span class="n">11</span>The fidelity metric</h2>
+<p>The metric answers one question deterministically: <em>what share of CPRS's behaviour has a proven replacement on this commit?</em> It is computed from generated registries, never typed by hand. It follows the org's discipline of source tags, a generator, a registry and a gate that reds in both directions.</p>
+
+<h3>Populations: what is counted</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>population</th><th class="num">size today</th><th>unit</th><th>source of truth</th></tr></thead>
+<tbody>
+<tr><td><strong>P1 Delphi routines</strong></td><td class="num">14,014</td><td class="w">a procedure, function, method, constructor or destructor in the compiled closure</td><td class="w">the project file's unit closure; generated headers and third-party code excluded and listed</td></tr>
+<tr><td><strong>P2 Delphi lines</strong></td><td class="num">264,923</td><td class="w">non-blank, non-comment implementation lines (a proxy); exact executable lines come from the compiler's line table once a debug-map build exists</td><td class="w">same closure</td></tr>
+<tr><td><strong>P3 RPCs</strong></td><td class="num">1,190 + 31</td><td class="w">every RPC in CPRS's context, plus those the client names outside it (18) or calls though vehu lacks them (13); plus <code>EC GUI CONTEXT</code>'s when Event Capture is in scope</td><td class="w">live <code>v rpc list</code>; the call-form census</td></tr>
+<tr><td><strong>P4 user actions</strong></td><td class="num">4,431+</td><td class="w">form event bindings, plus menu items (1,096), actions (184), run-time bindings, shortcuts and Tools-menu entries</td><td class="w">the forms and the action map</td></tr>
+<tr><td><strong>P5 site definitions</strong></td><td class="num">25,000+</td><td class="w">each record of each interpreted type (§3)</td><td class="w">the site's own files, per site</td></tr>
+<tr><td><strong>P6 duties</strong></td><td class="num">8 classes</td><td class="w">a client obligation from §6, row by row</td><td class="w">the client-obligations register</td></tr>
+<tr><td><strong>P7 outside dependencies</strong></td><td class="num">19 classes</td><td class="w">each connection in §7, entry by entry</td><td class="w">the external-integrations register</td></tr>
+</tbody></table></div>
+
+<h3>Dispositions: a closed list</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>disposition</th><th>meaning</th><th>proof that makes it count</th></tr></thead>
+<tbody>
+<tr><td><strong>ported</strong></td><td class="w">the behaviour is re-implemented in a named service or client component</td><td class="w">a test derived from the Delphi routine's recorded behaviour, plus at least one conformance scenario that reaches it</td></tr>
+<tr><td><strong>delegated</strong></td><td class="w">VistA does it; a service action calls the RPC</td><td class="w">a conformance scenario where the action's traffic matches CPRS's under the written equivalence; for writes, a matching database diff on a throwaway copy</td></tr>
+<tr><td><strong>replaced</strong></td><td class="w">the platform does it differently (browser printing, web accessibility, spell check)</td><td class="w">an operator ruling naming the replacement, and a test of it</td></tr>
+<tr><td><strong>presentation</strong></td><td class="w">VCL drawing, layout and control plumbing with no behaviour of its own</td><td class="w">a classic-mode screenshot comparison that reaches the form</td></tr>
+<tr><td><strong>dead</strong></td><td class="w">cannot run: outside the compiled closure, under an undefined compiler symbol, or unreferenced</td><td class="w">the static analysis that shows it, regenerated per build</td></tr>
+<tr><td><strong>retired</strong></td><td class="w">a feature dropped on purpose (the 16-bit client's RPCs, for one)</td><td class="w">an operator ruling</td></tr>
+<tr><td><strong>forbidden</strong></td><td class="w">must never be sent (<code>ORWD SIGN</code>)</td><td class="w">a negative test in the equivalence layer's allowlist</td></tr>
+<tr><td><strong>unknown</strong></td><td class="w">no disposition yet</td><td class="w">counts against; listed by name</td></tr>
+</tbody></table></div>
+
+<h3>Metrics</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>metric</th><th>definition</th><th>gate</th></tr></thead>
+<tbody>
+<tr><td><strong>code replaced</strong></td><td class="w">routines in P1 whose disposition is proven, divided by P1; reported both by count and weighted by P2 lines</td><td class="w">headline number</td></tr>
+<tr><td><strong>RPCs replaced</strong></td><td class="w">RPCs in P3 whose disposition is proven, divided by P3</td><td class="w">headline number</td></tr>
+<tr><td><strong>actions replaced</strong></td><td class="w">P4 entries mapped to a web action with a passing scenario</td><td class="w">per screen</td></tr>
+<tr><td><strong>definitions rendered</strong></td><td class="w">P5 records each interpreter parses, renders and round-trips to the same response strings as CPRS, per type, over the site's whole census</td><td class="w">per engine, 100% before the engine serves a person</td></tr>
+<tr><td><strong>duties enforced</strong></td><td class="w">P6 rows whose negative scenario fails a service that skips them</td><td class="w">100% before any write workflow ships</td></tr>
+<tr><td><strong>dependencies answered</strong></td><td class="w">P7 entries with a ruled answer and a test</td><td class="w">100% before classic mode claims parity</td></tr>
+<tr><td><strong>CPRS exercised</strong></td><td class="w">share of P1 executed by the scenario corpus when run in an instrumented CPRS</td><td class="w">reported, not gated, until a first engine sets a baseline</td></tr>
+<tr><td><strong>screens matched</strong></td><td class="w">classic-mode screens whose screenshot difference against CPRS, with the same data, is under a set threshold</td><td class="w">per screen</td></tr>
+</tbody></table></div>
+<p><strong>What "100%" means.</strong> No item in any population is unknown, and every disposition's proof is green on the commit. It does not mean every Delphi line ran. Error paths, defensive branches and dead features make full execution unattainable, and chasing it would reward tests that exercise nothing clinical. "CPRS exercised" exists to show where the scenario corpus is thin, not to certify replacement.</p>
+<p><strong>The five oracles behind the proofs.</strong></p>
+<ol>
+  <li><strong>Traffic:</strong> the tap records CPRS and the equivalence layer doing the same action. Functional calls are compared under a stated CPRS state, with timers, polls and UI-state calls removed and record numbers and times normalized <span class="pv r">ruled</span>.</li>
+  <li><strong>Database effect:</strong> writes run on a throwaway copy of vehu, never gold, and a before-and-after diff of the affected globals must match. The tap sees traffic, not writes.</li>
+  <li><strong>Text:</strong> engines that produce clinical text (templates, reminder dialogs, order text) must produce byte-identical output for the same definitions and answers.</li>
+  <li><strong>Screen:</strong> classic mode is compared with CPRS by screenshot, after the CPRS source has been read for sorting and casing rules. CPRS re-cases VistA's words and re-sorts lists, so the reference is CPRS's screen, not VistA's reply.</li>
+  <li><strong>Refusal:</strong> each duty's negative scenario must fail a service that skips the duty.</li>
+</ol>
+<p><strong>Baseline on 2026-10-03.</strong> Nothing is ported, so code replaced and RPCs replaced are 0%. The first dispositions that can be proven now are static. The closure analysis already marks 49 units (23,845 lines, 726 routines) dead or tooling-only, including the old <code>fCover.pas</code> and the unreferenced COM-server unit <code>uComServ.pas</code>. These sit outside P1.</p>
+<p><strong>Instrumented coverage of CPRS itself.</strong> The release build has no debug information. An open-source Delphi coverage tool (DelphiCodeCoverage) needs a detailed map file from a rebuild <span class="pv x">external</span>. The tree looks buildable (§2, finding 6). The project file's version stamp, 20.1, suggests RAD Studio 12 (inferred, not verified). The rebuild would run in the Windows guest that already hosts CPRS on this box. If it fails, a fallback is binary instrumentation mapped to the method names Delphi's run-time type information exposes, which covers published methods such as event handlers.</p>
+
+<h2 id="s12"><span class="n">12</span>Classic and modern modes</h2>
+<h3>Classic mode: CPRS's screens, generated from its forms</h3>
+<p>CPRS's 312 forms are stored as text <span class="pv m">measured</span>. They hold 7,559 components of 414 classes, 4,431 event bindings, 1,096 menu items, 184 actions, 47 tab sheets, 25 timers and 253 accessibility managers. The most common controls are panels (994), labels (702), buttons (683), long-list combo boxes (256) and list boxes (136). 100 controls page data from the server on demand. Classic mode is generated from this material and not drawn by hand:</p>
+<ul>
+  <li>a form reader produces a screen description for each form (geometry, captions, tab order, menus, shortcuts and accessibility names), and a web renderer draws it at CPRS's layout;</li>
+  <li>each CPRS control class maps to one web component with the same keyboard behaviour, such as the long-list combo box with incremental server paging and FileMan-style date entry;</li>
+  <li>the CPRS-specific behaviours read from source are carried exactly: list sorting by Windows' word order or by ASCII depending on the list, re-casing of VistA's text, placement of medications by order-id letter;</li>
+  <li>dialogs, confirmations and their wording come from the source strings;</li>
+  <li>each screen passes a screenshot comparison against CPRS in the Windows guest before it counts.</li>
+</ul>
+
+<h3>Modern mode: the Office-on-the-web family</h3>
+<p>Modern mode uses the same services, the same workflows and the same duties. Only the presentation changes: Fluent-style components, a left rail, a command bar, panes and cards, light and dark themes. It is installable as a web app in Edge, so a clinician can keep Outlook, Teams and the chart open as tabs or windows, as the request describes. A Teams tab is a later option, because a Teams tab is a web page. Since every rule lives in the services, the two modes cannot diverge in what they allow. One person can switch modes mid-session without losing state.</p>
+
+<h2 id="s13"><span class="n">13</span>The desktop companion</h2>
+<p>Every comparable migration kept a native foothold (§8). This plan keeps one too, but makes it optional and narrow. A clinician without it gets the full chart and loses only the items below, each of which the client names on screen.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>need</th><th>browser alone</th><th>with the companion</th></tr></thead>
+<tbody>
+<tr><td>PIV signing of controlled-substance orders</td><td class="w">not available; the order stays unsigned for signing elsewhere</td><td class="w">the card signs the order's hash locally; the service files the signature</td></tr>
+<tr><td>CCOW patient linking with other desktop apps</td><td class="w">not linked, shown as such</td><td class="w">joins the site's context manager</td></tr>
+<tr><td>Tools-menu local programs (Imaging, MHA)</td><td class="w">not available; web entries open as tabs</td><td class="w">launches with a one-time VistA token instead of the CPRS process's Broker handle</td></tr>
+<tr><td>COM extensions</td><td class="w">only extensions rewritten to the web contract</td><td class="w">hosts the 4 registered objects during transition</td></tr>
+<tr><td>silent printing to a named Windows printer</td><td class="w">browser print dialog; VistA devices unaffected</td><td class="w">named local printer</td></tr>
+<tr><td>serial vital-sign monitors</td><td class="w">Web Serial where the browser allows it</td><td class="w">native serial</td></tr>
+</tbody></table></div>
+<p>Three shapes are possible: a WebView2 host like the new Outlook and Teams, an Epic-style dedicated browser, or a small local service that the web page talks to over a loopback port. A WebView2 host is the closest fit to the modern-mode goal. It needs the least code, and it is the shape Microsoft uses for the new Outlook and Teams.</p>
+
+<h2 id="s14"><span class="n">14</span>Third-party and AI clients</h2>
+<p>The domain services are the API. Third parties use them as web and mobile do, with four limits:</p>
+<ul>
+  <li><strong>Always on behalf of a signed-in person.</strong> A third-party or AI client holds a scoped token that the identity service issued for one person. Each call runs in that person's Broker session. There is no service identity, which follows the ruling that every call goes out as the person.</li>
+  <li><strong>Scopes follow the services:</strong> read a chart, draft a note, draft orders, process alerts. A scope never exceeds what the person may do in VistA.</li>
+  <li><strong>Agents draft; people sign.</strong> AI-driven order entry produces unsigned orders through the same order-dialog engine, so quick orders, order checks and the site's dialogs all apply. The order checks reach a person before anything is saved. Signing requires the person's signature code or PIV card in a CPRS-shaped signing flow. No scope can sign.</li>
+  <li><strong>Values come from VistA through code.</strong> A model never retypes a value it was shown, and it never assembles a raw RPC. The same rules govern Loupe's agent today.</li>
+</ul>
+<p>A FHIR facade over the read services is a later option for interoperability. It is not the internal model, because it loses CPRS's site-specific detail.</p>
+
+<h2 id="s15"><span class="n">15</span>Delivery plan</h2>
+<p>Each phase ends with an exit test stated in the metric's terms. CPRS stays available throughout. Both clients run against the same VistA, and people opt in per person, as Outlook and Teams did.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>phase</th><th>scope</th><th>exit test</th></tr></thead>
+<tbody>
+<tr><td><strong>0. Instrument and baseline</strong></td><td class="ww">unpark the surface map, resuming demand-first: the allowlist from the census; generated registries for P1–P7 with every item "unknown"; the static dead set; the instrumented CPRS rebuild attempt; the duty measurements on a throwaway copy (order signing with a wrong code first)</td><td class="w">registries regenerate identically; each gate red-proved against a planted violation; the order-signing negative scenario measured</td></tr>
+<tr><td><strong>1. Session guard, identity baseline, open a chart</strong></td><td class="ww">the equivalence layer with per-person sessions, keep-alive, lock release and the sensitive-record rule; sign-on with codes; patient selection; classic-mode frame and cover sheet</td><td class="w">the selection preamble matches CPRS's recording; confirm and warn scenarios pass; no lock survives a closed tab</td></tr>
+<tr><td><strong>2. Every read</strong></td><td class="ww">problems, meds, orders view, notes view, consults view, labs, reports, graphs, D/C summaries, surgery; Loupe moves onto the services</td><td class="w">a read scenario per tab; screens matched for each tab; report and cover-sheet definitions 100% rendered</td></tr>
+<tr><td><strong>3. Notes</strong></td><td class="ww">a note's life with the template engine: create, lock, template, save, encounter prompt, sign, addendum; copy/paste provenance</td><td class="w">all 5,836 templates and 1,470 fields render; byte-identical note text on recorded scenarios; duty scenarios pass</td></tr>
+<tr><td><strong>4. Encounter and reminders</strong></td><td class="ww">PCE engine and reminder dialog engine, including MH instruments</td><td class="w">all 10,099 reminder elements render; database diffs match CPRS on a throwaway copy</td></tr>
+<tr><td><strong>5. Orders</strong></td><td class="ww">order dialog engine, quick orders, sets, order checks, signing, release, order actions, event-delayed orders, PDMP</td><td class="w">all 759 dialog entries render; one medication and one lab order match CPRS's sequence and database effect; order signing refuses a wrong code</td></tr>
+<tr><td><strong>6. Consults, alerts, options</strong></td><td class="ww">consult actions, notification follow-up for all 70 types, preferences, surrogates, lists</td><td class="w">every notification type's follow-up has a scenario</td></tr>
+<tr><td><strong>7. Outside connections</strong></td><td class="ww">printing, Tools menu, extensions contract, companion (PIV signing, CCOW, local programs), the OIDC route</td><td class="w">every P7 entry answered and tested</td></tr>
+<tr><td><strong>8. Modern mode</strong></td><td class="ww">the Office-style front-end over the same services</td><td class="w">the same scenarios pass through modern mode</td></tr>
+<tr><td><strong>9. Third-party API</strong></td><td class="ww">scoped tokens, drafting scopes, an AI order-drafting client as the first consumer</td><td class="w">no scope can sign; every agent call runs as the person</td></tr>
+</tbody></table></div>
+<p>The order follows risk. Reads come before writes. Notes come before orders, because a note's signature is validated by VistA while an order's is not. The interpreters are ported in the order their definitions are needed, and none serves a person until it renders the site's whole census.</p>
+
+<h2 id="s16"><span class="n">16</span>Technical risks and mitigations</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>risk</th><th>mitigation</th></tr></thead>
+<tbody>
+<tr><td class="w">an order is filed as signed without a valid signature code</td><td class="w">signature validation as a duty rule in the equivalence layer; <code>ORWD SIGN</code> forbidden; the negative scenario measured in phase 0 before any order work</td></tr>
+<tr><td class="w">a ported interpreter produces different clinical text or filing strings</td><td class="w">census-wide render gate per engine; byte-identical text oracle; database-diff oracle on a throwaway copy</td></tr>
+<tr><td class="w">a service files access records the person never caused (prefetch, retry, summary)</td><td class="w">the sensitive-record check only before data is shown, once per record per session; a test that counts security-log entries per scenario</td></tr>
+<tr><td class="w">sessions held by the layer outlive the browser and hold locks</td><td class="w">keep-alive only while a client is active; sign-off on idle; lock release on disconnect; a test that closes a tab mid-edit</td></tr>
+<tr><td class="w">the volume set's process ceiling (30 on vehu, shared by all processes) refuses sign-ons</td><td class="w">one Broker job per person per client by design; the ceiling shown in the layer's status; capacity measured per site before go-live</td></tr>
+<tr><td class="w">the layer becomes a single point of failure and a high-value target (it sees codes in transit)</td><td class="w">tailnet-only while on demo engines; codes never at rest; OIDC route removes reusable codes from sign-on; its own accreditation before real data; cells per VistA so one failure is one site</td></tr>
+<tr><td class="w">CPRS or server patches change behaviour</td><td class="w">the layer declares the CPRS version it emulates; registries and scenarios regenerate per build; the six server-patch branch points in CPRS recorded with the branch each site takes</td></tr>
+<tr><td class="w">sites differ in definitions, patches and parameters</td><td class="w">interpret rather than copy; census gates run per site; a site registry records each site's emulated version and branches</td></tr>
+<tr><td class="w">vehu's outside services are unreachable, so recordings show outage behaviour</td><td class="w">every scenario marks the services it touches; production behaviour comes from documentation or a site and is labelled unmeasured until then</td></tr>
+<tr><td class="w">writes cannot be recorded on gold</td><td class="w">all write scenarios on a throwaway copy of the vehu image, which is a full VistA</td></tr>
+<tr><td class="w">add-ons without source (MH DLL, BCMA's two DLLs, COM objects) cannot be ported from code</td><td class="w">specify from recorded traffic and the owning package's documentation; listed as gaps until confirmed</td></tr>
+<tr><td class="w">the classic-mode generator misses behaviour coded in event handlers</td><td class="w">the action map ties each binding to its routines; P4 cannot pass without a scenario per action</td></tr>
+<tr><td class="w">chatty traffic makes screens slow over distance</td><td class="w">service cells beside each VistA; composed reads run server-side (Loupe's composed cover sheet took about 1.4 s on vehu, 2026-09-23)</td></tr>
+<tr><td class="w">the instrumented CPRS rebuild fails or the compiler licence is unavailable</td><td class="w">static dispositions do not need it; the binary-instrumentation fallback; "CPRS exercised" is reported, not gated</td></tr>
+<tr><td class="w">metric gaming: tests that touch routines without checking behaviour</td><td class="w">a disposition counts only with a behavioural proof (traffic, text, database or screen); execution share is never the headline</td></tr>
+<tr><td class="w">a shared or service identity creeps in for convenience</td><td class="w">a test that every recorded call's user is the person; a job without a person has no Broker session</td></tr>
+<tr><td class="w">scope: the effort is very large</td><td class="w">the readiness register shows coverage per tab and workflow; every phase delivers something usable; CPRS remains available, so stopping at any phase loses nothing</td></tr>
+<tr><td class="w">publishing material derived from VA source and documentation</td><td class="w">repos private, sites public (org rule); provenance recorded before anything is published</td></tr>
+</tbody></table></div>
+
+<h2 id="s17"><span class="n">17</span>Unknowns</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>unknown</th><th>what would settle it</th></tr></thead>
+<tbody>
+<tr><td class="w">whether VistA files an order as signed when <code>ORWDX SEND</code> gets a wrong code</td><td class="w">the negative scenario on a throwaway copy (read in code; not run)</td></tr>
+<tr><td class="w">whether locks release as the code says when a Broker client exits or goes silent, and where "Max Users" refuses</td><td class="w">a small client run against a throwaway copy, with the operator's permission for live probing</td></tr>
+<tr><td class="w">which of the candidate duties (order-check acknowledgement, encounter prompting, copy/paste tracking, flags, role tests) the server enforces</td><td class="w">skip each through a plain Broker client on a throwaway copy</td></tr>
+<tr><td class="w">whether CPRS rebuilds from this tree with a debug map, which compiler version it needs, and under what licence</td><td class="w">a rebuild attempt in the Windows guest</td></tr>
+<tr><td class="w">what the 136 context RPCs that nothing explains are for</td><td class="w">the label-level server scan and site data</td></tr>
+<tr><td class="w">the verdict on each of the 13 RPCs CPRS calls that vehu lacks (dead, gated or broken)</td><td class="w">read each call site's guard; check a site with a later patch level</td></tr>
+<tr><td class="w">production behaviour of order checks, PDMP, DST and primary-care detail</td><td class="w">VA documentation or a cooperating site; unmeasurable on vehu</td></tr>
+<tr><td class="w">whether real sites run VistA Audit Solution and require PIV sign-on</td><td class="w">site information; changes which duties fire</td></tr>
+<tr><td class="w">how the CPRS inside VA's Cloud CPRS signs on to VistA</td><td class="w">not in public sources read so far</td></tr>
+<tr><td class="w">whether VA would approve a JWT verifier RPC inside Kernel</td><td class="w">a VA decision; the OIDC route depends on it</td></tr>
+<tr><td class="w">the behaviour of the MH instrument DLL and BCMA's two DLLs</td><td class="w">recorded traffic and package documentation</td></tr>
+<tr><td class="w">capacity: concurrent clinicians per site, sign-on ceilings and latency at production data volumes</td><td class="w">vehu holds 1,755 patients; needs a production-sized copy or a site</td></tr>
+<tr><td class="w">how much of CPRS's code the recorded scenarios exercise</td><td class="w">the instrumented build</td></tr>
+<tr><td class="w">why the 2016–2019 router, emulation and sniffer efforts in the operator's archive stopped</td><td class="w">read <code>~/vistadataproject</code> before ruling the shape</td></tr>
+<tr><td class="w">the IRIS engine's differences (foia), whose site definitions differ</td><td class="w">repeat the census and scenarios on foia</td></tr>
+</tbody></table></div>
+
+<h2 id="s18"><span class="n">18</span>Assumptions</h2>
+<ul>
+  <li>The target is CPRS 1.33.112.1 with OR*3.0*629, the build in the Windows guest and the source on this box. A later CPRS build is a regeneration, not a redesign.</li>
+  <li>VistA is not changed, except for a later ruled exception (the JWT verifier) installed as a KIDS build through <code>v pkg</code>.</li>
+  <li>CPRS remains installed and usable throughout. Both clients run against the same VistA, and multiple sign-on is decided by Kernel's per-person setting.</li>
+  <li>Every call runs as the signed-on person in that person's own Broker session.</li>
+  <li>A throwaway copy of the vehu image is a full VistA and is the only place writes are recorded.</li>
+  <li>vehu and its tap recordings are representative of a VA site's CPRS behaviour apart from outside services, data volume and local configuration.</li>
+  <li>The web client must meet Section 508 (WCAG 2.0 AA as the 508 refresh incorporates it).</li>
+  <li>Edge is the managed browser, so WebView2 is available for a companion.</li>
+  <li>Service cells can be placed next to each VistA instance on the same network.</li>
+  <li>Signing stays a human act. No automated client signs anything.</li>
+  <li>The effort lives in the org as a VistA-layer effort and reaches VistA only as a Broker client through v-base's broker package. A new Broker door of this kind needs its own ruling with a retirement condition.</li>
+</ul>
+
+<h2 id="s19"><span class="n">19</span>Decisions to rule</h2>
+<p>Each is put with its alternatives when ruled. The codes in parentheses point to the parked proposals' numbering.</p>
+<ol>
+  <li><strong>Unpark both proposals</strong> under this effort, with the surface map resumed demand-first: allowlist, duty measurements, label-level scan, then workflows as services need them.</li>
+  <li><strong>The shape:</strong> an equivalence layer (session guard) now and domain services composed on top, as §9 describes (amends the service layer's shape decision, SL-D1).</li>
+  <li><strong>Where the interpreters run:</strong> in the services, server-side (SL-D5, deferred by the review until grammars exist). This plan recommends server-side, with input hints in the client.</li>
+  <li><strong>Where it lives:</strong> a new org repo for the services and one for the web client, layer v; and the ruling that admits a new Broker door with its retirement condition (SL-D11).</li>
+  <li><strong>The fidelity metric:</strong> the populations, dispositions, proofs and gates of §11 as the release definition (extends SL-D7 and the surface map's conformance decision).</li>
+  <li><strong>The client API:</strong> resource-oriented HTTP with events pushed to clients; versioning; tailnet-only on demo engines (SL-D12).</li>
+  <li><strong>Loupe's relation:</strong> Loupe becomes a client of the services; it does not grow into them (SL-D10, as the review amended).</li>
+  <li><strong>The VA token route:</strong> whether to support SSOi/STS sign-on, and only with strict validation on.</li>
+  <li><strong>The companion:</strong> whether to build one, and which shape (WebView2 host recommended).</li>
+  <li><strong>CCOW and PIV signing:</strong> their web answers (SL-D6).</li>
+  <li><strong>Modern mode's design system:</strong> Fluent-style to sit with Teams and Outlook.</li>
+  <li><strong>Third-party scopes:</strong> the scope list, and the rule that no scope signs.</li>
+  <li><strong>Scope of the first release:</strong> whether Event Capture, the List Manager CPRS and remote-data viewers are in or out.</li>
+</ol>
+
+<h2 id="s20"><span class="n">20</span>What changed since the two artifacts</h2>
+<p>The published <a href="https://claude.ai/artifact/6qH2hxzXycy4NfMiEpgzsy">CPRS surface map</a> and <a href="https://claude.ai/artifact/THTeJ1j2YkbNgQCWcwZqod">CPRS service layer</a> artifacts are snapshots of the repo drafts at <code>docs@07a1b5b</code>, taken before both adversarial reviews of 2026-09-23 and the rulings that followed. This plan uses the later figures. The artifacts' structure (the fourteen artifacts, the duty register, the conformance suite, one server holding people's sessions, emulation without VistA change) stands and is carried into §9 and §11.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>the artifact says</th><th>measured since</th></tr></thead>
+<tbody>
+<tr><td class="w">1,037 real RPC names in the source</td><td class="w">1,017 in live code (13 occur only in comments, 9 in an unused FileMan component package), plus 12–13 names CPRS calls that vehu lacks. Reproduced today</td></tr>
+<tr><td class="w">180 context RPCs never named</td><td class="w">191; reproduced today</td></tr>
+<tr><td class="w">14 order-check RPCs</td><td class="w">12 named in the source, 13 in the context</td></tr>
+<tr><td class="w">"the client checks a security key in only 8 places"; authorization lives mostly on the server</td><td class="w">the context gates none of its 1,190 RPCs; CPRS tests server-computed roles about 90 times; the Restricted Patient List is the client's alone</td></tr>
+<tr><td class="w">the sensitive-record check "returns a verdict only"</td><td class="w">it writes the security log itself on a warn, and audits every selection where VistA Audit Solution is on; the check is the audited access</td></tr>
+<tr><td class="w">signature validation is one of VistA's rules</td><td class="w">for orders it is not: <code>ORWDX SEND</code> never reads the code, and <code>ORWD SIGN</code> signs on the key alone</td></tr>
+<tr><td class="w">"CPRS leaks locks when it crashes"</td><td class="w">locks die with the Broker job; a layer that keeps sessions alive is what would hold them</td></tr>
+<tr><td class="w">the Vitals DLL's source is not in the tree</td><td class="w">it is in the mirror (73 units)</td></tr>
+<tr><td class="w">external: three DLLs, Excel, 15 launches, CCOW</td><td class="w">also the MH instrument DLL, Word, Windows Script Host, WMI, embedded IE and Edge, a client REST call, 4 COM objects, the Tools menu; and a server-side half (18 unreachable web servers, remote RPCs)</td></tr>
+<tr><td class="w">1,190 is "the ceiling on what CPRS may call"</td><td class="w">it is the ceiling of one context: Event Capture's context, COM extensions' contexts and token hand-off connections add more</td></tr>
+<tr><td class="w">759 order dialogs; 1,100 note titles</td><td class="w">91 dialogs, 445 quick orders, 55 menus, 29 sets, 127 prompts, 12 actions; 619 titles, 69 classes, 399 TIU objects. About a third more definition types exist than the artifact lists</td></tr>
+<tr><td class="w">thirteen artifacts</td><td class="w">fourteen: a facet registry partitions the surface into compartments and shared services</td></tr>
+<tr><td class="w">"Loupe already works this way: its server holds the person's session"</td><td class="w">at the review (2026-09-23) Loupe had no HTTP server; the claim described its design</td></tr>
+<tr><td class="w">conformance "call for call"; phase 3 "exactly"</td><td class="w">only under a written equivalence; traffic after the preamble depends on tab, cache and timers</td></tr>
+<tr><td class="w">the porting job is sized on 292,500 lines</td><td class="w">about 380,000 with the VA library code that carries behaviour; today's compiled closure, excluding generated and third-party code, is 355,291</td></tr>
+<tr><td class="w">eHMP stayed outside VistA</td><td class="w">it installed its own package (43 HMP RPCs, 128 routines)</td></tr>
+<tr><td class="w">SL-D2, SL-D3, SL-D7, SL-D9 as drafts</td><td class="w">ruled by the operator on 2026-09-23 with amendments; SL-D13 (the check runs only before data is shown) added</td></tr>
+</tbody></table></div>
+
+<h2 id="s21"><span class="n">21</span>Sources and how each number was taken</h2>
+<h4>Measured today (2026-10-03), read-only</h4>
+<ul>
+  <li><strong>Delphi source:</strong> <code>~/data/kids-patches/VistA/Packages/Order Entry Results Reporting/CPRS/CPRS-Chart/</code>; FileVersion 1.33.112.1 and ProjectVersion 20.1 from <code>CPRSChart.dproj</code>. A Python census strips Pascal comments, counts routine implementations after <code>implementation</code> (excluding forward and external declarations), and counts event handlers by a <code>Sender: TObject</code> parameter. The compiled closure follows <code>uses</code> clauses from <code>CPRSChart.dpr</code>, resolved by unit name and the project's namespaces. Unit groups by ordered path and name rules, with no unit unassigned. Forms are counted by <code>object</code>/<code>inherited</code> lines and <code>On…=</code> bindings. Outside connections are counted by per-line patterns over comment-stripped code.</li>
+  <li><strong>RPC census:</strong> RPC names taken from <code>CallVistA</code>, <code>CallV</code>, <code>sCallV</code>, <code>tCallV</code> and <code>CallRPC</code> call forms, and from every quoted string matched against vehu's RPC file list.</li>
+  <li><strong>Live vehu,</strong> through the driver stack: <code>v rpc list --engine vehu --context "OR CPRS GUI CHART"</code> (1,190, complete); <code>m engine exec</code> reads of FileMan header nodes for the files in §3, the RPC file's B index, <code>ORWT TOOLS MENU</code> values, file 101.15 and the device file.</li>
+  <li><strong>vista-meta</strong> data-v1 (content hash 23d037f1…): <code>rpcs.tsv</code>, <code>routines.tsv</code> and <code>routine-calls.tsv</code>. The closure is routine-level and over-approximates: 1,122 of the 1,190 RPCs share an entry routine with another RPC.</li>
+</ul>
+<h4>Measured 2026-09-23 and carried forward</h4>
+<ul>
+  <li>The surface map, the service layer and their adversarial reviews (docs repo, <code>proposals/parked/cprs-surface-map/</code> and <code>proposals/parked/cprs-service-layer/</code>), including the tap recordings, the duty readings in <code>DGSEC4</code>, <code>ORWDX</code>, <code>ORWDXR</code>, <code>TIUSRVP2</code>, the outbound web servers, the session limits and the identity research.</li>
+  <li>Org memory: CPRS's source is on this box; an RPC census by intersection hides version skew; reading like CPRS means writing like CPRS; vehu's outside services are unreachable; vista-meta's call graph is routine-level.</li>
+</ul>
+<h4>Documented (vdocs gold corpus, content hash 726d22a4…)</h4>
+<ul>
+  <li>Tools menu format: <code>vdocs://section/CPRS/cprsguitm_0_636/format-for-entering-items-in-orwt-tools-menu</code>; MHA3 and VistARad Tools-menu entries: <code>vdocs://section/YS/ys_mha_um/setting-up-vista-mha3-on-cprs-gui-tools-menu-for-securedesktop</code>, <code>vdocs://section/MAG/imgtechman_f/cprs-tools-menu-option-for-vistarad</code>.</li>
+  <li>COM extensions: <code>vdocs://section/CPRS/cprsguitm_0_636/appendix-e---creating-cprs-extension-com-object-in-delphi</code>, <code>…/icprsextension-interface</code>; parameter <code>ORWCOM ORDER ACCEPTED</code>.</li>
+  <li>Token sign-on: <code>vdocs://section/XU/krn_8_0_sm_signon_security_ug/2-factor-authentication-2fa</code> (STRICT TOKEN VALIDATION #220, XU*8.0*701); <code>XUS ESSO VALIDATE</code> in <code>vdocs://section/MAG/mag_vx_20_0_ag/non-mag-rpcs-used-by-the-vix</code>; SSOi with EDIS: <code>vdocs://section/EDIS/edis_2_2_2_tm/web-application</code>.</li>
+  <li>Remote-site visitors: <code>vdocs://section/XWB/xwb_1_1_dg_r/broker-security-enhancement-bse-overview</code>.</li>
+  <li>Printing: <code>vdocs://section/CPRS/cprsguitm_0_636/orwdp-winprint-default</code>, <code>vdocs://section/CPRS/cprsguium/printing-from-within-cprs</code>. CCOW: <code>vdocs://section/CPRS/cprsguium/clinical-context-management-ccow-icon</code>. Controlled-substance digital signature: <code>vdocs://section/CPRS/cprsguitm_0_636/enabling-digital-signature-entries</code>.</li>
+</ul>
+<h4>External</h4>
+<ul>
+  <li>Epic Hyperdrive: <a href="https://whatfix.com/blog/epic-hyperdrive-migration/">Whatfix</a>, <a href="https://www.mindbowser.com/epic-hyperspace-vs-epic-hyperdrive/">Mindbowser</a>, <a href="https://blog.providence.org/south-puget-sound-medical-staff-updates/epic-to-transition-from-hyperspace-to-hyperdrive">Providence</a>, <a href="https://www.topazsystems.com/epic">Topaz Systems</a>, <a href="https://imprivata.com/sites/imprivata/files/2025-01/Increasing%20security%20and%20convenience%20at%20Epic%20health%20systems%20-%20Whitepaper.pdf">Imprivata</a>.</li>
+  <li>Microsoft Teams: <a href="https://www.ghacks.net/?p=190177">gHacks</a>, <a href="https://uctoday.com/what-is-teams-2-0-the-guide-to-microsoft-teams-2-0">UC Today</a>. Outlook: <a href="https://learn.microsoft.com/deployoffice/outlook/overview-new-outlook">Microsoft Learn</a>, <a href="https://winaero.com/new-outlook-app-project-monarch-is-out-of-beta-enters-pre-release">Winaero</a>. Office: <a href="https://www.itwriting.com/blog/8859-coding-microsoft-office-cross-platform.html">IT Writing</a>, <a href="https://en.wikipedia.org/wiki/Excel_Services">Excel Services</a>.</li>
+  <li>MEDITECH Expanse: <a href="https://en.wikipedia.org/wiki/Meditech">Wikipedia</a>, <a href="https://blog.ipeople.com/top-five-muse-2022-takeaways">iPeople</a>. Oracle Health: <a href="https://www.oracle.com/news/announcement/oracle-unveils-next-generation-ehr-2024-10-29/">Oracle</a>, <a href="https://www.fiercehealthcare.com/health-tech/oracle-health-will-offer-new-ehr-2025-embedded-ai-and-analytics-tools">Fierce Healthcare</a>.</li>
+  <li>VA eHMP: <a href="https://www.fiercehealthcare.com/ehr/laverne-council-va-to-roll-out-health-management-platform-over-next-two-years">Fierce Healthcare</a>, <a href="https://healthdatamanagement.com/news/va-revamps-vista-ehr-with-new-user-interface-functions">Health Data Management</a>. VA identity services: VA privacy impact assessments, summarized in the service layer's identity research.</li>
+</ul>
+</article>
+
+<footer class="src">
+Draft strategy for the operator's ruling, 2026-10-03. Nothing described as a service, layer, companion, registry or gate here exists yet. The raw lists behind §4–§7 and §11 are in this session's scratch directory and are not committed. The parked proposals in the docs repo remain the decision records until this plan is ruled.
+</footer>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+<script>
+(function () {
+  var data = [
+    ["Order dialog engine", 48241, 1814, 695, 1],
+    ["UI controls and utilities", 38854, 1978, 121, 0],
+    ["Order management and release", 23867, 896, 300, 0],
+    ["Encounter (PCE) engine", 22655, 897, 239, 1],
+    ["Note template engine", 22432, 901, 349, 1],
+    ["Accessibility (508)", 19372, 1120, 45, 0],
+    ["Session, sign-on, Broker", 18764, 697, 158, 0],
+    ["Notes, D/C summaries, doc tree", 18707, 611, 289, 0],
+    ["Reminder dialog engine", 18230, 570, 162, 1],
+    ["Consults engine", 15009, 536, 278, 1],
+    ["Application shell and core", 13684, 578, 128, 0],
+    ["Graphing engine", 12539, 404, 145, 1],
+    ["Options and preferences", 9818, 448, 229, 0],
+    ["Copy/paste provenance", 9750, 212, 11, 0],
+    ["Cover sheet engine", 8278, 368, 106, 1],
+    ["Labs display", 8180, 232, 139, 0],
+    ["Reports and health summary", 8167, 225, 97, 1],
+    ["Problem list", 6868, 294, 91, 0],
+    ["Billing awareness", 5467, 190, 43, 0],
+    ["Patient selection and context", 5320, 215, 100, 0],
+    ["Medications tab", 4367, 156, 68, 0],
+    ["Digital signature (PKI)", 4126, 192, 3, 0],
+    ["Surgery", 3937, 131, 72, 0],
+    ["Signature and review", 3901, 93, 39, 0],
+    ["Extensibility (COM, Tools, REST)", 3145, 179, 3, 0],
+    ["PDMP integration", 3123, 133, 32, 0],
+    ["Order checks and session", 2896, 116, 50, 0],
+    ["Notifications engine", 2452, 122, 52, 1],
+    ["Vitals", 2434, 92, 46, 0],
+    ["Allergies", 2360, 71, 47, 0],
+    ["Women's Health", 1410, 77, 17, 0],
+    ["DST integration", 1235, 55, 5, 0],
+    ["Spell check (Word)", 1080, 74, 6, 0],
+    ["Printing", 968, 39, 22, 0]
+  ];
+  var host = document.getElementById("engine-chart");
+  if (!host) return;
+  var NS = "http://www.w3.org/2000/svg";
+  var labelW = 230, plotW = 560, rowH = 22, top = 26, right = 70;
+  var W = labelW + plotW + right, H = top + data.length * rowH + 8;
+  var max = 50000;
+  var svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+  svg.setAttribute("aria-hidden", "true");
+  function el(name, attrs, text) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    svg.appendChild(e);
+    return e;
+  }
+  [0, 10000, 20000, 30000, 40000, 50000].forEach(function (v) {
+    var x = labelW + plotW * v / max;
+    el("line", { x1: x, x2: x, y1: top - 6, y2: H - 6, "class": "grid" });
+    el("text", { x: x, y: 14, "class": "tm", "text-anchor": v === 0 ? "start" : "middle" }, v === 0 ? "0" : (v / 1000) + "k lines");
+  });
+  var tip = document.getElementById("tip");
+  data.forEach(function (d, i) {
+    var y = top + i * rowH;
+    var w = Math.max(2, plotW * d[1] / max);
+    el("text", { x: labelW - 10, y: y + 15, "class": "t", "text-anchor": "end" }, d[0]);
+    var bh = 14, by = y + 4;
+    var r = Math.min(4, w / 2);
+    var p = "M" + labelW + "," + by + " H" + (labelW + w - r) + " Q" + (labelW + w) + "," + by + " " + (labelW + w) + "," + (by + r) +
+            " V" + (by + bh - r) + " Q" + (labelW + w) + "," + (by + bh) + " " + (labelW + w - r) + "," + (by + bh) + " H" + labelW + " Z";
+    el("path", { d: p, "class": d[4] ? "bar hot" : "bar" });
+    if (i < 5 || d[4]) el("text", { x: labelW + w + 6, y: y + 15, "class": "tm" }, d[1].toLocaleString("en-US"));
+    var hit = el("rect", { x: 0, y: y, width: W, height: rowH, "class": "hit" });
+    function show(ev) {
+      tip.innerHTML = "<b>" + d[0] + "</b><br>" + d[1].toLocaleString("en-US") + " lines · " + d[2].toLocaleString("en-US") +
+        " routines · " + d[3].toLocaleString("en-US") + " event handlers" + (d[4] ? "<br>interpreter engine" : "");
+      tip.hidden = false;
+      var x = Math.min(window.innerWidth - 310, ev.clientX + 14);
+      tip.style.left = x + "px";
+      tip.style.top = (ev.clientY + 14) + "px";
+    }
+    hit.addEventListener("mousemove", show);
+    hit.addEventListener("mouseleave", function () { tip.hidden = true; });
+  });
+  host.appendChild(svg);
+})();
+</script>
+</body>
+</html>
