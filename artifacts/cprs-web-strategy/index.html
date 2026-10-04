@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="A measured plan for replacing the Delphi CPRS client with a web client behind a service API, keeping all of CPRS's behaviour and proving it capability by capability: where CPRS's behaviour lives, the engines inside the client, the RPC surface, the duties VistA leaves to the client (four of them run live on a throwaway copy), a target architecture, classic and modern modes, and a delivery plan. Version 3 of a draft, amended after two adversarial reviews; nothing in it is built.">
+<meta name="description" content="A measured plan for replacing the Delphi CPRS client with a web client behind a service API, keeping all of CPRS's behaviour and proving it capability by capability: where CPRS's behaviour lives, the engines inside the client, the RPC surface, the duties VistA leaves to the client (four of them run live on a throwaway copy), a target architecture, classic and modern modes, and a delivery plan. Version 4 of a draft, amended after three adversarial reviews; nothing in it is built.">
 <style>:root { color-scheme: light; } body { margin: 0; } img { max-width: 100%; } [hidden] { display: none !important; }</style>
 <title>CPRS Web Strategy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -145,16 +145,16 @@ td.ww { min-width: 21em; }
 <body>
 <div class="page">
 <header>
-  <div class="eyebrow">vista-forge · strategy and specification · draft for ruling · version 3</div>
+  <div class="eyebrow">vista-forge · strategy and specification · draft for ruling · version 4</div>
   <h1>CPRS Web Strategy</h1>
   <p class="lede">A measured plan for replacing the Delphi CPRS client with a web client behind a service API, keeping all of CPRS's behaviour and proving it capability by capability.</p>
   <div class="meta">
     <span class="chip warn">nothing in this plan is built</span>
-    <span class="chip">amended after two rounds of <b><a href="../cprs-web-strategy-review/">adversarial review</a></b></span>
+    <span class="chip">amended after three rounds of <b><a href="../cprs-web-strategy-review/">adversarial review</a></b></span>
     <span class="chip">measured <b>2026-10-03</b></span>
     <span class="chip">CPRS <b>1.33.112.1</b> · OR*3.0*629</span>
     <span class="chip">engine <b>vehu</b> (YottaDB)</span>
-    <span class="chip">docs@<b>d6b326e</b></span>
+    <span class="chip">docs@<b>8b96c4a</b></span>
   </div>
 </header>
 
@@ -182,7 +182,7 @@ td.ww { min-width: 21em; }
     <li><a href="#s18"><span class="n">18</span>Assumptions</a></li>
     <li><a href="#s19"><span class="n">19</span>Decisions to rule</a></li>
     <li><a href="#s20"><span class="n">20</span>What changed since the two artifacts</a></li>
-    <li><a href="#s21"><span class="n">21</span>Amendments from the two reviews</a></li>
+    <li><a href="#s21"><span class="n">21</span>Amendments from the three reviews</a></li>
     <li><a href="#s22"><span class="n">22</span>Sources and how each number was taken</a></li>
   </ol>
 </nav>
@@ -192,8 +192,8 @@ td.ww { min-width: 21em; }
 <section class="abstract" id="abstract">
 <h2>Abstract</h2>
 <p>CPRS is three things in one program: a presenter of VistA's data, an interpreter of each site's clinical definitions, and an orchestrator of multi-step clinical transactions. Measured today, its compiled Delphi code is <strong>355,291 lines in 519 units with 13,625 routine bodies</strong>, and the Vitals entry DLL it loads adds 28,911 lines and 1,195 more. CPRS and that DLL name <strong>1,067 remote procedures</strong>: 1,055 that vehu has and 12 it lacks. CPRS's context admits 1,190, so 166 are admitted and never used. Behind those RPCs a label-level scan reaches at least 156,509 lines of M in 2,637 routines. Five groups of CPRS units build screens from site definitions at run time by two independent signals (order dialogs, note templates, reminder dialogs, immunizations and pathology orders, about 94,000 lines), and the Vitals DLL passes the same test. Two more groups pass one signal, and nine let site definitions decide what fixed screens show.</p>
-<p>The plan keeps VistA's clinical rules where they are and calls them. It moves the client's interpreters and orchestration into <strong>one session service per VistA</strong>, organised as domain modules behind a workflow-shaped API, and presents that API in two web front-ends: a <strong>classic mode</strong> that reproduces CPRS's screens and a <strong>modern mode</strong> in the Office-on-the-web family. The session service holds each person's own VistA session, sends only the calls CPRS uses, and applies the duties VistA leaves to the client. <strong>Four of those duties were run live on a throwaway copy of VistA on 2026-10-03.</strong> VistA signed an order, and released a discontinue, on a signature code it had just declared invalid. It let a user whose write access is "no" create a note and sign an order. It served a patient outside a user's restricted list. It freed a dropped client's locks within three seconds. So the service validates the signature code before any order is sent, applies the write-access rules, binds every patient-scoped call to the patient the session selected and checked, and ends a departed client's session. Those guarantees cover traffic through the service; with no change to VistA, the Broker stays open to CPRS itself. Identity is OpenID Connect at the front, with access and verify codes as the baseline and VA's token path as the route that works at VA today. AI and third-party clients draft proposals that a person accepts. Where Kernel allows the person a second sign-on they read through a VistA job of their own; where it does not, they make no VistA calls. They never sign.</p>
-<p>Fidelity is proven by <strong>capability rows</strong>, the unit Loupe already uses: one CPRS behaviour per row, read from the source, each one built with tests as evidence or closed by a ruling. The routine and RPC counts are completeness checks on the rows. They are not the proof. A row census projected from Loupe's one data point puts the whole client at roughly 1,300 to 4,400 rows, and about 3,200 by a second basis. Two tracks are kept apart: a reference implementation proven against CPRS on demo VistA, which this org can build and test, and deployment at VA, which depends on approvals, licensing and data volumes that nothing here can measure. This version carries the thirteen changes of the first adversarial review and the ten of the second (§21).</p>
+<p>The plan keeps VistA's clinical rules where they are and calls them. Rewriting them outside VistA, the route of the operator's 2016–2019 projects, was measured for this version and is declined (§8). It moves the client's interpreters and orchestration into <strong>one session service per VistA</strong>, organised as domain modules behind a workflow-shaped API, and presents that API in two web front-ends: a <strong>classic mode</strong> that reproduces CPRS's screens and a <strong>modern mode</strong> in the Office-on-the-web family. The session service holds each person's own VistA session, sends only the calls CPRS uses, and applies the duties VistA leaves to the client. <strong>Four of those duties were run live on a throwaway copy of VistA on 2026-10-03.</strong> VistA signed an order, and released a discontinue, on a signature code it had just declared invalid. It let a user whose write access is "no" create a note and sign an order. It served a patient outside a user's restricted list. It freed a dropped client's locks within three seconds. So the service validates the signature code before any order is sent, applies the write-access rules, binds every patient-scoped call to the patient the session selected and checked, and ends a departed client's session. Those guarantees cover traffic through the service; with no change to VistA, the Broker stays open to CPRS itself. A second door on the same session core, speaking the Broker's own protocol, is proposed to bring unchanged CPRS under the same rules, observing first and refusing later. Identity is OpenID Connect at the front, with access and verify codes as the baseline and VA's token path as the route that works at VA today. AI and third-party clients draft proposals that a person accepts. Where Kernel allows the person a second sign-on they read through a VistA job of their own; where it does not, they make no VistA calls. They never sign.</p>
+<p>Fidelity is proven by <strong>capability rows</strong>, the unit Loupe already uses: one CPRS behaviour per row, read from the source, each one built with tests as evidence or closed by a ruling. The routine and RPC counts are completeness checks on the rows. They are not the proof. A row census projected from Loupe's one data point puts the whole client at roughly 1,300 to 4,400 rows, and about 3,200 by a second basis. Two tracks are kept apart: a reference implementation proven against CPRS on demo VistA, which this org can build and test, and deployment at VA, which depends on approvals, licensing and data volumes that nothing here can measure. This version carries the thirteen changes of the first adversarial review, the ten of the second and the six of the third (§21).</p>
 </section>
 
 <div class="legend-row" aria-label="Provenance labels">
@@ -221,7 +221,7 @@ td.ww { min-width: 21em; }
   <li><strong>CPRS service layer</strong> (parked 2026-09-23, five safeguards ruled): one server holding each person's Broker session. Its condition for unparking, "an effort commits to a client that must reach VistA through one server holding people's sessions", is also met. Its review recommended a session guard first and coarse services after.</li>
   <li><strong>Loupe</strong> (accepted, building): a phone client held to CPRS's behaviour, with a passed side-by-side test for sign-on and patient selection. It supplies the proven unit of fidelity (§11) and should become a client of the service.</li>
   <li><strong>The retired web-CPRS architecture</strong> (June 2026) and <strong>an exploratory cprs-web project</strong> outside the org. Useful as reading. Under the org's boundary rule, nothing here may depend on the second.</li>
-  <li><strong>The operator's 2016–2019 archive</strong> and <strong>VA's own integration adapter</strong>, both read for this version (§8).</li>
+  <li><strong>The operator's 2016–2019 archive</strong>, measured in its code for this version, and <strong>VA's own integration adapter</strong>, read from its installed context (§8).</li>
 </ul>
 <p>The org's settled position on whole-record extracts applies: VPR and eHMP extracts are not a new client's foundation (ruled 2026-09-23). The client uses CPRS's RPCs.</p>
 
@@ -239,13 +239,14 @@ td.ww { min-width: 21em; }
   <li><strong>VistA does not check an order's signature code, and does not apply the write-access rules.</strong> Both were run live. A made-up code signed an order and released a discontinue. A user with write access "no" created a note and signed an order. A note signature with the same code was refused (§6).</li>
   <li><strong>VistA serves any patient to any signed-on user.</strong> A user restricted to a two-patient list was given an outside patient's name, date of birth and SSN. The session service must bind every patient-scoped call to the patient it selected and checked: 217 of the RPCs CPRS uses take a patient parameter, and 107 of those write (§6).</li>
   <li><strong>The client's weight is in what it builds from site data.</strong> Five groups in CPRS and the Vitals DLL are interpreters by two signals, two groups by one, and nine are steered by definitions (§4).</li>
-  <li><strong>The back end is one stateful service per VistA.</strong> A person's Broker connection answers one request at a time and workflow state lives in the VistA job behind it. A dropped connection's locks were free three seconds later, so rebuilding unfinished work after a restart is a replay with failure cases (§9).</li>
+  <li><strong>The back end is one stateful service per VistA.</strong> A person's Broker connection answers one request at a time and workflow state lives in the VistA job behind it. A dropped connection's locks were free three seconds later, so rebuilding unfinished work after a restart is a replay with failure cases. Sessions of different people are independent, so a cell scales and is released by session and never by module (§9).</li>
   <li><strong>Fidelity is proven by capability rows.</strong> Single Delphi routines run past 1,100 lines, and 89% of RPCs are called from one place and vary only in their parameters. Counting routines or RPC names can reach 100% on a wrong product (§11).</li>
   <li><strong>CPRS's own keys need more than a browser tab.</strong> 29 of CPRS's 244 shortcuts use keys a tab will not release. The routes are the desktop companion, or full screen with the browser's Keyboard Lock (§12).</li>
   <li><strong>An agent cannot always have its own VistA job.</strong> A second sign-on was refused for a person whose multiple sign-on is "not allowed", and an agent inside the clinician's job would clear the clinician's order checks (§14).</li>
   <li><strong>Half the outside surface is on the server, and vehu cannot show it.</strong> All 18 outbound web servers on vehu point at unreachable hosts, and vehu has no usable printer.</li>
   <li><strong>VA already runs a service adapter over these RPCs.</strong> Its context on vehu admits 262 RPCs, 178 of them CPRS's, including order send and note sign, and it added 47 RPCs of its own inside VistA (§8).</li>
   <li><strong>A rebuild of CPRS with coverage instrumentation is unproven.</strong> All 419 units the project lists are present and the forms have no hidden third-party components, but the build notes in the source mirror are for a much older CPRS (§17).</li>
+  <li><strong>Emulating VistA's side was tried, and it reached the shallow end.</strong> The operator's 2016–2019 emulation server holds 152 RPC models, 141 of them among the RPCs CPRS uses. Sixteen change data, and none covers orders, notes or signature. Together they reach 9.5% of the M behind CPRS's used RPCs (§8).</li>
 </ol>
 
 <h2 id="s3"><span class="n">3</span>Where CPRS's behaviour lives</h2>
@@ -370,6 +371,7 @@ td.ww { min-width: 21em; }
 <tr><td>RPCs with a parsed call site in compiled code</td><td class="num">965</td><td class="ww">856 (89%) are called from exactly one place; 109 from two or more; 29 with more than one argument count. Variation is in the parameters <span class="pv m">measured</span></td></tr>
 <tr><td>RPCs named in exactly one group</td><td class="num">953</td><td>of the 999 context RPCs CPRS's code names; 46 are shared between groups <span class="pv m">measured</span></td></tr>
 <tr><td>what the used RPCs write (label-level scan, a first cut)</td><td class="num">304</td><td class="ww">of the 1,024 in the context, 304 write stored data, 15 only queue a task, alert or mail, 158 touch only job state (temp globals, locks) and 547 show no write. 550 have indirection in reach, so the classes are a floor <span class="pv m">measured</span></td></tr>
+<tr><td>the same RPCs classed by hand in 2017</td><td class="num">1,036</td><td class="ww">the operator's archive classed the 1,050 RPCs of CPRS's context then as read (749), change (146), utility (144) or sign-on (11); 1,036 are still in the context. The two sources disagree on 129: the scan finds a stored write in reach of 116 of the 744 called reads, and none for 13 of the 145 called changes <span class="pv m">measured</span></td></tr>
 <tr><td>used RPCs that take a patient parameter</td><td class="num">217</td><td class="ww">107 of them write stored data. A lower bound, by parameter name <span class="pv m">measured</span></td></tr>
 <tr><td>availability marking of the 1,190</td><td class="num">21 public</td><td>257 subscription, 105 restricted, 9 by agreement, 798 unmarked <span class="pv m">measured</span></td></tr>
 <tr><td>return types of the 1,190</td><td class="num"></td><td>579 single value, 477 array, 127 global array, 6 word processing, 1 unmarked <span class="pv m">measured</span></td></tr>
@@ -382,11 +384,11 @@ td.ww { min-width: 21em; }
   <li><strong>The allowlist is the used set, per site.</strong> The session service sends the RPCs CPRS uses at that site and nothing else: the 1,059 named in code, and the names the site's own definitions supply (8 on vehu). The 166 admitted-and-unused RPCs are refused by default, <code>ORWD SIGN</code> among them. That removes the need for 166 separate rulings. Tested against everything CPRS was recorded sending, the list refuses nothing CPRS sent.</li>
   <li><strong>Names inside remote calls are checked too.</strong> Five call sites send a remote-RPC call with the RPC to run at the other site as an argument: one literal, and four that pass a variable from the Reports and Labs tabs. The allowlist applies to the inner name.</li>
   <li><strong>Add-in calls are admitted with evidence.</strong> Some of the 37 refused writers may be sent by add-ins that have no source here, such as the mental-health DLL and the registered COM objects. An add-in works through the service only after its calls are recorded and admitted.</li>
-  <li><strong>A name list is not enough.</strong> Each allowed RPC carries its effect class and whether it takes a patient, so the session core applies write access (duty 2) and patient binding (duty 4) by rule.</li>
+  <li><strong>A name list is not enough.</strong> Each allowed RPC carries its effect class and whether it takes a patient, so the session core applies write access (duty 2) and patient binding (duty 4) by rule. The effect class has two sources, the scan and the archive's 2017 hand classification. Each of the 129 disagreements is listed in the registry and is settled by a database comparison on a throwaway copy before the RPC's first row is built. The 154 RPCs added to the context since 2017 have the scan alone.</li>
 </ul>
 
 <h2 id="s6"><span class="n">6</span>Duties the server leaves to the client</h2>
-<p>Each row becomes a rule in the session service with a negative scenario that fails the service if the rule is skipped. The guarantee holds for traffic through the service. With no VistA change, CPRS and any program holding a person's codes still reach the Broker directly.</p>
+<p>Each row becomes a rule in the session service with a negative scenario that fails the service if the rule is skipped. The guarantee holds for traffic through the service. With no VistA change, CPRS and any program holding a person's codes still reach the Broker directly. The Broker-protocol door of §9 is the proposed way to bring them under the same rules.</p>
 <p>Rows marked <span class="pv m">run live</span> were tested on 2026-10-03 on a throwaway copy of vehu, as two demo clinicians through a Broker client. The copy was removed afterwards and gold was not touched.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>duty</th><th>what VistA does</th><th>what the service must do</th></tr></thead>
@@ -437,8 +439,25 @@ td.ww { min-width: 21em; }
 <div class="dl">
   <div><span class="h">VA's integration adapter <span class="pv m">measured</span> <span class="pv d">documented</span></span>
   <p>VA already runs a service adapter between web applications and these RPCs. It is installed on vehu: 47 RPCs of its own, and a context that admits <strong>262 RPCs, 178 of them in CPRS's context</strong>. The shared set includes order send, signature validation, note create and sign, the lock calls, patient selection and the sensitive-record check. It does not include <code>ORWD SIGN</code>. Its own RPCs carry CPRS-like names (schedules, maximum days, encounter save). The documentation shows a VA web application using it: the emergency-department system "uses IAM Single Sign-On Internal (SSOi) to authenticate users and VistA Integration Adapter (VIA) and SAML connect to VistA to authorize users". <strong>Lessons:</strong> VA's working pattern is PIV at the identity service and a SAML token to VistA; VA's own adapter added code inside VistA; and the duties in §6 apply to any client of that adapter too. How the adapter authorizes each call was not read.</p></div>
-  <div><span class="h">The operator's 2016–2019 archive <span class="pv m">read today</span></span>
-  <p>The VISTA Data Project and its successors went the opposite way to this plan. They re-implemented VistA's side: each CPRS RPC as a JavaScript "emulation model" over a data model (345 JavaScript files in the prototype repository, 155 entries in the later server's model folder), served by a "stand-alone, operational emulation of VISTA system functionality as a centralized cloud-based service", with a services library meant "to capture the VISTA processing 'smarts'". Around it they built an RPC router between CPRS and a local or national VistA with a sniffer mode and audit logs, a proxy sniffer, a sequence runner, a passive traffic monitor and a Broker simulator. A security study lists per-RPC parameter checks and "invalid patient for session". A site timing note from July 2019, titled for high-latency templates, logs about a minute between opening a primary-care note template and entering data, and CPRS crashes. The READMEs do not say why the work stopped. <strong>Lessons:</strong> emulating the rules outside VistA is the path this plan declines; the router's parameter checks and audit log are worth copying into the session service's allowlist; the sequence runner is the shape of the conformance harness; and production CPRS is itself slow on large templates, so a recorded timing baseline from a site matters.</p></div>
+  <div><span class="h">The operator's 2016–2019 archive <span class="pv m">measured in its code for this version</span></span>
+  <p>The VISTA Data Project and its successors went the opposite way to this plan. They re-implemented VistA's side and left the Delphi client as it was. Each CPRS RPC became a JavaScript "emulation model": first over VistA's own database through FileMan (2016–2017), then over a MongoDB copy, as "a '131st National VISTA'", behind a router that sent each call to the emulator, to VistA or to both (2018). The aim was to retire VistA with CPRS left running. The year-two plan set "the 1050 RPCs of the CPRS RPC Interface" as the target and named order entry as the bulk of the work.</p>
+  <p>The second year, 2019 to January 2020, built no emulation. It delivered a passive monitor that mirrored RPC traffic to a cloud log, changed nothing in VistA or in any client, received its authority to operate and ran in production at one site. Around the emulator the projects had built an RPC router with a sniffer mode and audit logs, a sequence runner, a load tester and a Broker simulator, and a security study lists per-RPC parameter checks and "invalid patient for session". A site timing note from July 2019 logs between half a minute and a minute from opening a primary-care note template to entering data, and CPRS crashes. The archive does not say why emulation stopped. <strong>Lessons:</strong> emulating VistA's side is declined, as set out below; the router is the model for a second door on the session core (§9); the 2017 hand classification of CPRS's RPCs is a second source for the registry (§5); the org's tap already does what the sniffer, runner, load tester and simulator did; and production CPRS is itself slow on large templates, so a recorded timing baseline from a site matters.</p></div>
+</div>
+<p>What the archive's emulation reached:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>measure</th><th>value</th></tr></thead>
+<tbody>
+<tr><td class="w">RPC models in the emulation server, a snapshot of 2019-02-05</td><td class="ww">152: 123 read, 16 change, 13 utility, by their own labels <span class="pv m">measured</span></td></tr>
+<tr><td class="w">among the 1,067 RPCs CPRS uses</td><td class="ww">141, which is 13% <span class="pv m">measured</span></td></tr>
+<tr><td class="w">among the 146 RPCs the project's own 2017 breakdown calls changes</td><td class="ww">15: problem list, vitals, one allergy save and preferences. None for orders, notes, encounters, consults, signature or order checks <span class="pv m">measured</span></td></tr>
+<tr><td class="w">M those RPCs reach</td><td class="ww">14,286 lines, 9.5% of the 151,089 that CPRS's used RPCs reach. The allergy save's 38,665 lines are counted apart, because its 355-line model does not attempt them <span class="pv m">measured</span></td></tr>
+<tr><td class="w">JavaScript written</td><td class="ww">51,240 lines, tests included <span class="pv m">measured</span></td></tr>
+<tr><td class="w">how an emulation was accepted</td><td class="ww">its reply matched VistA's. Effects on the rest of VistA were not compared <span class="pv m">read in code</span></td></tr>
+</tbody></table></div>
+<div class="callout">
+<p><strong>Emulating VistA's side of the RPCs: declined.</strong> It rebuilds the half of the system this plan keeps, and it yields no web client. Pharmacy, laboratory, radiology and billing work on what CPRS's calls file: the order send call has 41 global roots in its reach. An emulator outside VistA must reproduce every such write, or keep a second store in step with every VistA. Every server patch behind an unchanged RPC name is then a silent difference. The question reopens only for a site that has no VistA to call. The module API (§9) is the seam where a module could then be pointed at another back end. This is decision 22 of §19.</p>
+</div>
+<div class="dl">
   <div><span class="h">Microsoft Teams <span class="pv x">external, from a search summary of Microsoft's post</span></span>
   <p>The new Teams moved from Electron to Edge WebView2 and from AngularJS to React with Fluent controls, and moved data handling into a client data layer in a separate worker. Microsoft reported up to twice the speed and half the memory. The post itself did not load for a direct read. <strong>Lessons:</strong> one web code base in a thin native host; and a client that holds working state needs a deliberate data layer (§9).</p></div>
   <div><span class="h">Microsoft Outlook <span class="pv x">external</span></span>
@@ -457,9 +476,9 @@ td.ww { min-width: 21em; }
 <h2 id="s9"><span class="n">9</span>Target architecture</h2>
 <figure>
 <div class="fig arch">
-<svg viewBox="0 0 980 712" role="img" aria-labelledby="arch-t arch-d" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 980 732" role="img" aria-labelledby="arch-t arch-d" xmlns="http://www.w3.org/2000/svg">
 <title id="arch-t">Proposed architecture</title>
-<desc id="arch-d">Four client types reach an identity service and gateway, then one session service per VistA instance. The session service contains domain modules that form the service API, six engines that build screens from site definitions, and a session core that holds one VistA job per person per client, the allowlist, the duty rules, a work-in-progress journal and agent drafts. The session core reaches the RPC Broker and VistA. A desktop companion bridges local devices. A tap and database comparison record outgoing traffic for conformance, and a fidelity registry is generated from capability rows.</desc>
+<desc id="arch-d">Four client types reach an identity service and gateway, then one session service per VistA instance, run as several identical session holders. The session service contains domain modules that form the service API, six engines that build screens from site definitions, and a session core that holds one VistA job per person per client, the allowlist, the duty rules, a work-in-progress journal, agent drafts and a proposed Broker-protocol door through which unchanged CPRS passes the same rules. The session core reaches the RPC Broker and VistA. A desktop companion bridges local devices. A tap and database comparison record outgoing traffic for conformance, and a fidelity registry is generated from capability rows.</desc>
 <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
 <rect class="band" x="0" y="0" width="980" height="96" rx="8"/>
 <text class="ta" x="16" y="22">CLIENTS</text>
@@ -472,8 +491,8 @@ td.ww { min-width: 21em; }
 <rect class="box" x="360" y="110" width="604" height="58" rx="7"/><text class="tb" x="376" y="132">Identity service and gateway</text><text class="tm" x="376" y="152">OpenID Connect sign-in · tokens held server-side · scopes · routes each person to their session</text>
 <path class="ln" d="M345,84 L520,108" marker-end="url(#ah)"/><path class="ln" d="M569,84 L620,108" marker-end="url(#ah)"/><path class="ln" d="M826,84 L826,108" marker-end="url(#ah)"/><path class="lnd" d="M336,139 L358,139"/>
 <path class="ln" d="M660,168 L660,186" marker-end="url(#ah)"/>
-<rect class="boxa" x="8" y="188" width="964" height="342" rx="10"/>
-<text class="ta" x="24" y="212">SESSION SERVICE</text><text class="tm" x="170" y="212">one per VistA instance · one deployable · one session per person per client</text>
+<rect class="boxa" x="8" y="188" width="964" height="362" rx="10"/>
+<text class="ta" x="24" y="212">SESSION SERVICE</text><text class="tm" x="170" y="212">a cell per VistA · identical session holders · a person's session stays on one holder</text>
 <text class="tm" x="24" y="236">Domain modules: the service API clients call (workflow-shaped requests and events)</text>
 <g>
 <rect class="box" x="24" y="244" width="126" height="38" rx="6"/><text class="tb" x="34" y="268">Patient context</text>
@@ -500,26 +519,28 @@ td.ww { min-width: 21em; }
 <rect class="boxm" x="648" y="358" width="148" height="38" rx="6"/><text class="tb" x="658" y="382">Immunizations</text>
 <rect class="boxm" x="804" y="358" width="152" height="38" rx="6"/><text class="tb" x="814" y="382">Pathology orders</text>
 </g>
-<rect class="box" x="24" y="410" width="932" height="106" rx="7"/>
+<rect class="box" x="24" y="410" width="932" height="126" rx="7"/>
 <text class="tb" x="38" y="432">Session core</text>
 <text class="t" x="38" y="454">one VistA job per person per client, as that person · calls for one person run one at a time</text>
 <text class="t" x="38" y="474">allowlist: the RPCs CPRS uses at this site · duty rules: signature, write access, patient binding, locks, idle</text>
 <text class="t" x="38" y="494">work-in-progress journal · agent drafts held until a person accepts · declared CPRS version · no VistA change</text>
-<path class="ln" d="M300,530 L300,556" marker-end="url(#ah)"/>
-<rect class="box" x="16" y="558" width="440" height="62" rx="7"/><text class="tb" x="32" y="582">RPC Broker → VistA</text><text class="tm" x="32" y="602">clinical rules unchanged; the site's definitions</text>
-<rect class="box" x="480" y="558" width="230" height="62" rx="7"/><text class="tb" x="494" y="582">Tap and database comparison</text><text class="tm" x="494" y="602">traffic and writes against CPRS</text>
-<path class="lnd" d="M456,589 L478,589"/>
-<rect class="box" x="734" y="558" width="230" height="62" rx="7"/><text class="tb" x="748" y="582">Fidelity registry</text><text class="tm" x="748" y="602">capability rows, gated</text>
-<path class="lnd" d="M710,589 L732,589"/>
-<rect class="box" x="16" y="634" width="948" height="54" rx="7"/><text class="tb" x="32" y="656">Reference: CPRS 1.33.112.1 in a Windows guest</text><text class="tm" x="32" y="676">scenarios recorded through the tap, screenshots for classic mode, the source of every capability row</text>
+<text class="t" x="38" y="514">Broker-protocol door: unchanged CPRS passes the same rules, observing first</text>
+<path class="ln" d="M300,550 L300,576" marker-end="url(#ah)"/>
+<rect class="box" x="16" y="578" width="440" height="62" rx="7"/><text class="tb" x="32" y="602">RPC Broker → VistA</text><text class="tm" x="32" y="622">clinical rules unchanged; the site's definitions</text>
+<rect class="box" x="480" y="578" width="230" height="62" rx="7"/><text class="tb" x="494" y="602">Tap and database comparison</text><text class="tm" x="494" y="622">traffic and writes against CPRS</text>
+<path class="lnd" d="M456,609 L478,609"/>
+<rect class="box" x="734" y="578" width="230" height="62" rx="7"/><text class="tb" x="748" y="602">Fidelity registry</text><text class="tm" x="748" y="622">capability rows, gated</text>
+<path class="lnd" d="M710,609 L732,609"/>
+<rect class="box" x="16" y="654" width="948" height="54" rx="7"/><text class="tb" x="32" y="676">Reference: CPRS 1.33.112.1 in a Windows guest</text><text class="tm" x="32" y="696">scenarios recorded through the tap, screenshots for classic mode, the source of every row; unchanged, it also enters by the door</text>
 </svg>
 </div>
-<figcaption>Clients see a service API. Behind it is one deployable per VistA: the modules, the engines and the session core share each person's VistA job and cannot be scaled or restarted apart. VistA does not change. <span class="pv p">proposed</span></figcaption>
+<figcaption>Clients see a service API. Behind it is one deployable per VistA, run as several identical session holders. Within one person's session the modules, the engines and the session core share that person's VistA job and cannot be scaled or restarted apart. Sessions of different people are independent. VistA does not change. <span class="pv p">proposed</span></figcaption>
 </figure>
 
 <h3>Service-shaped at the API, one session holder behind it</h3>
 <p>The request asks for services and not piecemeal RPC wrapping. That is met where clients meet the system: they call a notes module, an orders module, a signature module, each with workflow-shaped requests and events, and never an RPC. The identity service is separate and stateless.</p>
 <p>Behind the API the measured constraints leave one honest design. A person's Broker connection answers one request at a time. The order-check session, the encounter cache and the locks live in the VistA job behind that connection. A second connection opened by token is a second job with its own state. So for each person, every module call runs through the same job in turn. The modules cannot be deployed, scaled or restarted independently, and none can serve two requests for one person at once. Version 1 drew fifteen service boxes, which promised more than this.</p>
+<p><strong>A cell scales by session.</strong> The constraint binds the modules inside one person's session. It does not bind one person's session to another's. So a cell is several identical session holders behind the gateway, which keeps each session on the holder that has its VistA job. Capacity grows by adding holders. A release takes one holder at a time: the holder stops accepting new sessions, its sessions end at their own sign-off or idle limit, and it is replaced. A session still open at a stated deadline goes through the restart case below, with notice to the clinician. A holder that fails takes only its own sessions into that case. Version 3 read as one process per VistA, which would have ended every clinician's VistA job at a site on every release.</p>
 
 <h3>Two layers of test</h3>
 <ul>
@@ -539,8 +560,23 @@ td.ww { min-width: 21em; }
 </tbody></table></div>
 <p>The size of a replay is measured. Of the 143 RPCs the order dialog engine names, 37 touch job state or locks and 20 write stored data. The alternative to a journal is a client data layer in the browser, as the new Teams has. It makes the browser the holder of unsaved clinical work and duplicates interpreter state on two sides.</p>
 
+<h3>What interpreter placement costs</h3>
+<p>With the interpreters in the session service, an answered prompt that changes what a dialog shows is a round trip from the browser to the cell. CPRS does that work in its own memory. How many round trips a dialog takes per answered prompt, and what they cost on a clinician's link, has not been measured. Production CPRS already takes half a minute to a minute to open one large template (§8). Phase 2 builds its thin path with the interpreter in the service, as recommended, and counts the round trips. Decision 11 is ruled on that count.</p>
+
 <h3>Where it runs</h3>
 <p>CPRS's traffic is chatty. The September review counted 36 calls in the patient-selection preamble, and in the 2026-09-28 recording of sign-on and list browsing, 138 recorded calls precede the first patient selection. Each person's session is a VistA process. So the session service runs as a <strong>cell next to each VistA instance</strong>, on the same network segment, and the browser reaches the cell over HTTPS. "Cloud" means the cells and the identity front door run in the same cloud as cloud-hosted VistA. They never sit across a wide-area link from the Broker. About 130 cells, each declaring a CPRS version and each with its own site's definitions, is an operations problem that belongs to track B and is not designed here.</p>
+
+<h3>A Broker-protocol door for unchanged CPRS</h3>
+<p>The session core's rules reach only the traffic that passes through it. A second door is proposed so that CPRS itself can pass through it, unchanged. Nothing of it exists. <span class="pv p">proposed</span></p>
+<ul>
+  <li><strong>What it is.</strong> A listener on the session core that speaks the Broker's own protocol. CPRS is pointed at it in place of the Broker. For each connection it opens one connection to VistA and forwards the handshake and the sign-on as CPRS sent them. From then on it reads every call by name and parameters before forwarding it, and every reply before returning it. The person's VistA job, sign-on, keys and audit are what they are today. It forwards a call or refuses it, and it never answers in VistA's place. It is a router. It emulates nothing.</li>
+  <li><strong>What it adds.</strong> The allowlist, patient binding and the service's audit record apply to CPRS's traffic, and to any other program that signs on with a person's codes through that port. Where a site can limit the Broker's port to the cell's address, the guarantees of §6 would cover all traffic with no VistA change. Whether a site can is a track B question (§17).</li>
+  <li><strong>Observing first.</strong> In its first mode the door forwards everything and logs what each rule would have refused. That tests the allowlist and patient binding against every CPRS session on the box, where recorded clicking has so far reached 217 of the 1,067 RPCs. It also shows which patient-scoped calls CPRS itself makes outside the selected patient, before any rule is enforced on it. Refusal is switched on rule by rule, by ruling, once a rule's log is empty or explained.</li>
+  <li><strong>The signature rule is a separate case.</strong> To apply duty 1 the door would send the validation call itself before forwarding a send. That is the one place it would speak to VistA unprompted, and it is ruled apart from the rest.</li>
+  <li><strong>What is already here.</strong> CPRS in the Windows guest reaches vehu through the org's relay, which copies bytes and reads nothing <span class="pv m">measured</span>. The door is that relay taught the protocol and joined to the session core. The operator's 2018 router did the parsing and the audit log in 857 lines over a protocol library (§8).</li>
+  <li><strong>What it must not change.</strong> Bytes it does not refuse pass unaltered and in order. That includes the handshake's workstation name, which is what the sign-on log records <span class="pv m">read in code</span>. The network address VistA sees becomes the cell's, as it is the relay's today. What Kernel's per-address sign-on limit and the production engine's licence count make of that is the question §10 and §14 already raise for the web path.</li>
+  <li><strong>Limits.</strong> The Broker's port serves other applications too; the door applies rules inside CPRS's contexts and forwards and logs the rest. The duties CPRS applies itself stay CPRS's. The door needs its own ruling as a Broker door, with a retirement condition (§18; decision 21).</li>
+</ul>
 
 <h2 id="s10"><span class="n">10</span>Identity and sign-on</h2>
 <p>The operator ruled the credential path on 2026-09-23 <span class="pv r">ruled</span>: access and verify as the baseline, shaped for OAuth from the start, with JWT through OpenID Connect as the target.</p>
@@ -554,7 +590,7 @@ td.ww { min-width: 21em; }
 <ul>
   <li><strong>The browser never holds a token.</strong> It holds a secure session cookie; the identity service keeps the tokens. Native and mobile clients hold short-lived tokens bound to a key where the provider supports it.</li>
   <li><strong>After sign-on nothing changes.</strong> The person has their own VistA jobs. The signature code is entered for each signature and dropped. Kernel's keys, menus and audit apply unchanged, because every call runs as the person. A service identity would also drop out of VistA's patient-selection audit, which skips proxy users.</li>
-  <li><strong>Multiple sign-on applies to the service.</strong> A person whose setting is "not allowed" cannot have the web client and CPRS open at once: a second session was refused in the live test. A third setting limits sign-ons per network address, and every session through a cell arrives from one address.</li>
+  <li><strong>Multiple sign-on applies to the service.</strong> A person whose setting is "not allowed" cannot have the web client and CPRS open at once: a second session was refused in the live test. A third setting limits sign-ons per network address, and every session through a cell arrives from one address. The same holds for CPRS through the Broker-protocol door (§9).</li>
   <li><strong>Remote sites</strong> keep CPRS's own mechanisms: remote RPCs and the Broker's visitor mechanism <span class="pv d">documented</span>.</li>
   <li><strong>Controlled-substance signing</strong> stays a per-order act with the PIV card (§13). Sign-in at the identity provider does not satisfy it.</li>
 </ul>
@@ -581,7 +617,7 @@ td.ww { min-width: 21em; }
 <thead><tr><th>population</th><th class="num">size today</th><th>the check</th></tr></thead>
 <tbody>
 <tr><td><strong>routine bodies</strong></td><td class="num">14,820</td><td class="ww">13,625 in CPRS's compiled code and 1,195 in the Vitals DLL. Every routine is cited by at least one row, or sits in a named class with no behaviour of its own (layout, generated accessors, dead under the build's symbols). A routine of 100 lines or more (252 of them, holding 18% of the code) must be cited by a row for each behaviour it holds; the two report handlers of over 1,100 lines are the test case</td></tr>
-<tr><td><strong>RPCs used</strong></td><td class="num">1,067</td><td class="ww">every used RPC appears in at least one row. For an RPC whose behaviour depends on a parameter (the save, send, sign, lock and dialog-definition calls first), the parameter classes are listed and each class appears in a row. The 166 admitted-and-unused RPCs each appear in one refused row. The registry carries each RPC's effect class and whether it takes a patient</td></tr>
+<tr><td><strong>RPCs used</strong></td><td class="num">1,067</td><td class="ww">every used RPC appears in at least one row. For an RPC whose behaviour depends on a parameter (the save, send, sign, lock and dialog-definition calls first), the parameter classes are listed and each class appears in a row. The 166 admitted-and-unused RPCs each appear in one refused row. The registry carries each RPC's effect class and whether it takes a patient. The effect class has two sources, and the 129 disagreements between them stay listed until a database comparison settles each (§5)</td></tr>
 <tr><td><strong>user actions</strong></td><td class="num">4,834+</td><td class="ww">event bindings in compiled forms: 4,312 in CPRS and 522 in the Vitals DLL; plus bindings made at run time and Tools-menu entries. Each maps to a row</td></tr>
 <tr><td><strong>control behaviours</strong></td><td class="num">to be counted</td><td class="ww">each control class's behaviours (keyboard, paging, sorting, date parsing) are rows with tests. A screenshot proves layout and nothing else</td></tr>
 <tr><td><strong>site definitions</strong></td><td class="num">20,175</td><td class="ww">two gates per interpreter. <em>Accepted:</em> it parses the site's whole census with no unknown construct. <em>Matched:</em> every feature of the definition grammar (each field type, prompt type, data type, nesting, object, required flag) is exercised by at least one case recorded in CPRS. Accepted is per site. Matched is finite and is planned per engine. vehu's data holds every first-level feature: all 10 template field types and 6 date types, all 7 reminder-dialog entry types, 8 order-prompt data types. Combinations of features, and features only another site uses, are not yet covered</td></tr>
@@ -679,22 +715,23 @@ td.ww { min-width: 21em; }
 <h2 id="s15"><span class="n">15</span>Delivery plan</h2>
 <p>These are track A's phases. CPRS stays available throughout and people opt in one by one.</p>
 <p><strong>Sizing.</strong> Phases are sized in capability rows. The only measured density is Loupe's: 75 rows for sign-on and patient selection, whose primary units hold about 6,500 lines and whose rows also cite slices of larger shared units totalling about 22,000 lines. That is one row per 87 to 298 lines. The projections below apply that range to each phase's compiled lines and are replaced by a real count when the phase's source read is done. A second basis agrees: those units hold 114 event bindings, which is 0.66 rows per binding, and over the 4,834 compiled bindings that is about 3,200 rows. Loupe ruled 18 of its rows out for a phone. A drop-in replacement cannot, so the upper half of each range is the safer reading. Loupe built those 57 rows on screens it had already been building for a week, read-only. Writes are slower: each needs a throwaway copy, CPRS driven by hand in the Windows guest, and a database comparison.</p>
+<p><strong>Calendar.</strong> The only measured pace is also Loupe's. Its 57 built rows were complete within eight days of its first commit (2026-09-22 to 2026-09-29): about seven rows a day, by one operator, read-only. The days column applies that pace to each phase's rows. At that pace about 3,200 rows is about 450 days. It is a floor wherever a phase writes, because CPRS is driven by hand for every write row. Phase 0 therefore tries scripted driving of CPRS in the Windows guest, which would move that oracle from hand speed to machine speed. <span class="pv p">projection</span></p>
 <div class="table-wrap"><table>
-<thead><tr><th>phase</th><th>scope</th><th class="num">projected rows</th><th>exit test</th></tr></thead>
+<thead><tr><th>phase</th><th>scope</th><th class="num">projected rows</th><th class="num">days at Loupe's pace</th><th>exit test</th></tr></thead>
 <tbody>
-<tr><td><strong>0. Baseline and rulings</strong></td><td class="ww">rule the decisions of §19 that gate the rest; the allowlist from the used set; the row register and its gates; the remaining duty measurements on a throwaway copy (order-check acknowledgement, encounter prompting, copy/paste tracking, the token sign-on); the reserved-key test on a Windows machine; an attempt to rebuild CPRS; read the remaining prior art. The order-signature, write-access, restricted-list and lock measurements are done (§6)</td><td class="num">none</td><td class="w">the register's gates red-proved against planted violations; the remaining duty measurements taken</td></tr>
-<tr><td><strong>1. Session core, sign-on, open a chart</strong></td><td class="ww">per-person sessions, keep-alive, idle lock, lock release, the sensitive-record rule, patient binding, write-access rules loaded; sign-on with codes; patient selection; classic-mode frame and cover sheet</td><td class="num">140–490</td><td class="w">the selection preamble matches CPRS's recording; confirm and warn scenarios pass; no lock survives a closed tab; a call naming another patient is refused</td></tr>
-<tr><td><strong>2. One order through signature</strong></td><td class="ww">a thin end-to-end path on a throwaway copy: one quick order, its order checks, save, signature; the wrong-code and write-access refusals; a page reload and a service restart mid-order, the restart also with the lock taken by someone else; one agent proposal accepted by a person</td><td class="num">counted before it starts</td><td class="w">the order matches CPRS's sequence and database effect; both refusals hold; the reload restores the dialog; the restart replays it, and when the lock is held the clinician is told and nothing is written</td></tr>
-<tr><td><strong>3. Every read</strong></td><td class="ww">problems, medications, labs, reports, graphs, surgery, vitals and allergies display; Loupe moves onto the service</td><td class="num">170–570</td><td class="w">a read scenario per tab; report definitions accepted and matched</td></tr>
-<tr><td><strong>4. Notes</strong></td><td class="ww">a note's life with the template engine, autosave, copy/paste provenance</td><td class="num">170–590</td><td class="w">templates and fields accepted; every template grammar feature matched; byte-identical note text on recorded cases</td></tr>
-<tr><td><strong>5. Encounter, immunizations, reminders, vitals entry</strong></td><td class="ww">the encounter forms, the immunization engine, the reminder dialog engine with mental-health instruments, the Vitals DLL's entry screens</td><td class="num">240–810</td><td class="w">reminder elements accepted and matched; database effects match CPRS</td></tr>
-<tr><td><strong>6. Orders, complete</strong></td><td class="ww">every order dialog type, the pathology builder, quick orders, sets, order checks, order actions, event-delayed orders, PDMP, billing awareness</td><td class="num">300–1,040</td><td class="w">dialog entries accepted and matched; each action's database effect matches</td></tr>
-<tr><td><strong>7. Consults, alerts, options</strong></td><td class="ww">consult actions, follow-up for all 70 notification types, preferences, surrogates, lists</td><td class="num">95–330</td><td class="w">every notification type's follow-up has a row</td></tr>
-<tr><td><strong>8. Outside connections and the companion</strong></td><td class="ww">printing, Tools menu, the extension contract, the companion (keys, PIV signing, CCOW, local programs), the OpenID route</td><td class="num">25–80</td><td class="w">every §7 entry answered and tested</td></tr>
-<tr><td><strong>9. Modern mode</strong></td><td class="ww">the Office-style front-end over the same modules</td><td class="num">no new rows</td><td class="w">the same scenarios pass through modern mode</td></tr>
-<tr><td><strong>10. Third-party API</strong></td><td class="ww">scoped tokens, agent jobs, proposals; an AI order-drafting client as the first consumer</td><td class="num">counted then</td><td class="w">no scope can sign; an agent never changes a clinician's context; an agent for a person without a second sign-on makes no VistA call</td></tr>
+<tr><td><strong>0. Baseline and rulings</strong></td><td class="ww">rule the decisions of §19 that gate the rest; the allowlist from the used set; the row register and its gates; the remaining duty measurements on a throwaway copy (order-check acknowledgement, encounter prompting, copy/paste tracking, the token sign-on); the reserved-key test on a Windows machine; an attempt to rebuild CPRS; a trial of scripted driving of CPRS in the Windows guest; read the remaining prior art. The order-signature, write-access, restricted-list and lock measurements are done (§6)</td><td class="num">none</td><td class="num">–</td><td class="w">the register's gates red-proved against planted violations; the remaining duty measurements taken; one recorded scenario replayed by script, or the reason it cannot be</td></tr>
+<tr><td><strong>1. Session core, sign-on, open a chart</strong></td><td class="ww">per-person sessions, keep-alive, idle lock, lock release, the sensitive-record rule, patient binding, write-access rules loaded; sign-on with codes; patient selection; classic-mode frame and cover sheet; the Broker-protocol door, observing only</td><td class="num">140–490</td><td class="num">20–69</td><td class="w">the selection preamble matches CPRS's recording; confirm and warn scenarios pass; no lock survives a closed tab; a call naming another patient is refused; CPRS's sessions on the box pass through the door, and every entry in its would-refuse log has a verdict</td></tr>
+<tr><td><strong>2. One order through signature</strong></td><td class="ww">a thin end-to-end path on a throwaway copy: one quick order, its order checks, save, signature; the wrong-code and write-access refusals; a page reload and a service restart mid-order, the restart also with the lock taken by someone else; one agent proposal accepted by a person; a release of one session holder while a session runs on another; a count of round trips per answered prompt</td><td class="num">counted before it starts</td><td class="num">–</td><td class="w">the order matches CPRS's sequence and database effect; both refusals hold; the reload restores the dialog; the restart replays it, and when the lock is held the clinician is told and nothing is written; the release interrupts no session on the other holder; the round-trip count is recorded for decision 11</td></tr>
+<tr><td><strong>3. Every read</strong></td><td class="ww">problems, medications, labs, reports, graphs, surgery, vitals and allergies display; Loupe moves onto the service</td><td class="num">170–570</td><td class="num">24–80</td><td class="w">a read scenario per tab; report definitions accepted and matched</td></tr>
+<tr><td><strong>4. Notes</strong></td><td class="ww">a note's life with the template engine, autosave, copy/paste provenance</td><td class="num">170–590</td><td class="num">24–83</td><td class="w">templates and fields accepted; every template grammar feature matched; byte-identical note text on recorded cases</td></tr>
+<tr><td><strong>5. Encounter, immunizations, reminders, vitals entry</strong></td><td class="ww">the encounter forms, the immunization engine, the reminder dialog engine with mental-health instruments, the Vitals DLL's entry screens</td><td class="num">240–810</td><td class="num">34–114</td><td class="w">reminder elements accepted and matched; database effects match CPRS</td></tr>
+<tr><td><strong>6. Orders, complete</strong></td><td class="ww">every order dialog type, the pathology builder, quick orders, sets, order checks, order actions, event-delayed orders, PDMP, billing awareness</td><td class="num">300–1,040</td><td class="num">42–146</td><td class="w">dialog entries accepted and matched; each action's database effect matches</td></tr>
+<tr><td><strong>7. Consults, alerts, options</strong></td><td class="ww">consult actions, follow-up for all 70 notification types, preferences, surrogates, lists</td><td class="num">95–330</td><td class="num">13–46</td><td class="w">every notification type's follow-up has a row</td></tr>
+<tr><td><strong>8. Outside connections and the companion</strong></td><td class="ww">printing, Tools menu, the extension contract, the companion (keys, PIV signing, CCOW, local programs), the OpenID route</td><td class="num">25–80</td><td class="num">4–11</td><td class="w">every §7 entry answered and tested</td></tr>
+<tr><td><strong>9. Modern mode</strong></td><td class="ww">the Office-style front-end over the same modules</td><td class="num">no new rows</td><td class="num">–</td><td class="w">the same scenarios pass through modern mode</td></tr>
+<tr><td><strong>10. Third-party API</strong></td><td class="ww">scoped tokens, agent jobs, proposals; an AI order-drafting client as the first consumer</td><td class="num">counted then</td><td class="num">–</td><td class="w">no scope can sign; an agent never changes a clinician's context; an agent for a person without a second sign-on makes no VistA call</td></tr>
 </tbody></table></div>
-<p>The control library and accessibility framework (43,070 lines, a projected 140 to 500 rows of control behaviour) are built as the phases need them. All of CPRS projects to about 1,200 to 4,100 rows, and the Vitals DLL to about 100 to 330 more.</p>
+<p>The control library and accessibility framework (43,070 lines, a projected 140 to 500 rows of control behaviour) are built as the phases need them. All of CPRS projects to about 1,200 to 4,100 rows, and the Vitals DLL to about 100 to 330 more. At Loupe's pace that is about 180 to 620 days in all, before the slower write rows.</p>
 <p><strong>Why one order comes second.</strong> Orders hold the largest interpreter, the order-check state, the unenforced signature, write access and the agent question. A thin path through them settles state placement, the duty rules and the equivalence method while they are cheap to change, before the read screens and the classic-mode generator are widened.</p>
 
 <h2 id="s16"><span class="n">16</span>Technical risks and mitigations</h2>
@@ -704,22 +741,27 @@ td.ww { min-width: 21em; }
 <tr><td class="w">an order is filed as signed without a valid signature code</td><td class="w">shown live: VistA files it. Signature validation as duty 1; <code>ORWD SIGN</code> outside the allowlist; the refusal is a scenario in phase 2</td></tr>
 <tr><td class="w">a restricted user, or a site made read-only, can write through the web client</td><td class="w">shown live: VistA does not refuse. Write access as duty 2, loaded at sign-on and tested per area and action</td></tr>
 <tr><td class="w">a call reads or writes a patient the session never selected or checked</td><td class="w">shown live: VistA answers for any patient number. Patient binding as duty 4; the registry marks which RPCs take a patient</td></tr>
+<tr><td class="w">CPRS's own traffic stays outside the service's rules</td><td class="w">the Broker-protocol door, observing first; refusal switched on rule by rule once a rule's log is empty or explained; where the Broker's port can be limited to the cell, all traffic is covered</td></tr>
+<tr><td class="w">the door changes what CPRS sends, or how fast</td><td class="w">it forwards bytes unaltered and in order; a recorded CPRS scenario through the door is compared with the same scenario through the relay</td></tr>
+<tr><td class="w">an RPC is classed as reading when it writes</td><td class="w">two sources for the effect class; the 129 disagreements listed, each settled by a database comparison</td></tr>
 <tr><td class="w">the metric reads 100% on a product that is wrong</td><td class="w">capability rows with behavioural evidence; routine, RPC, action and definition counts only as completeness checks; parameter classes for mode-bearing RPCs; "accepted" kept apart from "matched"</td></tr>
 <tr><td class="w">rows miss a behaviour because they are written by judgment</td><td class="w">the completeness checks; rows reviewed against the units they cite; execution reporting once CPRS can be rebuilt</td></tr>
 <tr><td class="w">a ported interpreter produces different clinical text or filing strings</td><td class="w">the text and database oracles; every grammar feature matched against a CPRS recording</td></tr>
+<tr><td class="w">a release ends every clinician's VistA job at a site</td><td class="w">a cell is several session holders, released one at a time as their sessions end; proven in phase 2</td></tr>
 <tr><td class="w">a service restart loses every clinician's unfinished work</td><td class="w">the work-in-progress journal, and a replay that never re-sends a write and never forces a lock; proven in phase 2, including the case where someone else now holds the lock</td></tr>
 <tr><td class="w">an agent changes the patient under a clinician, or its drafts become real orders</td><td class="w">an agent never runs inside the clinician's job. It has its own job where Kernel allows the person a second sign-on and makes no VistA call where it does not; proposals are held in the service until accepted</td></tr>
 <tr><td class="w">the service files access records the person never caused</td><td class="w">the sensitive-record check only before data is shown, once per record per session; a test counting security-log entries per scenario</td></tr>
 <tr><td class="w">sessions held by the service outlive the browser and hold locks</td><td class="w">keep-alive only while a client is active; sign-off on idle; a test that closes a tab mid-edit</td></tr>
 <tr><td class="w">the process ceiling refuses sign-ons (30 on vehu, shared by all processes), and each extra connection may cost a licence unit on the production engine</td><td class="w">one job per person per client by design; agent jobs counted and capped; the ceiling shown in the service's status; capacity and licence use measured per site</td></tr>
 <tr><td class="w">the service is a single point of failure and a high-value target</td><td class="w">a cell per VistA, so one failure is one site; codes never at rest; the journal encrypted and local; tailnet-only on demo engines; its own accreditation before real data</td></tr>
+<tr><td class="w">dialogs are slow because each answered prompt crosses the network</td><td class="w">phase 2 counts round trips per answered prompt before decision 11 is ruled; input hints in the client</td></tr>
 <tr><td class="w">classic mode's keyboard differs from CPRS</td><td class="w">the companion, or full screen with Keyboard Lock, for CPRS's own keys, each tested per browser and runtime version; ruled replacement keys in a plain tab, shown on screen</td></tr>
 <tr><td class="w">the web client signs controlled-substance orders without the audit federal rule requires</td><td class="w">card signing is built and tested on demo data in track A and is not used on real prescriptions until the audit or certification exists (track B)</td></tr>
 <tr><td class="w">CPRS or server patches change behaviour</td><td class="w">the service declares the CPRS version it emulates; rows cite units, so a new build's changed units name the rows to re-read</td></tr>
 <tr><td class="w">sites differ in definitions, patches and parameters</td><td class="w">interpret, never copy; the accepted gate per site; a site registry</td></tr>
 <tr><td class="w">vehu shows outage behaviour for outside services and has no printer</td><td class="w">every scenario marks the services it touches; printing listed as unmeasurable until a throwaway copy has a device</td></tr>
 <tr><td class="w">add-ins without source cannot be ported from code</td><td class="w">specify from recorded traffic and package documentation; listed as gaps</td></tr>
-<tr><td class="w">the effort is too large for the hands available</td><td class="w">phases sized in rows before each starts; every phase leaves something usable; CPRS remains, so stopping at any phase loses nothing</td></tr>
+<tr><td class="w">the effort is too large for the hands available</td><td class="w">phases sized in rows before each starts, and in days at Loupe's pace; scripted driving of the reference client tried in phase 0; every phase leaves something usable; CPRS remains, so stopping at any phase loses nothing</td></tr>
 <tr><td class="w">track B is mistaken for something this plan has tested</td><td class="w">the two tracks are kept apart in every section; track B is only a list of questions</td></tr>
 </tbody></table></div>
 
@@ -741,6 +783,10 @@ td.ww { min-width: 21em; }
 <tr><td class="w">the IRIS engine's differences (foia)</td><td class="w">repeat the census and scenarios on foia</td></tr>
 <tr><td class="w">how much a CPRS release changes. Only one snapshot of the source is on this box</td><td class="w">a second build's source</td></tr>
 <tr><td class="w">a restart replay of a half-filled order dialog</td><td class="w">phase 2</td></tr>
+<tr><td class="w">whether a door that reads the protocol stays invisible to CPRS, and what the sign-on log and the per-address sign-on limit record for a session through it</td><td class="w">CPRS driven through it in the Windows guest, compared with the relay</td></tr>
+<tr><td class="w">the 129 RPCs where the scan and the 2017 hand classification disagree about writing</td><td class="w">a database comparison on a throwaway copy for each</td></tr>
+<tr><td class="w">round trips per answered prompt with the interpreters in the service</td><td class="w">phase 2's count</td></tr>
+<tr><td class="w">whether CPRS can be driven by script in the Windows guest</td><td class="w">the phase 0 trial</td></tr>
 </tbody></table></div>
 <h3>Track B: not answerable here</h3>
 <div class="table-wrap"><table>
@@ -754,6 +800,7 @@ td.ww { min-width: 21em; }
 <tr><td class="w">whether sites run VistA Audit Solution and require PIV sign-on</td><td class="w">site information</td></tr>
 <tr><td class="w">capacity and latency at production data volumes; vehu holds 1,755 patients</td><td class="w">a production-sized copy or a site</td></tr>
 <tr><td class="w">operating about 130 cells: who runs each site's accepted gate, on what data, and what one site's red gate does to a release</td><td class="w">an operations design, with VA</td></tr>
+<tr><td class="w">whether a site can limit the Broker's port to the cell's address, and which other applications share that port</td><td class="w">site network information</td></tr>
 <tr><td class="w">how VA's adapter authorizes each call, and how the client inside Cloud CPRS signs on</td><td class="w">VA's own material; not in what was read</td></tr>
 </tbody></table></div>
 
@@ -769,23 +816,23 @@ td.ww { min-width: 21em; }
   <li>Edge is the managed browser, so WebView2 is available for the companion.</li>
   <li>The session service can be placed next to each VistA instance.</li>
   <li>Signing stays a human act.</li>
-  <li>The effort lives in the org as a VistA-layer effort and reaches VistA only as a Broker client through v-base's broker package. A new Broker door of this kind needs its own ruling with a retirement condition, as does every gate this plan proposes.</li>
+  <li>The effort lives in the org as a VistA-layer effort and reaches VistA only as a Broker client through v-base's broker package. A new Broker door of this kind needs its own ruling with a retirement condition, as does every gate this plan proposes. The Broker-protocol door of §9 is a second such door and needs the same.</li>
 </ul>
 
 <h2 id="s19"><span class="n">19</span>Decisions to rule</h2>
-<p>Each is put with its alternatives when ruled. The first eight gate phase 1 or phase 2.</p>
+<p>Each is put with its alternatives when ruled. The first eight and decision 21 gate phase 1 or phase 2.</p>
 <ol>
   <li><strong>What "100% coverage" means:</strong> all behaviour accounted for, or that plus an execution floor (§11). Recommended: the first, with execution reported.</li>
   <li><strong>The unit of proof:</strong> the capability row, with the routine, RPC, action and definition counts as completeness checks (§11).</li>
   <li><strong>The two tracks:</strong> this plan's phases are the reference implementation; VA deployment is a separate list of questions (§1).</li>
   <li><strong>Unpark both proposals</strong> under this effort, the surface map resumed demand-first.</li>
-  <li><strong>The shape:</strong> one session service per VistA with domain modules and a session core (§9). Read the remaining prior art first (§8).</li>
+  <li><strong>The shape:</strong> one session service per VistA with domain modules and a session core, run as session holders that scale and are released by session (§9). Read the remaining prior art first (§8).</li>
   <li><strong>Where unfinished work lives:</strong> a journal in the session core with a replay after a restart, or a client data layer (§9). Recommended: the journal, with the replay's refusals as stated there.</li>
   <li><strong>Agents:</strong> two modes by what Kernel allows the person, their own job or no VistA calls at all; proposals held in the service until a person accepts; and whether to pursue a third mode of reads inside the clinician's job (§14). Recommended: the two modes, and not the third.</li>
   <li><strong>Who reads a site's definitions for the accepted gate.</strong> Version 1 required a per-site census and also forbade any service identity. Options: an administrator's read-only export of the definition files, taken with the site's own tools and handed to the gate; a ruled exception for one read-only identity; or no per-site gate. Recommended: the export. On vehu the driver stack already serves.</li>
   <li><strong>Keyboard:</strong> which of the three routes classic mode supports, after the reserved-key test (§12). Recommended: the companion and full screen where they test clean, replacement keys otherwise.</li>
   <li><strong>Where it lives:</strong> new org repos, layer v; and the ruling that admits this Broker door with its retirement condition.</li>
-  <li><strong>Where the interpreters run:</strong> in the session service, with input hints in the client.</li>
+  <li><strong>Where the interpreters run:</strong> recommended in the session service, with input hints in the client. Ruled after phase 2 counts the round trips per answered prompt (§9).</li>
   <li><strong>The client API:</strong> resource-oriented HTTP with events pushed to clients; versioning; tailnet-only on demo engines.</li>
   <li><strong>Loupe's relation:</strong> a client of the service; its register is the model for this one.</li>
   <li><strong>VA's token route:</strong> support it, with strict validation on, as the VA route until a verifier exists.</li>
@@ -795,6 +842,8 @@ td.ww { min-width: 21em; }
   <li><strong>Third-party scopes:</strong> the list, and the rule that no scope signs.</li>
   <li><strong>How deep the matched gate goes:</strong> each grammar feature once, or also each pair of features that occurs together in the site's census (§11).</li>
   <li><strong>Scope of the first release:</strong> whether Event Capture, the terminal CPRS and remote-data viewers are in or out.</li>
+  <li><strong>A Broker-protocol door on the session core</strong> for unchanged CPRS: observing only in phase 1, refusal switched on rule by rule by later ruling, and the ruling that admits it as a Broker door with its retirement condition (§9). The alternatives are no door, with the guarantees limited to the web clients, or a change inside VistA.</li>
+  <li><strong>Emulating VistA's side of the RPCs:</strong> declined on the measurements of §8, to reopen only for a site with no VistA to call.</li>
 </ol>
 
 <h2 id="s20"><span class="n">20</span>What changed since the two artifacts</h2>
@@ -819,8 +868,19 @@ td.ww { min-width: 21em; }
 <tr><td class="w">four safeguards as drafts</td><td class="w">ruled on 2026-09-23 with amendments, and a fifth added</td></tr>
 </tbody></table></div>
 
-<h2 id="s21"><span class="n">21</span>Amendments from the two review rounds</h2>
-<p>This plan was reviewed adversarially twice on 2026-10-03. Round 1 re-tested version 1; its thirteen changes made version 2. Round 2 ran the open tests live and stress-tested version 2; its ten changes make this version.</p>
+<h2 id="s21"><span class="n">21</span>Amendments from the three review rounds</h2>
+<p>This plan was reviewed adversarially three times on 2026-10-03. Round 1 re-tested version 1; its thirteen changes made version 2. Round 2 ran the open tests live and stress-tested version 2; its ten changes made version 3. Round 3 measured the operator's 2016–2019 emulation archive against version 3; its six changes make this version.</p>
+<h3>Round 3, into version 4</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>the review asked for</th><th>in this version</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="w">§8's archive entry replaced by measured figures; emulation of VistA's side recorded as declined</td><td class="w">§8; finding 12 of §2; decision 22</td></tr>
+<tr><td>2</td><td class="w">a decision on a Broker-protocol door on the session core, observing first</td><td class="w">§9, "A Broker-protocol door for unchanged CPRS"; phase 1 of §15; decision 21; §6, §16, §17 and §18</td></tr>
+<tr><td>3</td><td class="w">§9 to say that a cell scales by session; a rolling release in phase 2's exit test</td><td class="w">§9, "A cell scales by session" and the figure; phase 2 of §15; finding 5 of §2; decision 5</td></tr>
+<tr><td>4</td><td class="w">a second source for the registry's effect class, with the disagreements listed</td><td class="w">§5, the table and the last allowlist bullet; §11, the RPC check; §17</td></tr>
+<tr><td>5</td><td class="w">scripted driving of the reference client in phase 0; a calendar projection beside the row counts</td><td class="w">§15, phase 0, the calendar note and the days column</td></tr>
+<tr><td>6</td><td class="w">decision 11 to wait for a round-trip count from phase 2</td><td class="w">§9, "What interpreter placement costs"; phase 2 of §15; decision 11</td></tr>
+</tbody></table></div>
 <h3>Round 2, into version 3</h3>
 <div class="table-wrap"><table>
 <thead><tr><th>#</th><th>the review asked for</th><th>in this version</th></tr></thead>
@@ -867,7 +927,9 @@ td.ww { min-width: 21em; }
   <li><strong>Live vehu,</strong> through the driver stack: the contexts by <code>v rpc list</code> (1,190, 61, 35, 100, 15, and VA's adapter at 262); record counts by walking each file; devices by type and name; web servers; write-access parameters; the RPC name index.</li>
   <li><strong>vista-meta</strong> data-v1: the call graph by depth, RPC availability and return types, routine source for the duty readings.</li>
   <li><strong>Loupe:</strong> its repository history, <code>internal/coverage/signon-selection.tsv</code> and the units its rows cite.</li>
-  <li><strong>The operator's archive:</strong> READMEs under <code>~/vistadataproject</code> for the emulation server, the router, the sniffer, the simulator, the security study and the site timing note.</li>
+  <li><strong>The operator's archive:</strong> <code>~/vistadataproject</code>, read in its code. The emulation server's models were counted one RPC name per file; the 2017 breakdown's categories were taken from its JSON; round 2's scanner was run over the emulated RPCs; the router's source, the year-two overview and the second year's final report were read. The method is in the review's round 3.</li>
+  <li><strong>Loupe's pace:</strong> the dated versions of its register, from its first commit to the version with 57 built rows.</li>
+  <li><strong>The relay and the handshake:</strong> the org's relay was found installed and listening; what the handshake carries was read in v-base's Broker client.</li>
 </ul>
 <h4>Measured 2026-09-23 and carried forward</h4>
 <ul>
@@ -888,7 +950,7 @@ td.ww { min-width: 21em; }
 </article>
 
 <footer class="src">
-A rendering of <code>proposals/cprs-web-strategy/cprs-web-strategy.md</code> in the vista-forge <code>docs</code> repo at commit <code>d6b326e</code>, version 3 of 2026-10-03. The repo copy is the one that is ruled on and kept current. Nothing described here as a service, module, companion, register or gate exists yet. The scripts, lists and the record of the live tests are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed.
+A rendering of <code>proposals/cprs-web-strategy/cprs-web-strategy.md</code> in the vista-forge <code>docs</code> repo at commit <code>8b96c4a</code>, version 4 of 2026-10-03. The repo copy is the one that is ruled on and kept current. Nothing described here as a service, module, door, companion, register or gate exists yet. The scripts, lists and the record of the live tests are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed.
 </footer>
 </div>
 
