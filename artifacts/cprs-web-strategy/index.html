@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="A measured plan for replacing the Delphi CPRS client with a web client behind a service API, keeping all of CPRS's behaviour and proving it capability by capability: where CPRS's behaviour lives, the engines inside the client, the RPC surface, the duties VistA leaves to the client (four of them run live on a throwaway copy), a target architecture, sign-on through VA's identity services, classic and modern modes, and a delivery plan cut into lanes of parallel work. Version 8 of a draft, amended after four adversarial reviews; nothing in it is built.">
+<meta name="description" content="A measured plan for replacing the Delphi CPRS client with a web client behind a service API, keeping all of CPRS's behaviour and proving it capability by capability: where CPRS's behaviour lives, the engines inside the client, the RPC surface, the duties VistA leaves to the client (four of them run live on a throwaway copy), a target architecture, sign-on through VA's identity services, classic and modern modes, a delivery plan cut into lanes of parallel work, and a strategy for automating the work and proving each row by machine. Version 9 of a draft, amended after five adversarial reviews; nothing in it is built.">
 <style>:root { color-scheme: light; } body { margin: 0; } img { max-width: 100%; } [hidden] { display: none !important; }</style>
 <title>CPRS Web Strategy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -140,21 +140,27 @@ footer.src { max-width: 860px; font-size: 0.86rem; color: var(--muted); border-t
 .kind.o { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
 td.w { min-width: 14em; }
 td.ww { min-width: 21em; }
+svg .trk { fill: var(--accent-soft); stroke: var(--line); stroke-width: 1; }
+svg .tml { fill: var(--muted); font: 400 11.5px var(--text); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
+.sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; }
+.sw.trk { background: var(--accent-soft); border: 1px solid var(--line); }
+.sw.rec { background: var(--bar-hi); }
+figure .legend-row { margin-bottom: 8px; }
 </style>
 </head>
 <body>
 <div class="page">
 <header>
-  <div class="eyebrow">vista-forge · strategy and specification · draft for ruling · version 8</div>
+  <div class="eyebrow">vista-forge · strategy and specification · draft for ruling · version 9</div>
   <h1>CPRS Web Strategy</h1>
   <p class="lede">A measured plan for replacing the Delphi CPRS client with a web client behind a service API, keeping all of CPRS's behaviour and proving it capability by capability.</p>
   <div class="meta">
     <span class="chip warn">nothing in this plan is built</span>
-    <span class="chip">amended after four rounds of adversarial review · <b><a href="../cprs-web-strategy-review/">rounds 1 to 3</a></b></span>
+    <span class="chip">amended after five rounds of adversarial review · <b><a href="../cprs-web-strategy-review/">rounds 1 to 3</a></b></span>
     <span class="chip">measured <b>2026-10-03</b> and <b>10-04</b></span>
     <span class="chip">CPRS <b>1.33.112.1</b> · OR*3.0*629</span>
     <span class="chip">engine <b>vehu</b> (YottaDB)</span>
-    <span class="chip">docs@<b>73f41fb</b></span>
+    <span class="chip">docs@<b>9df8541</b></span>
   </div>
 </header>
 
@@ -184,6 +190,7 @@ td.ww { min-width: 21em; }
     <li><a href="#s20"><span class="n">20</span>What changed since the two artifacts</a></li>
     <li><a href="#s21"><span class="n">21</span>Amendments, and the operator's requests</a></li>
     <li><a href="#s22"><span class="n">22</span>Sources and how each number was taken</a></li>
+    <li><a href="#s23"><span class="n">23</span>Implementation automation strategy</a></li>
   </ol>
 </nav>
 
@@ -193,7 +200,7 @@ td.ww { min-width: 21em; }
 <h2>Abstract</h2>
 <p>CPRS is three things in one program: a presenter of VistA's data, an interpreter of each site's clinical definitions, and an orchestrator of multi-step clinical transactions. Measured today, its compiled Delphi code is <strong>355,291 lines in 519 units with 13,625 routine bodies</strong>, and the Vitals entry DLL it loads adds 28,911 lines and 1,195 more. CPRS and that DLL name <strong>1,067 remote procedures</strong>: 1,055 that vehu has and 12 it lacks. CPRS's context admits 1,190, so 166 are admitted and never used. Behind those RPCs a label-level scan reaches at least 156,509 lines of M in 2,637 routines. Five groups of CPRS units build screens from site definitions at run time by two independent signals (order dialogs, note templates, reminder dialogs, immunizations and pathology orders, about 94,000 lines), and the Vitals DLL passes the same test. Two more groups pass one signal, and nine let site definitions decide what fixed screens show.</p>
 <p>The plan keeps VistA's clinical rules where they are and calls them. Rewriting them outside VistA, the route of the operator's 2016–2019 projects, was measured twice. It is declined for the calls that write, and held as an option for the calls that write nothing stored (§8). It moves the client's interpreters and orchestration into <strong>one session service per VistA</strong>, organised as domain modules behind a workflow-shaped API, and presents that API in two web front-ends: a <strong>classic mode</strong> that reproduces CPRS's screens and a <strong>modern mode</strong> in the Office-on-the-web family. The session service holds each person's own VistA session, sends only the calls CPRS uses, and applies the duties VistA leaves to the client. Every call leaves it through one typed RPC call described by a registry. Its rules apply at that call, and a back end could later change there one call at a time (§9). <strong>Four of those duties were run live on a throwaway copy of VistA on 2026-10-03.</strong> VistA signed an order, and released a discontinue, on a signature code it had just declared invalid. It let a user whose write access is "no" create a note and sign an order. It served a patient outside a user's restricted list. It freed a dropped client's locks within three seconds. So the service validates the signature code before any order is sent, applies the write-access rules, binds every patient-scoped call to the patient the session selected and checked, and ends a departed client's session. Those guarantees cover traffic through the service; with no change to VistA, the Broker stays open to CPRS itself. A second door on the same session core, speaking the Broker's own protocol, is proposed to bring unchanged CPRS under the same rules, observing first and refusing later. Identity is OpenID Connect at the front, with access and verify codes as the baseline and VA's token path as the route that works at VA today. At VA the plan signs people in through VA's own identity services as they stand. Kernel sees only a level of assurance and treats every level from 2 up alike. So a simpler sign-in than the PIV card can be added at the identity provider with no change to VistA, and holding sign-in to the ruled floor is the service's duty (§10). AI and third-party clients draft proposals that a person accepts. Where Kernel allows the person a second sign-on they read through a VistA job of their own; where it does not, they make no VistA calls. They never sign.</p>
-<p>Fidelity is proven by <strong>capability rows</strong>, the unit Loupe already uses: one CPRS behaviour per row, read from the source, each one built with tests as evidence or closed by a ruling. The routine and RPC counts are completeness checks on the rows. They are not the proof. A row census projected from Loupe's one data point puts the whole client at roughly 1,300 to 4,400 rows, and about 3,200 by a second basis. Two tracks are kept apart: a reference implementation proven against CPRS on demo VistA, which this org can build and test, and deployment at VA, which depends on approvals, licensing and data volumes that nothing here can measure. This version carries the thirteen changes of the first adversarial review, the ten of the second, the six of the third and five of the fourth (§21). After a serial spine of three phases the work fans out into lanes, and the measured dependencies let about six run side by side (§15). What clinicians actually do is known here only from recordings made by hand on demo data. An analysis of production traffic at two VA medical centers exists and is not yet on this box. The plan takes it as an enabler for its three hardest workflows, order entry, notes and reminder dialogs. It supplies the flows and parameter classes to build from, the order of the work and a scenario list drawn from real use. The proof stays with tests made here (§11, §15).</p>
+<p>Fidelity is proven by <strong>capability rows</strong>, the unit Loupe already uses: one CPRS behaviour per row, read from the source, each one built with tests as evidence or closed by a ruling. The routine and RPC counts are completeness checks on the rows. They are not the proof. A row census projected from Loupe's one data point puts the whole client at roughly 1,300 to 4,400 rows, and about 3,200 by a second basis. Two tracks are kept apart: a reference implementation proven against CPRS on demo VistA, which this org can build and test, and deployment at VA, which depends on approvals, licensing and data volumes that nothing here can measure. This version carries the thirteen changes of the first adversarial review, the ten of the second, the six of the third, five of the fourth and the ten of the fifth (§21). After a serial spine of three phases the work fans out into lanes, and the measured dependencies let about six run side by side (§15). What clinicians actually do is known here only from recordings made by hand on demo data. An analysis of production traffic at two VA medical centers exists and is not yet on this box. The plan takes it as an enabler for its three hardest workflows, order entry, notes and reminder dialogs. It supplies the flows and parameter classes to build from, the order of the work and a scenario list drawn from real use. The proof stays with tests made here (§11, §15). Every proof in this plan compares the new client with CPRS, and CPRS has so far been recorded sending 237 of the 1,067 RPCs: 38 of the 369 in the orders lane. So the plan's first product is a reference factory, which drives, records and compares CPRS on throwaway copies with nobody at the keyboard. With it a row's evidence is checked by machine, and the operator's time goes to rulings (§23).</p>
 </section>
 
 <div class="legend-row" aria-label="Provenance labels">
@@ -252,8 +259,10 @@ td.ww { min-width: 21em; }
   <li><strong>Emulating VistA's side was tried, and it reached the shallow end.</strong> Across its two designs the operator's 2016–2019 archive holds 198 RPC models, 186 of them among the RPCs CPRS uses. By this plan's scan 34 of those can write stored data. An encounter save was emulated in the 2017 design; nothing covers orders, note signature, order checks or consults. Together they reach a fifth of the M behind CPRS's used RPCs (§8).</li>
   <li><strong>The work cuts at the RPCs, and CPRS's own units are no guide.</strong> Twenty-one of CPRS's 28 feature groups sit in one dependency cycle, while 953 of 999 RPCs belong to one group each. Built actions first, the work falls into 41 tracks in four waves, and up to six lanes can run side by side at almost no cost in waiting (§15).</li>
   <li><strong>The M behind CPRS's RPCs divides in two.</strong> The 720 used RPCs that write no stored data reach 19% of it. The 335 that write reach 91%, about four fifths of that outside Order Entry. Emulation is declined for the second group and held as an option for the first (§8).</li>
-  <li><strong>An analysis of real use can carry the hardest part.</strong> This plan's recordings reach 217 of the 1,067 RPCs, clicked by hand on demo data. VA's VistA Application Analytics analysed production traffic from two medical centers, mostly for order entry, note creation and reminder dialogs <span class="pv x">operator's account</span>. It has not been read here. Once it is, it gives the flows and the parameter classes to build from in the three workflows where this plan is weakest (§8, §15).</li>
+  <li><strong>An analysis of real use can carry the hardest part.</strong> This plan's recordings reach 237 of the 1,067 RPCs, clicked by hand on demo data. VA's VistA Application Analytics analysed production traffic from two medical centers, mostly for order entry, note creation and reminder dialogs <span class="pv x">operator's account</span>. It has not been read here. Once it is, it gives the flows and the parameter classes to build from in the three workflows where this plan is weakest (§8, §15).</li>
   <li><strong>Kernel does not see how a person signed in.</strong> Its token sign-on reads who the person is and a level of assurance. It refuses a level below 2 and treats every level from 2 up alike, a directory password included. So a sign-in simpler than the PIV card, by the computer's own unlock, a security key or the person's phone, needs no VistA change. Refusing a weak sign-in is left to the client (§6, §10).</li>
+  <li><strong>The reference recordings are the critical path.</strong> CPRS has been recorded sending 237 of the 1,067 RPCs: 38 of the 369 the orders lane names, and 71 of the 319 that write. A test cannot be written first where its reference does not exist, and a recording today needs the operator at every session (§23).</li>
+  <li><strong>Six lanes do not multiply the operator or the reference CPRS.</strong> Loupe's 75 rows took 61 numbered rulings and a side-by-side test by eye, and there is one Windows guest. A row's proof has to be checked by machine, so that the operator rules differences and does not review rows (§23).</li>
 </ol>
 
 <h2 id="s3"><span class="n">3</span>Where CPRS's behaviour lives</h2>
@@ -382,7 +391,7 @@ td.ww { min-width: 21em; }
 <tr><td>used RPCs that take a patient parameter</td><td class="num">217</td><td class="ww">107 of them write stored data. A lower bound, by parameter name <span class="pv m">measured</span></td></tr>
 <tr><td>availability marking of the 1,190</td><td class="num">21 public</td><td>257 subscription, 105 restricted, 9 by agreement, 798 unmarked <span class="pv m">measured</span></td></tr>
 <tr><td>return types of the 1,190</td><td class="num"></td><td>579 single value, 477 array, 127 global array, 6 word processing, 1 unmarked <span class="pv m">measured</span></td></tr>
-<tr><td>distinct RPCs seen in recorded traffic</td><td class="num">217</td><td class="ww">the September tap list (199) and every committed recording through 2026-09-28. Every one is inside the used set. Clicking reaches a fifth of the surface <span class="pv m">measured</span></td></tr>
+<tr><td>distinct RPCs seen in recorded traffic</td><td class="num">237</td><td class="ww">the September tap list (199) and the fourteen committed recordings through 2026-10-03; the count was 217 through 2026-09-28. Every one is inside the used set. Clicking reaches a fifth of the surface, and a tenth of the orders lane's (§23) <span class="pv m">measured 2026-10-04</span></td></tr>
 <tr><td>RPCs in the CPRS manual's appendix</td><td class="num">680</td><td>it misses 485 the source calls; a cross-check only <span class="pv d">documented</span></td></tr>
 </tbody></table></div>
 <ul>
@@ -483,7 +492,7 @@ td.ww { min-width: 21em; }
 <div class="dl">
   <div><span class="h">VA's VistA Application Analytics <span class="pv x">operator's account; its briefs read; its analysis not on this box</span></span>
   <p>A VA project of 2024 and 2025 captured the RPC traffic of whole medical centers through the passive traffic mirror that the archive's second year built, and analysed it for clinical workflow. Its briefs of April 2025 say it captures "all traffic generated by all VistA point-of-care applications within a VA medical center" and that two centers were then being analysed <span class="pv m">read</span>. The rest is the operator's account of 2026-10-04: two production VistA systems; about 50 million RPCs, anonymized; an analysis that is furthest along for order entry, note creation and reminder dialogs; reminder dialogs starting a high share of the notes; and, in order entry, calls whose effect and whose following flow depend on their parameters. The project's work statement, as the operator's notes quote it, asked for each RPC's use and execution time, the RPCs each client uses and how often, reads told apart from writes, and "clinical care task sets, represented as groups of RPCs used in tandem", matched to screens and to kinds of user.</p>
-  <p>Nothing of the analysis has been read here. The raw traffic is not available, and this plan assumes it never will be; only the analysis may be. <strong>Lessons:</strong> it is the only evidence of what clinicians actually send, where this plan has 217 RPCs clicked by hand on demo data; it covers three of the plan's four largest interpreters, order entry among them, which the operator names as this plan's weakest point; without the raw traffic it is an enabler and not an oracle: it tells the plan what to build, in what order, and how to check that nothing in use was missed (§11, §15); and the plan's own door, in its observing mode, is how evidence of that kind would be made again (§9).</p></div>
+  <p>Nothing of the analysis has been read here. The raw traffic is not available, and this plan assumes it never will be; only the analysis may be. <strong>Lessons:</strong> it is the only evidence of what clinicians actually send, where this plan has 237 RPCs clicked by hand on demo data; it covers three of the plan's four largest interpreters, order entry among them, which the operator names as this plan's weakest point; without the raw traffic it is an enabler and not an oracle: it tells the plan what to build, in what order, and how to check that nothing in use was missed (§11, §15); and the plan's own door, in its observing mode, is how evidence of that kind would be made again (§9).</p></div>
   <div><span class="h">Microsoft Teams <span class="pv x">external, from a search summary of Microsoft's post</span></span>
   <p>The new Teams moved from Electron to Edge WebView2 and from AngularJS to React with Fluent controls, and moved data handling into a client data layer in a separate worker. Microsoft reported up to twice the speed and half the memory. The post itself did not load for a direct read. <strong>Lessons:</strong> one web code base in a thin native host; and a client that holds working state needs a deliberate data layer (§9).</p></div>
   <div><span class="h">Microsoft Outlook <span class="pv x">external</span></span>
@@ -608,7 +617,7 @@ td.ww { min-width: 21em; }
 <ul>
   <li><strong>What it is.</strong> A listener on the session core that speaks the Broker's own protocol. CPRS is pointed at it in place of the Broker. For each connection it opens one connection to VistA and forwards the handshake and the sign-on as CPRS sent them. From then on it reads every call by name and parameters before forwarding it, and every reply before returning it. The person's VistA job, sign-on, keys and audit are what they are today. It forwards a call or refuses it, and it never answers in VistA's place. It is a router. It emulates nothing.</li>
   <li><strong>What it adds.</strong> The allowlist, patient binding and the service's audit record apply to CPRS's traffic, and to any other program that signs on with a person's codes through that port. Where a site can limit the Broker's port to the cell's address, the guarantees of §6 would cover all traffic with no VistA change. Whether a site can is a track B question (§17).</li>
-  <li><strong>Observing first.</strong> In its first mode the door forwards everything and logs what each rule would have refused. That tests the allowlist and patient binding against every CPRS session on the box, where recorded clicking has so far reached 217 of the 1,067 RPCs. It also shows which patient-scoped calls CPRS itself makes outside the selected patient, before any rule is enforced on it. Refusal is switched on rule by rule, by ruling, once a rule's log is empty or explained.</li>
+  <li><strong>Observing first.</strong> In its first mode the door forwards everything and logs what each rule would have refused. That tests the allowlist and patient binding against every CPRS session on the box, where recorded clicking has so far reached 237 of the 1,067 RPCs. It also shows which patient-scoped calls CPRS itself makes outside the selected patient, before any rule is enforced on it. Refusal is switched on rule by rule, by ruling, once a rule's log is empty or explained.</li>
   <li><strong>The signature rule is a separate case.</strong> To apply duty 1 the door would send the validation call itself before forwarding a send. That is the one place it would speak to VistA unprompted, and it is ruled apart from the rest.</li>
   <li><strong>What is already here.</strong> CPRS in the Windows guest reaches vehu through the org's relay, which copies bytes and reads nothing <span class="pv m">measured</span>. The door is that relay taught the protocol and joined to the session core. The operator's 2018 router did the parsing and the audit log in 857 lines over a protocol library (§8).</li>
   <li><strong>What it must not change.</strong> Bytes it does not refuse pass unaltered and in order. That includes the handshake's workstation name, which is what the sign-on log records <span class="pv m">read in code</span>. The network address VistA sees becomes the cell's, as it is the relay's today. What Kernel's per-address sign-on limit and the production engine's licence count make of that is the question §10 and §14 already raise for the web path.</li>
@@ -739,6 +748,13 @@ td.ww { min-width: 21em; }
   <li><strong>Screen:</strong> classic mode against CPRS's screen with the same data, after the source has been read for sorting and casing.</li>
   <li><strong>Refusal:</strong> each duty's negative scenario.</li>
 </ol>
+<p>Round 5 tightened how three of these are taken and how the register is gated. §23 has the detail. <span class="pv p">proposed</span></p>
+<ul>
+  <li><strong>The database effect</strong> is read from the copy's journal for the session's own VistA job, with CPRS's run and the candidate's run started from the same restore point.</li>
+  <li><strong>The screen</strong> is compared by structure: CPRS's window tree against the page's accessibility tree. The screenshot is kept for layout.</li>
+  <li><strong>The kinds of evidence a row needs are derived, and gated.</strong> The registry says which RPCs write. A built row that cites a writing RPC and shows no database comparison is red, and so is a row whose test was never seen to fail.</li>
+  <li><strong>The completeness populations become candidate lists.</strong> Each event binding, call site, message and access test is generated with its place in the source, and a candidate that no row disposes of is red.</li>
+</ul>
 
 <h3>A decision for the operator: what "100% coverage" means</h3>
 <p>The request asks for objective coverage of 100% of the Delphi code. Two definitions are possible and they are different requirements.</p>
@@ -822,11 +838,12 @@ td.ww { min-width: 21em; }
 <h2 id="s15"><span class="n">15</span>Delivery plan</h2>
 <p>These are track A's phases. CPRS stays available throughout and people opt in one by one.</p>
 <p><strong>Sizing.</strong> Phases are sized in capability rows. The only measured density is Loupe's: 75 rows for sign-on and patient selection, whose primary units hold about 6,500 lines and whose rows also cite slices of larger shared units totalling about 22,000 lines. That is one row per 87 to 298 lines. The projections below apply that range to each phase's compiled lines and are replaced by a real count when the phase's source read is done. A second basis agrees: those units hold 114 event bindings, which is 0.66 rows per binding, and over the 4,834 compiled bindings that is about 3,200 rows. Loupe ruled 18 of its rows out for a phone. A drop-in replacement cannot, so the upper half of each range is the safer reading. Loupe built those 57 rows on screens it had already been building for a week, read-only. Writes are slower: each needs a throwaway copy, CPRS driven by hand in the Windows guest, and a database comparison.</p>
-<p><strong>Calendar.</strong> The only measured pace is also Loupe's. Its 57 built rows were complete within eight days of its first commit (2026-09-22 to 2026-09-29): about seven rows a day, by one operator, read-only. The days column applies that pace to each phase's rows. At that pace about 3,200 rows is about 450 days. It is a floor wherever a phase writes, because CPRS is driven by hand for every write row. Phase 0 therefore tries scripted driving of CPRS in the Windows guest, which would move that oracle from hand speed to machine speed. <span class="pv p">projection</span></p>
+<p><strong>Calendar.</strong> The only measured pace is also Loupe's. Its 57 built rows were complete within eight days of its first commit (2026-09-22 to 2026-09-29): about seven rows a day, by one operator, read-only. The days column applies that pace to each phase's rows. At that pace about 3,200 rows is about 450 days. It is a floor wherever a phase writes, because CPRS is driven by hand for every write row. Phase 0 therefore builds the reference factory of §23, which is meant to move that oracle from hand speed to machine speed. <span class="pv p">projection</span></p>
+<p><strong>The pace, read from Loupe's register.</strong> The register was two days old when it reached 57 built rows. It opened on 2026-09-28 with 64 rows, 14 of them built, and closed on 2026-09-29 with 75 rows, 57 built and 18 ruled out <span class="pv m">measured 2026-10-04</span>. So seven rows a day folds two rates together: six days of foundation, then about twenty read rows a day on top of it. The table also grew by eleven rows, 17%, while it was built. Each lane should be read the same way: a foundation, then a row rate that holds only while its references and its rulings keep up, on a count that grows by about a sixth.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>phase</th><th>scope</th><th class="num">projected rows</th><th class="num">days at Loupe's pace</th><th>exit test</th></tr></thead>
 <tbody>
-<tr><td><strong>0. Baseline and rulings</strong></td><td class="ww">rule the decisions of §19 that gate the rest; the allowlist from the used set; the row register and its gates; the remaining duty measurements on a throwaway copy (order-check acknowledgement, encounter prompting, copy/paste tracking, the token sign-on); the reserved-key test on a Windows machine; an attempt to rebuild CPRS; a trial of scripted driving of CPRS in the Windows guest; read the remaining prior art; read the VAA analysis if it has arrived, and turn its order, note and reminder flows into the scenario list (§11). The order-signature, write-access, restricted-list and lock measurements are done (§6)</td><td class="num">none</td><td class="num">–</td><td class="w">the register's gates red-proved against planted violations; the remaining duty measurements taken; one recorded scenario replayed by script, or the reason it cannot be</td></tr>
+<tr><td><strong>0. Baseline and rulings</strong></td><td class="ww">rule the decisions of §19 that gate the rest; the allowlist from the used set; the row register and its gates; the remaining duty measurements on a throwaway copy (order-check acknowledgement, encounter prompting, copy/paste tracking, the token sign-on); the reserved-key test on a Windows machine; an attempt to rebuild CPRS; the reference factory of §23, which drives CPRS by script from inside the Windows guest, records it on the wire and compares runs by machine, with nobody at the keyboard; read the remaining prior art; read the VAA analysis if it has arrived, and turn its order, note and reminder flows into the scenario list (§11). The order-signature, write-access, restricted-list and lock measurements are done (§6)</td><td class="num">none</td><td class="num">–</td><td class="w">the register's gates red-proved against planted violations; the remaining duty measurements taken; the factory's six exit tests of §23 passed, or the measured reason one cannot be, with this calendar restated at hand speed</td></tr>
 <tr><td><strong>1. Session core, sign-on, open a chart</strong></td><td class="ww">per-person sessions, keep-alive, idle lock, lock release, the sensitive-record rule, patient binding, write-access rules loaded; sign-on with codes; patient selection; classic-mode frame and cover sheet; the Broker-protocol door, observing only</td><td class="num">140–490</td><td class="num">20–69</td><td class="w">the selection preamble matches CPRS's recording; confirm and warn scenarios pass; no lock survives a closed tab; a call naming another patient is refused; CPRS's sessions on the box pass through the door, and every entry in its would-refuse log has a verdict</td></tr>
 <tr><td><strong>2. One order through signature</strong></td><td class="ww">a thin end-to-end path on a throwaway copy: one quick order, its order checks, save, signature, chosen as the most frequent order flow in the VAA analysis where that is known; the wrong-code and write-access refusals; a page reload and a service restart mid-order, the restart also with the lock taken by someone else; one agent proposal accepted by a person; a release of one session holder while a session runs on another; a count of round trips per answered prompt</td><td class="num">counted before it starts</td><td class="num">–</td><td class="w">the order matches CPRS's sequence and database effect; both refusals hold; the reload restores the dialog; the restart replays it, and when the lock is held the clinician is told and nothing is written; the release interrupts no session on the other holder; the round-trip count is recorded for decision 11</td></tr>
 <tr><td><strong>3. Every read</strong></td><td class="ww">problems, medications, labs, reports, graphs, surgery, vitals and allergies display; Loupe moves onto the service</td><td class="num">170–570</td><td class="num">24–80</td><td class="w">a read scenario per tab; report definitions accepted and matched</td></tr>
@@ -863,14 +880,14 @@ td.ww { min-width: 21em; }
 </ul>
 
 <h3>How the phases run</h3>
-<p>Phases 0 to 2 run in order, as one stream. They are the spine: everything later stands on the session core, the registers and the contracts that the thin order path fixes. The scope of phases 3 to 7 is then built as lanes that run side by side, so those five numbers no longer mean an order. Each phase's exit test still applies to the tracks that carry its scope. Phases 8 to 10 follow the lanes.</p>
+<p>Phases 0 to 2 run in order, as one stream. They are the spine: everything later stands on the session core, the registers and the contracts that the thin order path fixes. The scope of phases 3 to 7 is then built as lanes that run side by side, so those five numbers no longer mean an order. Each phase's exit test still applies to the tracks that carry its scope. Phases 8 to 10 follow the lanes. Beside all of them runs the reference factory, which feeds every lane from one queue (§23).</p>
 
 <h3>The pieces of work, and what proves each</h3>
 <p>Every piece is written test-first, holds 5 to 20 rows, and ends with its gates green and committed. There are five kinds. <span class="pv p">proposed</span></p>
 <div class="table-wrap"><table>
 <thead><tr><th>piece</th><th>what it is</th><th>what proves it</th><th>needs a live engine</th></tr></thead>
 <tbody>
-<tr><td><strong>spine</strong></td><td class="w">the session core and its duty rules, the RPC registry, the row register and its gates, the recorder and replayer, the database comparison</td><td class="w">each gate shown to fail on a planted violation; each duty's refusal scenario</td><td>partly</td></tr>
+<tr><td><strong>spine</strong></td><td class="w">the session core and its duty rules, the RPC registry, the row register and its gates, the recorder and replayer, the database comparison. A first form of each of the last four exists already (§23)</td><td class="w">each gate shown to fail on a planted violation; each duty's refusal scenario</td><td>partly</td></tr>
 <tr><td><strong>action pack</strong></td><td class="w">one per RPC family: a typed call, its reply parser and the job state each action declares. CPRS has this layer already: 33 RPC-wrapper units, 22,286 lines, 1,270 routines</td><td class="w">replay against CPRS's recorded traffic under the written equivalence; the parser run over every recorded reply</td><td>no: from recordings, then confirmed live</td></tr>
 <tr><td><strong>interpreter</strong></td><td class="w">a pure function: a site's definitions and a person's answers in, a screen description and the clinical text or response strings out</td><td class="w">it accepts every definition on vehu; each grammar feature is matched to a CPRS recording; the text is byte-identical</td><td>no</td></tr>
 <tr><td><strong>workflow</strong></td><td class="w">the stateful sequences: a note's life, the order session, the encounter, consult actions, signature</td><td class="w">the database before and after, against CPRS doing the same on a throwaway copy; the refusals</td><td>yes</td></tr>
@@ -1070,7 +1087,7 @@ td.ww { min-width: 21em; }
   <li><strong>Build once what CPRS has twice.</strong> The Reports and Labs tabs carry the same report handler twice (§4). Templates and reminders share their dialog components. The report box is opened from 43 units in other groups, so it belongs in the control kit. <span class="pv m">measured</span></li>
   <li><strong>Interpret, never enumerate.</strong> Five interpreters carry 20,175 definitions with no work per definition.</li>
   <li><strong>Rule early what the web platform replaces.</strong> Accessibility, spell check and crash reporting are 15,511 lines, 4% of CPRS. Each needs a ruling and a test, and no port. <span class="pv m">measured</span></li>
-  <li><strong>Record once.</strong> One bank of CPRS recordings feeds the traffic, text, database and screen oracles. Scripted driving of CPRS, tried in phase 0, is what lets that bank grow at machine speed.</li>
+  <li><strong>Record once.</strong> One bank of CPRS recordings feeds the traffic, text, database and screen oracles. The reference factory, built in phase 0, is what lets that bank grow at machine speed (§23).</li>
   <li><strong>Build the control kit in order of use.</strong> CPRS's 319 form and frame files hold 5,462 control instances of 100 classes. Twenty classes are 85% of the instances. Forty are 96%, and 233 of the 319 files use nothing else. <span class="pv m">measured</span></li>
   <li><strong>Prepare beside the spine.</strong> None of the following depends on the contracts, and all of it is read-only or runs on a throwaway copy: the source read of every group into rows, the recordings, the definition exports, the reply corpus of each RPC, the 129 effect-class disagreements, and the list of grammar features for each interpreter. Done during phases 0 to 2, it lets every lane start with its rows and oracles in hand, and it replaces the projected row counts with real ones.</li>
   <li><strong>Record what is used.</strong> The VAA analysis, once read, names the order, note and reminder flows clinicians actually run. The recording bank starts with those.</li>
@@ -1100,11 +1117,12 @@ td.ww { min-width: 21em; }
 <div class="table-wrap"><table>
 <thead><tr><th>shared thing</th><th>why it limits</th><th>how it is kept from limiting</th></tr></thead>
 <tbody>
-<tr><td class="w">the operator's rulings and review</td><td class="w">one person</td><td class="w">rulings batched by lane; the number of lanes is decision 23</td></tr>
+<tr><td class="w">the operator's rulings and review</td><td class="w">one person</td><td class="w">rulings batched by lane; a row whose evidence the gate has checked is not reviewed one by one (§23); the number of lanes is decision 23, ruled on the first track's measured load</td></tr>
 <tr><td class="w">the contracts fixed in phase 2</td><td class="w">every lane builds on them</td><td class="w">they change only in the spine, by its owner, and a change re-runs every lane's gate</td></tr>
-<tr><td class="w">the reference CPRS in one Windows guest</td><td class="w">one driver at a time</td><td class="w">recordings banked and replayed; scripted driving</td></tr>
+<tr><td class="w">the reference CPRS in one Windows guest</td><td class="w">one driver at a time</td><td class="w">recordings banked and replayed; the factory runs unattended, its queue in the order of the longest chain (§23)</td></tr>
 <tr><td class="w">the gold engines</td><td class="w">vehu allows 30 processes; writes are never made there</td><td class="w">a throwaway copy for each lane</td></tr>
 <tr><td class="w">a repository's working tree</td><td class="w">one writer at a time</td><td class="w">a repository for each lane</td></tr>
+<tr><td class="w">the register, the RPC registry and the bank</td><td class="w">every lane writes them</td><td class="w">kept by track and joined by a generator, so no lane edits another's file (§23)</td></tr>
 <tr><td class="w">anything that signs or writes orders</td><td class="w">the plan's largest safety risk</td><td class="w">one stream, with the operator, until phase 2's exit test passes</td></tr>
 </tbody></table></div>
 <h4>Rules that keep parallel work safe <span class="pv p">proposed</span></h4>
@@ -1151,7 +1169,13 @@ td.ww { min-width: 21em; }
 <tr><td class="w">add-ins without source cannot be ported from code</td><td class="w">specify from recorded traffic and package documentation; listed as gaps</td></tr>
 <tr><td class="w">parallel lanes collide, or wait on each other</td><td class="w">actions built first; a repository and a throwaway copy for each lane; contracts owned by the spine; no placeholder for another lane's work (§15)</td></tr>
 <tr><td class="w">rulings and review cannot keep up with the lanes</td><td class="w">rulings batched by lane; four lanes and the control kit to start; the number of lanes is decision 23</td></tr>
-<tr><td class="w">the effort is too large for the hands available</td><td class="w">phases sized in rows before each starts, and in days at Loupe's pace; scripted driving of the reference client tried in phase 0; every phase leaves something usable; CPRS remains, so stopping at any phase loses nothing</td></tr>
+<tr><td class="w">the effort is too large for the hands available</td><td class="w">phases sized in rows before each starts, and in days at Loupe's pace; the reference factory built in phase 0; every phase leaves something usable; CPRS remains, so stopping at any phase loses nothing</td></tr>
+<tr><td class="w">the recordings a lane needs do not exist when it starts, so its tests cannot be written first</td><td class="w">the reference factory in phase 0, its queue in the order of the longest chain; a row's evidence must name a reference in the bank (§23)</td></tr>
+<tr><td class="w">a recording goes stale under a new CPRS build or a newer copy</td><td class="w">each entry in the bank carries the CPRS build, the copy's backup and its script; the gate reds a row whose reference is older than either; the factory records again by machine</td></tr>
+<tr><td class="w">a live scenario fails one night in ten, and the reds stop being read</td><td class="w">a scenario enters the bank only after two runs from one restore point agree; a live failure is counted and printed, and never retried in silence</td></tr>
+<tr><td class="w">a row counts as built on a test that compares the wrong thing, or that cannot fail</td><td class="w">the kinds of evidence a row needs are derived from the registry and gated; each test is recorded failing first; a nightly sample of planted faults</td></tr>
+<tr><td class="w">the operator cannot review what six lanes produce</td><td class="w">a row whose evidence the gate has checked is not reviewed one by one; differences come as a queue with both sides' evidence; a lane is added on measured minutes and rulings per row</td></tr>
+<tr><td class="w">the automation becomes the work</td><td class="w">each tool starts from what Loupe already runs; phase 0's six exit tests are where it stops; a tool that fails its test leaves that work at hand speed, and the calendar says so</td></tr>
 <tr><td class="w">track B is mistaken for something this plan has tested</td><td class="w">the two tracks are kept apart in every section; track B is only a list of questions</td></tr>
 </tbody></table></div>
 
@@ -1177,7 +1201,12 @@ td.ww { min-width: 21em; }
 <tr><td class="w">whether a door that reads the protocol stays invisible to CPRS, and what the sign-on log and the per-address sign-on limit record for a session through it</td><td class="w">CPRS driven through it in the Windows guest, compared with the relay</td></tr>
 <tr><td class="w">the 129 RPCs where the scan and the 2017 hand classification disagree about writing</td><td class="w">a database comparison on a throwaway copy for each</td></tr>
 <tr><td class="w">round trips per answered prompt with the interpreters in the service</td><td class="w">phase 2's count</td></tr>
-<tr><td class="w">whether CPRS can be driven by script in the Windows guest</td><td class="w">the phase 0 trial</td></tr>
+<tr><td class="w">whether CPRS can be driven from inside the Windows guest by form and control, and started signed on with nobody present</td><td class="w">a small program in the guest, run against the patient-selection form; a start of CPRS on a throwaway copy by each of the Broker's two silent sign-on routes</td></tr>
+<tr><td class="w">whether two CPRS runs of one script agree once the measured set-asides are applied</td><td class="w">the factory's first scenario, run twice from one restore point</td></tr>
+<tr><td class="w">how fast a copy is restored, whether its temporary globals can be journaled, and whether a fixed clock holds on it</td><td class="w">each tried on one throwaway copy</td></tr>
+<tr><td class="w">whether YottaDB's line trace can be switched on in a Broker job, to show the M each call runs</td><td class="w">a throwaway copy</td></tr>
+<tr><td class="w">how the hours on a row divide between reading, recording, testing, coding and ruling, and how many rulings a classic-mode row needs</td><td class="w">timed and counted on the first track</td></tr>
+<tr><td class="w">how many scenarios an hour one guest gives</td><td class="w">the factory's first day</td></tr>
 <tr><td class="w">the real row count of each track. The sizes in §15 are 120 lines to a row</td><td class="w">the source reads, done beside the spine</td></tr>
 <tr><td class="w">whether a lane keeps Loupe's pace when several run at once</td><td class="w">the measured pace of the first two lanes</td></tr>
 </tbody></table></div>
@@ -1218,7 +1247,7 @@ td.ww { min-width: 21em; }
 </ul>
 
 <h2 id="s19"><span class="n">19</span>Decisions to rule</h2>
-<p>Each is put with its alternatives when ruled. The first eight and decision 21 gate phase 1 or phase 2.</p>
+<p>Each is put with its alternatives when ruled. The first eight and decision 21 gate phase 1 or phase 2. Decisions 27 to 29 gate phase 0's exit.</p>
 <ol>
   <li><strong>What "100% coverage" means:</strong> all behaviour accounted for, or that plus an execution floor (§11). Recommended: the first, with execution reported.</li>
   <li><strong>The unit of proof:</strong> the capability row, with the routine, RPC, action and definition counts as completeness checks (§11).</li>
@@ -1238,14 +1267,19 @@ td.ww { min-width: 21em; }
   <li><strong>CCOW and PIV signing:</strong> their web answers.</li>
   <li><strong>Modern mode's design system.</strong></li>
   <li><strong>Third-party scopes:</strong> the list, and the rule that no scope signs.</li>
-  <li><strong>How deep the matched gate goes:</strong> each grammar feature once, or also each pair of features that occurs together in the site's census (§11).</li>
+  <li><strong>How deep the matched gate goes:</strong> each grammar feature once, or also each pair of features that occurs together in the site's census (§11). Decision 30 offers a third answer.</li>
   <li><strong>Scope of the first release:</strong> whether Event Capture, the terminal CPRS and remote-data viewers are in or out.</li>
   <li><strong>A Broker-protocol door on the session core</strong> for unchanged CPRS: observing only in phase 1, refusal switched on rule by rule by later ruling, and the ruling that admits it as a Broker door with its retirement condition (§9). The alternatives are no door, with the guarantees limited to the web clients, or a change inside VistA.</li>
   <li><strong>Emulating the calls that write:</strong> declined on the measurements of §8, to reopen only inside a programme that also replaces VistA's departmental packages.</li>
-  <li><strong>How many lanes run at once</strong> after phase 2 (§15). Recommended: the orders, documents, encounter and chart-reads lanes and the control kit to start, with consults joining when notes exist. Six is the measured useful maximum.</li>
+  <li><strong>How many lanes run at once</strong> after phase 2 (§15). Recommended: the orders, documents, encounter and chart-reads lanes and the control kit to start, with consults joining when notes exist. Six is the measured useful maximum. Decision 31 sets when a lane is added.</li>
   <li><strong>Emulating the calls that write nothing stored:</strong> not now. It is held as an option whose trigger is a class of client that must read and cannot be given a VistA job, and whose cost is two standing rulings reopened (§8). Recommended: hold.</li>
   <li><strong>The VAA analysis as an enabler:</strong> the order, note and reminder work is built from the analysis's flows and parameter classes, ordered by observed use and reported as a share of observed flows proven, while every row is still proved here (§11, §15). Recommended: yes. Work on the analysis itself is exploratory and is done outside the org's repos.</li>
   <li><strong>Ways to sign in beyond the card:</strong> which the plan supports and asks VA's identity office to allow (§10). Recommended: the computer's own unlock and security keys first, the phone by QR code next, badge tap only for coming back, and never approval prompts or codes.</li>
+  <li><strong>The reference factory first</strong> (§23): phase 0 does not close until CPRS is driven, recorded and compared with nobody at the keyboard, or the measured reason it cannot be is written down and the calendar is restated at hand speed. Recommended: yes.</li>
+  <li><strong>Unattended sign-on of the reference CPRS,</strong> on throwaway copies only. A script holds a demo person's codes, or a one-time token, and starts CPRS signed on. No model is shown a code, and gold is never signed on to this way. The alternative is the operator signing on by hand at every run, which keeps the factory at hand speed. Recommended: allow it, on copies only.</li>
+  <li><strong>The wire recorder brought forward</strong> (§23): the Broker-protocol door of decision 21 is built first as a recorder that forwards every byte and applies no rule, with the tap kept as its cross-check. It needs decision 21's ruling as a Broker door. Recommended: yes.</li>
+  <li><strong>The matched gate by census</strong> (§23): every definition on vehu is drawn by CPRS and by the interpreter and the two are compared by machine, with synthetic definitions on a throwaway copy for the features vehu lacks. This replaces the choice in decision 19. Recommended: yes, once the factory has passed its exit tests, and each feature once until then.</li>
+  <li><strong>What the operator reviews, and when a lane is added</strong> (§23): a built row whose evidence the gate has checked is not reviewed one by one; differences from CPRS come as a queue; and decision 23's number of lanes is set after the first track's minutes and rulings per row are measured. Recommended: yes.</li>
 </ol>
 
 <h2 id="s20"><span class="n">20</span>What changed since the two artifacts</h2>
@@ -1270,8 +1304,23 @@ td.ww { min-width: 21em; }
 <tr><td class="w">four safeguards as drafts</td><td class="w">ruled on 2026-09-23 with amendments, and a fifth added</td></tr>
 </tbody></table></div>
 
-<h2 id="s21"><span class="n">21</span>Amendments from the four review rounds, and the operator's requests</h2>
-<p>This plan was reviewed adversarially three times on 2026-10-03. Round 1 re-tested version 1; its thirteen changes made version 2. Round 2 ran the open tests live and stress-tested version 2; its ten changes made version 3. Round 3 measured the operator's 2016–2019 emulation archive against version 3; its six changes made version 4. Version 5 was asked for by the operator and by no review. Round 4, on 2026-10-04, stress-tested version 5 against RPC emulation in two reports kept beside this plan in the repo. Five of its six changes made version 6, and the sixth was withdrawn at the operator's ruling. Versions 7 and 8 were asked for by the operator and by no review.</p>
+<h2 id="s21"><span class="n">21</span>Amendments from the five review rounds, and the operator's requests</h2>
+<p>This plan was reviewed adversarially three times on 2026-10-03. Round 1 re-tested version 1; its thirteen changes made version 2. Round 2 ran the open tests live and stress-tested version 2; its ten changes made version 3. Round 3 measured the operator's 2016–2019 emulation archive against version 3; its six changes made version 4. Version 5 was asked for by the operator and by no review. Round 4, on 2026-10-04, stress-tested version 5 against RPC emulation in two reports kept beside this plan in the repo. Five of its six changes made version 6, and the sixth was withdrawn at the operator's ruling. Versions 7 and 8 were asked for by the operator and by no review. Round 5, the same day, tested the execution plan itself in a report of its own, kept beside this plan in the repo. Its ten changes made version 9.</p>
+<h3>Round 5, into version 9</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>the review asked for</th><th>in this version</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="w">a section on implementation automation</td><td class="w">§23</td></tr>
+<tr><td>2</td><td class="w">phase 0 to deliver the reference factory, with exit tests</td><td class="w">§15, phase 0 and the calendar note; §23, "Phase 0's exit tests for the factory"; decision 27</td></tr>
+<tr><td>3</td><td class="w">the pace restated from Loupe's register</td><td class="w">§15, "The pace, read from Loupe's register"</td></tr>
+<tr><td>4</td><td class="w">the recorded count brought to today, with the gap by lane</td><td class="w">§5; findings 15 and 17 of §2; §23, "Where the work is"</td></tr>
+<tr><td>5</td><td class="w">the wire recorder brought forward</td><td class="w">§23, the factory and the tooling; decision 29</td></tr>
+<tr><td>6</td><td class="w">the database comparison made general</td><td class="w">§11, after the oracles; §23</td></tr>
+<tr><td>7</td><td class="w">the matched gate by census</td><td class="w">§23; decision 30, which reopens decision 19</td></tr>
+<tr><td>8</td><td class="w">the screen oracle by structure</td><td class="w">§11, after the oracles; §23</td></tr>
+<tr><td>9</td><td class="w">evidence the gate can check, a record of each test failing first, candidates in place of citations</td><td class="w">§11, after the oracles; §23, "How a row is proved"</td></tr>
+<tr><td>10</td><td class="w">lanes chosen on measurement, and the shared files kept by track</td><td class="w">§15, the table of shared things; §23, "Parallel work"; decision 31; finding 18 of §2; §16 and §17</td></tr>
+</tbody></table></div>
 <h3>The operator's request, into version 8</h3>
 <p>On 2026-10-04 the operator pointed to a repository describing VA's identity and access management services and asked that the sign-on be planned on those services as they stand, with whatever simpler and more modern sign-in could be had than the PIV card. Version 8 adds four parts to §10: VA's identity services as they stand, signing on at VA with what exists, a simpler sign-in than the card, and what happens after the first sign-in. It adds finding 16 to §2, duty 14 to §6, two risks to §16, three unknowns to §17 and decision 26 to §19. One finding corrects the September research: VA's electronic-signature service is decommissioned, so it cannot carry card signing.</p>
 <h3>The operator's request, into version 7</h3>
@@ -1362,6 +1411,15 @@ td.ww { min-width: 21em; }
   <li><strong>The archive, both designs:</strong> model names from the <code>name:</code> field of each model file in <code>MVDM</code>, the 2017 design, and from round 3's list for <code>Archive/VICSServer</code>; the web client from <code>Archive/VICSClient</code> and <code>Archive/React.Views</code>; the applications at the monitored site from <code>RPCDefinitionToolkit/IOC/BaseReports</code>, the report for 2020-01-08.</li>
   <li><strong>Kept:</strong> the scripts are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/round4/</code>, not committed. The method and its corrections are in §C10 of the round 4 report.</li>
 </ul>
+<h4>Measured 2026-10-04 for round 5, read-only</h4>
+<ul>
+  <li><strong>Recorded RPCs, effect classes and lanes:</strong> the tap list of 2026-09-23 and the calls of the fourteen committed recordings, set against round 2's scan as kept, by group and by lane.</li>
+  <li><strong>Loupe's register and rulings:</strong> the register at its first commit and at its head; the numbered rulings in the effort's proposal; the exit test's record.</li>
+  <li><strong>Driving, recording and comparing as they exist:</strong> the org's memory of the recording sessions, the driving helper's notes, the tap's and the replay's own help, and loupe's equivalence and journal packages, read in code.</li>
+  <li><strong>The guest and the host:</strong> VirtualBox's report of the machine, the host's memory, the containers' memory and the size of last night's backup.</li>
+  <li><strong>CPRS's source:</strong> the Broker's sign-on units, the RPC log form, the calls that save window places, and a count of the call sites that show a message.</li>
+  <li><strong>Kept:</strong> the scripts are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/round5/</code>, not committed. The method is in §X16 of the round 5 report.</li>
+</ul>
 <h4>Identity services, read 2026-10-04</h4>
 <ul>
   <li><strong>VA's identity services:</strong> the four diagrams and the change history in <a href="https://github.com/cloudvista/iam">cloudvista/iam</a>, version 5.1 of 2024-09-17, and its count of vendors in VA's catalogue of approved technology. The repository's other links point to VA's intranet and were not read.</li>
@@ -1390,10 +1448,201 @@ td.ww { min-width: 21em; }
   <li>MEDITECH: <a href="https://en.wikipedia.org/wiki/Meditech">Wikipedia</a>. Oracle Health: <a href="https://www.oracle.com/news/announcement/oracle-unveils-next-generation-ehr-2024-10-29/">Oracle</a>. eHMP: <a href="https://www.fiercehealthcare.com/ehr/laverne-council-va-to-roll-out-health-management-platform-over-next-two-years">Fierce Healthcare</a>.</li>
   <li>VIA: <a href="https://www.va.gov/vdl/application.asp?appid=411">VA Software Document Library</a>, which lists the application as archived and shows no documents, and <a href="https://vivian.worldvista.org/vivian-data/9_4/9.4-223.html">Vivian</a>. The archive's origin: <a href="https://github.com/vistadataproject">github.com/vistadataproject</a>, which shows no public repositories. All fetched 2026-10-04.</li>
 </ul>
+<h2 id="s23"><span class="n">23</span>Implementation automation strategy</h2>
+<div class="callout"><p><span class="pv p">proposed</span> On round 5's measurements, in a report kept beside this plan in the repo. Nothing in this section exists unless it says where it is. The tools are named by what they do, and none of the names is a command.</p></div>
+<p>Every proof in this plan compares the new client with CPRS. So the work has two products: the client, and the reference it is held to. §15 plans the first. This section plans the second, and the checking that joins the two, so that both run by machine and the operator's time goes to rulings.</p>
+<h3>Where the work is</h3>
+<p>The table sets each lane's projected rows beside the RPCs its units name, how many of those write, and how many CPRS has ever been recorded sending. An RPC named by two lanes counts in each. <span class="pv m">measured 2026-10-04; the rows are §15's projection</span></p>
+<figure>
+<div class="legend-row" aria-hidden="true">
+  <span><span class="sw trk"></span>RPCs the lane's units name</span>
+  <span><span class="sw rec"></span>of those, ever recorded from CPRS</span>
+</div>
+<div class="fig bars" id="lane-chart" role="img" aria-label="For each lane, the RPCs its units name and how many CPRS has ever been recorded sending. Spine 90 of 168; orders 38 of 369; documents 47 of 156; encounter 13 of 118; chart reads 41 of 204; consults 13 of 55; control kit 0 of 3; outside connections 2 of 13."></div>
+<figcaption>The orders lane names the most RPCs, and CPRS has been recorded sending a tenth of them: 38 of 369. The table below holds the same counts, with each lane's projected rows and the calls that write.</figcaption>
+</figure>
+<div class="table-wrap"><table>
+<thead><tr><th>lane</th><th class="num">projected rows</th><th class="num">RPCs its units name</th><th class="num">write stored data or queue work</th><th class="num">ever recorded from CPRS</th></tr></thead>
+<tbody>
+<tr><td>spine: session, shell, patient selection, cover sheet</td><td class="num">about 355</td><td class="num">168</td><td class="num">57</td><td class="num">90 (54%)</td></tr>
+<tr><td>orders</td><td class="num">794</td><td class="num">369</td><td class="num">91</td><td class="num">38 (10%)</td></tr>
+<tr><td>documents</td><td class="num">628</td><td class="num">156</td><td class="num">55</td><td class="num">47 (30%)</td></tr>
+<tr><td>encounter</td><td class="num">467</td><td class="num">118</td><td class="num">15</td><td class="num">13 (11%)</td></tr>
+<tr><td>chart reads</td><td class="num">409</td><td class="num">204</td><td class="num">81</td><td class="num">41 (20%)</td></tr>
+<tr><td>consults</td><td class="num">92</td><td class="num">55</td><td class="num">23</td><td class="num">13 (24%)</td></tr>
+<tr><td>control kit</td><td class="num">359</td><td class="num">3</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td>outside connections</td><td class="num">98</td><td class="num">13</td><td class="num">3</td><td class="num">2</td></tr>
+<tr><td><strong>all used RPCs</strong></td><td class="num"></td><td class="num"><strong>1,067</strong></td><td class="num"><strong>319</strong></td><td class="num"><strong>237 (22%)</strong></td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>The reference is the scarce thing.</strong> 830 used RPCs have never been recorded. Of the 319 that write, 71 have been seen by name, and one recording carries a database comparison.</li>
+  <li><strong>The orders lane is the emptiest.</strong> The order dialog engine names 143 RPCs, and 4 have been recorded. An action pack is proved by replay against CPRS's traffic, so in this lane the traffic has to be made before the first test can be written.</li>
+  <li><strong>The chart-reads lane writes.</strong> Its units name 81 RPCs the scan classes as writing, 32 of them in options and preferences. Its proof needs the database comparison too.</li>
+  <li><strong>The two largest tracks have almost no RPC to be held to.</strong> The control kit and vitals entry are 600 rows, a fifth of the lanes' 2,847. Their behaviour is in the client, and their reference is CPRS's screen.</li>
+  <li><strong>The gap can be planned.</strong> Of the 830, the unit that names the RPC is known for 763, and for 722 it is one unit. That unit's forms are where a recording has to go.</li>
+</ul>
+<p>A row takes six kinds of work. Five of them are done by hand today.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>work on a row</th><th>how it is done today <span class="pv m">measured</span></th><th>made repeatable by</th></tr></thead>
+<tbody>
+<tr><td>reading CPRS's source into rows</td><td class="w">one reader, by judgment; Loupe's table grew by a sixth while it was built</td><td class="w">generated candidates; two independent reads</td></tr>
+<tr><td>recording CPRS</td><td class="w">the operator signs on in the guest; a helper clicks pixel positions from outside it, at a minute an action when a model chooses each step; twelve recordings in eleven days added 34 RPC names</td><td class="w">the reference factory</td></tr>
+<tr><td>writing the comparison</td><td class="w">by hand for each scenario: seven traffic rules and four database rules for one confirm</td><td class="w">set-asides measured by running CPRS against itself; the data dictionary</td></tr>
+<tr><td>checking a screen</td><td class="w">by eye, side by side: 73 rows in 67 minutes, the operator typing every code</td><td class="w">structure compared by machine</td></tr>
+<tr><td>ruling differences</td><td class="w">61 numbered rulings for Loupe's 75 rows</td><td class="w">a queue that holds differences only, each with its evidence</td></tr>
+<tr><td>writing the code</td><td class="w">by hand</td><td class="w">the generated call signatures and screens of §15</td></tr>
+</tbody></table></div>
+<h3>What exists already <span class="pv m">measured</span></h3>
+<div class="table-wrap"><table>
+<thead><tr><th>thing</th><th>where</th><th>what it lacks for this plan</th></tr></thead>
+<tbody>
+<tr><td>the RPC tap: a capture ring inside VistA, drained and turned into recordings</td><td class="w">the v-rpc-tap repository; <code>v rpc-tap</code></td><td class="w">it is installed for a recording session and removed after; capture is leased and capped; it records a reply line the Broker never sends</td></tr>
+<tr><td>a replay of a recording through a live Broker session, naming each difference</td><td class="w">the v-rpc repository; <code>v rpc replay</code></td><td class="w">nothing. It is the live half of an action pack's proof</td></tr>
+<tr><td>a relay between the guest and a Broker</td><td class="w"><code>v rpc relay</code></td><td class="w">it copies bytes and reads nothing</td></tr>
+<tr><td>the written equivalence and a journal comparison</td><td class="w">loupe, <code>internal/conform</code></td><td class="w">written for one scenario; reads YottaDB's journal extract only; temporary globals unseen</td></tr>
+<tr><td>a throwaway copy of vehu, with guards that protect gold</td><td class="w">loupe, <code>scripts/throwaway.sh</code></td><td class="w">one copy under one name; a fresh one is a 3.4 GB file copy</td></tr>
+<tr><td>the capability register and its gate</td><td class="w">loupe, <code>internal/coverage</code></td><td class="w">the gate checks that a built row's tests exist, and not what they compare</td></tr>
+<tr><td>a driver for CPRS in the guest</td><td class="w"><code>~/data/vista-forge/loupe/vmdrive/</code>, not committed</td><td class="w">pixel positions through VirtualBox; the operator signs on</td></tr>
+<tr><td>scanners for units, groups, call sites, forms and the M reach</td><td class="w"><code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed</td><td class="w">scratch scripts with no tests</td></tr>
+</tbody></table></div>
+<p>The tooling work is therefore to make general, commit and gate what was done by hand for 75 rows.</p>
+<h3>The reference factory</h3>
+<figure>
+<div class="fig arch">
+<svg viewBox="0 0 980 336" role="img" aria-labelledby="fac-t fac-d" xmlns="http://www.w3.org/2000/svg">
+<title id="fac-t">The reference factory</title>
+<desc id="fac-d">A scenario script feeds a driver inside the Windows guest, which drives CPRS. CPRS's calls pass through a wire recorder to a throwaway copy of vehu that is restored before every run. Window trees and clinical text from the guest, every call from the recorder and the journal slice from the copy go into the bank, one entry for each run.</desc>
+<defs><marker id="ah23" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<rect class="band" x="201" y="10" width="381" height="140" rx="8"/>
+<text class="ta" x="213" y="32">WINDOWS GUEST</text>
+<rect class="boxp" x="16" y="44" width="160" height="92" rx="7"/><text class="tb" x="28" y="66">Scenario script</text><text class="tm" x="28" y="86">each step names a form</text><text class="tm" x="28" y="102">and a control, and the</text><text class="tm" x="28" y="118">calls it expects</text>
+<rect class="boxp" x="213" y="44" width="160" height="92" rx="7"/><text class="tb" x="225" y="66">Guest driver</text><text class="tm" x="225" y="86">finds a form and its</text><text class="tm" x="225" y="102">controls by identity;</text><text class="tm" x="225" y="118">starts CPRS signed on</text>
+<rect class="box" x="410" y="44" width="160" height="92" rx="7"/><text class="tb" x="422" y="66">CPRS 1.33.112.1</text><text class="tm" x="422" y="86">the reference client,</text><text class="tm" x="422" y="102">unchanged</text>
+<rect class="boxp" x="607" y="44" width="160" height="92" rx="7"/><text class="tb" x="619" y="66">Wire recorder</text><text class="tm" x="619" y="86">the relay, reading the</text><text class="tm" x="619" y="102">Broker protocol as it</text><text class="tm" x="619" y="118">forwards</text>
+<rect class="box" x="804" y="44" width="160" height="92" rx="7"/><text class="tb" x="816" y="66">Throwaway copy</text><text class="tm" x="816" y="86">of vehu, restored to a</text><text class="tm" x="816" y="102">named point before</text><text class="tm" x="816" y="118">every run</text>
+<path class="ln" d="M176,90 L211,90" marker-end="url(#ah23)"/><text class="tm" x="194" y="82" text-anchor="middle">steps</text>
+<path class="ln" d="M373,90 L408,90" marker-end="url(#ah23)"/><text class="tm" x="391" y="82" text-anchor="middle">input</text>
+<path class="ln" d="M570,90 L605,90" marker-end="url(#ah23)"/><text class="tm" x="588" y="82" text-anchor="middle">calls</text>
+<path class="ln" d="M767,90 L802,90" marker-end="url(#ah23)"/><text class="tm" x="785" y="82" text-anchor="middle">calls</text>
+<path class="ln" d="M430,136 L430,250" marker-end="url(#ah23)"/><text class="tm" x="440" y="180">window trees and</text><text class="tm" x="440" y="196">clinical text, read</text><text class="tm" x="440" y="212">by the driver</text>
+<path class="ln" d="M627,136 L627,250" marker-end="url(#ah23)"/><text class="tm" x="637" y="180">every call, its reply</text><text class="tm" x="637" y="196">and its time</text>
+<path class="ln" d="M824,136 L824,250" marker-end="url(#ah23)"/><text class="tm" x="834" y="180">the journal slice</text><text class="tm" x="834" y="196">of the session's</text><text class="tm" x="834" y="212">own VistA job</text>
+<rect class="boxp" x="201" y="252" width="763" height="72" rx="7"/><text class="tb" x="217" y="276">The bank</text><text class="tm" x="217" y="296">one entry for each run, with the CPRS build, the copy's backup, the script and the person;</text><text class="tm" x="217" y="312">admitted when two runs from the same restore point agree</text>
+<rect class="box" x="16" y="262" width="24" height="14" rx="3"/><text class="tm" x="48" y="273">exists today</text>
+<rect class="boxp" x="16" y="288" width="24" height="14" rx="3"/><text class="tm" x="48" y="299">to be built</text>
+</svg>
+</div>
+<figcaption>One script drives CPRS from inside the guest. The recorder stands where the relay stands today, between the guest and a throwaway copy of vehu. Each run leaves one entry in the bank. The dashed boxes are to be built; the two solid ones exist today.</figcaption>
+</figure>
+<ul>
+  <li><strong>A scenario is a script.</strong> Each step names a form and a control, as CPRS's form files name them, and the calls it expects, as the existing helper's <code>expect</code> step does. Nothing in it is a pixel position.</li>
+  <li><strong>One script drives three things:</strong> CPRS through the guest driver, classic mode through a browser, and the session service through its API. Classic mode is generated from CPRS's form files, so a control has the same identity in both clients.</li>
+  <li><strong>Every run starts from a restore point.</strong> The copy is put back to a named state before CPRS starts. CPRS's saved window places and preferences go back with it, because CPRS keeps them in VistA <span class="pv m">read in code</span>.</li>
+  <li><strong>CPRS run against itself sets the set-asides.</strong> Whatever differs between two CPRS runs of one script, such as the clock, a process number or a counter TaskMan moved, is what a comparison sets aside. Anything else is a difference, and a difference goes to a ruling.</li>
+  <li><strong>The candidate starts from the same restore point</strong> as the reference it is compared with, so record numbers agree wherever the writes agree.</li>
+  <li><strong>The recorder also times CPRS.</strong> The calls and seconds CPRS itself takes for each answered prompt are what the round-trip count of decision 11 is set beside.</li>
+  <li><strong>The factory is how the reference is made again:</strong> for a new CPRS build, a new patch level, foia, or another site's exported definitions. The entries that change name the rows to re-read.</li>
+  <li><strong>It never touches gold.</strong> Every run is on a throwaway copy.</li>
+</ul>
+<p>Three things in CPRS make this plausible, and none has been tried. Its forms are text and name every control. Delphi's library registers a form's window under its class name <span class="pv x">known of the library; not checked here</span>. And the Broker's source has two silent sign-on routes, one taking a sign-on handle from the command line and one taking the codes without the form <span class="pv m">read in code</span>.</p>
+<h3>The tooling to build</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>tool</th><th>what it does</th><th>starts from</th><th>it works when</th></tr></thead>
+<tbody>
+<tr><td><strong>guest driver</strong></td><td class="w">a program inside the Windows guest that finds a form by its window class and a control by class and place, presses, types and reads, and starts CPRS already signed on</td><td class="w">the form files; the helper's routes and lessons. It can be built on this box, since Go builds Windows programs from Linux</td><td class="w">a step that names a control which is not there stops the run and says which</td></tr>
+<tr><td><strong>scenario runner</strong></td><td class="w">restores the copy, starts the recorder and CPRS, runs a script, checks each expected call, collects what the run produced and files it</td><td class="w">loupe's <code>scripts/throwaway.sh</code></td><td class="w">one script run twice gives two entries that agree</td></tr>
+<tr><td><strong>wire recorder</strong></td><td class="w">the relay, reading the Broker's protocol as it forwards: each call with its parameters, its reply and its time</td><td class="w"><code>v rpc relay</code>; v-base's Broker package</td><td class="w">one scenario recorded by it and by the tap agrees but for the root line, and CPRS behaves through it as through the plain relay</td></tr>
+<tr><td><strong>journal comparer</strong></td><td class="w">takes the slice of the copy's journal written by the session's job and the tasks it queued, names each node by FileMan file and field, applies the measured set-asides and reports differences by field</td><td class="w">loupe's <code>internal/conform</code></td><td class="w">a planted extra write is reported, and two CPRS runs report nothing</td></tr>
+<tr><td><strong>window-tree reader and comparer</strong></td><td class="w">reads CPRS's window tree in the guest and the page's accessibility tree in the browser, and compares them control by control</td><td class="w">the form files</td><td class="w">a changed caption, a missing list row and a disabled button are each reported</td></tr>
+<tr><td><strong>bank</strong></td><td class="w">keeps each run's trace, journal slice, window trees and text under the hash of their content, with a committed list of where each came from</td><td class="w">the recordings in loupe's <code>testdata/cprs/</code></td><td class="w">an entry made on an older CPRS build or an older copy reds the rows that cite it</td></tr>
+<tr><td><strong>candidate generator</strong></td><td class="w">emits one candidate for each event binding, call site, message, access test and shortcut, with its place in the source</td><td class="w">the scanners, committed with tests</td><td class="w">a binding taken out of its output reds the register</td></tr>
+<tr><td><strong>recording planner</strong></td><td class="w">lists the RPCs never recorded with the unit and forms that send each, and puts the factory's queue in order</td><td class="w">the call-site scan; the bank's list</td><td class="w">a recorded RPC leaves the list</td></tr>
+<tr><td><strong>census differ</strong></td><td class="w">has CPRS draw every definition of one kind on the copy, runs the interpreter over the same definitions, and compares structure and text</td><td class="w">the guest driver; the definition exports</td><td class="w">a definition altered on the copy is reported</td></tr>
+<tr><td><strong>evidence gate</strong></td><td class="w">the register's gate, extended to the kinds of evidence each row needs, the record of each test failing first, and the bank entries a row names</td><td class="w">loupe's <code>internal/coverage</code></td><td class="w">each rule is shown to fail on a planted violation</td></tr>
+<tr><td><strong>ruling queue</strong></td><td class="w">gathers every difference the comparers could not set aside, with both sides' evidence, for one sitting</td><td class="w">the comparers' reports</td><td class="w">a ruled difference does not come back</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>A twelfth is a trial, not yet a tool:</strong> switching on YottaDB's line trace in the copy's Broker job, to show the M lines each call ran. It would measure the reach the scan can only bound, and it would sort recorded calls into parameter classes by the path each takes.</li>
+  <li><strong>The candidate populations are countable today.</strong> The compiled code holds 4,834 event bindings, parsed call sites for 965 RPCs, 244 shortcuts, 174 write-access tests and about 90 role tests, and 1,393 call sites in 246 units that show the user a message <span class="pv m">the last measured 2026-10-04</span>.</li>
+  <li><strong>Where each tool lives is decision 10's.</strong> The wire recorder is a Broker door and needs decision 21's ruling. Each tool is built test-first, gated like any other piece, and carries a retirement condition.</li>
+</ul>
+<h3>How a row is proved</h3>
+<p>A row counts as built when a machine can check all of the following on the commit.</p>
+<ol>
+  <li><strong>It cites its source:</strong> units and routines that exist in the pinned CPRS tree.</li>
+  <li><strong>It disposes of candidates:</strong> the bindings, call sites, messages and access tests it covers are named. A candidate that no row names is red for the register.</li>
+  <li><strong>It names its references:</strong> entries in the bank, current for the declared CPRS build and copy.</li>
+  <li><strong>It names its tests, and each test declares the oracles it applies.</strong> The gate derives the kinds the row needs: traffic if it cites an RPC, the database if any of those writes, text if it produces clinical text, the window tree if it shows a screen, a refusal if it is a duty.</li>
+  <li><strong>Each test was seen to fail</strong> before the code that satisfies it existed, and the record is kept. A nightly sample plants faults in the code a row cites, and a row whose tests catch none is listed.</li>
+  <li><strong>Each test passes on this commit:</strong> from the bank, with no engine, in the repository's gate; and live on the lane's copy each night.</li>
+  <li><strong>Each remaining difference from CPRS carries its ruling.</strong></li>
+</ol>
+<p>The headline number of §11, rows proven over rows, is then computed from records a gate has checked. A page for each row, generated from those records, is what the operator reads when a row is questioned.</p>
+<h3>Test-first, for each kind of piece</h3>
+<p>The order is fixed: reference, row, failing test, code, live proof. What differs between the pieces of §15 is the reference.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>piece</th><th>recorded first</th><th>the test that fails first</th></tr></thead>
+<tbody>
+<tr><td>action pack</td><td class="w">CPRS's calls and replies for the family, from the wire</td><td class="w">the replay: the action sends CPRS's calls for the same state</td></tr>
+<tr><td>interpreter</td><td class="w">what CPRS draws and writes for each definition, from the census differ</td><td class="w">the screen description and the text, equal to CPRS's</td></tr>
+<tr><td>workflow</td><td class="w">CPRS's journal slice for the scenario</td><td class="w">the same writes from the same restore point; the refusals</td></tr>
+<tr><td>screen</td><td class="w">CPRS's window tree</td><td class="w">the page's tree, equal control by control</td></tr>
+<tr><td>control</td><td class="w">CPRS's control under a script of keys, its window tree read after each</td><td class="w">the web control under the same keys</td></tr>
+</tbody></table></div>
+<p>A row whose reference does not exist yet stays "not built" and goes into the factory's queue. No test is written against a reference somebody imagined.</p>
+<h3>Parallel work</h3>
+<ul>
+  <li><strong>The factory runs alone, unattended, at all hours.</strong> There is one guest, and the host has room for one more at most: 27 GB, with 7 GB free while one guest runs <span class="pv m">measured</span>. Its queue follows the longest chain of §15: the order actions, the dialog base, order management.</li>
+  <li><strong>Reading fans out at once.</strong> A source read of one unit into candidates and rows is read-only and independent of every other. It needs no lane and no contract. Each engine is read twice, independently, and the overlap of the two reads estimates what both missed.</li>
+  <li><strong>A lane's inner loop needs no engine and no guest.</strong> It runs from the bank. The live proof runs nightly on the lane's own copy, which costs a 3.4 GB file and about 110 MB of memory <span class="pv m">measured</span>.</li>
+  <li><strong>The shared files are kept by track:</strong> one register file, one registry file and one bank directory for each, joined by a generator.</li>
+  <li><strong>The operator is given a queue.</strong> A row whose evidence the gate has checked is not reviewed one by one; a sample is. Differences come in batches, each with CPRS's side and the candidate's.</li>
+  <li><strong>A lane is added on measurement.</strong> The first track records the operator's minutes and rulings per row, and decision 23 is ruled on those. Six lanes at twenty rows a day, at Loupe's rulings per row, would be near a hundred rulings a day <span class="pv p">projection</span>.</li>
+</ul>
+<h3>Reliability</h3>
+<ul>
+  <li>A scenario is admitted to the bank after two runs from one restore point agree.</li>
+  <li>A scenario seeds the state it needs on its own copy, and depends on no other scenario.</li>
+  <li>A step is checked by the calls it caused, and never by a picture alone.</li>
+  <li>A live failure is counted and printed. It is never retried in silence.</li>
+  <li>A missing reference, journal or tree reds the row. It is never skipped.</li>
+  <li>A copy runs under a fixed clock if the trial of that holds. Until then the clock is a measured set-aside.</li>
+  <li>The tap stays as the cross-check on the wire recorder, and CPRS's own RPC log is a third.</li>
+</ul>
+<h3>Phase 0's exit tests for the factory</h3>
+<ol>
+  <li>One scenario runs from a restore of the copy to CPRS's exit with nobody at the keyboard.</li>
+  <li>Run twice, it gives two entries that agree in trace, journal slice, window trees and text, once the measured set-asides are applied.</li>
+  <li>A planted difference of each kind is caught: a changed parameter, an extra write, a changed caption, a changed character of text.</li>
+  <li>The wire recorder and the tap agree on one scenario, but for the named line.</li>
+  <li>The planner lists every unrecorded RPC with where to record it.</li>
+  <li>The rate is written down: scenarios an hour, and the operator's minutes per scenario, which should be none.</li>
+</ol>
+<p>If a test cannot pass, the reason is measured and written into §17, and the calendar of §15 is restated at hand speed. That is decision 27.</p>
+<h3>What is measured as the work runs</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>measure</th><th>why</th></tr></thead>
+<tbody>
+<tr><td>the operator's minutes and rulings per row</td><td class="w">the limit on the number of lanes</td></tr>
+<tr><td>rows found while building, over rows listed</td><td class="w">the growth to carry on every projection. Loupe's was a sixth</td></tr>
+<tr><td>scenarios an hour, and the share admitted at the first pair of runs</td><td class="w">the factory's rate and its noise</td></tr>
+<tr><td>live failures that were not real</td><td class="w">whether a red is still read</td></tr>
+<tr><td>used RPCs never recorded</td><td class="w">the queue's length. It is 830 today</td></tr>
+<tr><td>hours on a row, by reading, recording, testing, coding and ruling</td><td class="w">where the next tool should go</td></tr>
+</tbody></table></div>
+<h3>Limits</h3>
+<ul>
+  <li><strong>Most of this is untried:</strong> driving CPRS from inside the guest, unattended sign-on, the wire recorder, a restore fast enough to run before every scenario, journaling the temporary globals, a fixed clock, the line trace. §17 lists each with what would settle it.</li>
+  <li><strong>The factory proves CPRS on demo data, on one build.</strong> It says nothing about a production site.</li>
+  <li><strong>CPRS run against itself shows what cannot be demanded.</strong> It does not show which of the things that agree are required and which are incidental. That stays with the written equivalence and the operator's rulings.</li>
+  <li><strong>The generators narrow.</strong> A reader still decides what a row is.</li>
+  <li><strong>Building tools is work that could run on.</strong> Each starts from something Loupe already runs, and phase 0's exit tests are where it stops.</li>
+</ul>
+
 </article>
 
 <footer class="src">
-A rendering of <code>proposals/cprs-web-strategy/cprs-web-strategy.md</code> in the vista-forge <code>docs</code> repo at commit <code>73f41fb</code>, version 8 of 2026-10-04. The repo copy is the one that is ruled on and kept current. Nothing described here as a service, module, door, companion, register or gate exists yet. The scripts, lists and the record of the live tests are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed.
+A rendering of <code>proposals/cprs-web-strategy/cprs-web-strategy.md</code> in the vista-forge <code>docs</code> repo at commit <code>9df8541</code>, version 9 of 2026-10-04. The repo copy is the one that is ruled on and kept current. Nothing described here as a service, module, door, companion, factory, register or gate exists yet. The scripts, lists and the record of the live tests are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed.
 </footer>
 </div>
 
@@ -1437,6 +1686,58 @@ A rendering of <code>proposals/cprs-web-strategy/cprs-web-strategy.md</code> in 
     function show(ev) {
       tip.innerHTML = "<b>" + d[0] + "</b><br>" + d[1].toLocaleString("en-US") + " lines · " + d[2].toLocaleString("en-US") +
         " routine bodies · " + d[3].toLocaleString("en-US") + " event handlers<br>" + d[4];
+      tip.hidden = false;
+      var x = Math.min(window.innerWidth - 310, ev.clientX + 14);
+      tip.style.left = x + "px";
+      tip.style.top = (ev.clientY + 14) + "px";
+    }
+    hit.addEventListener("mousemove", show);
+    hit.addEventListener("mouseleave", function () { tip.hidden = true; });
+  });
+  host.appendChild(svg);
+})();
+</script>
+<script>
+(function () {
+  var data = [["Spine", "about 355", 168, 57, 90], ["Orders", "794", 369, 91, 38], ["Documents", "628", 156, 55, 47], ["Encounter", "467", 118, 15, 13], ["Chart reads", "409", 204, 81, 41], ["Consults", "92", 55, 23, 13], ["Control kit", "359", 3, 0, 0], ["Outside connections", "98", 13, 3, 2]];
+  var host = document.getElementById("lane-chart");
+  if (!host) return;
+  var NS = "http://www.w3.org/2000/svg";
+  var labelW = 170, plotW = 520, rowH = 26, top = 26, right = 150;
+  var W = labelW + plotW + right, H = top + data.length * rowH + 8;
+  var max = 400;
+  var svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+  svg.setAttribute("aria-hidden", "true");
+  function el(name, attrs, text) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    svg.appendChild(e);
+    return e;
+  }
+  function bar(w, y, cls) {
+    var bh = 14, by = y + 6, r = Math.min(4, w / 2);
+    var p = "M" + labelW + "," + by + " H" + (labelW + w - r) + " Q" + (labelW + w) + "," + by + " " + (labelW + w) + "," + (by + r) +
+            " V" + (by + bh - r) + " Q" + (labelW + w) + "," + (by + bh) + " " + (labelW + w - r) + "," + (by + bh) + " H" + labelW + " Z";
+    el("path", { d: p, "class": cls });
+  }
+  [0, 100, 200, 300, 400].forEach(function (v) {
+    var x = labelW + plotW * v / max;
+    el("line", { x1: x, x2: x, y1: top - 6, y2: H - 6, "class": "grid" });
+    el("text", { x: x, y: 14, "class": "tm", "text-anchor": v === 0 ? "start" : "middle" }, v === 0 ? "0" : v === 400 ? "400 RPCs" : String(v));
+  });
+  var tip = document.getElementById("tip");
+  data.forEach(function (d, i) {
+    var y = top + i * rowH;
+    var wn = Math.max(3, plotW * d[2] / max);
+    el("text", { x: labelW - 10, y: y + 17, "class": "t", "text-anchor": "end" }, d[0]);
+    bar(wn, y, "trk");
+    if (d[4] > 0) bar(Math.max(2, plotW * d[4] / max), y, "bar hot");
+    el("text", { x: labelW + wn + 8, y: y + 17, "class": "tml" }, d[4] + " of " + d[2] + (d[2] >= 50 ? " \u00b7 " + Math.round(100 * d[4] / d[2]) + "%" : ""));
+    var hit = el("rect", { x: 0, y: y, width: W, height: rowH, "class": "hit" });
+    function show(ev) {
+      tip.innerHTML = "<b>" + d[0] + "</b><br>" + d[2] + " RPCs named \u00b7 " + d[3] + " write \u00b7 " + d[4] + " recorded from CPRS<br>" + d[1] + " projected rows";
       tip.hidden = false;
       var x = Math.min(window.innerWidth - 310, ev.clientX + 14);
       tip.style.left = x + "px";
