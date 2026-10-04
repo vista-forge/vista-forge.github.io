@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="An adversarial review, in two rounds, of the CPRS Web Strategy. Round 1 re-tested every number in the plan against the source, live VistA and the code model. Round 2 ran seven tests live on a throwaway copy of VistA, built a label-level scan of the M code, and stress-tested the plan's own measurements. What held, what was wrong, and what changed in the plan.">
+<meta name="description" content="An adversarial review, in three rounds, of the CPRS Web Strategy. Round 1 re-tested every number in the plan against the source, live VistA and the code model. Round 2 ran seven tests live on a throwaway copy of VistA and built a label-level scan of the M code. Round 3 measured the 2016–2019 RPC emulation archive in its code and found against emulating VistA's side. What held, what was wrong, and what changed in the plan.">
 <style>:root { color-scheme: light; } body { margin: 0; } img { max-width: 100%; } [hidden] { display: none !important; }</style>
 <title>CPRS Web Strategy Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -150,21 +150,34 @@ footer.src { max-width: 860px; font-size: 0.86rem; color: var(--muted); border-t
 <body>
 <div class="page">
 <header>
-  <div class="eyebrow">vista-forge · adversarial review · two rounds · 2026-10-03</div>
+  <div class="eyebrow">vista-forge · adversarial review · three rounds · 2026-10-03</div>
   <h1>CPRS Web Strategy Review</h1>
-  <p class="lede">Two rounds. Round 1 re-tested every number in version 1 of the plan. Round 2 ran the open tests live on a throwaway copy of VistA, built a label-level scan of the M code, and turned the same scrutiny on version 2.</p>
+  <p class="lede">Three rounds. Round 1 re-tested every number in version 1 of the plan. Round 2 ran the open tests live on a throwaway copy of VistA and built a label-level scan of the M code. Round 3 measured the operator's 2016–2019 RPC emulation archive in its code and set that approach against version 3.</p>
   <div class="meta">
     <span class="chip">round 1 reviewed <b>version 1</b></span>
     <span class="chip">round 2 tested <b>version 2</b></span>
+    <span class="chip">round 3 measured the emulation archive against <b>version 3</b></span>
     <span class="chip">measured <b>2026-10-03</b></span>
-    <span class="chip">docs@<b>d6b326e</b></span>
-    <span class="chip">gold engines <b>read-only</b>; writes on a throwaway copy</span>
-    <span class="chip">the plan is now at <b><a href="../cprs-web-strategy/">version 3</a></b>, amended to both rounds</span>
+    <span class="chip">docs@<b>8b96c4a</b></span>
+    <span class="chip">gold engines <b>read-only</b>; writes on a throwaway copy; round 3 ran nothing on an engine</span>
+    <span class="chip">the plan is now at <b>version 4</b> in the repository; its <a href="../cprs-web-strategy/">published page</a> shows version 3</span>
   </div>
 </header>
 
 <nav class="toc" aria-label="Contents">
-  <div class="label">Round 2: live tests, on version 2</div>
+  <div class="label">Round 3: the emulation archive, on version 3</div>
+  <ol>
+    <li><a href="#v3"><span class="n">—</span>Round 3 verdict</a></li>
+    <li><a href="#e1"><span class="n">E1</span>What the archive is</a></li>
+    <li><a href="#e2"><span class="n">E2</span>What was emulated</a></li>
+    <li><a href="#e3"><span class="n">E3</span>Why emulation is the larger risk</a></li>
+    <li><a href="#e4"><span class="n">E4</span>Four routes, four tests</a></li>
+    <li><a href="#e5"><span class="n">E5</span>What to take from the archive</a></li>
+    <li><a href="#e6"><span class="n">E6</span>What rounds 1 and 2 missed</a></li>
+    <li><a href="#e7"><span class="n">E7</span>Changes for version 3</a></li>
+    <li><a href="#e8"><span class="n">E8</span>How round 3 was taken</a></li>
+  </ol>
+  <div class="label" style="margin-top:14px">Round 2: live tests, on version 2</div>
   <ol>
     <li><a href="#v2"><span class="n">—</span>Round 2 verdict</a></li>
     <li><a href="#t1"><span class="n">T1</span>Live tests on a throwaway copy</a></li>
@@ -199,6 +212,143 @@ footer.src { max-width: 860px; font-size: 0.86rem; color: var(--muted); border-t
 </nav>
 
 <article>
+
+<section class="abstract" id="v3">
+<h2>Round 3 verdict</h2>
+<p><strong>Emulating VistA's RPCs as a service would not be the better route. It rebuilds the half of the system that version 3 keeps, and it does not produce a web client.</strong> The operator asked whether the RPC emulation service begun in 2016–2019 would be technically better than this plan, judged on what is maintainable, executable, pragmatic and scalable for a cloud-based CPRS service. The archive was measured in its code, where version 3 had read only its READMEs.</p>
+<ol>
+  <li><strong>The two approaches rebuild opposite halves.</strong> Version 3 ports the Delphi client and calls VistA's rules unchanged. Emulation keeps the Delphi client and rewrites VistA's side of every RPC. A web client would still have to be built afterwards, so for this request emulation is extra work and is no substitute.</li>
+  <li><strong>The archive's emulation server holds 152 RPC models, and 141 of them are among the 1,067 RPCs CPRS uses (13%).</strong> Sixteen change data: five problem-list calls, four vitals calls, one allergy save, five preference saves and a division switch. Nothing was emulated for orders, notes, encounters, consults, signature or order checks.</li>
+  <li><strong>Measured by the M code behind them, the emulations covered under a tenth.</strong> The emulated RPCs reach 14,286 lines of M, 9.5% of what CPRS's used RPCs reach. 136,119 lines are reachable only from RPCs that were never emulated.</li>
+  <li><strong>The project fielded its monitor, not its emulator.</strong> The second-year work delivered a passive monitor of RPC traffic that needed no change to VistA or to any client, received its authority to operate and ran in production at one site in January 2020.</li>
+  <li><strong>The archive's router design and its hand classification of CPRS's RPCs are worth taking.</strong> A door on the session core that speaks the Broker's own protocol would put unchanged CPRS behind the same rules as the web client. That is the piece of the earlier work that version 3 lacks.</li>
+  <li><strong>Version 3 remains the right core.</strong> Four gaps the first two rounds did not test are in §E6, and the changes are in §E7. Version 4 of the plan carries them.</li>
+</ol>
+</section>
+
+<div class="tiles">
+  <div class="tile"><span class="k">RPCs emulated</span><span class="v">152</span><span class="s">models in the emulation server; 141 are among the 1,067 RPCs CPRS uses</span></div>
+  <div class="tile"><span class="k">that change data</span><span class="v">16</span><span class="s">problem list, vitals, one allergy save, preferences. None for orders, notes or signature</span></div>
+  <div class="tile"><span class="k">of the M behind CPRS</span><span class="v">9.5%</span><span class="s">14,286 of the 151,089 lines that CPRS's used RPCs reach</span></div>
+  <div class="tile"><span class="k">added to the context since 2017</span><span class="v">154</span><span class="s">RPC names, with 14 removed: 1,050 then, 1,190 now</span></div>
+</div>
+
+<div class="legend-row" aria-label="Labels in round 3">
+  <span><span class="pv m">measured</span> counted from the archive's files, or with round 2's scanner over the same M source</span>
+  <span><span class="pv d">archive</span> quoted from the archive's own documents</span>
+  <span><span class="pv p">projection</span> arithmetic on measured figures</span>
+  <span>Nothing in round 3 was run against any engine.</span>
+</div>
+
+<h2 id="e1"><span class="n">E1</span>What the archive is</h2>
+<p>The archive is <code>~/vistadataproject</code>: 19 repositories, first commit 2015-12-11, last 2022-07-25. It holds three different designs, and only the first two emulate.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>years</th><th>design</th><th>what answered CPRS</th><th>data store</th></tr></thead>
+<tbody>
+<tr><td class="w">2016–2017, VISTA Data Project</td><td class="ww">each RPC rewritten in JavaScript over a data model; an RPC server sent each call either to the rewrite or through to VistA</td><td class="w">JavaScript for the emulated calls, VistA's own M for the rest</td><td class="w">VistA's own database, written through FileMan</td></tr>
+<tr><td class="w">2018, VistA Adaptive Maintenance, year 1</td><td class="ww">the same rewrites moved off VistA: "a '131st National VISTA' that emulates the VISTA RPC functionality … using pure Javascript code, backed by a NoSQL (typically, MongoDB) back end data store" <span class="pv d">archive</span>; a router sent each call to the emulator, to VistA, or to both</td><td class="w">JavaScript over a copy of the data</td><td class="w">MongoDB, filled from each VistA</td></tr>
+<tr><td class="w">2019–January 2020, year 2</td><td class="ww">no emulation: "a passive monitoring PaaS that mirrors VistA RPC traffic" to a cloud log, read by a monitor against a machine-readable definition of every RPC <span class="pv d">archive</span></td><td class="w">VistA, untouched</td><td class="w">none</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>The stated aim was larger than a client.</strong> The project's site describes moving "functionality from the 130 decentralized VISTA systems to a centralized, secure, cloud-based Veteran Integrated Care Service", "enabling continuity of veteran care during the decommissioning of VISTA" <span class="pv d">archive</span>. Emulation was a way to retire VistA with CPRS left running. It was never a way to replace CPRS.</li>
+  <li><strong>The target was the whole interface.</strong> The year-two overview says "a majority of the work will involve expanding MVDM to fully support the 1050 RPCs of the CPRS RPC Interface", and that order entry "is the key function offered by VISTA and migrating it to MVDM will take a substantial part of the Project's efforts going forward" <span class="pv d">archive</span>.</li>
+  <li><strong>The emulation code in the archive is a snapshot dated 2019-02-05.</strong> The second year's technical kickoff meeting was 2019-02-06, and its work statement was the monitor. The archive does not say why emulation stopped, and this review does not infer a cause.</li>
+</ul>
+
+<h2 id="e2"><span class="n">E2</span>What was emulated, measured</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>measure</th><th class="num">value</th><th>note</th></tr></thead>
+<tbody>
+<tr><td class="w">RPC models in the emulation server</td><td class="num">152</td><td class="ww">123 read, 16 change, 13 utility, by the models' own labels <span class="pv m">measured</span></td></tr>
+<tr><td class="w">of those, among the 1,067 RPCs CPRS uses</td><td class="num">141</td><td class="ww">13%. The other 11 include Broker plumbing and the server's own management calls <span class="pv m">measured</span></td></tr>
+<tr><td class="w">models that change data</td><td class="num">16</td><td class="ww">problem list 5, vitals 4, allergy 1, preferences 5, division 1. Orders, notes, encounters, consults, signature and order checks: 0 <span class="pv m">measured</span></td></tr>
+<tr><td class="w">JavaScript written</td><td class="num">51,240 lines</td><td class="ww">the emulation and services folders, tests included; the median model is 44 lines <span class="pv m">measured</span></td></tr>
+<tr><td class="w">M reached by the emulated RPCs</td><td class="num">14,286 lines</td><td class="ww">9.5% of the 151,089 lines that CPRS's 1,024 used context RPCs reach; the allergy save is counted apart, below <span class="pv m">measured</span></td></tr>
+<tr><td class="w">M reachable only from RPCs never emulated</td><td class="num">136,119 lines</td><td class="ww"><span class="pv m">measured</span></td></tr>
+<tr><td class="w">the 25 used RPCs with the largest reach</td><td class="num">1 emulated</td><td class="ww">the allergy save. The order-check, save, send, verify and note-signature calls were not <span class="pv m">measured</span></td></tr>
+<tr><td class="w">progress at 2017-08-24, by the project's own count</td><td class="num">99 of 1,050</td><td class="ww">24 of 416 clinical and 75 of 562 non-clinical RPCs. Its scope was the RPCs "exercised in the VDP Demo" <span class="pv d">archive</span></td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>The emulations sit at the shallow end.</strong> The emulated RPCs reach 517 lines of M on average; all used RPCs average 1,762. The median is 130 for both, so the difference is the deep calls, which were left to VistA.</li>
+  <li><strong>The one deep call shows the gap.</strong> The allergy save reaches 38,665 lines of M, with alerts, mail, queued tasks and 27 global roots in reach, among them the HL7, problem-list and note globals. Its model is 355 lines of JavaScript and one service call that creates the allergy record.</li>
+  <li><strong>A check that writes was emulated as a read.</strong> The model for the sensitive-record check is 54 lines, labelled a read, and its service only looks records up. The real call reaches 3,770 lines with the security log and mail in reach, and the plan's duty 3 records that the check itself writes that log.</li>
+  <li><strong>The emulator was not smaller than what it replaced.</strong> 51,240 lines of JavaScript stand against the 14,286 lines of M those RPCs reach, the allergy save aside. Scaled to the whole interface that is several hundred thousand lines, before the store and its synchronisation <span class="pv p">projection</span>.</li>
+  <li><strong>Limits.</strong> The reach figures are static and count code a call may never run. The models are the February 2019 snapshot; any later private work is not here.</li>
+</ul>
+
+<h2 id="e3"><span class="n">E3</span>Why emulation carries the larger risk</h2>
+<ul>
+  <li><strong>VistA's RPCs are not the end of the line.</strong> CPRS is one client of VistA's database. Pharmacy, laboratory, radiology, billing, HL7 interfaces and background tasks work on what CPRS's calls file. The order send call has 41 global roots in its reach, across those packages <span class="pv m">measured</span>. An emulator outside VistA must reproduce every one of those writes into VistA, or the departments never see the order. The first design avoided a second store by writing VistA's own files through FileMan and, in places, direct global writes <span class="pv d">archive</span>. That fires cross-references and skips the package code that normally files the record.</li>
+  <li><strong>The proof compared replies and not effects.</strong> The remote tests say "other than datetime differences, all replies should be the same" <span class="pv d">archive</span>. The router compared the two reply buffers on calls sent to both systems and, on a mismatch, logged "VICS and VistA output do not match on fanout, shutting down connections" <span class="pv m">measured</span>. Calls that change data were sent to both systems. A reply can match while the audit entry, the alert or the pharmacy record is missing.</li>
+  <li><strong>A second store needs every VistA's data, continuously.</strong> The archive's own notes call the reduced data set "the amount of data that needs to be synchronized between a VISTA and National Services" <span class="pv d">archive</span>. Version 3 has no migration and no synchronisation, because both clients use the same VistA.</li>
+  <li><strong>The interface moves, and the server moves behind it.</strong> The project's 2017 list of CPRS's context has 1,050 RPCs. vehu's has 1,190 today: 1,036 are in both, 14 are gone and 154 are new <span class="pv m">measured</span>, on two different VistA instances. An emulator owes those 154, and it also owes every change a patch makes behind a name that did not change. Such a change is invisible at the interface. A client port owes the same 154 on the client side, where a miss shows on the screen.</li>
+  <li><strong>What emulation would buy is real and is not this request.</strong> A stateless JavaScript tier scales out more easily than one VistA job per person, and it is the only route that survives VistA being switched off. The request is a web replacement for CPRS over VistA. Version 3's module API is the seam where a module could later be pointed at another back end, one module at a time, if that ever becomes the goal.</li>
+</ul>
+
+<h2 id="e4"><span class="n">E4</span>Four routes, on the operator's four tests</h2>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>A. Stream the Delphi client</th><th>B. Version 3</th><th>C. Emulate VistA's RPCs</th><th>D. Version 3 with a Broker-protocol door</th></tr></thead>
+<tbody>
+<tr><td><strong>what is rebuilt</strong></td><td class="w">nothing</td><td class="w">the client: 384,202 Delphi lines, as 1,300 to 4,400 rows</td><td class="w">the server: at least 151,089 lines of M, a data store and its synchronisation. The client port is still owed</td><td class="w">as B</td></tr>
+<tr><td><strong>gives a web client</strong></td><td class="w">no</td><td class="w">yes</td><td class="w">no</td><td class="w">yes, with CPRS unchanged behind the same rules meanwhile</td></tr>
+<tr><td><strong>maintainable</strong></td><td class="w">VA maintains CPRS</td><td class="w">follows CPRS releases; a miss shows on screen</td><td class="w">follows every server patch; a miss is silently different data</td><td class="w">as B</td></tr>
+<tr><td><strong>executable</strong></td><td class="w">VA's Cloud CPRS exists, by the plan's own account</td><td class="w">Loupe: 57 rows built in eight days, read-only. About 3,200 projected</td><td class="w">a contracted team over three years reached 152 of 1,050, 16 of them writes, none for orders</td><td class="w">as B. The archive's router is 857 lines</td></tr>
+<tr><td><strong>pragmatic</strong></td><td class="w">available now; a Windows session per person</td><td class="w">each phase leaves something usable, and CPRS remains</td><td class="w">nothing is usable for clinical work until orders are emulated</td><td class="w">the door is useful in phase 1</td></tr>
+<tr><td><strong>scalable</strong></td><td class="w">per-person desktops</td><td class="w">one VistA job per person, as CPRS has today; a cell beside each VistA</td><td class="w">the stateless tier scales; the data synchronisation is the hard part</td><td class="w">as B</td></tr>
+</tbody></table></div>
+<div class="callout">
+<p><strong>D is the recommendation.</strong> B is the right core. C is declined on the measurements above. A is the faithful fallback for whatever the web client has not yet reached, and it is not a web client.</p>
+</div>
+
+<h2 id="e5"><span class="n">E5</span>What the plan should take from the archive</h2>
+<p>Neither item exists in this org. Both are proposals.</p>
+<ul>
+  <li><strong>A Broker-protocol door on the session core.</strong> Version 3 says its guarantees "cover traffic through the service; with no change to VistA, the Broker stays open to CPRS itself". The archive's router sat between CPRS and the Broker, parsed every call, kept an audit log and decided where each call went; its security study lists per-RPC parameter checks and "invalid patient for session". The same door on the session core would apply the allowlist, patient binding and the audit to unchanged CPRS. Where a site can limit the Broker's port to the cell's address, the guarantee would then cover all traffic with no VistA change.
+    <ul>
+      <li>On this box CPRS in the Windows guest already reaches vehu through the org's own relay (<code>v rpc relay</code>), which copies bytes and parses nothing. The door is that relay taught the protocol and the session core's rules.</li>
+      <li>It should first run in an observe-only mode that logs what it would refuse. That tests the allowlist against every CPRS session on the box. Recorded clicking has reached 217 of the 1,067 RPCs so far.</li>
+      <li>It needs its own ruling as a Broker door, with a retirement condition.</li>
+    </ul>
+  </li>
+  <li><strong>The 2017 hand classification as a second source for the registry.</strong> Version 3 takes each RPC's effect class from round 2's scan, which it calls a first cut. The archive's 2017 breakdown classed the 1,050 RPCs of CPRS's context by hand as read, change or utility, with tags for alerts, bulletins and locks; 1,036 of them are still in the context. The two disagree on 129: of 744 RPCs the breakdown calls reads, the scan finds a stored write in reach of 116 (3 of them only in scratch globals), and of 145 it calls changes the scan finds no stored write for 13 <span class="pv m">measured</span>. Neither is proof. Each disagreement is a place where the plan's database comparison should look first.
+    <ul>
+      <li>The later definition of all 6,385 RPCs, a 2019 deliverable, is not on this box: its file is an 18.5 MB large-file pointer that was never fetched. It was not read.</li>
+    </ul>
+  </li>
+  <li><strong>Nothing else needs taking.</strong> The archive's sniffer, sequence runner, load tester and Broker simulator have counterparts in the org's tap (capture, drive, load, fixture).</li>
+</ul>
+
+<h2 id="e6"><span class="n">E6</span>What rounds 1 and 2 did not test in version 3</h2>
+<ul>
+  <li><strong>Scale inside a cell</strong> <span class="vd miss">missing</span>. §9 says the modules "cannot be scaled or restarted apart", which is true of modules. It never says that sessions of different people are independent. As written, one deployable per VistA reads as one process, and every release would end every clinician's VistA job at that site at once. The cell should be several identical session holders behind a gateway that keeps each person on one of them, released one holder at a time as its sessions end.</li>
+  <li><strong>The reference client is driven by hand</strong> <span class="vd miss">missing</span>. Write rows need CPRS operated in the Windows guest. At Loupe's pace of 57 built rows in the eight days from its first commit, read-only, 3,200 rows is about 450 days, and write rows are slower <span class="pv p">projection</span>. Scripted driving of CPRS would turn the oracle from hand speed to machine speed, and phase 0 has no row for it.</li>
+  <li><strong>No measurement behind running the interpreters in the service</strong> <span class="vd unsup">unsupported</span>. Decision 11 puts every dialog interaction through a round trip to the cell. The archive's site note shows production CPRS taking between half a minute and a minute to open one large template. Phase 2 should count round trips per answered prompt before decision 11 is ruled.</li>
+  <li><strong>§8's account of the archive rests on READMEs</strong> <span class="vd corr">corrected</span>. It gives 345 files and 155 entries and says the READMEs do not explain the stop. The figures in §E2 replace it.</li>
+</ul>
+
+<h2 id="e7"><span class="n">E7</span>What should change in version 3</h2>
+<ol>
+  <li><strong>Replace §8's archive entry</strong> with the measured figures, and record emulation of VistA's side as declined, to be reopened only if a site has no VistA to call.</li>
+  <li><strong>Add a decision: a Broker-protocol door on the session core,</strong> observe-only first (§E5).</li>
+  <li><strong>State in §9 that a cell scales by session,</strong> and add a rolling release to phase 2's exit test (§E6).</li>
+  <li><strong>Give the RPC registry a second source column</strong> from the 2017 hand classification, and list the disagreements (§E5).</li>
+  <li><strong>Add scripted driving of the reference client to phase 0,</strong> and a calendar projection beside the row counts (§E6).</li>
+  <li><strong>Make decision 11 wait for a round-trip count</strong> from phase 2 (§E6).</li>
+</ol>
+
+<h2 id="e8"><span class="n">E8</span>How round 3 was taken</h2>
+<ul>
+  <li><strong>The archive:</strong> <code>~/vistadataproject</code>, read-only. Models counted in <code>Archive/VICSServer/emulation/models</code>, one RPC name per model file; lines counted over <code>.js</code> files in <code>emulation</code> and <code>services</code>. The sensitive-record service was searched for any create, insert or update and has none.</li>
+  <li><strong>The quotations:</strong> <code>Archive/VICSServer/emulation/server/README.md</code> and <code>remoteTest/README.md</code>; <code>Archive/rpcRouter/router.js</code>; <code>documents/Submissions/VDPYear2Overview.md</code>; <code>vistadataproject.github.io/_web/main/index.md</code>; the 2017 breakdown under <code>RPCDefinitionToolkit/OldMetaVDP/RPC/markdowns/</code>; the second year's final monthly report and kickoff date in <code>VAM2ProjectManagement</code>.</li>
+  <li><strong>Reach:</strong> round 2's label-level scanner, unchanged, run over the union of the emulated RPCs, of the used RPCs and of the rest. The allergy save is reported apart because its model does not attempt its reach.</li>
+  <li><strong>Interface growth and the hand classification:</strong> the 1,050 names and their categories in the 2017 breakdown's JSON (<code>RPCDefinitionToolkit/OldMetaVDP/RPC/json/rpcsCategorized.json</code>) against vehu's 1,190 context names and effect classes from round 2.</li>
+  <li><strong>Two corrections made while measuring.</strong> The first comparison set the 2017 context list against today's used list, which are different populations; it was redone context against context. The first reach figure was 28.9% because it included the allergy save's whole reach.</li>
+  <li><strong>Two more, made when the changes were folded into version 4.</strong> This round first gave 87 changes in the 2017 breakdown, 10 of them with no write in the scan. That came from parsing the breakdown's pages, which missed 58 change labels; the archive's own JSON gives 145 still in the context and 13. It also first gave Loupe's pace as 75 rows in eleven days. The register's dated versions show its 57 built rows complete within eight days of the first commit, and the 18 others were closed by ruling, which a drop-in replacement cannot do.</li>
+  <li><strong>Kept:</strong> the comparison script, the model list and the list of the 129 disagreements are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/round3/</code>, not committed.</li>
+</ul>
+
+<h2 id="round2" style="margin-top:3.2em">Round 2, on version 2 of the plan</h2>
+<p>What follows is the second review, unchanged. Its ten changes were folded into version 3 of the plan.</p>
 
 <section class="abstract" id="v2">
 <h2>Round 2 verdict</h2>
@@ -653,7 +803,7 @@ footer.src { max-width: 860px; font-size: 0.86rem; color: var(--muted); border-t
 </article>
 
 <footer class="src">
-A rendering of <code>proposals/cprs-web-strategy/cprs-web-strategy-adversarial-review.md</code> in the vista-forge <code>docs</code> repo at commit <code>d6b326e</code>. The repo copy is the one kept current. Round 1 reviewed version 1 of the plan and its thirteen changes made version 2; round 2 tested version 2 and its ten changes made version 3. Quotations and section numbers in round 1 refer to version 1. The scripts, lists and test record are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed.
+A rendering of <code>proposals/cprs-web-strategy/cprs-web-strategy-adversarial-review.md</code> in the vista-forge <code>docs</code> repo at commit <code>8b96c4a</code>. The repo copy is the one kept current. Round 1 reviewed version 1 of the plan and its thirteen changes made version 2; round 2 tested version 2 and its ten changes made version 3; round 3 measured the 2016–2019 emulation archive against version 3 and its six changes made version 4. Quotations and section numbers in round 1 refer to version 1. The scripts, lists and test record are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed.
 </footer>
 </div>
 
