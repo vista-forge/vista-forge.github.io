@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="A measured plan for replacing the Delphi CPRS client with a web client behind a service API, keeping all of CPRS's behaviour and proving it capability by capability: where CPRS's behaviour lives, the engines inside the client, the RPC surface, the duties VistA leaves to the client (four of them run live on a throwaway copy), a target architecture, classic and modern modes, and a delivery plan cut into lanes of parallel work. Version 6 of a draft, amended after four adversarial reviews; nothing in it is built.">
+<meta name="description" content="A measured plan for replacing the Delphi CPRS client with a web client behind a service API, keeping all of CPRS's behaviour and proving it capability by capability: where CPRS's behaviour lives, the engines inside the client, the RPC surface, the duties VistA leaves to the client (four of them run live on a throwaway copy), a target architecture, classic and modern modes, and a delivery plan cut into lanes of parallel work. Version 7 of a draft, amended after four adversarial reviews; nothing in it is built.">
 <style>:root { color-scheme: light; } body { margin: 0; } img { max-width: 100%; } [hidden] { display: none !important; }</style>
 <title>CPRS Web Strategy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -145,7 +145,7 @@ td.ww { min-width: 21em; }
 <body>
 <div class="page">
 <header>
-  <div class="eyebrow">vista-forge · strategy and specification · draft for ruling · version 6</div>
+  <div class="eyebrow">vista-forge · strategy and specification · draft for ruling · version 7</div>
   <h1>CPRS Web Strategy</h1>
   <p class="lede">A measured plan for replacing the Delphi CPRS client with a web client behind a service API, keeping all of CPRS's behaviour and proving it capability by capability.</p>
   <div class="meta">
@@ -154,7 +154,7 @@ td.ww { min-width: 21em; }
     <span class="chip">measured <b>2026-10-03</b> and <b>10-04</b></span>
     <span class="chip">CPRS <b>1.33.112.1</b> · OR*3.0*629</span>
     <span class="chip">engine <b>vehu</b> (YottaDB)</span>
-    <span class="chip">docs@<b>9712f79</b></span>
+    <span class="chip">docs@<b>85d25c1</b></span>
   </div>
 </header>
 
@@ -182,7 +182,7 @@ td.ww { min-width: 21em; }
     <li><a href="#s18"><span class="n">18</span>Assumptions</a></li>
     <li><a href="#s19"><span class="n">19</span>Decisions to rule</a></li>
     <li><a href="#s20"><span class="n">20</span>What changed since the two artifacts</a></li>
-    <li><a href="#s21"><span class="n">21</span>Amendments, and the operator's request</a></li>
+    <li><a href="#s21"><span class="n">21</span>Amendments, and the operator's requests</a></li>
     <li><a href="#s22"><span class="n">22</span>Sources and how each number was taken</a></li>
   </ol>
 </nav>
@@ -193,7 +193,7 @@ td.ww { min-width: 21em; }
 <h2>Abstract</h2>
 <p>CPRS is three things in one program: a presenter of VistA's data, an interpreter of each site's clinical definitions, and an orchestrator of multi-step clinical transactions. Measured today, its compiled Delphi code is <strong>355,291 lines in 519 units with 13,625 routine bodies</strong>, and the Vitals entry DLL it loads adds 28,911 lines and 1,195 more. CPRS and that DLL name <strong>1,067 remote procedures</strong>: 1,055 that vehu has and 12 it lacks. CPRS's context admits 1,190, so 166 are admitted and never used. Behind those RPCs a label-level scan reaches at least 156,509 lines of M in 2,637 routines. Five groups of CPRS units build screens from site definitions at run time by two independent signals (order dialogs, note templates, reminder dialogs, immunizations and pathology orders, about 94,000 lines), and the Vitals DLL passes the same test. Two more groups pass one signal, and nine let site definitions decide what fixed screens show.</p>
 <p>The plan keeps VistA's clinical rules where they are and calls them. Rewriting them outside VistA, the route of the operator's 2016–2019 projects, was measured twice. It is declined for the calls that write, and held as an option for the calls that write nothing stored (§8). It moves the client's interpreters and orchestration into <strong>one session service per VistA</strong>, organised as domain modules behind a workflow-shaped API, and presents that API in two web front-ends: a <strong>classic mode</strong> that reproduces CPRS's screens and a <strong>modern mode</strong> in the Office-on-the-web family. The session service holds each person's own VistA session, sends only the calls CPRS uses, and applies the duties VistA leaves to the client. Every call leaves it through one typed RPC call described by a registry. Its rules apply at that call, and a back end could later change there one call at a time (§9). <strong>Four of those duties were run live on a throwaway copy of VistA on 2026-10-03.</strong> VistA signed an order, and released a discontinue, on a signature code it had just declared invalid. It let a user whose write access is "no" create a note and sign an order. It served a patient outside a user's restricted list. It freed a dropped client's locks within three seconds. So the service validates the signature code before any order is sent, applies the write-access rules, binds every patient-scoped call to the patient the session selected and checked, and ends a departed client's session. Those guarantees cover traffic through the service; with no change to VistA, the Broker stays open to CPRS itself. A second door on the same session core, speaking the Broker's own protocol, is proposed to bring unchanged CPRS under the same rules, observing first and refusing later. Identity is OpenID Connect at the front, with access and verify codes as the baseline and VA's token path as the route that works at VA today. AI and third-party clients draft proposals that a person accepts. Where Kernel allows the person a second sign-on they read through a VistA job of their own; where it does not, they make no VistA calls. They never sign.</p>
-<p>Fidelity is proven by <strong>capability rows</strong>, the unit Loupe already uses: one CPRS behaviour per row, read from the source, each one built with tests as evidence or closed by a ruling. The routine and RPC counts are completeness checks on the rows. They are not the proof. A row census projected from Loupe's one data point puts the whole client at roughly 1,300 to 4,400 rows, and about 3,200 by a second basis. Two tracks are kept apart: a reference implementation proven against CPRS on demo VistA, which this org can build and test, and deployment at VA, which depends on approvals, licensing and data volumes that nothing here can measure. This version carries the thirteen changes of the first adversarial review, the ten of the second, the six of the third and five of the fourth (§21). After a serial spine of three phases the work fans out into lanes, and the measured dependencies let about six run side by side (§15).</p>
+<p>Fidelity is proven by <strong>capability rows</strong>, the unit Loupe already uses: one CPRS behaviour per row, read from the source, each one built with tests as evidence or closed by a ruling. The routine and RPC counts are completeness checks on the rows. They are not the proof. A row census projected from Loupe's one data point puts the whole client at roughly 1,300 to 4,400 rows, and about 3,200 by a second basis. Two tracks are kept apart: a reference implementation proven against CPRS on demo VistA, which this org can build and test, and deployment at VA, which depends on approvals, licensing and data volumes that nothing here can measure. This version carries the thirteen changes of the first adversarial review, the ten of the second, the six of the third and five of the fourth (§21). After a serial spine of three phases the work fans out into lanes, and the measured dependencies let about six run side by side (§15). What clinicians actually do is known here only from recordings made by hand on demo data. An analysis of production traffic at two VA medical centers exists and is not yet on this box. The plan takes it as an enabler for its three hardest workflows, order entry, notes and reminder dialogs. It supplies the flows and parameter classes to build from, the order of the work and a scenario list drawn from real use. The proof stays with tests made here (§11, §15).</p>
 </section>
 
 <div class="legend-row" aria-label="Provenance labels">
@@ -202,6 +202,7 @@ td.ww { min-width: 21em; }
   <span><span class="pv x">external</span> public sources on other vendors</span>
   <span><span class="pv r">ruled</span> an operator ruling in force</span>
   <span><span class="pv p">proposed</span> this plan; not built</span>
+  <span><span class="pv x">operator's account</span> stated by the operator; not read or measured here</span>
 </div>
 
 <h2 id="s1"><span class="n">1</span>The request, and the two tracks</h2>
@@ -222,6 +223,7 @@ td.ww { min-width: 21em; }
   <li><strong>Loupe</strong> (accepted, building): a phone client held to CPRS's behaviour, with a passed side-by-side test for sign-on and patient selection. It supplies the proven unit of fidelity (§11) and should become a client of the service.</li>
   <li><strong>The retired web-CPRS architecture</strong> (June 2026) and <strong>an exploratory cprs-web project</strong> outside the org. Useful as reading. Under the org's boundary rule, nothing here may depend on the second.</li>
   <li><strong>The operator's 2016–2019 archive</strong>, measured in its code twice, and <strong>VA's own integration adapter</strong>, read from its installed context (§8).</li>
+  <li><strong>VA's VistA Application Analytics</strong>, an analysis of production RPC traffic at two medical centers, taken as an enabler for order entry, notes and reminder dialogs. Its analysis is not yet on this box and its raw traffic is assumed never to be (§8, §15).</li>
 </ul>
 <p>The org's settled position on whole-record extracts applies: VPR and eHMP extracts are not a new client's foundation (ruled 2026-09-23). The client uses CPRS's RPCs.</p>
 
@@ -249,6 +251,7 @@ td.ww { min-width: 21em; }
   <li><strong>Emulating VistA's side was tried, and it reached the shallow end.</strong> Across its two designs the operator's 2016–2019 archive holds 198 RPC models, 186 of them among the RPCs CPRS uses. By this plan's scan 34 of those can write stored data. An encounter save was emulated in the 2017 design; nothing covers orders, note signature, order checks or consults. Together they reach a fifth of the M behind CPRS's used RPCs (§8).</li>
   <li><strong>The work cuts at the RPCs, and CPRS's own units are no guide.</strong> Twenty-one of CPRS's 28 feature groups sit in one dependency cycle, while 953 of 999 RPCs belong to one group each. Built actions first, the work falls into 41 tracks in four waves, and up to six lanes can run side by side at almost no cost in waiting (§15).</li>
   <li><strong>The M behind CPRS's RPCs divides in two.</strong> The 720 used RPCs that write no stored data reach 19% of it. The 335 that write reach 91%, about four fifths of that outside Order Entry. Emulation is declined for the second group and held as an option for the first (§8).</li>
+  <li><strong>An analysis of real use can carry the hardest part.</strong> This plan's recordings reach 217 of the 1,067 RPCs, clicked by hand on demo data. VA's VistA Application Analytics analysed production traffic from two medical centers, mostly for order entry, note creation and reminder dialogs <span class="pv x">operator's account</span>. It has not been read here. Once it is, it gives the flows and the parameter classes to build from in the three workflows where this plan is weakest (§8, §15).</li>
 </ol>
 
 <h2 id="s3"><span class="n">3</span>Where CPRS's behaviour lives</h2>
@@ -475,6 +478,9 @@ td.ww { min-width: 21em; }
 <p><strong>The seam is the RPC call</strong> (§9). If a back end ever changes, it changes there, one call at a time.</p>
 </div>
 <div class="dl">
+  <div><span class="h">VA's VistA Application Analytics <span class="pv x">operator's account; its briefs read; its analysis not on this box</span></span>
+  <p>A VA project of 2024 and 2025 captured the RPC traffic of whole medical centers through the passive traffic mirror that the archive's second year built, and analysed it for clinical workflow. Its briefs of April 2025 say it captures "all traffic generated by all VistA point-of-care applications within a VA medical center" and that two centers were then being analysed <span class="pv m">read</span>. The rest is the operator's account of 2026-10-04: two production VistA systems; about 50 million RPCs, anonymized; an analysis that is furthest along for order entry, note creation and reminder dialogs; reminder dialogs starting a high share of the notes; and, in order entry, calls whose effect and whose following flow depend on their parameters. The project's work statement, as the operator's notes quote it, asked for each RPC's use and execution time, the RPCs each client uses and how often, reads told apart from writes, and "clinical care task sets, represented as groups of RPCs used in tandem", matched to screens and to kinds of user.</p>
+  <p>Nothing of the analysis has been read here. The raw traffic is not available, and this plan assumes it never will be; only the analysis may be. <strong>Lessons:</strong> it is the only evidence of what clinicians actually send, where this plan has 217 RPCs clicked by hand on demo data; it covers three of the plan's four largest interpreters, order entry among them, which the operator names as this plan's weakest point; without the raw traffic it is an enabler and not an oracle: it tells the plan what to build, in what order, and how to check that nothing in use was missed (§11, §15); and the plan's own door, in its observing mode, is how evidence of that kind would be made again (§9).</p></div>
   <div><span class="h">Microsoft Teams <span class="pv x">external, from a search summary of Microsoft's post</span></span>
   <p>The new Teams moved from Electron to Edge WebView2 and from AngularJS to React with Fluent controls, and moved data handling into a client data layer in a separate worker. Microsoft reported up to twice the speed and half the memory. The post itself did not load for a direct read. <strong>Lessons:</strong> one web code base in a thin native host; and a client that holds working state needs a deliberate data layer (§9).</p></div>
   <div><span class="h">Microsoft Outlook <span class="pv x">external</span></span>
@@ -653,6 +659,16 @@ td.ww { min-width: 21em; }
 <tr><td><strong>outside connections</strong></td><td class="num">22 classes</td><td class="ww">each entry of §7 has a ruled answer and a row</td></tr>
 </tbody></table></div>
 
+<h3>An outside check: observed use</h3>
+<p>The completeness checks above ask whether every part of CPRS has become rows. None asks whether the rows cover what clinicians do. The VAA analysis (§8) supplies that for order entry, note creation and reminder dialogs. How it is used to build is in §15. <span class="pv p">proposed; the analysis is not on this box</span></p>
+<ul>
+  <li><strong>Every flow the analysis reports maps to at least one row.</strong> A flow with no row is a gap, listed by name.</li>
+  <li><strong>Every parameter class it reports appears in a row,</strong> for the calls whose effect depends on their parameters: order save and send, the order checks, the dialog-definition calls.</li>
+  <li><strong>A second number is reported beside rows proven:</strong> the share of observed order, note and reminder flows whose rows are proven.</li>
+  <li><strong>The proof of a row stays with the oracles below.</strong> A finding from the analysis keeps VAA's label and is never relabelled as measured here.</li>
+  <li><strong>Until the analysis is on this box the check is reported as not run.</strong> It is never reported as passed.</li>
+</ul>
+
 <h3>The oracles</h3>
 <ol>
   <li><strong>Traffic:</strong> the tap records CPRS and the session service doing the same action, compared under the written equivalence <span class="pv r">ruled</span>.</li>
@@ -748,11 +764,11 @@ td.ww { min-width: 21em; }
 <div class="table-wrap"><table>
 <thead><tr><th>phase</th><th>scope</th><th class="num">projected rows</th><th class="num">days at Loupe's pace</th><th>exit test</th></tr></thead>
 <tbody>
-<tr><td><strong>0. Baseline and rulings</strong></td><td class="ww">rule the decisions of §19 that gate the rest; the allowlist from the used set; the row register and its gates; the remaining duty measurements on a throwaway copy (order-check acknowledgement, encounter prompting, copy/paste tracking, the token sign-on); the reserved-key test on a Windows machine; an attempt to rebuild CPRS; a trial of scripted driving of CPRS in the Windows guest; read the remaining prior art. The order-signature, write-access, restricted-list and lock measurements are done (§6)</td><td class="num">none</td><td class="num">–</td><td class="w">the register's gates red-proved against planted violations; the remaining duty measurements taken; one recorded scenario replayed by script, or the reason it cannot be</td></tr>
+<tr><td><strong>0. Baseline and rulings</strong></td><td class="ww">rule the decisions of §19 that gate the rest; the allowlist from the used set; the row register and its gates; the remaining duty measurements on a throwaway copy (order-check acknowledgement, encounter prompting, copy/paste tracking, the token sign-on); the reserved-key test on a Windows machine; an attempt to rebuild CPRS; a trial of scripted driving of CPRS in the Windows guest; read the remaining prior art; read the VAA analysis if it has arrived, and turn its order, note and reminder flows into the scenario list (§11). The order-signature, write-access, restricted-list and lock measurements are done (§6)</td><td class="num">none</td><td class="num">–</td><td class="w">the register's gates red-proved against planted violations; the remaining duty measurements taken; one recorded scenario replayed by script, or the reason it cannot be</td></tr>
 <tr><td><strong>1. Session core, sign-on, open a chart</strong></td><td class="ww">per-person sessions, keep-alive, idle lock, lock release, the sensitive-record rule, patient binding, write-access rules loaded; sign-on with codes; patient selection; classic-mode frame and cover sheet; the Broker-protocol door, observing only</td><td class="num">140–490</td><td class="num">20–69</td><td class="w">the selection preamble matches CPRS's recording; confirm and warn scenarios pass; no lock survives a closed tab; a call naming another patient is refused; CPRS's sessions on the box pass through the door, and every entry in its would-refuse log has a verdict</td></tr>
-<tr><td><strong>2. One order through signature</strong></td><td class="ww">a thin end-to-end path on a throwaway copy: one quick order, its order checks, save, signature; the wrong-code and write-access refusals; a page reload and a service restart mid-order, the restart also with the lock taken by someone else; one agent proposal accepted by a person; a release of one session holder while a session runs on another; a count of round trips per answered prompt</td><td class="num">counted before it starts</td><td class="num">–</td><td class="w">the order matches CPRS's sequence and database effect; both refusals hold; the reload restores the dialog; the restart replays it, and when the lock is held the clinician is told and nothing is written; the release interrupts no session on the other holder; the round-trip count is recorded for decision 11</td></tr>
+<tr><td><strong>2. One order through signature</strong></td><td class="ww">a thin end-to-end path on a throwaway copy: one quick order, its order checks, save, signature, chosen as the most frequent order flow in the VAA analysis where that is known; the wrong-code and write-access refusals; a page reload and a service restart mid-order, the restart also with the lock taken by someone else; one agent proposal accepted by a person; a release of one session holder while a session runs on another; a count of round trips per answered prompt</td><td class="num">counted before it starts</td><td class="num">–</td><td class="w">the order matches CPRS's sequence and database effect; both refusals hold; the reload restores the dialog; the restart replays it, and when the lock is held the clinician is told and nothing is written; the release interrupts no session on the other holder; the round-trip count is recorded for decision 11</td></tr>
 <tr><td><strong>3. Every read</strong></td><td class="ww">problems, medications, labs, reports, graphs, surgery, vitals and allergies display; Loupe moves onto the service</td><td class="num">170–570</td><td class="num">24–80</td><td class="w">a read scenario per tab; report definitions accepted and matched</td></tr>
-<tr><td><strong>4. Notes</strong></td><td class="ww">a note's life with the template engine, autosave, copy/paste provenance</td><td class="num">170–590</td><td class="num">24–83</td><td class="w">templates and fields accepted; every template grammar feature matched; byte-identical note text on recorded cases</td></tr>
+<tr><td><strong>4. Notes</strong></td><td class="ww">a note's life with the template engine, autosave, copy/paste provenance</td><td class="num">170–590</td><td class="num">24–83</td><td class="w">templates and fields accepted; every template grammar feature matched; byte-identical note text on recorded cases, a note produced through a reminder dialog among them</td></tr>
 <tr><td><strong>5. Encounter, immunizations, reminders, vitals entry</strong></td><td class="ww">the encounter forms, the immunization engine, the reminder dialog engine with mental-health instruments, the Vitals DLL's entry screens</td><td class="num">240–810</td><td class="num">34–114</td><td class="w">reminder elements accepted and matched; database effects match CPRS</td></tr>
 <tr><td><strong>6. Orders, complete</strong></td><td class="ww">every order dialog type, the pathology builder, quick orders, sets, order checks, order actions, event-delayed orders, PDMP, billing awareness</td><td class="num">300–1,040</td><td class="num">42–146</td><td class="w">dialog entries accepted and matched; each action's database effect matches</td></tr>
 <tr><td><strong>7. Consults, alerts, options</strong></td><td class="ww">consult actions, follow-up for all 70 notification types, preferences, surrogates, lists</td><td class="num">95–330</td><td class="num">13–46</td><td class="w">every notification type's follow-up has a row</td></tr>
@@ -762,6 +778,27 @@ td.ww { min-width: 21em; }
 </tbody></table></div>
 <p>The control library and accessibility framework (43,070 lines, a projected 140 to 500 rows of control behaviour) are built as the phases need them. All of CPRS projects to about 1,200 to 4,100 rows, and the Vitals DLL to about 100 to 330 more. At Loupe's pace that is about 180 to 620 days in all, before the slower write rows.</p>
 <p><strong>Why one order comes second.</strong> Orders hold the largest interpreter, the order-check state, the unenforced signature, write access and the agent question. A thin path through them settles state placement, the duty rules and the equivalence method while they are cheap to change, before the read screens and the classic-mode generator are widened.</p>
+
+<h3>The VAA analysis as an enabler</h3>
+<p>VA's VistA Application Analytics analysed production traffic for order entry, note creation and reminder dialogs (§8). Those are three of this plan's four largest interpreters, and order entry is its weakest point. The plan builds on that analysis wherever it reaches. The last column is what the plan does today, and what it keeps doing wherever the analysis is silent. <span class="pv p">proposed; the analysis is not on this box</span></p>
+<div class="table-wrap"><table>
+<thead><tr><th>part of the work</th><th>what the analysis enables</th><th>what it must carry for that</th><th>without it</th></tr></thead>
+<tbody>
+<tr><td><strong>Order entry</strong></td><td class="ww">the order rows and scenarios start from the analysed flows and from the parameters the analysis found to change a call's effect, and the source read of the order dialog engine confirms them. Phase 2's order is the most frequent flow. The dialog tracks of the Orders lane are taken in order of use</td><td class="w">the flows by kind of order, with their calls in order, and the parameters that select a flow</td><td class="w">the parameter classes are worked out from 40,852 lines of Delphi alone, and the tracks are taken in order of size</td></tr>
+<tr><td><strong>Notes</strong></td><td class="ww">the note flows to record first, and which of them start in a reminder dialog</td><td class="w">the note-creation flows and what starts each</td><td class="w">the notes track is built from the source read alone</td></tr>
+<tr><td><strong>Reminder dialogs</strong></td><td class="ww">the kinds of element and prompt in real use, so that the matched gate of §11 takes the used grammar features first. Notes and reminder dialogs are proved together, because by the operator's account reminder dialogs start a high share of the notes</td><td class="w">the reminder flows and the kinds of element they use</td><td class="w">grammar features are taken in the order the source lists them</td></tr>
+<tr><td><strong>The recording bank</strong></td><td class="ww">a scenario list drawn from real work. Where the analysis gives a flow call by call, a script can send that sequence to a throwaway copy with vehu's records in place of the site's, which yields the flow's replies and its database effect without CPRS being driven by hand. CPRS in the Windows guest then confirms a sample of each family of flows</td><td class="w">sequences detailed enough to put vehu's records in place of the site's</td><td class="w">every write row waits on CPRS driven by hand, or on phase 0's trial of scripted driving</td></tr>
+<tr><td><strong>The fidelity metric</strong></td><td class="ww">a second number beside rows proven: the share of observed flows whose rows are proven (§11)</td><td class="w">how often each flow occurs</td><td class="w">rows proven over rows is the only number</td></tr>
+<tr><td><strong>Sizing</strong></td><td class="ww">counts of flows to set beside the projected rows of the Orders and Documents lanes</td><td class="w">flow counts by kind</td><td class="w">Loupe's density is the only basis</td></tr>
+<tr><td><strong>Timing</strong></td><td class="ww">a production baseline for the calls of these workflows</td><td class="w">execution times, which the project's work statement asked for</td><td class="w">no baseline; the question stays with track B (§17)</td></tr>
+</tbody></table></div>
+<ul>
+  <li><strong>It enables and does not prove.</strong> Every row is still proved by the oracles of §11 on recordings made here.</li>
+  <li><strong>Frequency orders the work and removes no row.</strong> A rare flow can be the dangerous one.</li>
+  <li><strong>The reference CPRS settles a difference.</strong> The CPRS version and the dates of the capture are stated before a flow is set beside CPRS 1.33.112.1.</li>
+  <li><strong>Nothing waits for it.</strong> Until the analysis is on this box each row reads as its last column, and the phases run as they stand.</li>
+  <li><strong>Work on the analysis itself is exploratory</strong> and is done outside the org's repos. The plan takes its published result.</li>
+</ul>
 
 <h3>How the phases run</h3>
 <p>Phases 0 to 2 run in order, as one stream. They are the spine: everything later stands on the session core, the registers and the contracts that the thin order path fixes. The scope of phases 3 to 7 is then built as lanes that run side by side, so those five numbers no longer mean an order. Each phase's exit test still applies to the tracks that carry its scope. Phases 8 to 10 follow the lanes.</p>
@@ -974,6 +1011,7 @@ td.ww { min-width: 21em; }
   <li><strong>Record once.</strong> One bank of CPRS recordings feeds the traffic, text, database and screen oracles. Scripted driving of CPRS, tried in phase 0, is what lets that bank grow at machine speed.</li>
   <li><strong>Build the control kit in order of use.</strong> CPRS's 319 form and frame files hold 5,462 control instances of 100 classes. Twenty classes are 85% of the instances. Forty are 96%, and 233 of the 319 files use nothing else. <span class="pv m">measured</span></li>
   <li><strong>Prepare beside the spine.</strong> None of the following depends on the contracts, and all of it is read-only or runs on a throwaway copy: the source read of every group into rows, the recordings, the definition exports, the reply corpus of each RPC, the 129 effect-class disagreements, and the list of grammar features for each interpreter. Done during phases 0 to 2, it lets every lane start with its rows and oracles in hand, and it replaces the projected row counts with real ones.</li>
+  <li><strong>Record what is used.</strong> The VAA analysis, once read, names the order, note and reminder flows clinicians actually run. The recording bank starts with those.</li>
   <li><strong>Carry over</strong> Loupe's 57 built rows.</li>
 </ul>
 <h4>Second, a shorter longest chain</h4>
@@ -1030,7 +1068,8 @@ td.ww { min-width: 21em; }
 <tr><td class="w">a rule is applied to the web client and missed for CPRS through the door, or the reverse</td><td class="w">one typed RPC call in the session core, where the allowlist, the duty rules and the audit apply to both</td></tr>
 <tr><td class="w">an RPC is classed as reading when it writes</td><td class="w">two sources for the effect class; the 129 disagreements listed, each settled by a database comparison</td></tr>
 <tr><td class="w">the metric reads 100% on a product that is wrong</td><td class="w">capability rows with behavioural evidence; routine, RPC, action and definition counts only as completeness checks; parameter classes for mode-bearing RPCs; "accepted" kept apart from "matched"</td></tr>
-<tr><td class="w">rows miss a behaviour because they are written by judgment</td><td class="w">the completeness checks; rows reviewed against the units they cite; execution reporting once CPRS can be rebuilt</td></tr>
+<tr><td class="w">rows miss a behaviour because they are written by judgment</td><td class="w">the completeness checks; rows reviewed against the units they cite; execution reporting once CPRS can be rebuilt; the VAA analysis as an outside list of flows for order entry, notes and reminder dialogs, once it is read</td></tr>
+<tr><td class="w">the plan leans on an analysis it cannot re-run, whose raw traffic it will not see</td><td class="w">the analysis orders the work and lists gaps, and is never a proof; each finding keeps its label; the door's observing mode is the plan's own source of traffic; without the analysis the outside check of §11 is reported as not run and nothing else changes</td></tr>
 <tr><td class="w">a ported interpreter produces different clinical text or filing strings</td><td class="w">the text and database oracles; every grammar feature matched against a CPRS recording</td></tr>
 <tr><td class="w">a release ends every clinician's VistA job at a site</td><td class="w">a cell is several session holders, released one at a time as their sessions end; proven in phase 2</td></tr>
 <tr><td class="w">a service restart loses every clinician's unfinished work</td><td class="w">the work-in-progress journal, and a replay that never re-sends a write and never forces a lock; its calls are read from the job state the actions declare; proven in phase 2, including the case where someone else now holds the lock</td></tr>
@@ -1092,6 +1131,7 @@ td.ww { min-width: 21em; }
 <tr><td class="w">operating about 130 cells: who runs each site's accepted gate, on what data, and what one site's red gate does to a release</td><td class="w">an operations design, with VA</td></tr>
 <tr><td class="w">whether a site can limit the Broker's port to the cell's address, and which other applications share that port</td><td class="w">site network information</td></tr>
 <tr><td class="w">how VA's adapter authorizes each call, and how the client inside Cloud CPRS signs on</td><td class="w">VA's own material; not in what was read</td></tr>
+<tr><td class="w">what the VAA analysis holds: its flows and parameter classes for order entry, notes and reminder dialogs, how often each occurs, and the CPRS version and dates of its capture</td><td class="w">the analysis itself, when it is available. The raw traffic is assumed never to be</td></tr>
 </tbody></table></div>
 
 <h2 id="s18"><span class="n">18</span>Assumptions</h2>
@@ -1107,6 +1147,7 @@ td.ww { min-width: 21em; }
   <li>The session service can be placed next to each VistA instance.</li>
   <li>Signing stays a human act.</li>
   <li>The effort lives in the org as a VistA-layer effort and reaches VistA only as a Broker client through v-base's broker package. A new Broker door of this kind needs its own ruling with a retirement condition, as does every gate this plan proposes. The Broker-protocol door of §9 is a second such door and needs the same.</li>
+  <li>The raw traffic of VA's VistA Application Analytics is not available to this plan, now or later. Only its analysis may be (operator, 2026-10-04).</li>
 </ul>
 
 <h2 id="s19"><span class="n">19</span>Decisions to rule</h2>
@@ -1136,6 +1177,7 @@ td.ww { min-width: 21em; }
   <li><strong>Emulating the calls that write:</strong> declined on the measurements of §8, to reopen only inside a programme that also replaces VistA's departmental packages.</li>
   <li><strong>How many lanes run at once</strong> after phase 2 (§15). Recommended: the orders, documents, encounter and chart-reads lanes and the control kit to start, with consults joining when notes exist. Six is the measured useful maximum.</li>
   <li><strong>Emulating the calls that write nothing stored:</strong> not now. It is held as an option whose trigger is a class of client that must read and cannot be given a VistA job, and whose cost is two standing rulings reopened (§8). Recommended: hold.</li>
+  <li><strong>The VAA analysis as an enabler:</strong> the order, note and reminder work is built from the analysis's flows and parameter classes, ordered by observed use and reported as a share of observed flows proven, while every row is still proved here (§11, §15). Recommended: yes. Work on the analysis itself is exploratory and is done outside the org's repos.</li>
 </ol>
 
 <h2 id="s20"><span class="n">20</span>What changed since the two artifacts</h2>
@@ -1160,8 +1202,10 @@ td.ww { min-width: 21em; }
 <tr><td class="w">four safeguards as drafts</td><td class="w">ruled on 2026-09-23 with amendments, and a fifth added</td></tr>
 </tbody></table></div>
 
-<h2 id="s21"><span class="n">21</span>Amendments from the four review rounds, and the operator's request</h2>
-<p>This plan was reviewed adversarially three times on 2026-10-03. Round 1 re-tested version 1; its thirteen changes made version 2. Round 2 ran the open tests live and stress-tested version 2; its ten changes made version 3. Round 3 measured the operator's 2016–2019 emulation archive against version 3; its six changes made version 4. Version 5 was asked for by the operator and by no review. Round 4, on 2026-10-04, stress-tested version 5 against RPC emulation in two reports kept beside this plan in the repo. Five of its six changes made version 6, and the sixth was withdrawn at the operator's ruling.</p>
+<h2 id="s21"><span class="n">21</span>Amendments from the four review rounds, and the operator's requests</h2>
+<p>This plan was reviewed adversarially three times on 2026-10-03. Round 1 re-tested version 1; its thirteen changes made version 2. Round 2 ran the open tests live and stress-tested version 2; its ten changes made version 3. Round 3 measured the operator's 2016–2019 emulation archive against version 3; its six changes made version 4. Version 5 was asked for by the operator and by no review. Round 4, on 2026-10-04, stress-tested version 5 against RPC emulation in two reports kept beside this plan in the repo. Five of its six changes made version 6, and the sixth was withdrawn at the operator's ruling. Version 7 was asked for by the operator and by no review.</p>
+<h3>The operator's request, into version 7</h3>
+<p>On 2026-10-04 the operator asked how VA's VistA Application Analytics could be brought into the plan, set the assumption that its raw traffic will not be available and only its analysis may be, and asked that the analysis be taken as an enabler. Version 7 adds the project to §8, an outside check on observed use to §11 and "The VAA analysis as an enabler" to §15. In §15 it also adds the analysis to phase 0, to the choice of phase 2's order and to the notes exit test. It adds finding 15 to §2, a risk and a mitigation to §16, an unknown to §17, an assumption to §18 and decision 25 to §19. No figure from the analysis is in this version, because none has been read.</p>
 <h3>Round 4, into version 6</h3>
 <div class="table-wrap"><table>
 <thead><tr><th>#</th><th>the review asked for</th><th>in this version</th></tr></thead>
@@ -1248,6 +1292,10 @@ td.ww { min-width: 21em; }
   <li><strong>The archive, both designs:</strong> model names from the <code>name:</code> field of each model file in <code>MVDM</code>, the 2017 design, and from round 3's list for <code>Archive/VICSServer</code>; the web client from <code>Archive/VICSClient</code> and <code>Archive/React.Views</code>; the applications at the monitored site from <code>RPCDefinitionToolkit/IOC/BaseReports</code>, the report for 2020-01-08.</li>
   <li><strong>Kept:</strong> the scripts are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/round4/</code>, not committed. The method and its corrections are in §C10 of the round 4 report.</li>
 </ul>
+<h4>The operator's account, 2026-10-04</h4>
+<ul>
+  <li><strong>VA's VistA Application Analytics:</strong> two executive briefs of April 2025 and the operator's 2024 notes on the project's work statement were read, from the operator's own files outside the org's repos. Everything else in §8's entry is the operator's account in the session. Neither the traffic nor the analysis was read, and a search of this box found neither.</li>
+</ul>
 <h4>Measured 2026-09-23 and carried forward</h4>
 <ul>
   <li>The surface map, the service layer and their reviews (docs repo, <code>proposals/parked/</code>): the tap recordings, the sensitive-record reading, session limits, the identity research, the splits of order-dialog and document-definition records.</li>
@@ -1267,7 +1315,7 @@ td.ww { min-width: 21em; }
 </article>
 
 <footer class="src">
-A rendering of <code>proposals/cprs-web-strategy/cprs-web-strategy.md</code> in the vista-forge <code>docs</code> repo at commit <code>9712f79</code>, version 6 of 2026-10-04. The repo copy is the one that is ruled on and kept current. Nothing described here as a service, module, door, companion, register or gate exists yet. The scripts, lists and the record of the live tests are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed.
+A rendering of <code>proposals/cprs-web-strategy/cprs-web-strategy.md</code> in the vista-forge <code>docs</code> repo at commit <code>85d25c1</code>, version 7 of 2026-10-04. The repo copy is the one that is ruled on and kept current. Nothing described here as a service, module, door, companion, register or gate exists yet. The scripts, lists and the record of the live tests are under <code>~/data/vista-forge/cprs-profile/web-strategy-2026-10-03/</code>, not committed.
 </footer>
 </div>
 
