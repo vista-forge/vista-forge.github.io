@@ -372,7 +372,7 @@ My phone is: iPhone / Android</p>
         <li><strong>Choose how much time to show</strong> with the row at the foot: <span class="ui">1W 1M 3M 1Y 5Y 10Y All</span>. It opens on five years. <strong>All</strong> shows the patient's whole life in VistA.</li>
         <li><strong>Move through time</strong> by swiping sideways on the lanes, by dragging the blue dot on the strip under the spans, or by tapping the counts at a lane's ends (<span class="ui">&lt; 39</span> means 39 earlier).</li>
         <li>Under each lane's name is how many it shows, of all (<span class="ui">56 of 95</span>). The small squares there open a key to the colours: a visit is coloured by kind, and a hollow square was cancelled or missed.</li>
-        <li><strong>Tap a square to choose that moment.</strong> Its notes light up on the Notes page, and the Vitals and Labs pages show that day's readings. Tap it again to let it go.</li>
+        <li><strong>Tap a square to choose that moment.</strong> Its notes light up on the Notes page. A day with vitals opens that day's readings in the Vitals table, and a lab day opens that day's collection on Labs. Tap it again to let it go.</li>
         <li>The ⓘ beside the strip shows these gestures again.</li>
       </ul>
     </div>
@@ -386,16 +386,18 @@ My phone is: iPhone / Android</p>
     <div class="body">
       <h3><span class="num">9</span>Vitals</h3>
       <ul>
-        <li>One graph a vital, on one time axis: BP, HR, RR, Temp, SpO2, Pain, Ht, Wt and BMI. At the right of each, the latest reading, its date and how long ago.</li>
-        <li>The grey band is your site's abnormal limits for that vital. A dashed frame means VistA stores no limits for it.</li>
-        <li><strong>Tap a graph</strong> to read every vital at that moment, in blue. Hold, then drag, to read along the graphs. Tap again to go back to the latest.</li>
-        <li>The graphs show the stretch of time chosen on the Timeline page. Swipe sideways to move through it. To show more or less time, change the spans on the Timeline page.</li>
-        <li>A day chosen on the timeline means that day here: a vital with no reading that day says <span class="ui">none on 1/30/08</span>.</li>
+        <li><strong>The range</strong> is the chip at the top right. It opens on <span class="ui">This stay</span> for an inpatient and <span class="ui">Six months</span> otherwise; tap it for CPRS's own list of ranges, or a date range of your own. The demo record's readings end in 2015, so <strong>choose All results</strong>.</li>
+        <li>A line answers <q>What are they now?</q>: when the latest set was taken and how long ago, how many sets the range holds, and how many readings were outside your site's limits.</li>
+        <li>One row a vital: BP, HR, RR, Temp, SpO2, Pain, Ht, Wt and BMI. Each gives the latest reading with its time and how long ago, a small trend over the range (the grey band is your site's abnormal limits), and the reading before it. Under a row, how the latest reading was taken, in VistA's words.</li>
+        <li>The chips at the foot change the view: <strong>Rows</strong>; <strong>Table</strong>, every set as a column, the newest beside the names (swipe the table sideways for earlier ones); and <strong>Outside limits</strong>, each reading outside your site's limits with the limit it crossed.</li>
+        <li><strong>Tap a row</strong> for that vital in depth: a graph with both axes, where a tap reads the reading under it; the latest, the previous, the highest and lowest in the range and how many were outside the limits, each saying how it was found when tapped; then every reading. The row of spans over the graph changes the range.</li>
+        <li>Certo arranges and counts VistA's readings and judges nothing: no arrows, no differences, no words like <q>rising</q>, and no vital in red, since VistA marks none.</li>
       </ul>
     </div>
     <div class="shots">
-      <figure class="shot"><img src="img/vitals.webp" width="600" height="1192" alt="Vitals over five years: nine small graphs with the latest reading, date and age at the right of each." loading="lazy"><figcaption>The latest of each.</figcaption></figure>
-      <figure class="shot"><img src="img/vitals-day.webp" width="600" height="1192" alt="Vitals over the whole record with a day chosen on the timeline: each graph's reading that day in blue, or none on 1/30/08." loading="lazy"><figcaption>A day chosen on the timeline.</figcaption></figure>
+      <figure class="shot"><img src="img/vitals-ranges.webp" width="600" height="1192" alt="Vitals with the range chip open: CPRS's list of ranges, Today to All results, then Date range, Six months ticked." loading="lazy"><figcaption>Choosing the range.</figcaption></figure>
+      <figure class="shot"><img src="img/vitals.webp" width="600" height="1192" alt="Vitals for All results: the line saying when the latest set was taken, 67 sets and 13 readings outside the limits, then a row a vital with its latest reading, a small trend and the previous reading." loading="lazy"><figcaption>All results: a row a vital.</figcaption></figure>
+      <figure class="shot"><img src="img/vital-depth.webp" width="600" height="1192" alt="Blood pressure in depth: the spans, a graph of every reading since 1999 with its values on the left, then the latest, previous, highest, lowest and how many were outside the limits, and every reading listed." loading="lazy"><figcaption>One vital in depth.</figcaption></figure>
     </div>
   </article>
 
@@ -403,16 +405,18 @@ My phone is: iPhone / Android</p>
     <div class="body">
       <h3><span class="num">10</span>Labs</h3>
       <ul>
-        <li>The tests are grouped into domains: CBC, Heme, Coag, LFT, Glucose, Electrolytes, Cholesterol, Cardiac, Renal and more. Tap a domain's chip to show or hide it; the number is how many tests it holds.</li>
-        <li>A <span class="flagged">red dot</span> on a chip means VistA flagged a latest result in that domain. Those domains open already shown.</li>
-        <li>Each test is a graph against the reference range stored with its results, the grey band, with its latest result, date and age at the right. A test with only one result in view is a single line.</li>
-        <li>As on Vitals: the graphs show the time chosen on the Timeline page, a tap reads a moment, and a day chosen on the timeline shows that day's results.</li>
-        <li>CPRS's own Recent Lab Results line for you is at the foot of the page.</li>
+        <li>It opens on <strong>Latest</strong>, CPRS's Most Recent: the newest collection, its tests in the laboratory's own order, VistA's flags in red. Each row gives the result, the result before it with its date, and a small trend against the stored reference range. Step through collections with <span class="ui">« Oldest</span> <span class="ui">‹ Previous</span> <span class="ui">Next ›</span> <span class="ui">Newest »</span>, as in CPRS.</li>
+        <li><strong>Flagged</strong> lists every result VistA flagged, newest first, by collection. <strong>By panel</strong> groups the tests (CBC, Electrolytes, Cholesterol and more), each with its latest result; a <span class="flagged">red dot</span> marks a panel whose latest result VistA flagged. <strong>Micro</strong> lists the cultures; tap one to read the laboratory's report.</li>
+        <li><strong>Find a test</strong> by typing part of its name as VistA names it, such as <span class="ui">chol</span>.</li>
+        <li><strong>Tap a test</strong> for it in depth, as on Vitals, with its reference range drawn and every result with its range and specimen.</li>
+        <li>The range chip sets the span the trends cover; for the demo record, <strong>choose All results</strong>.</li>
+        <li><strong>Active lab orders</strong>, at the top, opens the lab orders not yet complete, as CPRS's Orders tab lists them. CPRS's own Recent Lab Results line for you is at the foot.</li>
       </ul>
     </div>
     <div class="shots">
-      <figure class="shot"><img src="img/labs.webp" width="600" height="1192" alt="Labs: domain chips with counts and red dots, then CBC tests with their latest results; critical results in red boxes." loading="lazy"><figcaption>Domains, and the latest results.</figcaption></figure>
-      <figure class="shot"><img src="img/labs-day.webp" width="600" height="1192" alt="Labs over the whole record with 1/30/08 chosen: each CBC test's graph and its result that day." loading="lazy"><figcaption>Every result, a day chosen.</figcaption></figure>
+      <figure class="shot"><img src="img/labs.webp" width="600" height="1192" alt="Labs, Latest: 15 results, 10 flagged by VistA, collected 8/13/14, the step buttons, then each test with its result, the previous result and a small trend." loading="lazy"><figcaption>The latest collection.</figcaption></figure>
+      <figure class="shot"><img src="img/lab-depth.webp" width="600" height="1192" alt="SEGS in depth: its results since 1998 against the reference range, the latest and previous, highest and lowest, how many VistA flagged, and every result." loading="lazy"><figcaption>One test in depth.</figcaption></figure>
+      <figure class="shot"><img src="img/labs-flagged.webp" width="600" height="1192" alt="Labs, Flagged: 110 flagged results in the record, newest first, grouped by collection with how many were flagged of how many." loading="lazy"><figcaption>Everything VistA flagged.</figcaption></figure>
     </div>
   </article>
 
@@ -463,9 +467,9 @@ My phone is: iPhone / Android</p>
   <h2 id="try-h">Five things to try</h2>
   <ol class="tries">
     <li><strong>A lifetime on one screen.</strong> Open TEN,PATIENT, go to Timeline and tap <strong>All</strong>. Visits, notes, vitals and labs from 1988 on.</li>
-    <li><strong>One day, every page.</strong> On the timeline, tap a lab day around 2008. Go to Labs, then Vitals: each shows that day.</li>
+    <li><strong>One day, its collection.</strong> On the timeline, tap <strong>All</strong>, then a lab day around 2008. Go to Labs: it shows that day's collection, and <span class="ui">‹ Previous</span> and <span class="ui">Next ›</span> step from there.</li>
     <li><strong>Find a note.</strong> On Notes, type <span class="ui">discharge</span>. Then switch <strong>Titles ▾</strong> to the notes' text and search for a word such as <span class="ui">cardiology</span>.</li>
-    <li><strong>What is abnormal now.</strong> On the glance, read the Latest labs line, then tap it: the flagged domains on Labs are already open.</li>
+    <li><strong>What VistA flagged.</strong> On Labs, tap <strong>Flagged</strong>: every flagged result, newest first. Tap one to see its history.</li>
     <li><strong>The safety habits.</strong> Tap Hide; leave the app and come back; go back to Patient Search and open another patient.</li>
   </ol>
 </section>
