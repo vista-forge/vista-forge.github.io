@@ -52,8 +52,9 @@ site's own `/forge-docs/`** — the copy in this repo, refreshed from the same
 build the publish host serves, so it is the same bytes without an origin
 boundary. That is worth three things: it loads from inside the project's own
 network, where a public page may not embed the publish host; it does not
-depend on the home server being up; and the light/dark choice carries into it,
-because `localStorage` is per-origin and this is now the same origin.
+depend on the home server being up; and a choice the reference keeps in
+`localStorage` reaches it, because `localStorage` is per-origin and this is
+now the same origin.
 
 All three are shown under this banner rather than linked away to theirs. Consequences worth knowing before changing
 anything here:
@@ -94,12 +95,11 @@ anything here:
   site tree. Under this banner it is two panes and nothing else. That is a
   change in the `forge-docs` repo and a republish, never an edit to the
   deployed copy here.
-* **The light/dark choice does not cross an origin boundary**, because
-  `localStorage` is per-origin. It reaches the Docs view, which is same-origin;
-  it does not reach the two Explore views, which are on the publish host and
-  stay on their own default. The control in the reference's own rail is what
-  covers the case where it does not — which is why that control had to survive
-  the move rather than go with the banner.
+* **This site has one theme, light** (operator, 2026-10-05): the banner's
+  light/dark toggle, its pre-paint script on every page and the dark tokens
+  were removed. The framed applications keep their own: the reference's rail
+  still carries a theme control (the `forge-docs` repo), and the two Explore
+  views, on the publish host, follow their own default.
 * **Nothing here sets `X-Frame-Options` or a `frame-ancestors` policy**, on
   either side. If the publish origin ever grows one, these views go blank.
 
@@ -168,16 +168,10 @@ sections:
 | `--ember` | the `v` layer — VistA-specific |
 | `--cyan` | the `m` layer — engine-neutral |
 
-**Light is the default; dark is an explicit opt-in** via the header toggle
-(2026-08-30 — it was the other way round from 2026-08-14). Neither is inferred
-from `prefers-color-scheme`: the choice is the reader's, persisted in
-`localStorage` and applied pre-paint by an inline script on every page. The
-light values live on bare `:root` and the dark ones under
-`:root[data-theme="dark"]`, so a change to one needs a check against the other.
-
-Dark is **dark, not black**. The ground was `#000` with the elevated surfaces
-barely above it, which made every card edge a hairline against a void; the ramp
-now starts one step up, at the same hue and saturation.
+**One theme, light** (operator, 2026-10-05). The tokens live on bare `:root`;
+there is no dark block, no toggle, and nothing reads `prefers-color-scheme`,
+so every reader sees the same page. (Dark was an opt-in from 2026-08-30, and
+the default from 2026-08-14 before that.)
 
 ### The palette is restated in `forge-docs`
 
@@ -190,8 +184,8 @@ So the same token values are restated in `forge-docs/site/src/styles/forge.css`
 **Nothing gates the agreement.** A change to a token here is a change there as
 well, and the only way to see a drift is to look at the two pages side by side.
 The same goes for the header: that repo's `src/components/OrgNav.astro` mirrors
-this one's, and both toggles write both theme keys (`theme` here,
-`starlight-theme` there) so one click holds across the boundary.
+this one's. Its theme control still writes both theme keys (`theme` and
+`starlight-theme`); since 2026-10-05 nothing here reads either.
 
 **The Docs menu names the reference's three books** (VistA tools, M engine
 tools, Products), by the labels its own sidebar gives them, which the

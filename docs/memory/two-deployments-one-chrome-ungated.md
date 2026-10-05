@@ -133,3 +133,11 @@ merely unnecessary — but it was also *fatal*: a scroll container clips its
 descendants, **absolutely-positioned ones included**, so a dropdown panel
 inside it is sliced off at the banner's edge. A menu cannot live inside an
 `overflow-x: auto` strip at all.
+
+**+2026-10-05 (operator): this site has ONE theme, light.** Its toggle, its
+pre-paint scripts (index, cla, licensing) and the dark token block are gone,
+so the `.theme-toggle` row in the table above and the both-keys rule now hold
+for the reference alone: its rail control still writes `theme` and
+`starlight-theme`, and nothing on this site reads either. A reader who chose
+dark in the reference still sees the framed reference dark inside a light
+banner; whether the reference goes light-only too is the operator's call.

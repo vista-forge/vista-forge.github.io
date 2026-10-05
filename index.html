@@ -18,14 +18,6 @@
 <meta property="og:image" content="https://vista-forge.github.io/assets/img/logo.png">
 <link rel="stylesheet" href="assets/css/site.css">
 <script>
-/* pre-paint: apply a persisted dark-theme choice before first render (light is the default).
-   `starlight-theme` is the same choice made on /forge-docs/ — that site is a wing of this
-   one, so a toggle there must not be forgotten on the way back. Both keys are written on every
-   toggle; either one alone is enough to restore the choice. */
-try {
-  var t = localStorage.getItem("theme") || localStorage.getItem("starlight-theme");
-  if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
-} catch (e) {}
 /* The menus open on click, which needs scripting. Without it the panels fall
    back to hover/focus in CSS — so the class, not its absence, is the flag. */
 document.documentElement.className += " js";
@@ -42,8 +34,7 @@ document.documentElement.className += " js";
       VistA Forge
     </a>
     <!-- Three menus, and every destination in the banner at every width: the
-         nav scrolls sideways rather than dropping items, and the theme control
-         sits outside it so it is never scrolled away. Architecture's items are
+         nav scrolls sideways rather than dropping items. Architecture's items are
          sections of THIS page; Explore's and Docs' are separate applications
          shown in the frame below the banner, under this address. -->
     <nav class="nav" id="nav" aria-label="Primary">
@@ -139,10 +130,6 @@ document.documentElement.className += " js";
       </div>
 
     </nav>
-    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    </button>
   </div>
 </header>
 
@@ -1141,31 +1128,6 @@ document.documentElement.className += " js";
     Everything on this page works as it is.
   </p>
 </noscript>
-
-<script>
-(function () {
-  var root = document.documentElement;
-  var btn = document.getElementById("theme-toggle");
-  function relabel() {
-    var dark = root.getAttribute("data-theme") === "dark";
-    btn.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
-  }
-  btn.addEventListener("click", function () {
-    /* light is the default, so the ATTRIBUTE is present only for the opt-in */
-    var toDark = root.getAttribute("data-theme") !== "dark";
-    if (toDark) root.setAttribute("data-theme", "dark");
-    else root.removeAttribute("data-theme");
-    try {
-      var v = toDark ? "dark" : "light";
-      localStorage.setItem("theme", v);
-      /* the reference site (Starlight) persists the same choice under its own key */
-      localStorage.setItem("starlight-theme", v);
-    } catch (e) {}
-    relabel();
-  });
-  relabel();
-})();
-</script>
 
 <script>
 /* Break OUT of a frame, before anything else.
