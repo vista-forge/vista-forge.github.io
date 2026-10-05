@@ -23,10 +23,10 @@ site-sync: ## HOST-ONLY: re-harvest the org, refresh data/repos.json, rewrite th
 site-freshness: ## HOST-ONLY: red-gate data/repos.json against the live org (new tags, repos gone public)
 	python3 scripts/site-gen.py --check-harvest
 
-artifacts: ## regenerate artifacts/index.html from the folders under artifacts/
+artifacts: ## regenerate artifacts/ and prototypes/ index.html from the folders under each
 	python3 scripts/artifacts_index.py
 
-artifacts-check: ## red-gate artifacts/index.html against the folders beside it (and its tests)
+artifacts-check: ## red-gate artifacts/ and prototypes/ index.html against their folders (and the tests)
 	python3 -m unittest scripts/test_artifacts_index.py
 	python3 scripts/artifacts_index.py --check
 

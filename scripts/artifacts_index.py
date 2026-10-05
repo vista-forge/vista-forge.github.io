@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""The artifacts collection page, generated from the folders beside it.
+"""The collection pages, artifacts/ and prototypes/, generated from the folders
+under each.
 
-Each folder under artifacts/ is one published page: its own index.html, with a
-<title> and a <meta name="description">, and whatever files it loads. The
-collection page, artifacts/index.html, lists every folder by name with that
+Each folder under a collection is one published page: its own index.html, with
+a <title> and a <meta name="description">, and whatever files it loads. The
+collection page, <collection>/index.html, lists every folder by name with that
 title and description, and nothing else, so it can neither promise a page that
 is not there nor miss one that is.
 
-    python3 scripts/artifacts_index.py          write artifacts/index.html
-    python3 scripts/artifacts_index.py --check  red if the committed page is stale
+    python3 scripts/artifacts_index.py          write both collection pages
+    python3 scripts/artifacts_index.py --check  red if a committed page is stale
 """
 
 from __future__ import annotations
@@ -19,11 +20,35 @@ from dataclasses import dataclass
 from html.parser import HTMLParser
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent / "artifacts"
+SITE = Path(__file__).resolve().parent.parent
 
 
 class Refused(Exception):
     """A folder that cannot be listed: no page, no title or no description."""
+
+
+@dataclass(frozen=True)
+class Collection:
+    folder: str
+    title: str
+    description: str
+    intro: str
+
+
+ARTIFACTS = Collection(
+    "artifacts",
+    "Artifacts",
+    "Standalone pages published by the vista-forge project.",
+    "Standalone pages from the vista-forge project. Each is self-contained and opens on its own.",
+)
+PROTOTYPES = Collection(
+    "prototypes",
+    "Prototypes",
+    "Guides to the vista-forge project's prototypes.",
+    "Guides to the vista-forge project's prototypes: what each one is and how to try it, with pictures"
+    " of the current build. Each page is self-contained and opens on its own.",
+)
+COLLECTIONS = (ARTIFACTS, PROTOTYPES)
 
 
 @dataclass(frozen=True)
@@ -66,6 +91,8 @@ class _Head(HTMLParser):
 
 def entries(root: Path) -> list[Entry]:
     """Every folder under root, by name; a folder that cannot be listed is refused."""
+    if not root.is_dir():
+        raise Refused(f"{root.name}/ is missing")
     found = []
     for folder in sorted(p for p in root.iterdir() if p.is_dir()):
         page = folder / "index.html"
@@ -82,7 +109,7 @@ def entries(root: Path) -> list[Entry]:
     return found
 
 
-def render(listed: list[Entry]) -> str:
+def render(listed: list[Entry], c: Collection) -> str:
     items = "\n".join(
         f'      <li><a href="{html.escape(e.folder)}/">{html.escape(e.title)}</a>'
         f"<p>{html.escape(e.description)}</p></li>"
@@ -94,8 +121,8 @@ def render(listed: list[Entry]) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Artifacts · vista-forge</title>
-<meta name="description" content="Standalone pages published by the vista-forge project.">
+<title>{html.escape(c.title)} · vista-forge</title>
+<meta name="description" content="{html.escape(c.description)}">
 <style>
   :root {{ --bg: #f5f7fa; --surface: #ffffff; --ink: #15202b; --ink2: #526070; --line: #d8dee6; --accent: #1766d6; color-scheme: light; }}
   @media (prefers-color-scheme: dark) {{
@@ -117,8 +144,8 @@ def render(listed: list[Entry]) -> str:
 <body>
   <main>
     <p class="home"><a href="../">vista-forge</a></p>
-    <h1>Artifacts</h1>
-    <p class="intro">Standalone pages from the vista-forge project. Each is self-contained and opens on its own.</p>
+    <h1>{html.escape(c.title)}</h1>
+    <p class="intro">{html.escape(c.intro)}</p>
     <ul>
 {items}
     </ul>
@@ -128,13 +155,13 @@ def render(listed: list[Entry]) -> str:
 """
 
 
-def check(root: Path) -> list[str]:
+def check(root: Path, c: Collection) -> list[str]:
     """What is wrong with the committed collection page; empty when it is current."""
     index = root / "index.html"
     if not index.is_file():
-        return ["artifacts/index.html is missing: run `make artifacts` and commit it"]
-    if index.read_text(encoding="utf-8") != render(entries(root)):
-        return ["artifacts/index.html is stale: run `make artifacts` and commit it"]
+        return [f"{c.folder}/index.html is missing: run `make artifacts` and commit it"]
+    if index.read_text(encoding="utf-8") != render(entries(root), c):
+        return [f"{c.folder}/index.html is stale: run `make artifacts` and commit it"]
     return []
 
 
@@ -143,20 +170,24 @@ def _folders(n: int) -> str:
 
 
 def main(argv: list[str]) -> int:
-    try:
-        if "--check" in argv:
-            problems = check(ROOT)
-            for p in problems:
-                print(f"artifacts-check: {p}", file=sys.stderr)
-            if not problems:
-                print(f"artifacts-check: artifacts/index.html lists all {_folders(len(entries(ROOT)))}")
-            return 1 if problems else 0
-        (ROOT / "index.html").write_text(render(entries(ROOT)), encoding="utf-8")
-        print(f"artifacts: wrote artifacts/index.html ({_folders(len(entries(ROOT)))})")
-        return 0
-    except Refused as e:
-        print(f"artifacts: {e}", file=sys.stderr)
-        return 1
+    failed = False
+    for c in COLLECTIONS:
+        root = SITE / c.folder
+        try:
+            if "--check" in argv:
+                problems = check(root, c)
+                for p in problems:
+                    print(f"artifacts-check: {p}", file=sys.stderr)
+                if not problems:
+                    print(f"artifacts-check: {c.folder}/index.html lists all {_folders(len(entries(root)))}")
+                failed = failed or bool(problems)
+                continue
+            (root / "index.html").write_text(render(entries(root), c), encoding="utf-8")
+            print(f"artifacts: wrote {c.folder}/index.html ({_folders(len(entries(root)))})")
+        except Refused as e:
+            print(f"artifacts: {e}", file=sys.stderr)
+            failed = True
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
