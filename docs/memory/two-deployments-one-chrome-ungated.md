@@ -136,8 +136,10 @@ inside it is sliced off at the banner's edge. A menu cannot live inside an
 
 **+2026-10-05 (operator): this site has ONE theme, light.** Its toggle, its
 pre-paint scripts (index, cla, licensing) and the dark token block are gone,
-so the `.theme-toggle` row in the table above and the both-keys rule now hold
-for the reference alone: its rail control still writes `theme` and
-`starlight-theme`, and nothing on this site reads either. A reader who chose
-dark in the reference still sees the framed reference dark inside a light
-banner; whether the reference goes light-only too is the operator's call.
+so the `.theme-toggle` row in the table above and the both-keys rule are
+history. ⚠️ Corrected the same day: the reference has had NO theme control
+since 2026-09-21 (its banner went, and the control with it) — it is not hidden
+by the frame, it is gone. Its pre-paint script still applies a saved
+`starlight-theme`/`theme` value (light when none), and nothing writes either
+now, so a reader who chose dark before 2026-10-05 sees the framed reference
+dark inside a light site, with no control to change it.

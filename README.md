@@ -92,14 +92,16 @@ anything here:
   2026-09-19 it detects being framed (`window.self !== window.top`, pre-paint)
   and hides its banner entirely, having first moved its search box and its
   theme control into a left rail that also carries the page's headings and the
-  site tree. Under this banner it is two panes and nothing else. That is a
+  site tree. (Since 2026-09-21 it has no banner and no theme control at all;
+  the rail holds the search box and the tree.) Under this banner it is two panes and nothing else. That is a
   change in the `forge-docs` repo and a republish, never an edit to the
   deployed copy here.
 * **This site has one theme, light** (operator, 2026-10-05): the banner's
   light/dark toggle, its pre-paint script on every page and the dark tokens
-  were removed. The framed applications keep their own: the reference's rail
-  still carries a theme control (the `forge-docs` repo), and the two Explore
-  views, on the publish host, follow their own default.
+  were removed. The reference has no theme control of its own; its pre-paint
+  script still applies a choice saved under `starlight-theme` or `theme`,
+  light when there is none, and nothing writes either any more. The two
+  Explore views, on the publish host, follow their own default.
 * **Nothing here sets `X-Frame-Options` or a `frame-ancestors` policy**, on
   either side. If the publish origin ever grows one, these views go blank.
 
@@ -184,8 +186,8 @@ So the same token values are restated in `forge-docs/site/src/styles/forge.css`
 **Nothing gates the agreement.** A change to a token here is a change there as
 well, and the only way to see a drift is to look at the two pages side by side.
 The same goes for the header: that repo's `src/components/OrgNav.astro` mirrors
-this one's. Its theme control still writes both theme keys (`theme` and
-`starlight-theme`); since 2026-10-05 nothing here reads either.
+this one's. The reference has no theme control; it still applies a saved
+`starlight-theme` or `theme` value, and since 2026-10-05 nothing writes either.
 
 **The Docs menu names the reference's three books** (VistA tools, M engine
 tools, Products), by the labels its own sidebar gives them, which the

@@ -12,8 +12,8 @@
 /* ONE theme, light (operator, 2026-10-05). The light/dark toggle, its
    pre-paint script on every page and the dark token block are gone; nothing
    here reads prefers-color-scheme either, so the site looks the same for every
-   reader. The framed reference (/forge-docs/) keeps a theme control of its own,
-   in the forge-docs repo. */
+   reader. The framed reference (/forge-docs/) has no theme control; it applies
+   a choice saved before 2026-10-05, light when there is none. */
 
 :root {
   color-scheme: light;
