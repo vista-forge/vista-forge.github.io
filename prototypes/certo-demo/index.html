@@ -9,7 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-  /* Layout: one reading column; each step pairs its instructions with the
+  /* Layout: the path up front, then one reading column with the contents
+     beside it on wide screens; each step pairs its instructions with the
      screens it describes, as the Loupe guide beside this page does. */
   :root {
     --bg: #f4f6f9;
@@ -20,8 +21,6 @@
     --accent: #1766d6;
     --accent-soft: #e6effc;
     --flag: #c3261f;
-    --warn-bg: #fff4d6;
-    --warn-line: #b88a1c;
     --bezel: #18212c;
     --shade: rgba(19, 32, 45, 0.12);
     --sans: "Atkinson Hyperlegible", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -33,13 +32,13 @@
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #0e141a; --surface: #151c24; --ink: #e4eaf1; --ink2: #a0acb9; --line: #28333f;
-      --accent: #7cb0ff; --accent-soft: #172538; --flag: #ff7b72; --warn-bg: #2d2513; --warn-line: #c9a24a;
+      --accent: #7cb0ff; --accent-soft: #172538; --flag: #ff7b72;
       --bezel: #05080b; --shade: rgba(0, 0, 0, 0.45); color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
     --bg: #0e141a; --surface: #151c24; --ink: #e4eaf1; --ink2: #a0acb9; --line: #28333f;
-    --accent: #7cb0ff; --accent-soft: #172538; --flag: #ff7b72; --warn-bg: #2d2513; --warn-line: #c9a24a;
+    --accent: #7cb0ff; --accent-soft: #172538; --flag: #ff7b72;
     --bezel: #05080b; --shade: rgba(0, 0, 0, 0.45); color-scheme: dark;
   }
 
@@ -77,19 +76,29 @@
   .phone img { display: block; width: 100%; height: auto; }
   @media (max-width: 760px) { .mast { grid-template-columns: minmax(0, 1fr); } .phone { width: 240px; } }
 
-  .notice {
-    border-left: 4px solid var(--warn-line); background: var(--warn-bg); border-radius: 0 10px 10px 0;
-    padding: 14px 18px; display: grid; gap: 6px; max-width: 74ch;
-  }
-  .notice b { font-weight: 700; }
+  /* the whole path, up front */
+  .how { padding-block: 36px 40px; display: grid; gap: 14px; max-width: 74ch; }
+  .how h3 { font-size: 1.1rem; margin-top: 6px; }
+  .path { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
+  .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .checks label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+  .checks input { flex: none; width: 1.1em; height: 1.1em; margin: 0.3em 0 0; accent-color: var(--accent); }
 
-  /* contents */
-  nav.toc { padding-block: 32px 8px; }
-  .toc h2 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink2); margin-bottom: 10px; }
-  .toc ol { margin: 0; padding-left: 1.4em; columns: 2 16em; column-gap: 32px; }
-  .toc li { break-inside: avoid; padding-block: 2px; }
-  .toc a { text-decoration: none; }
+  /* contents: a block under the path; a sticky column beside the guide on wide screens */
+  nav.toc { padding-block: 28px; border-top: 1px solid var(--line); }
+  .toc h2 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink2); margin-bottom: 12px; }
+  .toc .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(15em, 100%), 1fr)); gap: 14px 32px; align-items: start; }
+  .toc .grp p { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+  .toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+  .toc a { display: block; padding: 2px 0 2px 10px; border-left: 2px solid var(--line); text-decoration: none; line-height: 1.35; }
   .toc a:hover { text-decoration: underline; }
+  .toc a[aria-current] { border-left-color: var(--accent); color: var(--ink); font-weight: 700; }
+  @media (min-width: 1240px) {
+    .wrap { max-width: 1340px; }
+    .layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 44px; align-items: start; }
+    nav.toc { position: sticky; top: 0; max-height: 100vh; overflow-y: auto; font-size: 0.92rem; }
+    .toc .groups { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  }
 
   /* sections and steps */
   section.block { padding-block: 44px; border-top: 1px solid var(--line); display: grid; gap: 20px; }
@@ -110,12 +119,6 @@
   .shot figcaption { font-size: 0.82rem; color: var(--ink2); line-height: 1.4; }
   .tip { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 0.95rem; max-width: var(--read); }
 
-  /* the two phones, side by side */
-  .os { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 16px; }
-  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 10px; align-content: start; }
-  .card h3 { font-size: 1.1rem; }
-  .card ol, .card ul { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
-
   /* tables */
   .table-wrap { overflow-x: auto; }
   table { border-collapse: collapse; width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
@@ -125,9 +128,6 @@
   td:first-child { font-weight: 700; width: 34%; }
 
   .tries { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; max-width: var(--read); }
-  .quick { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0; padding: 18px 22px; display: grid; gap: 10px; max-width: 74ch; margin-top: 20px; }
-  .quick h2 { font-size: 1.25rem; }
-  .quick ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
   .reply { margin: 0; background: var(--accent-soft); border: 1px dashed var(--accent); border-radius: 8px; padding: 12px 14px; font: 500 0.95rem/1.5 var(--mono); white-space: pre-wrap; max-width: 60ch; }
   .about p { max-width: var(--read); color: var(--ink2); }
 
@@ -151,164 +151,120 @@
     <p class="eyebrow">Demo guide · for physicians</p>
     <h1>Certo</h1>
     <p class="tagline">The Pocket CPRS.</p>
-    <p class="lede">A patient's VistA chart on your own phone, through the same calls CPRS makes. This guide gets you to the demonstration, in about fifteen minutes of your time and a short wait while Rafael sets up your copy, then walks through every main screen.</p>
+    <p class="lede">A patient's VistA chart on your own phone, through the same calls CPRS makes. This guide gets you connected, in about fifteen minutes and a short wait while the Administrator sets up your copy, then walks through every main screen.</p>
   </div>
   <figure class="phone"><img src="img/glance.webp" width="600" height="1192" alt="Certo's glance for the demo patient TEN,PATIENT: the banner with allergies, postings and a fall-risk mark, then the last visit, the next visit, the latest note, vitals and flagged labs, then medications."></figure>
 </header>
 
-<div class="notice" role="note" style="margin-top: 28px;">
-  <p><b>A demonstration, not a clinical system.</b> It runs on VA's public demo VistA, whose patients are fictitious. Do not use it for patient care.</p>
-  <p><b>Never type your real VA access or verify codes.</b> Rafael sends you demo codes for this system once your copy is ready. You sign on to a copy of the demo system made for you alone.</p>
-  <p><b>Your Tailscale account is your key.</b> Your copy is tied to the account you sign in to Tailscale with. Keep using that one.</p>
-  <p><b>Certo is the planned name.</b> On your phone the app is still called by its working name, Loupe: that is the name under its home-screen icon.</p>
-</div>
-
-<section class="quick" id="quick" aria-labelledby="quick-h">
-  <h2 id="quick-h">The whole path, on one screen</h2>
-  <ol>
-    <li><a href="#tailscale">Install Tailscale</a> on your phone and sign in. Five minutes.</li>
-    <li><a href="#login">Reply to Rafael</a> with your Tailscale login, as the app shows it.</li>
-    <li>Wait for Rafael's reply: a Tailscale invite link and your demo codes.</li>
+<section class="how" id="how" aria-labelledby="how-h">
+  <h2 id="how-h">How it works</h2>
+  <p>Certo runs on a private server holding a copy of VA's public demo VistA system, whose patients are fictitious. The server is not on the public internet. Your phone reaches it through <strong>Tailscale</strong>, a free app that gives your phone a secure VPN connection to that server and nothing else.</p>
+  <ol class="path">
+    <li><a href="#tailscale">Install Tailscale</a> on your phone and sign in. About five minutes.</li>
+    <li><a href="#login">Send the Administrator your Tailscale login</a>, by replying to the message that brought you this guide.</li>
+    <li>The Administrator sets up your own copy of the demo system and replies with an invite link and your demo access and verify codes (never your real VA codes).</li>
     <li><a href="#invite">Accept the invite</a> with the same Tailscale account.</li>
-    <li><a href="#open">Open Certo</a> at <span class="ui">https://minty.warg-torino.ts.net:8444/</span> and add it to your home screen.</li>
-    <li><a href="#signon">Sign on</a> with your demo codes, then follow <a href="#walk-h">the tour</a>.</li>
-    <li>When you are done, <a href="#done">tell Rafael</a> and delete Tailscale.</li>
+    <li><a href="#open">Open Certo</a> in your phone's browser, <a href="#signon">sign on</a> with the demo codes, and follow <a href="#tour">the tour</a>.</li>
+    <li>When you are finished, <a href="#done">tell the Administrator</a> and uninstall Tailscale.</li>
   </ol>
-  <p>Everything you need is on this page. Rafael's messages bring only two things it cannot: your invite link and your demo codes.</p>
+  <h3>You need</h3>
+  <ul class="checks">
+    <li><label><input type="checkbox"> An iPhone or Android phone you can install apps on. Use a personal one: hospital-managed phones often block VPN apps.</label></li>
+    <li><label><input type="checkbox"> A Google, Microsoft, Apple or GitHub account to sign in to Tailscale with. Keep using the same one: your copy is tied to it.</label></li>
+    <li><label><input type="checkbox"> The message that sent you this guide, to reply to.</label></li>
+  </ul>
 </section>
+
+<div class="layout">
 
 <nav class="toc" aria-label="Contents">
   <h2>Contents</h2>
+  <div class="groups">
+  <div class="grp">
+  <p>Getting connected</p>
   <ol>
-    <li><a href="#before">Before you start</a></li>
-    <li><a href="#tailscale">Install Tailscale</a></li>
-    <li><a href="#login">Send Rafael your Tailscale login</a></li>
-    <li><a href="#invite">Accept the invitation</a></li>
-    <li><a href="#open">Open Certo</a></li>
-    <li><a href="#signon">Sign on</a></li>
-    <li><a href="#patient">Select a patient</a></li>
-    <li><a href="#glance">The glance</a></li>
-    <li><a href="#timeline">The timeline</a></li>
-    <li><a href="#vitals">Vitals</a></li>
-    <li><a href="#labs">Labs</a></li>
-    <li><a href="#notes">Notes</a></li>
-    <li><a href="#leaving">Moving around and leaving</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#tailscale">1 · Install Tailscale</a></li>
+    <li><a href="#login">2 · Send your login</a></li>
+    <li><a href="#invite">3 · Accept the invitation</a></li>
+    <li><a href="#open">4 · Open Certo</a></li>
+  </ol>
+  </div>
+  <div class="grp">
+  <p>The tour</p>
+  <ol>
+    <li><a href="#signon">5 · Sign on</a></li>
+    <li><a href="#patient">6 · Select a patient</a></li>
+    <li><a href="#glance">7 · The glance</a></li>
+    <li><a href="#timeline">8 · The timeline</a></li>
+    <li><a href="#vitals">9 · Vitals</a></li>
+    <li><a href="#labs">10 · Labs</a></li>
+    <li><a href="#notes">11 · Notes</a></li>
+    <li><a href="#leaving">12 · Moving around and leaving</a></li>
+  </ol>
+  </div>
+  <div class="grp">
+  <p>Afterwards</p>
+  <ol>
     <li><a href="#done">When you are done</a></li>
     <li><a href="#try">Five things to try</a></li>
     <li><a href="#trouble">If something goes wrong</a></li>
     <li><a href="#about">About this demo</a></li>
   </ol>
+  </div>
+  </div>
 </nav>
 
-<section class="block" id="before" aria-labelledby="before-h">
-  <h2 id="before-h">Before you start</h2>
-  <p class="intro">Certo runs on a server on Rafael's private network. Your phone reaches it through Tailscale, a free app that connects your phone to Certo on that machine and nothing else. Nothing is on the public internet.</p>
-  <ol class="tries">
-    <li><strong>You</strong> install Tailscale and sign in, which gives you a free Tailscale account.</li>
-    <li><strong>You</strong> send Rafael your Tailscale login.</li>
-    <li><strong>Rafael</strong> makes a copy of the demo system for that login, shares Certo with you, and sends you a Tailscale invite link and your demo codes.</li>
-    <li><strong>You</strong> accept the invite, open Certo and sign on.</li>
-  </ol>
-  <div class="os">
-    <div class="card">
-      <h3>You need</h3>
-      <ul>
-        <li>An iPhone or an Android phone you may install apps on. A hospital-managed phone may not allow a VPN app; use a personal one.</li>
-        <li>A Google, Microsoft, Apple or GitHub account to sign in to Tailscale with. Pick the one you will keep using: your copy of the demo system is tied to it.</li>
-        <li>A way to reply to Rafael: the message that sent you this guide.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>What Rafael sends you</h3>
-      <ul>
-        <li><strong>First:</strong> the link to this guide.</li>
-        <li><strong>Once your copy is ready:</strong> a Tailscale invite link, and your demo access code and verify code.</li>
-        <li>Nothing else. He never asks for a VA code, a password or anything about a real patient.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>What Tailscale does on your phone</h3>
-      <ul>
-        <li>It appears as a VPN in your phone's settings, because that is how an app makes a private connection.</li>
-        <li>Only traffic to the machine shared with you goes through it. Your other browsing and apps are unaffected.</li>
-        <li>You can switch it off in the app whenever you are not using Certo, and delete it when the demo ends.</li>
-        <li>Through Tailscale, Rafael sees the name, email and picture of the account you accept with, and when your phone connects to Certo. He cannot see the rest of your Tailscale network or anything else on your phone.</li>
-      </ul>
-    </div>
-  </div>
-</section>
+<main>
 
 <section class="block" id="tailscale" aria-labelledby="ts-h">
   <h2 id="ts-h">1 · Install Tailscale</h2>
-  <div class="os">
-    <div class="card">
-      <h3>iPhone</h3>
-      <ol>
-        <li>Open the App Store, search for <span class="ui">Tailscale</span> and tap <strong>Get</strong>.</li>
-        <li>Open Tailscale and tap <strong>Get Started</strong>.</li>
-        <li>When your iPhone asks to add a VPN configuration, tap <strong>Allow</strong> and confirm with Face ID or your passcode. Allowing notifications is optional.</li>
-        <li>Tap <strong>Log in</strong> and sign in with your Google, Microsoft, Apple or GitHub account. Signing in the first time creates your own small Tailscale network, which is free.</li>
-        <li>The app shows you as connected. Leave it on.</li>
-      </ol>
-    </div>
-    <div class="card">
-      <h3>Android</h3>
-      <ol>
-        <li>Open the Google Play Store, search for <span class="ui">Tailscale</span> and tap <strong>Install</strong>.</li>
-        <li>Open Tailscale and tap <strong>Get Started</strong>.</li>
-        <li>When Android asks to let Tailscale set up a VPN connection, tap <strong>OK</strong>. Allowing notifications is optional.</li>
-        <li>Tap <strong>Sign in with Google</strong> to use your phone's Google account, or <strong>Sign in with other</strong> for Microsoft, Apple or GitHub.</li>
-        <li>The app shows you as connected. Leave it on.</li>
-      </ol>
-    </div>
-  </div>
-  <p class="tip">Signing in the first time creates your own small Tailscale network, which is free. Nothing in it is shared with anyone until you accept an invitation.</p>
+  <ol class="tries">
+    <li>Install <span class="ui">Tailscale</span> from the App Store (iPhone) or the Google Play Store (Android).</li>
+    <li>Open it and tap <strong>Get Started</strong>. When your phone asks to allow a VPN, allow it.</li>
+    <li>Sign in with your Google, Microsoft, Apple or GitHub account. It is free.</li>
+    <li>The app shows you as connected. Leave it on.</li>
+  </ol>
 </section>
 
 <section class="block" id="login" aria-labelledby="login-h">
-  <h2 id="login-h">2 · Send Rafael your Tailscale login</h2>
+  <h2 id="login-h">2 · Send the Administrator your Tailscale login</h2>
   <ol class="tries">
-    <li>In the Tailscale app, tap your account, the picture or initial at the top of the screen. Your login is shown there.</li>
-    <li>It is an email address for a Google, Microsoft or Apple account, and looks like <span class="ui">name@github</span> for a GitHub account. If you signed in with Apple and chose to hide your email, it is the relay address the app shows.</li>
+    <li>In the Tailscale app, tap your account, the picture or initial at the top of the screen. Your login is shown there: usually an email address, or something like <span class="ui">name@github</span>.</li>
     <li>Reply to the message that sent you this guide, with your login <strong>exactly as the app shows it</strong>. You can copy this and fill it in:</li>
   </ol>
   <p class="reply">I've installed Tailscale and I'm ready to try Certo.
 My Tailscale login is: ____________
 My phone is: iPhone / Android</p>
-  <p>Rafael then makes your own copy of the demo system for that login, from the latest nightly copy, and shares Certo with you. He replies with:</p>
-  <ul class="tries">
-    <li>a Tailscale invite link, for the next step;</li>
-    <li>your demo <strong>access code</strong> and <strong>verify code</strong>.</li>
-  </ul>
-  <p class="tip">Certo knows you by this login. Sign in to Tailscale with a different account, and Certo will not find a copy for you.</p>
+  <p>The Administrator sets up your copy of the demo system and replies with a Tailscale invite link and your demo <strong>access code</strong> and <strong>verify code</strong>.</p>
+  <p class="tip">Certo knows you by this login. Sign in to Tailscale with a different account, and Certo will not find your copy.</p>
 </section>
 
 <section class="block" id="invite" aria-labelledby="invite-h">
   <h2 id="invite-h">3 · Accept the invitation</h2>
   <ol class="tries">
-    <li>On your phone, open the Tailscale invite link from Rafael's reply.</li>
-    <li>Sign in with the <strong>same account</strong>, the login you sent Rafael, and accept the invitation.</li>
-    <li>Open the Tailscale app. A machine named <span class="ui">minty</span> appears in its list of machines, shared with you. It can take a minute.</li>
+    <li>On your phone, open the invite link from the Administrator's reply.</li>
+    <li>Sign in with the <strong>same account</strong>, the login you sent, and accept the invitation.</li>
+    <li>A machine named <span class="ui">minty</span> appears in the Tailscale app's list of machines. It can take a minute.</li>
   </ol>
-  <p class="tip">The invitation gives you Certo on that one machine, and only for as long as Rafael keeps it shared. You cannot reach anything else on it or on his network, and sharing works one way: his machine cannot connect to your phone.</p>
 </section>
 
 <section class="block" id="open" aria-labelledby="open-h">
   <h2 id="open-h">4 · Open Certo</h2>
   <ol class="tries">
-    <li>With Tailscale connected, open Safari (iPhone) or Chrome (Android) and go to <span class="ui">https://minty.warg-torino.ts.net:8444/</span>. Type it whole: the full name and the <span class="ui">:8444</span> at the end are both needed. The same link is in Rafael's reply.</li>
+    <li>With Tailscale connected, open Safari (iPhone) or Chrome (Android) and go to <span class="ui">https://minty.warg-torino.ts.net:8444/</span>. Type it whole: the full name and the <span class="ui">:8444</span> at the end are both needed. The same link is in the Administrator's reply.</li>
     <li>Put it on your home screen, so it opens full screen like an app:
       <ul>
         <li><strong>iPhone, Safari:</strong> tap the Share button, then <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li>
         <li><strong>Android, Chrome:</strong> tap the menu <span class="ui">⋮</span>, then <strong>Add to Home screen</strong> or <strong>Install app</strong>.</li>
       </ul>
     </li>
-    <li>From now on, open it from its icon, named <strong>Loupe</strong>. Tailscale must be on.</li>
+    <li>From now on, open it from its icon. The icon is named <strong>Loupe</strong>, Certo's working name. Tailscale must be on.</li>
   </ol>
   <p class="tip">Tailscale is on when its app shows you connected. Your phone shows it too: <span class="ui">VPN</span> in the iPhone's status bar, a key icon in Android's.</p>
 </section>
 
-<section class="block" aria-labelledby="walk-h">
+<section class="block" id="tour" aria-labelledby="walk-h">
   <h2 id="walk-h">The tour</h2>
   <p class="intro">Every screen below is Certo as it stands on 5 October 2026, on TEN,PATIENT, the demo system's fullest record: care in 27 of the years from 1988 to 2016. The patient is fictitious.</p>
 
@@ -317,7 +273,7 @@ My phone is: iPhone / Android</p>
       <h3><span class="num">5</span>Sign on</h3>
       <ul>
         <li>The screen says <strong>Test system</strong>, because VistA reports this is not a production account.</li>
-        <li>Type the demo <strong>access code</strong> and <strong>verify code</strong> from Rafael's reply and tap <strong>Sign on</strong>. <strong>Show</strong> reveals what you typed.</li>
+        <li>Type the demo <strong>access code</strong> and <strong>verify code</strong> from the Administrator's reply and tap <strong>Sign on</strong>. <strong>Show</strong> reveals what you typed.</li>
         <li>There is no system to choose: Certo signs you on to your own copy, by your Tailscale login.</li>
         <li>The <strong>Site notice</strong> under the button is the system's sign-on message, as on CPRS's sign-on form. Tap it to read it.</li>
         <li>Your phone's password manager may offer to save the codes. Certo itself keeps them nowhere.</li>
@@ -458,9 +414,9 @@ My phone is: iPhone / Android</p>
 <section class="block" id="done" aria-labelledby="done-h">
   <h2 id="done-h">When you are done</h2>
   <ol class="tries">
-    <li>Tell Rafael what worked, what didn't, and what you reached for and could not find, by replying to his message. That is what the demo is for.</li>
-    <li>Tell him you are finished. He removes your copy of the demo system and stops sharing Certo with you.</li>
-    <li>Delete the Loupe icon from your home screen, and uninstall Tailscale. If you want your Tailscale account gone too, delete it from Tailscale's admin console at <span class="ui">login.tailscale.com</span>.</li>
+    <li>Tell the Administrator what worked, what didn't, and what you reached for and could not find, by replying to the message that sent you this guide. That is what the demo is for.</li>
+    <li>Say when you are finished. The Administrator removes your copy of the demo system and stops sharing Certo with you.</li>
+    <li>Delete the Loupe icon from your home screen, and uninstall Tailscale.</li>
   </ol>
 </section>
 
@@ -481,14 +437,14 @@ My phone is: iPhone / Android</p>
     <table>
       <thead><tr><th>What you see</th><th>What to do</th></tr></thead>
       <tbody>
-        <tr><td>The page does not load</td><td>Open the Tailscale app: it must say connected, and <span class="ui">minty</span> must be in its list. Use the full address with <span class="ui">:8444</span>. If minty is missing, the invite was not accepted, or was accepted with another account: ask Rafael to send it again.</td></tr>
+        <tr><td>The page does not load</td><td>Open the Tailscale app: it must say connected, and <span class="ui">minty</span> must be in its list. Use the full address with <span class="ui">:8444</span>. If minty is missing, the invite was not accepted, or was accepted with another account: ask the Administrator to send it again.</td></tr>
         <tr><td>The address cannot be found</td><td>Use the whole address, <span class="ui">https://minty.warg-torino.ts.net:8444/</span>. The short name <span class="ui">minty</span> does not work for a machine shared with you.</td></tr>
-        <tr><td>Your codes are refused</td><td>Check them against Rafael's reply; Show reveals what you typed. After several wrong tries your copy locks sign-on for a while, as CPRS does; it affects no one else.</td></tr>
-        <tr><td>"You must change your VERIFY CODE"</td><td>Certo never changes codes. Ask Rafael for new demo codes.</td></tr>
-        <tr><td>"This demonstration has no copy of VistA for …"</td><td>The message names the login Tailscale gave Certo. If it is not the one you sent Rafael, switch to that account in the Tailscale app. If it is, your copy is not ready yet, or was removed: tell Rafael.</td></tr>
-        <tr><td>No reply from Rafael yet</td><td>Your copy is set up by hand. If a day has passed, reply to his message again with your Tailscale login.</td></tr>
-        <tr><td>A new phone, or another Tailscale account</td><td>Your copy follows your Tailscale account, not your phone: on a new phone, sign in to Tailscale with the same account. Another account needs a copy of its own: send Rafael its login.</td></tr>
-        <tr><td>You want to start again</td><td>Ask Rafael for a fresh copy. He replaces yours with a new copy of the demo system; what you did in the old one is gone.</td></tr>
+        <tr><td>Your codes are refused</td><td>Check them against the Administrator's reply; Show reveals what you typed. After several wrong tries your copy locks sign-on for a while, as CPRS does; it affects no one else.</td></tr>
+        <tr><td>"You must change your VERIFY CODE"</td><td>Certo never changes codes. Ask the Administrator for new demo codes.</td></tr>
+        <tr><td>"This demonstration has no copy of VistA for …"</td><td>The message names the login Tailscale gave Certo. If it is not the one you sent, switch to that account in the Tailscale app. If it is, your copy is not ready yet, or was removed: tell the Administrator.</td></tr>
+        <tr><td>No reply from the Administrator yet</td><td>Your copy is set up by hand. If a day has passed, reply to the message again with your Tailscale login.</td></tr>
+        <tr><td>A new phone, or another Tailscale account</td><td>Your copy follows your Tailscale account, not your phone: on a new phone, sign in to Tailscale with the same account. Another account needs a copy of its own: send the Administrator its login.</td></tr>
+        <tr><td>You want to start again</td><td>Ask the Administrator for a fresh copy. It replaces yours with a new copy of the demo system; what you did in the old one is gone.</td></tr>
         <tr><td>You were signed off</td><td>After 5 minutes untouched, or a minute away from the app, Certo signs you off in VistA. Sign on again.</td></tr>
         <tr><td>"The connection failed"</td><td>The server dropped your session to keep it in step with VistA. Sign on again.</td></tr>
       </tbody>
@@ -501,9 +457,26 @@ My phone is: iPhone / Android</p>
   <p>Certo reads VistA as a client of its RPC Broker, signed on as you, in the same context CPRS uses, and draws VistA's own text and flags. It computes no judgement of its own. The longer story, with use cases and its safety features, is in <a href="../certo-guide/">the Certo guide</a>. How it was built from CPRS and checked against it is in <a href="../../artifacts/building-loupe/">Building Loupe on vista-forge</a>, written under its working name.</p>
   <p>The demonstration runs on VA's public demo VistA system, with fictitious patients and demo accounts. You get a copy of it of your own, made for your Tailscale login: what you do there, such as working an alert, no one else sees, and nothing you do reaches the original.</p>
   <p>Certo records which screens are opened and how long each answer takes, so it can be improved. That record never holds a patient's name or any of VistA's words.</p>
-  <p>Questions at any point: reply to Rafael's message.</p>
+  <p>Questions at any point: reply to the Administrator's message.</p>
 </section>
 
+</main>
 </div>
+
+</div>
+<script>
+  // Marks the contents entry for the section on screen; the page reads the same without it.
+  (() => {
+    const links = new Map([...document.querySelectorAll('.toc a[href^="#"]')].map(a => [a.hash.slice(1), a]));
+    const seen = new IntersectionObserver(entries => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        links.forEach(a => a.removeAttribute('aria-current'));
+        links.get(e.target.id)?.setAttribute('aria-current', 'true');
+      }
+    }, { rootMargin: '-15% 0px -75% 0px' });
+    links.forEach((_, id) => { const el = document.getElementById(id); if (el) seen.observe(el); });
+  })();
+</script>
 </body>
 </html>
