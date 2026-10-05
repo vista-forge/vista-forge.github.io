@@ -379,8 +379,7 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   gap: 0.4rem 1.6rem;
 }
 .menu__panel--one .menu__cols,
-.menu[data-menu="explore"] .menu__cols,
-.menu[data-menu="docs"] .menu__cols { grid-template-columns: minmax(0, 24rem); }
+.menu[data-menu="explore"] .menu__cols { grid-template-columns: minmax(0, 24rem); }
 
 .menu__head {
   margin: 0 0 0.5rem;
@@ -428,6 +427,14 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
 }
 .menu__link:hover { background: var(--vista-wash); color: var(--text); text-decoration: none; }
 .menu__link[aria-current="true"] { color: var(--text); background: var(--vista-wash); }
+
+/* a sentence under a thin column's links, saying what they open */
+.menu__note {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-faint);
+}
 
 @media (max-width: 720px) {
   .menu__cols { grid-template-columns: minmax(0, 1fr); }

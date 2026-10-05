@@ -110,12 +110,29 @@ document.documentElement.className += " js";
         </button>
         <div class="menu__panel" id="menu-docs">
           <div class="menu__cols">
+            <!-- The reference's three books, by the names its own sidebar gives
+                 them (forge-docs src/books.json). Restated here by hand, and
+                 nothing compares the two: a book renamed or added there is
+                 changed here too. -->
             <div class="menu__col">
-              <p class="menu__head">Generated from the tools themselves</p>
-              <a class="menu__item" href="#/docs/forge-reference">
-                <span class="menu__name">Forge reference</span>
-                <span class="menu__desc">Every page of the <code>m</code> and <code>v</code> surface assembled from the contract artifacts each tool ships — so it cannot describe a flag that does not exist.</span>
+              <p class="menu__head">The reference&#8217;s three books</p>
+              <a class="menu__item" href="#/docs/forge-reference/v">
+                <span class="menu__name">VistA tools</span>
+                <span class="menu__desc">The <code>v</code> command, one binary with a chapter for each domain: packages, the database, RPCs and their traffic, site setup. Every one needs VistA.</span>
               </a>
+              <a class="menu__item" href="#/docs/forge-reference/m">
+                <span class="menu__name">M engine tools</span>
+                <span class="menu__desc">The <code>m</code> command and what it stands on: format, lint, language server, tests and coverage, the standard library and grammar, the YottaDB and IRIS drivers. None of it needs VistA.</span>
+              </a>
+              <a class="menu__item" href="#/docs/forge-reference/products">
+                <span class="menu__name">Products</span>
+                <span class="menu__desc">VistA Atlas, VistA Compass and M Language Tools for VS Code, the m-devbox and the database explorer, each documented by its own repository.</span>
+              </a>
+            </div>
+            <div class="menu__col menu__col--thin">
+              <p class="menu__head">Forge reference</p>
+              <a class="menu__link" href="#/docs/forge-reference">Open the reference</a>
+              <p class="menu__note">Generated from the tools themselves: every page is assembled from the contract artifacts each tool ships, so it cannot describe a flag that does not exist.</p>
             </div>
           </div>
         </div>
@@ -1197,7 +1214,11 @@ document.documentElement.className += " js";
        not depend on the home server being up; and the light/dark choice
        carries into it, because localStorage is per-origin and this is now the
        same origin. */
-    "docs/forge-reference":       { title: "Forge reference",    url: "/forge-docs/" }
+    "docs/forge-reference":       { title: "Forge reference",    url: "/forge-docs/" },
+    /* the same reference, opened at one of its three books (the Docs menu) */
+    "docs/forge-reference/v":        { title: "Forge reference — VistA tools",    url: "/forge-docs/v/" },
+    "docs/forge-reference/m":        { title: "Forge reference — M engine tools", url: "/forge-docs/m/" },
+    "docs/forge-reference/products": { title: "Forge reference — Products",       url: "/forge-docs/products/" }
   };
   var DEFAULT_ROUTE = "architecture";
 
