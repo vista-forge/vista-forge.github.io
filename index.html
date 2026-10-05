@@ -101,19 +101,23 @@ document.documentElement.className += " js";
         </button>
         <div class="menu__panel" id="menu-docs">
           <div class="menu__cols">
-            <!-- The reference's three books, by the names its own sidebar gives
+            <!-- The reference's four books, by the names its own sidebar gives
                  them (forge-docs src/books.json). Restated here by hand, and
                  nothing compares the two: a book renamed or added there is
                  changed here too. -->
             <div class="menu__col">
-              <p class="menu__head">The reference&#8217;s three books</p>
+              <p class="menu__head">The reference&#8217;s four books</p>
               <a class="menu__item" href="#/docs/forge-reference/v">
                 <span class="menu__name">VistA tools</span>
                 <span class="menu__desc">The <code>v</code> command, one binary with a chapter for each domain: packages, the database, RPCs and their traffic, site setup. Every one needs VistA.</span>
               </a>
               <a class="menu__item" href="#/docs/forge-reference/m">
                 <span class="menu__name">M engine tools</span>
-                <span class="menu__desc">The <code>m</code> command and what it stands on: format, lint, language server, tests and coverage, the standard library and grammar, the YottaDB and IRIS drivers. None of it needs VistA.</span>
+                <span class="menu__desc">The <code>m</code> command and what it stands on: format, lint, language server, tests and coverage, the grammar, and a driver for each M engine. None of it needs VistA.</span>
+              </a>
+              <a class="menu__item" href="#/docs/forge-reference/msl">
+                <span class="menu__name">M Standard Library</span>
+                <span class="menu__desc">Every <code>STD*</code> module — JSON, HTTP, crypto, regex, dates, assertions and more — a page each, its functions generated from the library&#8217;s own manifest.</span>
               </a>
               <a class="menu__item" href="#/docs/forge-reference/products">
                 <span class="menu__name">Products</span>
@@ -1177,9 +1181,10 @@ document.documentElement.className += " js";
        carries into it, because localStorage is per-origin and this is now the
        same origin. */
     "docs/forge-reference":       { title: "Forge reference",    url: "/forge-docs/" },
-    /* the same reference, opened at one of its three books (the Docs menu) */
+    /* the same reference, opened at one of its four books (the Docs menu) */
     "docs/forge-reference/v":        { title: "Forge reference — VistA tools",    url: "/forge-docs/v/" },
     "docs/forge-reference/m":        { title: "Forge reference — M engine tools", url: "/forge-docs/m/" },
+    "docs/forge-reference/msl":      { title: "Forge reference — M Standard Library", url: "/forge-docs/msl/" },
     "docs/forge-reference/products": { title: "Forge reference — Products",       url: "/forge-docs/products/" }
   };
   var DEFAULT_ROUTE = "architecture";

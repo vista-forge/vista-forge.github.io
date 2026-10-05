@@ -33,7 +33,7 @@ can be linked to:
 | `#/explore/vdb-explorer` | the dd-bundle browser, in a frame |
 | `#/explore/cprs-configuration` | the CPRS configuration dashboard, in a frame |
 | `#/docs/forge-reference` | the generated `m`/`v` surface reference, in a frame |
-| `#/docs/forge-reference/<book>` | the same, opened at one of its three books: `v`, `m`, `products` |
+| `#/docs/forge-reference/<book>` | the same, opened at one of its four books: `v`, `m`, `msl`, `products` |
 | `#<section>` | a bare legacy anchor — read as `#/architecture/<section>` |
 
 That last row is load-bearing: the published reference's own nav links back here
@@ -189,10 +189,10 @@ The same goes for the header: that repo's `src/components/OrgNav.astro` mirrors
 this one's. The reference has no theme control; it still applies a saved
 `starlight-theme` or `theme` value, and since 2026-10-05 nothing writes either.
 
-**The Docs menu names the reference's three books** (VistA tools, M engine
-tools, Products), by the labels its own sidebar gives them, which the
+**The Docs menu names the reference's four books** (VistA tools, M engine
+tools, M Standard Library, Products), by the labels its own sidebar gives them, which the
 `forge-docs` repo derives into `site/src/books.json`. Each opens the framed
-reference at that book. The names, the descriptions and the three routes are
+reference at that book. The names, the descriptions and the four routes are
 restated by hand in `index.html`, and nothing compares them with the
 reference: a book renamed, added or removed there is changed here too.
 
