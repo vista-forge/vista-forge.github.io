@@ -33,7 +33,7 @@ can be linked to:
 | `#/explore/vdb-explorer` | the dd-bundle browser, in a frame |
 | `#/explore/cprs-configuration` | the CPRS configuration dashboard, in a frame |
 | `#/docs/forge-reference` | the generated `m`/`v` surface reference, in a frame |
-| `#/docs/forge-reference/<book>` | the same, opened at one of its six books: `v`, `vsl`, `m`, `msl`, `devbox`, `products` |
+| `#/docs/forge-reference/<book>` | the same, opened at one of its six books: `v`, `vsl`, `m`, `msl`, `devbox`, `products` (VSCode Plugins) |
 | `#<section>` | a bare legacy anchor — read as `#/architecture/<section>` |
 
 That last row is load-bearing: the published reference's own nav links back here
