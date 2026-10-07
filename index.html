@@ -34,14 +34,14 @@ document.documentElement.className += " js";
       VistA Forge
     </a>
     <!-- Three menus, and every destination in the banner at every width: the
-         nav scrolls sideways rather than dropping items. Architecture's items are
+         nav scrolls sideways rather than dropping items. Home's items are
          sections of THIS page; Explore's and Docs' are separate applications
          shown in the frame below the banner, under this address. -->
     <nav class="nav" id="nav" aria-label="Primary">
 
       <div class="menu" data-menu="architecture">
         <button class="menu__btn" type="button" aria-expanded="false" aria-controls="menu-architecture">
-          Architecture<span class="menu__chev" aria-hidden="true"></span>
+          <svg class="menu__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v11h14V9"/><path d="M10 20v-6h4v6"/></svg>Home<span class="menu__chev" aria-hidden="true"></span>
         </button>
         <div class="menu__panel" id="menu-architecture">
           <div class="menu__cols">
@@ -76,7 +76,7 @@ document.documentElement.className += " js";
 
       <div class="menu" data-menu="explore">
         <button class="menu__btn" type="button" aria-expanded="false" aria-controls="menu-explore">
-          Explore<span class="menu__chev" aria-hidden="true"></span>
+          <svg class="menu__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>Explore<span class="menu__chev" aria-hidden="true"></span>
         </button>
         <div class="menu__panel" id="menu-explore">
           <div class="menu__cols">
@@ -97,45 +97,31 @@ document.documentElement.className += " js";
 
       <div class="menu" data-menu="docs">
         <button class="menu__btn" type="button" aria-expanded="false" aria-controls="menu-docs">
-          Docs<span class="menu__chev" aria-hidden="true"></span>
+          <svg class="menu__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.4 5.3 8.2 4.75 5.5 4.75H3v13.5h2.5c2.7 0 4.9.55 6.5 1.75 1.6-1.2 3.8-1.75 6.5-1.75H21V4.75h-2.5c-2.7 0-4.9.55-6.5 1.75z"/><path d="M12 6.5v13.5"/></svg>Docs<span class="menu__chev" aria-hidden="true"></span>
         </button>
         <div class="menu__panel" id="menu-docs">
           <div class="menu__cols">
-            <!-- The reference's six books, by the names its own sidebar gives
-                 them (forge-docs src/books.json). Restated here by hand, and
-                 nothing compares the two: a book renamed or added there is
-                 changed here too. -->
+            <!-- Shaped as Home's menu (operator, 2026-10-07): the documentation's
+                 main page on the left, the reference's six books as plain links
+                 on the right, by the names its own sidebar gives them (forge-docs
+                 src/books.json). Restated here by hand, and nothing compares the
+                 two: a book renamed or added there is changed here too. -->
             <div class="menu__col">
-              <p class="menu__head">The reference&#8217;s six books</p>
-              <a class="menu__item" href="#/docs/forge-reference/v">
-                <span class="menu__name">VistA CLI</span>
-                <span class="menu__desc">The VistA command line tool, <code>v</code>, with a chapter for each domain: packages, the database, RPCs and their traffic, site setup. Its first page outlines every command. Every one needs VistA.</span>
+              <p class="menu__head">Documentation</p>
+              <a class="menu__item" href="#/docs/forge-reference">
+                <span class="menu__name">VistA Forge stack</span>
+                <span class="menu__desc">A visual navigator to the documentation: the whole stack in one picture, from you and your AI assistant down to the M engine. Every part opens its chapter.</span>
               </a>
-              <a class="menu__item" href="#/docs/forge-reference/vsl">
-                <span class="menu__name">VistA Library</span>
-                <span class="menu__desc">Every <code>VSL*</code> module — Kernel security and alerts, XPAR parameters, FileMan storage, the Broker, TaskMan — a page each, generated from the library&#8217;s own manifest.</span>
-              </a>
-              <a class="menu__item" href="#/docs/forge-reference/m">
-                <span class="menu__name">M CLI</span>
-                <span class="menu__desc">The M command line tool, <code>m</code>, with a page for each of its commands: format, lint, language server, tests and coverage, a live engine and its routines, libraries. None of it needs VistA.</span>
-              </a>
-              <a class="menu__item" href="#/docs/forge-reference/msl">
-                <span class="menu__name">M Library</span>
-                <span class="menu__desc">Every <code>STD*</code> module — JSON, HTTP, crypto, regex, dates, assertions and more — a page each, its functions generated from the library&#8217;s own manifest.</span>
-              </a>
-              <a class="menu__item" href="#/docs/forge-reference/devbox">
-                <span class="menu__name">M DevBox</span>
-                <span class="menu__desc">One container with an M engine and its database, the <code>m</code> command, the M Standard Library and VS Code in the browser: the place to put the two M references to work.</span>
-              </a>
-              <a class="menu__item" href="#/docs/forge-reference/products">
-                <span class="menu__name">VSCode</span>
-                <span class="menu__desc">VistA Atlas, VistA Compass and M Language Tools for VS Code, each documented by its own repository.</span>
-              </a>
+              <p class="menu__note">Generated from the tools themselves: every page is assembled from the contract artifacts each tool ships, so it cannot describe a flag that does not exist.</p>
             </div>
             <div class="menu__col menu__col--thin">
-              <p class="menu__head">Forge reference</p>
-              <a class="menu__link" href="#/docs/forge-reference">Open the reference</a>
-              <p class="menu__note">Generated from the tools themselves: every page is assembled from the contract artifacts each tool ships, so it cannot describe a flag that does not exist.</p>
+              <p class="menu__head">Chapters</p>
+              <a class="menu__link" href="#/docs/forge-reference/v">VistA CLI</a>
+              <a class="menu__link" href="#/docs/forge-reference/vsl">VistA Library</a>
+              <a class="menu__link" href="#/docs/forge-reference/m">M CLI</a>
+              <a class="menu__link" href="#/docs/forge-reference/msl">M Library</a>
+              <a class="menu__link" href="#/docs/forge-reference/devbox">M DevBox</a>
+              <a class="menu__link" href="#/docs/forge-reference/products">VSCode</a>
             </div>
           </div>
         </div>

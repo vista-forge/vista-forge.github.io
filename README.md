@@ -189,15 +189,17 @@ The same goes for the header: that repo's `src/components/OrgNav.astro` mirrors
 this one's. The reference has no theme control; it still applies a saved
 `starlight-theme` or `theme` value, and since 2026-10-05 nothing writes either.
 
-**The Docs menu names the reference's six books** (VistA CLI, VistA
-Library, M CLI, M Library, M DevBox, VSCode), by the labels its own sidebar gives them, which the
-`forge-docs` repo derives into `site/src/books.json`. Each opens the framed
-reference at that book. The names, the descriptions and the six routes are
-restated by hand in `index.html`, and nothing compares them with the
-reference: a book renamed, added or removed there is changed here too.
+**The Docs menu is shaped as Home's**: on the left the documentation's main
+page, the reference's stack map; on the right the reference's six books as
+plain links (VistA CLI, VistA Library, M CLI, M Library, M DevBox, VSCode), by
+the labels its own sidebar gives them, which the `forge-docs` repo derives into
+`site/src/books.json`. Each opens the framed reference at that book. The names
+and the six routes are restated by hand in `index.html`, and nothing compares
+them with the reference: a book renamed, added or removed there is changed
+here too.
 
 ⚠️ **The two navs no longer agree, and the drift is now hidden rather than
-reconciled.** This banner is three menus (Architecture / Explore / Docs);
+reconciled.** This banner is three menus (Home / Explore / Docs), each with its icon;
 `OrgNav.astro` is still the five flat links it mirrored before. Inside the Docs
 view that nav is not rendered at all — the whole banner it sits in is hidden
 (see the frames section above) — so a reader never sees the two disagree. They

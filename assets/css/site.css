@@ -253,6 +253,9 @@ p code, li code, td code {
 .menu.is-open .menu__btn,
 .menu.is-current .menu__btn { color: var(--text); }
 
+/* each menu's icon, ahead of its name (operator, 2026-10-07) */
+.menu__icon { width: 1.05em; height: 1.05em; flex: none; color: var(--vista); }
+
 .menu__chev {
   width: 0.42em;
   height: 0.42em;
