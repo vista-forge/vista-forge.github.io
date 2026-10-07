@@ -18,7 +18,7 @@
   --v:   #0e7490;  --v-wash: rgba(8, 145, 178, 0.07);     --v-line: rgba(8, 145, 178, 0.34);
   --m:   #0f766e;  --m-wash: rgba(13, 148, 136, 0.07);    --m-line: rgba(13, 148, 136, 0.34);
   --eng: #0d9488;  --on-eng: #ffffff;
-  --tip-bg: #f1f2f5; --tip-fg: #000000; --tip-line: #d3d7e0;
+  --tip-bg: #fff8d1; --tip-fg: #000000; --tip-line: #e6d98f;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   --radius: 10px;
@@ -238,7 +238,8 @@ a.on:hover { text-decoration: underline; }
 .endnote { font-size: 0.82rem; color: var(--text-faint); max-width: 80ch; border-top: 1px solid var(--border); padding-top: 14px; }
 
 /* the hover info: one box, placed by the script at the foot of the page */
-/* quiet on purpose: square, light grey, small type, a hairline and no shadow */
+/* quiet on purpose: square corners, light yellow, small type, a hairline and no
+   shadow; the script sizes each one to be about as tall as it is wide */
 .tip {
   position: fixed; z-index: 10;
   max-width: min(300px, calc(100vw - 16px));
@@ -295,6 +296,17 @@ a.on:hover { text-decoration: underline; }
   // pointer, so it opens above the item's left end instead. Near the top of
   // the window, where there is no room above, it opens below.
   var px = null, py = null
+  // A hint is about as tall as it is wide (operator, 2026-10-07): the
+  // narrowest width, in 10px steps, at which the wrapped text is no taller
+  // than the box is wide.
+  function shape() {
+    var most = Math.min(300, window.innerWidth - 16)
+    for (var w = 110; w <= most; w += 10) {
+      tip.style.width = w + 'px'
+      if (tip.offsetHeight <= w) return
+    }
+    tip.style.width = most + 'px'
+  }
   function place(el) {
     var w = tip.offsetWidth, h = tip.offsetHeight
     var r = el.getBoundingClientRect()
@@ -312,6 +324,7 @@ a.on:hover { text-decoration: underline; }
     cur = el
     tip.textContent = t
     tip.hidden = false
+    shape()
     place(el)
   }
   function hide() { clearTimeout(timer); cur = null; tip.hidden = true }
