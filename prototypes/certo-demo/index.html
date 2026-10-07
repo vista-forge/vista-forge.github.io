@@ -74,7 +74,13 @@
   .mast .lede { font-size: 1.2rem; color: var(--ink2); max-width: 52ch; }
   /* the demo's one standing statement, highlighted (operator, 2026-10-07) */
   .notice__fiction { color: var(--flag); font-style: italic; }
-  .notice { max-width: 52ch; padding: 10px 14px; border: 1px solid var(--notice-line); border-radius: 8px; background: var(--notice-bg); color: var(--notice-ink); font-weight: 600; }
+  /* the lede and the notice share the lede's measure, so the notice centres
+     under the lede's text rather than under the whole column */
+  .mast .intro { display: grid; gap: 14px; font-size: 1.2rem; max-width: 52ch; }
+  /* as wide as its longest line and no wider, unwrapped; on a phone the type
+     shrinks to keep each line whole, and only below 340px does it wrap */
+  .notice { justify-self: center; width: fit-content; max-width: 100%; white-space: nowrap; padding: 8px 14px; border: 1px solid var(--notice-line); border-radius: 8px; background: var(--notice-bg); color: var(--notice-ink); font-size: clamp(0.72rem, 3.2vw, 1.0625rem); font-weight: 600; }
+  @media (max-width: 340px) { .notice { white-space: normal; } }
   .phone {
     width: 270px; max-width: 100%; border: 11px solid var(--bezel); border-radius: 38px; overflow: hidden;
     background: var(--bezel); box-shadow: 0 18px 40px var(--shade); margin: 0;
@@ -157,8 +163,10 @@
     <p class="eyebrow">Demo guide · for physicians</p>
     <h1>Certo</h1>
     <p class="tagline">The Pocket CPRS.</p>
+    <div class="intro">
     <p class="lede">A patient's VistA chart on your own phone, through the same calls CPRS makes. This guide gets you connected, in about fifteen minutes and a short wait while the Administrator sets up your copy, then walks through every main screen.</p>
     <p class="notice">This demonstration is on a real live VistA system.<br><em class="notice__fiction">All data and patients are fictional.</em></p>
+    </div>
   </div>
   <figure class="phone"><img src="img/glance.webp" width="600" height="1192" alt="Certo's glance for the demo patient TEN,PATIENT: the banner with allergies, postings and a fall-risk mark, then the last visit, the next visit, the latest note, vitals and flagged labs, then medications."></figure>
 </header>
