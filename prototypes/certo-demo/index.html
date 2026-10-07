@@ -23,6 +23,7 @@
     --flag: #c3261f;
     --bezel: #18212c;
     --shade: rgba(19, 32, 45, 0.12);
+    --notice-bg: #fff3b8; --notice-ink: #3b2f00; --notice-line: #e2c03f;
     --sans: "Atkinson Hyperlegible", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
     --wide: 1080px;
@@ -34,12 +35,14 @@
       --bg: #0e141a; --surface: #151c24; --ink: #e4eaf1; --ink2: #a0acb9; --line: #28333f;
       --accent: #7cb0ff; --accent-soft: #172538; --flag: #ff7b72;
       --bezel: #05080b; --shade: rgba(0, 0, 0, 0.45); color-scheme: dark;
+      --notice-bg: #3a3110; --notice-ink: #f5e6a3; --notice-line: #8a7322;
     }
   }
   :root[data-theme="dark"] {
     --bg: #0e141a; --surface: #151c24; --ink: #e4eaf1; --ink2: #a0acb9; --line: #28333f;
     --accent: #7cb0ff; --accent-soft: #172538; --flag: #ff7b72;
     --bezel: #05080b; --shade: rgba(0, 0, 0, 0.45); color-scheme: dark;
+    --notice-bg: #3a3110; --notice-ink: #f5e6a3; --notice-line: #8a7322;
   }
 
   * { box-sizing: border-box; }
@@ -69,6 +72,8 @@
   .mast h1 { font-size: clamp(3.4rem, 13vw, 6rem); line-height: 1; letter-spacing: -0.02em; }
   .mast .tagline { font-size: clamp(1.5rem, 6.2vw, 2.6rem); font-weight: 700; line-height: 1.1; color: var(--accent); }
   .mast .lede { font-size: 1.2rem; color: var(--ink2); max-width: 52ch; }
+  /* the demo's one standing statement, highlighted (operator, 2026-10-07) */
+  .notice { max-width: 52ch; padding: 10px 14px; border: 1px solid var(--notice-line); border-radius: 8px; background: var(--notice-bg); color: var(--notice-ink); font-weight: 600; }
   .phone {
     width: 270px; max-width: 100%; border: 11px solid var(--bezel); border-radius: 38px; overflow: hidden;
     background: var(--bezel); box-shadow: 0 18px 40px var(--shade); margin: 0;
@@ -152,6 +157,7 @@
     <h1>Certo</h1>
     <p class="tagline">The Pocket CPRS.</p>
     <p class="lede">A patient's VistA chart on your own phone, through the same calls CPRS makes. This guide gets you connected, in about fifteen minutes and a short wait while the Administrator sets up your copy, then walks through every main screen.</p>
+    <p class="notice">This is a real demonstration on a real VistA system. All data and patients are fictional.</p>
   </div>
   <figure class="phone"><img src="img/glance.webp" width="600" height="1192" alt="Certo's glance for the demo patient TEN,PATIENT: the banner with allergies, postings and a fall-risk mark, then the last visit, the next visit, the latest note, vitals and flagged labs, then medications."></figure>
 </header>
