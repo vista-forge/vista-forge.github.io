@@ -79,7 +79,7 @@
   .mast .intro { display: grid; gap: 14px; font-size: 1.2rem; max-width: 52ch; }
   /* as wide as its longest line and no wider, unwrapped; on a phone the type
      shrinks to keep each line whole, and only below 340px does it wrap */
-  .notice { justify-self: center; width: fit-content; max-width: 100%; white-space: nowrap; padding: 8px 14px; border: 1px solid var(--notice-line); border-radius: 8px; background: var(--notice-bg); color: var(--notice-ink); font-size: clamp(0.72rem, 3.2vw, 1.0625rem); font-weight: 600; }
+  .notice { justify-self: center; width: fit-content; text-align: center; max-width: 100%; white-space: nowrap; padding: 8px 14px; border: 1px solid var(--notice-line); border-radius: 8px; background: var(--notice-bg); color: var(--notice-ink); font-size: clamp(0.72rem, 3.2vw, 1.0625rem); font-weight: 600; }
   @media (max-width: 340px) { .notice { white-space: normal; } }
   .phone {
     width: 270px; max-width: 100%; border: 11px solid var(--bezel); border-radius: 38px; overflow: hidden;
