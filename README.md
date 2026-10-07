@@ -32,7 +32,7 @@ can be linked to:
 | `#/architecture/<section>` | the same, scrolled to that section, fold opened |
 | `#/explore/vdb-explorer` | the dd-bundle browser, in a frame |
 | `#/explore/cprs-configuration` | the CPRS configuration dashboard, in a frame |
-| `#/docs/forge-reference` | the generated `m`/`v` surface reference, in a frame |
+| `#/docs/forge-reference` | the generated `m`/`v` surface reference, in a frame, opened on its stack map (`/forge-docs/map/`): the whole stack drawn as layers, each part a link into its chapter |
 | `#/docs/forge-reference/<book>` | the same, opened at one of its six books: `v`, `vsl`, `m`, `msl`, `devbox`, `products` (VSCode) |
 | `#<section>` | a bare legacy anchor — read as `#/architecture/<section>` |
 
