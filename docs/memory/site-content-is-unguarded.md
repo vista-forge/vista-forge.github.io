@@ -1,47 +1,19 @@
 ---
 name: site-content-is-unguarded
-description: The site's m/v repo tables are generated + drift-gated from ecosystem.json; the prose and the by-the-numbers figures are still hand-written and ungated. Know which half you're editing.
+description: Every word and figure on the landing page is hand-written and ungated (the generated repo tables were dropped 2026-10-07); re-measure figures from the tree, never copy the profile README.
 metadata:
   type: project
 ---
 
-# Half the landing page is gated. Know which half.
+# The landing page is hand-written, and nothing checks it
 
-## Generated — `scripts/site-gen.py` owns it
+Until 2026-10-07 the `m`/`v` repo tables were generated from the registry by
+`scripts/site-gen.py` and drift-gated; the operator dropped that section, and
+the generator, its snapshot and its gates went with it (git history has them).
+**Do not link a private repo**: the site is public, and that link is a public
+404 — with the generator gone, nothing does this for you.
 
-The `m` and `v` repo tables in `index.html` sit between
-`<!-- gen:begin block=repos-m -->` / `<!-- gen:end -->` and are a projection of
-the same source the org profile README projects: `ecosystem.json` (membership +
-layer) + each repo's committed `repo.meta.json` `role` + latest version tag +
-**visibility**. Hand-editing a block is drift; `make site-check` red-gates it.
-
-**Visibility is part of the projection on purpose.** The site is public and most
-of the org is not, so a link to a private repo is a public 404. The generator
-emits a link only for a public repo and plain text otherwise — so "link it when it
-goes public" is mechanical, not a thing anyone has to remember. Run
-`make site-sync` after a repo flips.
-
-## The two-tier gate — and why it is two
-
-The registry and the roles live in **private** repos; harvesting them needs
-org-wide `contents:read`. `.github` holds such a PAT (`META_GATE_TOKEN`) because
-`.github` is private. **This repo is public** — an org-wide read token in its
-Actions secrets is a far bigger blast radius than the gate is worth. So the
-harvest and the check are split:
-
-| Tier | Command | Network | Catches |
-|---|---|---|---|
-| 1 | `make site-check` | none — runs in CI | a hand-edited generated block |
-| 2 | `make site-freshness` | live `gh` — host-only | a stale snapshot (new tag, repo gone public) |
-
-Tier 1 alone lets `data/repos.json` rot; tier 2 alone can't run here. **If the site
-repo ever goes private, collapse them** — a single live `--check` in CI is simpler
-and strictly better once the token is safe to hold.
-
-The snapshot deliberately carries **no harvest timestamp**: a timestamp would churn
-every run and make a real diff invisible among the noise.
-
-## Still ungated — the hand-written half
+## The hand-written page
 
 The prose and the by-the-numbers figures are typed by hand and **nothing checks
 them**. Same for the "M standard & corpora" / "Editor extensions" / "Shared
@@ -75,14 +47,6 @@ exactly):
 ⚠️ **A committed measurement artifact can be stale.** `m-stdlib/test-results.json`
 reports 33 suites against 43 `*TST.m` files on disk — it is one run's output, not a
 census. Count the tree; use the JSON only to validate the method.
-
-## Proof the generation was worth it
-
-The first live harvest (2026-07-16) immediately caught real drift: **m-driver-sdk
-was `v0.11.0` live while both the hand-copy and `profile/README.md` said
-`v0.9.0`.** The profile's own generated block was stale — i.e. `make profile-sync`
-had not been run in `.github` since the tag. If the site's tables and the profile's
-disagree, suspect the profile is stale before assuming the site is.
 
 Related: the page makes **no licensing claim** while the open-core split (decided
 2026-07-08) is pending attorney review — see

@@ -10,8 +10,6 @@ serves this repo's `main` branch at root, so a push to `main` is a deploy. The
 index.html            the banner, the landing content, and the frame shell
 assets/css/site.css   all styling; no framework, no CDN
 assets/img/logo.png   the org mark (see "The logo" below)
-scripts/site-gen.py   generates the m/v repo tables from the ecosystem registry
-data/repos.json       the committed registry snapshot the tables render from
 .nojekyll             serve files as-is  ⚠️ load-bearing: Astro's _astro/ dies without it
 forge-docs/           DEPLOYED ARTIFACT — do not hand-edit
 artifacts/            standalone pages, one folder each; index.html GENERATED
@@ -37,12 +35,12 @@ can be linked to:
 | `#<section>` | a bare legacy anchor — read as `#/architecture/<section>` |
 
 That last row is load-bearing: the published reference's own nav links back here
-with bare anchors (`#repos`, `#stack`), and so do older links. They keep working.
+with bare anchors (`#stack`), and so do older links. They keep working; one naming
+a section that is gone (`#repos`, dropped 2026-10-07) opens the page at the top.
 
 **The landing content is still in `index.html`, not in a frame.** Only the three
-applications are framed. Two reasons, and both are the point: the page a crawler
-and a reader get at the root URL is the same document it always was, and
-`site-gen.py`'s generated repo tables stay where the gate looks for them.
+applications are framed, and that is the point: the page a crawler and a reader
+get at the root URL is the same document it always was.
 
 ### The frames
 
@@ -150,9 +148,7 @@ that describes nothing.
 ## Gates
 
 ```
-make site-check       offline, no secrets — the CI gate on every push
-make site-sync        HOST-ONLY — re-harvest the org and rewrite the tables
-make site-freshness   HOST-ONLY — is the snapshot stale vs the live org?
+make check           the gate — reaches no network; run before every push
 make artifacts        regenerate artifacts/ and prototypes/ index.html from their folders
 ```
 
@@ -189,7 +185,7 @@ The same goes for the header: that repo's `src/components/OrgNav.astro` mirrors
 this one's. The reference has no theme control; it still applies a saved
 `starlight-theme` or `theme` value, and since 2026-10-05 nothing writes either.
 
-**The Docs menu is shaped as Home's**: on the left the documentation's main
+**The Docs menu is shaped as Intro's**: on the left the documentation's main
 page, the reference's stack map; on the right the reference's six books as
 plain links (VistA CLI, VistA Library, M CLI, M Library, M DevBox, VSCode), by
 the labels its own sidebar gives them, which the `forge-docs` repo derives into
@@ -199,7 +195,7 @@ them with the reference: a book renamed, added or removed there is changed
 here too.
 
 ⚠️ **The two navs no longer agree, and the drift is now hidden rather than
-reconciled.** This banner is three menus (Home / Explore / Docs), each with its icon;
+reconciled.** This banner is three menus (Intro / Explore / Docs), each with its icon;
 `OrgNav.astro` is still the five flat links it mirrored before. Inside the Docs
 view that nav is not rendered at all — the whole banner it sits in is hidden
 (see the frames section above) — so a reader never sees the two disagree. They
@@ -208,49 +204,20 @@ point at bare anchors this router happens to accept. Reconciling them is a
 change in the `forge-docs` repo; not rendering one of them is not the same
 thing.
 
-## What is generated, and what is not
+## Nothing on the page is generated
 
-**Generated — do not hand-edit.** The `m` and `v` repo tables live between
-`<!-- gen:begin block=repos-m -->` / `<!-- gen:end -->` markers and are owned by
-`scripts/site-gen.py`. They are a projection of the same source the org profile
-README projects: `ecosystem.json` (registry membership + layer) + each repo's
-committed `repo.meta.json` `role` + its latest version tag + **its visibility**.
-Editing a block by hand is drift, and `make site-check` red-gates it.
+The `m` and `v` repo tables, generated from the org registry by
+`scripts/site-gen.py`, left with their section ("Every repo in the org",
+operator, 2026-10-07), and the generator, its `data/repos.json` snapshot and
+its two gates went with them. Everything on the page is now hand-written, and
+nothing checks it: the prose, the by-the-numbers figures and the tables that
+remain. Keep them honest yourself; the counting method is in
+`docs/memory/site-content-is-unguarded.md`.
 
-**Hand-written — keep it honest yourself.** Everything else: the prose, the
-by-the-numbers figures, and the "M standard & corpora" / "Editor extensions" /
-"Shared foundations" tables (those repos are not in the registry, so there is
-nothing to project them from — the same boundary `readme-gen.py` draws for the
-profile README).
-
-### Why two tiers of gate
-
-The registry and the roles are in **private** repos, so harvesting them needs a
-token with org-wide `contents:read`. `.github` can hold one (`META_GATE_TOKEN`)
-because `.github` is private. **This repo is public**, where that token's blast
-radius is far larger than the gate is worth. So:
-
-| Tier | Command | Network | Catches |
-|---|---|---|---|
-| 1 | `make site-check` | none — **runs in CI** | a hand-edited generated block |
-| 2 | `make site-freshness` | live `gh` — **host-only** | a stale snapshot (new tag, repo gone public) |
-
-Tier 1 alone would let `data/repos.json` rot; tier 2 alone can't run in a public
-repo's CI. Together, the HTML can't drift from the snapshot and the snapshot can't
-drift from the org for longer than it takes to run `make site-sync`.
-
-## Repo links: public only, mechanically
-
-Most of the org is private, and a link to a private repo is a **public 404**. So a
-repo's name is emitted as a link **only when it is actually public**, and as plain
-text otherwise. This is not a rule to remember — `site-gen.py` harvests visibility,
-so a re-harvest links a repo the moment it goes public, and nothing links it
-before. Run `make site-sync` after any repo flips.
-
-Public today: `tree-sitter-m`, `vista-atlas`, `vista-compass`, and the
-`ghcr.io/vista-forge/vista-iris` container image (the image is public even though
-its build repo is not). Every repo in the registry is currently private, so the
-generated tables emit no links at all.
+**Link a repo only when it is public.** Most of the org is private, and a link
+to a private repo is a public 404. Public today: `tree-sitter-m`,
+`vista-atlas`, `vista-compass`, and the `ghcr.io/vista-forge/vista-iris`
+container image (the image is public even though its build repo is not).
 
 ## The logo
 

@@ -53,6 +53,5 @@ on 2026-09-20 and **chose to keep the HTML ones**.
 ## What is still ungated here
 
 The prose, the figures and the by-the-numbers figures are hand-written and
-**rot silently** — only the `m`/`v` repo tables are generated and gated. That
-was true before this change and is still true; the restructure moved those
-tables without altering a byte, which `make site-check` proves on every run.
+**rot silently**. Since 2026-10-07 that is the whole page: the generated
+`m`/`v` repo tables, the one gated part, were dropped with their section.
