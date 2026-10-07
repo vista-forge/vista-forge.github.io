@@ -290,12 +290,19 @@ a.on:hover { text-decoration: underline; }
     render()
   })
 
+  // A hint opens above and to the right of the pointer, and follows it
+  // across the item (operator, 2026-10-07). From the keyboard there is no
+  // pointer, so it opens above the item's left end instead. Near the top of
+  // the window, where there is no room above, it opens below.
+  var px = null, py = null
   function place(el) {
-    var r = el.getBoundingClientRect()
     var w = tip.offsetWidth, h = tip.offsetHeight
-    var x = Math.max(8, Math.min(r.left, window.innerWidth - w - 8))
-    var y = r.bottom + 6
-    if (y + h > window.innerHeight - 8) y = Math.max(8, r.top - h - 6)
+    var r = el.getBoundingClientRect()
+    var ax = px !== null ? px + 12 : r.left + 12
+    var top = px !== null ? py - 12 : r.top - 6
+    var x = Math.max(8, Math.min(ax, window.innerWidth - w - 8))
+    var y = top - h
+    if (y < 8) y = px !== null ? py + 20 : r.bottom + 6
     tip.style.left = x + 'px'
     tip.style.top = y + 'px'
   }
@@ -310,7 +317,12 @@ a.on:hover { text-decoration: underline; }
   function hide() { clearTimeout(timer); cur = null; tip.hidden = true }
   // A short wait before a hint appears, so passing the pointer over the page
   // does not flash one box after another.
+  document.addEventListener('pointermove', function (e) {
+    px = e.clientX; py = e.clientY
+    if (cur && !tip.hidden) place(cur)
+  })
   document.addEventListener('pointerover', function (e) {
+    px = e.clientX; py = e.clientY
     var el = e.target.closest && e.target.closest('[data-tip]')
     if (el === cur) return
     hide()
@@ -318,6 +330,7 @@ a.on:hover { text-decoration: underline; }
   })
   document.addEventListener('pointerout', function (e) { if (!e.relatedTarget) hide() })
   document.addEventListener('focusin', function (e) {
+    if (e.target.matches && e.target.matches(':focus-visible')) px = py = null
     var el = e.target.closest && e.target.closest('[data-tip]')
     if (el) show(el); else hide()
   })
