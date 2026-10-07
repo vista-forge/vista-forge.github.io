@@ -190,7 +190,7 @@ this one's. The reference has no theme control; it still applies a saved
 `starlight-theme` or `theme` value, and since 2026-10-05 nothing writes either.
 
 **The Docs menu names the reference's six books** (VistA CLI, VistA
-StdLib, M CLI, M StdLib, M DevBox, VSCode), by the labels its own sidebar gives them, which the
+Library, M CLI, M Library, M DevBox, VSCode), by the labels its own sidebar gives them, which the
 `forge-docs` repo derives into `site/src/books.json`. Each opens the framed
 reference at that book. The names, the descriptions and the six routes are
 restated by hand in `index.html`, and nothing compares them with the
