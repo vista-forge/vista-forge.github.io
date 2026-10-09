@@ -1,4 +1,4 @@
-"""Tests for artifacts_index: each collection page (artifacts/, prototypes/) is
+"""Tests for artifacts_index: each collection page (artifacts/, prototypes/, proposals/) is
 a projection of the folders under it, and the check fails closed."""
 
 import sys
@@ -102,7 +102,7 @@ class ArtifactsIndexTest(unittest.TestCase):
             artifacts_index.entries(self.root / "nowhere")
 
     def test_the_site_has_a_folder_for_every_collection(self) -> None:
-        self.assertEqual([c.folder for c in artifacts_index.COLLECTIONS], ["artifacts", "prototypes"])
+        self.assertEqual([c.folder for c in artifacts_index.COLLECTIONS], ["artifacts", "prototypes", "proposals"])
         for c in artifacts_index.COLLECTIONS:
             self.assertTrue((artifacts_index.SITE / c.folder).is_dir(), c.folder)
 

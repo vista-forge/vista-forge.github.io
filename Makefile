@@ -10,10 +10,10 @@ help: ## show this help
 
 check: artifacts-check ## THE gate — local, reaches no network (no CI; run before every push)
 
-artifacts: ## regenerate artifacts/ and prototypes/ index.html from the folders under each
+artifacts: ## regenerate artifacts/, prototypes/ and proposals/ index.html from the folders under each
 	python3 scripts/artifacts_index.py
 
-artifacts-check: ## red-gate artifacts/ and prototypes/ index.html against their folders (and the tests)
+artifacts-check: ## red-gate artifacts/, prototypes/ and proposals/ index.html against their folders (and the tests)
 	python3 -m unittest scripts/test_artifacts_index.py
 	python3 scripts/artifacts_index.py --check
 

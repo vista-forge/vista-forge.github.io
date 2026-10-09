@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Certo's planned voice and typed search of the VistA record: a fixed grammar and no language model, so the same question on the same record always gives VistA's own answer. The product specification, the market research, the voice flow screen by screen, Certo as built, and the integration strategy. Not yet built.">
+<title>Certo VoiceFlow</title>
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=Roboto+Condensed:wght@400;500;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+/* Layout: a contents rail beside one reading column; tables, phone screens and
+   pictures take the column's full width and wrap to one column on a phone. */
+:root {
+  --bg: #f5f6f7;        /* Certo's paper */
+  --card: #ffffff;      /* Certo's screen */
+  --ink: #1b1b1b;
+  --ink2: #3d4551;
+  --ink3: #5c6370;
+  --rule: #dfe1e2;
+  --edge: #a9aeb1;
+  --accent: #005ea2;    /* blue takes a tap */
+  --navy: #162e51;
+  --pale: #d9e8f6;
+  --chip: #eef2f5;
+  --alarm: #b21d38;     /* VistA's own flag */
+  --caution: #ffbe2e;
+  --on-caution: #1b1b1b;
+  --display: Bitter, Georgia, "Times New Roman", serif;
+  --text: "Source Sans 3", "Source Sans Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10161f; --card: #18212d; --ink: #e9edf2; --ink2: #c0c8d2; --ink3: #97a3b1;
+    --rule: #2b3746; --edge: #55637a; --accent: #7cb9ea; --navy: #cfe0f3; --pale: #1d3350;
+    --chip: #212d3c; --alarm: #f2909f; --caution: #ffbe2e; --on-caution: #1b1b1b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10161f; --card: #18212d; --ink: #e9edf2; --ink2: #c0c8d2; --ink3: #97a3b1;
+  --rule: #2b3746; --edge: #55637a; --accent: #7cb9ea; --navy: #cfe0f3; --pale: #1d3350;
+  --chip: #212d3c; --alarm: #f2909f; --caution: #ffbe2e; --on-caution: #1b1b1b;
+  color-scheme: dark;
+}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--text); font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; padding-block: 36px 72px; }
+.doc :target, .mast :target { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 16px); }
+.doc a, .toc a, .mast a { color: var(--accent); text-underline-offset: 2px; }
+.doc a:focus-visible, .toc a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+/* masthead */
+.mast { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px 48px; align-items: end; padding-bottom: 28px; border-bottom: 2px solid var(--navy); }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); margin: 0 0 10px; }
+.mast h1 { font-family: var(--display); font-weight: 700; font-size: clamp(44px, 7vw, 76px); line-height: 0.98; margin: 0; color: var(--navy); letter-spacing: -0.01em; }
+.gloss { font-family: var(--mono); font-size: 13px; color: var(--ink3); margin: 12px 0 0; }
+.lede { font-size: 21px; line-height: 1.4; margin: 18px 0 0; max-width: 34ch; text-wrap: balance; }
+.byline { font-size: 15px; color: var(--ink3); margin: 16px 0 0; }
+.ask { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px 14px; align-items: baseline; }
+.ask dt { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3); }
+.ask dd { margin: 0; min-width: 0; }
+.ask .heard { font-style: italic; color: var(--ink2); }
+.ask .row { font-family: var(--mono); font-size: 14px; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.ask .flag { color: var(--alarm); font-weight: 600; }
+.ask .cap { grid-column: 1 / -1; font-size: 13px; color: var(--ink3); border-top: 1px solid var(--rule); padding-top: 8px; }
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-family: var(--mono); font-size: 14px; }
+.chips b { font-weight: 500; border: 1px solid var(--accent); color: var(--accent); background: var(--card); border-radius: 6px; padding: 3px 9px; }
+.chips i { font-style: normal; color: var(--ink3); }
+.status { margin: 22px 0 0; background: var(--caution); color: var(--on-caution); border-radius: 8px; padding: 12px 16px; font-size: 16px; line-height: 1.45; }
+.status b { font-weight: 700; }
+
+/* columns */
+.cols { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 56px; margin-top: 36px; align-items: start; }
+.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); max-height: calc(100vh - 32px); overflow: auto; font-size: 15px; line-height: 1.35; }
+.toc h2 { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); margin: 0 0 10px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.toc ol ol { margin: 6px 0 2px; padding-left: 26px; gap: 5px; font-size: 14px; }
+.toc a { text-decoration: none; display: inline-block; }
+.toc a:hover { text-decoration: underline; }
+.toc .n { font-family: var(--mono); font-size: 12px; color: var(--ink3); display: inline-block; width: 22px; }
+.toc ol ol a { color: var(--ink2); }
+
+/* document */
+.doc { min-width: 0; display: flex; flex-direction: column; gap: 56px; }
+.doc section { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.doc h2 { font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1.15; margin: 0; color: var(--navy); text-wrap: balance; display: flex; gap: 14px; align-items: baseline; }
+.doc h2 .n { font-family: var(--mono); font-weight: 500; font-size: 15px; color: var(--ink3); flex: none; }
+.doc h3 { font-family: var(--text); font-weight: 700; font-size: 20px; line-height: 1.25; margin: 14px 0 0; text-wrap: balance; }
+.doc h3 .n { font-family: var(--mono); font-weight: 500; font-size: 13px; color: var(--ink3); margin-right: 10px; }
+.doc p, .doc ul, .doc ol { margin: 0; max-width: 70ch; }
+.doc ul, .doc ol { padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.doc li > ul { margin-top: 6px; }
+.doc strong { font-weight: 700; }
+.doc code, .doc .m { font-family: var(--mono); font-size: 0.86em; }
+.doc code { background: var(--chip); border-radius: 4px; padding: 1px 5px; }
+.doc q { quotes: "“" "”"; }
+.abstract { background: var(--card); border: 1px solid var(--rule); border-left: 4px solid var(--navy); border-radius: 0 10px 10px 0; padding: 22px 26px; }
+.abstract p { font-size: 18.5px; line-height: 1.55; max-width: 72ch; }
+.abstract h2 { font-size: 15px; font-family: var(--mono); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); }
+.c { font-family: var(--mono); font-size: 0.72em; text-decoration: none; vertical-align: 0.35em; padding: 0 1px; white-space: nowrap; }
+.c:hover { text-decoration: underline; }
+.note { font-size: 15px; color: var(--ink3); }
+.callout { background: var(--pale); border-radius: 8px; padding: 14px 18px; max-width: 74ch; }
+.callout p { max-width: none; }
+
+/* tables */
+.tw { overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; background: var(--card); }
+table { border-collapse: collapse; width: 100%; font-size: 15.5px; line-height: 1.4; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+tbody tr:last-child > * { border-bottom: 0; }
+thead th { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--edge); white-space: nowrap; }
+tbody th { font-weight: 700; }
+td.num, th.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tw.wide table { min-width: 720px; }
+.tag { display: inline-block; font-family: var(--mono); font-size: 12px; border-radius: 4px; padding: 1px 7px; white-space: nowrap; border: 1px solid var(--edge); color: var(--ink2); }
+.tag.built { background: var(--pale); border-color: var(--accent); color: var(--navy); }
+.tag.rec { background: var(--chip); }
+tr.certo > th, tr.certo > td { background: var(--pale); }
+
+/* the two-routes figure */
+.flow { display: flex; align-items: stretch; gap: 10px; flex-wrap: nowrap; }
+.flow .fin { display: flex; flex-direction: column; gap: 8px; flex: 1 1 0; min-width: 0; }
+.fbox { flex: 1 1 0; min-width: 0; background: var(--card); border: 1px solid var(--edge); border-radius: 8px; padding: 10px 12px; font-weight: 700; font-size: 16px; line-height: 1.25; display: flex; flex-direction: column; gap: 3px; justify-content: center; }
+.fbox small { font-weight: 400; font-size: 13.5px; color: var(--ink3); line-height: 1.3; }
+.fbox.key { border: 2px solid var(--accent); background: var(--pale); }
+.farrow { align-self: center; color: var(--ink3); font-family: var(--mono); flex: none; }
+.farrow::before { content: "→"; }
+figure { margin: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+figcaption { font-size: 15px; color: var(--ink2); line-height: 1.4; max-width: 74ch; }
+figcaption b { color: var(--ink); }
+
+/* phone screens (design mock-ups, a fixed light look of their own) */
+.phones { display: grid; grid-template-columns: repeat(auto-fill, minmax(282px, 1fr)); gap: 32px 24px; align-items: start; }
+.shell { width: 282px; max-width: 100%; }
+.phone { width: 390px; height: 844px; zoom: 0.72; overflow: hidden; border-radius: 26px; border: 1px solid #8f99a3; background: #ffffff; color: #10202F; font-size: 16px; line-height: normal; font-weight: 400; letter-spacing: normal; text-align: left; color-scheme: light; position: relative; }
+.phone a { color: #0B6E99; }
+.phones figcaption .t, .shots figcaption .t { display: block; font-weight: 700; color: var(--ink); }
+.phones figcaption .chg { display: block; margin-top: 4px; font-size: 14px; color: var(--ink3); }
+
+/* voice-flow mock-ups: Certo's own look, fixed light */
+.phone { display: flex; flex-direction: column; background: #f3f5f8; color: #1b1b1b; font-family: "Roboto Condensed", "IBM Plex Sans Condensed", system-ui, sans-serif; font-size: 15px; line-height: 1.25; }
+.phone * { box-sizing: border-box; }
+.phone b { font-weight: 700; }
+.phone i { font-style: normal; }
+.pb { margin: 10px 12px 0; background: #fff; border: 1px solid #dfe1e2; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.14); padding: 8px 12px; display: flex; flex-direction: column; gap: 5px; flex: none; }
+.pb .nm { display: flex; justify-content: space-between; align-items: center; font-size: 21px; font-weight: 700; }
+.pb .hide { font-size: 14px; color: #005ea2; border: 1px solid #71767a; border-radius: 99px; padding: 3px 13px; }
+.pb .ln { display: flex; flex-wrap: wrap; gap: 3px 8px; align-items: baseline; border-top: 1px solid #dfe1e2; padding-top: 5px; }
+.pb .ward { background: #d9e8f6; color: #162e51; font-weight: 700; border-radius: 99px; padding: 1px 9px; font-size: 14px; }
+.pb .mut, .phone .mut { color: #5c6370; }
+.pb .rt { margin-left: auto; color: #5c6370; font-size: 14px; }
+.pm { flex: 1 1 0; min-height: 0; overflow: hidden; position: relative; padding: 10px 12px 0; display: flex; flex-direction: column; gap: 8px; }
+.band { background: #d9e8f6; color: #162e51; font-weight: 700; font-size: 17px; border-radius: 6px; padding: 7px 10px; display: flex; justify-content: space-between; flex: none; }
+.rw { border-bottom: 1px solid #dfe1e2; padding: 2px 2px 6px; display: flex; flex-direction: column; gap: 1px; flex: none; }
+.rw .h { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; font-size: 16px; }
+.rw .h span { font-weight: 400; color: #5c6370; font-size: 14px; }
+.phone .fl { color: #b21d38; font-weight: 700; }
+.heard { font-size: 14.5px; color: #3d4551; font-style: italic; flex: none; }
+.q { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; flex: none; }
+.q b { border: 1.5px solid #005ea2; color: #005ea2; background: #fff; border-radius: 6px; padding: 4px 10px; font-size: 15px; }
+.q b.on { background: #005ea2; color: #fff; }
+.q i { color: #5c6370; }
+.ttl { font-size: 18px; font-weight: 700; color: #005ea2; display: flex; justify-content: space-between; align-items: baseline; flex: none; }
+.ttl span { font-size: 14px; font-weight: 400; color: #5c6370; }
+.big { display: flex; align-items: baseline; gap: 10px; flex: none; }
+.big .v { font-size: 30px; font-weight: 700; color: #b21d38; }
+.big .v sup { font-size: 15px; }
+.g { display: grid; gap: 0 8px; padding: 5px 2px; border-bottom: 1px solid #dfe1e2; flex: none; }
+.g.hd { color: #5c6370; font-size: 14px; padding-bottom: 3px; }
+.g4 { grid-template-columns: 1.5fr .7fr .5fr .8fr; }
+.g3 { grid-template-columns: 1fr 1.5fr auto; }
+.gn { grid-template-columns: 1fr auto auto; align-items: baseline; }
+.src { font-size: 14px; color: #5c6370; flex: none; }
+.win { display: grid; grid-template-columns: repeat(7, 1fr); border: 1px solid #a9aeb1; border-radius: 8px; overflow: hidden; background: #fff; flex: none; }
+.win span { text-align: center; padding: 8px 0; font-weight: 700; color: #005ea2; border-left: 1px solid #dfe1e2; }
+.win span:first-child { border-left: 0; }
+.win span.on { background: #005ea2; color: #fff; }
+.spacer { flex: 1 1 0; }
+.pane { background: #fff; border: 1px solid #dfe1e2; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px; flex: none; }
+.pane .hd { font-size: 19px; font-weight: 700; color: #162e51; }
+.opt { border: 1.5px solid #005ea2; border-radius: 8px; padding: 9px 12px; display: flex; flex-direction: column; gap: 1px; background: #fff; }
+.opt b { font-size: 18px; color: #005ea2; }
+.opt.plain { border-color: #a9aeb1; align-items: center; }
+.opt.plain b { font-size: 16px; color: #3d4551; }
+.opt.solid { background: #005ea2; align-items: center; }
+.opt.solid b { color: #fff; font-size: 17px; }
+.mono { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-size: 12.5px; line-height: 1.45; white-space: pre-wrap; background: #fff; border: 1px solid #dfe1e2; border-radius: 6px; padding: 8px 10px; flex: 1 1 0; min-height: 0; overflow: hidden; }
+.tag2 { font-size: 13px; font-weight: 700; border: 1px solid #71767a; border-radius: 4px; padding: 0 6px; color: #3d4551; }
+/* the page bar, with the question control at its centre */
+.tb { flex: none; position: relative; z-index: 2; background: #fff; border-top: 1px solid #c6cace; display: grid; grid-template-columns: 1fr 1fr 1fr 72px 1.5fr 1.5fr; align-items: end; gap: 0 2px; padding: 6px 5px 10px; }
+.tb .t { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 12px; font-weight: 700; color: #005ea2; padding: 7px 0 5px; border-radius: 8px; }
+.tb .t.on { background: #d9e8f6; color: #162e51; }
+.tb svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tb .mic { margin-top: -22px; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 13px; font-weight: 700; color: #162e51; }
+.tb .mic > i { width: 62px; height: 62px; border-radius: 50%; background: #005ea2; color: #fff; display: grid; place-items: center; border: 3px solid #fff; box-shadow: 0 1px 5px rgba(0,0,0,.35); }
+.tb .mic svg { width: 28px; height: 28px; }
+.tb .mic.held > i { background: #162e51; box-shadow: 0 0 0 9px rgba(0,94,162,.28), 0 0 0 20px rgba(0,94,162,.13); }
+.dim { position: absolute; inset: 0; background: rgba(22,46,81,.38); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; border-radius: 16px 16px 0 0; box-shadow: 0 -4px 18px rgba(0,0,0,.2); padding: 16px 16px 30px; display: flex; flex-direction: column; gap: 10px; }
+.sheet .lab { font-size: 14px; font-weight: 700; letter-spacing: .06em; color: #005ea2; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.sheet .lab::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #005ea2; }
+.sheet .say { font-size: 27px; font-weight: 700; line-height: 1.15; color: #162e51; }
+.sheet .rel { text-align: center; font-weight: 700; color: #162e51; padding-top: 4px; }
+.fld { border: 2px solid #005ea2; border-radius: 8px; background: #fff; padding: 9px 12px; font-size: 18px; display: flex; align-items: center; gap: 2px; }
+.fld u { text-decoration: none; width: 2px; height: 22px; background: #005ea2; }
+.sug { display: flex; flex-direction: column; }
+.sug span { padding: 9px 4px; border-bottom: 1px solid #dfe1e2; font-size: 16px; display: flex; justify-content: space-between; }
+.sug span i { color: #5c6370; font-size: 14px; }
+.kb { flex: none; background: #d3d7dc; padding: 8px 4px 22px; display: flex; flex-direction: column; gap: 9px; }
+.kb div { display: flex; justify-content: center; gap: 5px; }
+.kb span { flex: 0 1 34px; height: 40px; background: #fff; border-radius: 5px; box-shadow: 0 1px 0 #8a8f96; display: grid; place-items: center; font-size: 19px; font-family: system-ui, sans-serif; }
+.kb span.w { flex: 0 0 46px; background: #adb3bb; font-size: 14px; }
+.kb span.sp { flex: 1 1 0; font-size: 14px; color: #5c6370; }
+.kb span.go { flex: 0 0 80px; background: #005ea2; color: #fff; font-size: 15px; font-weight: 600; }
+
+/* pictures of Certo as built */
+.shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 32px 24px; align-items: start; }
+.shots img { display: block; width: 100%; max-width: 340px; height: auto; border: 1px solid var(--edge); border-radius: 14px; background: #f5f6f7; }
+
+/* references */
+.refs { font-size: 15.5px; line-height: 1.45; }
+.refs h3 { font-size: 16px; margin-top: 10px; }
+.refs ol { max-width: 86ch; gap: 7px; padding-left: 34px; }
+.refs li { overflow-wrap: anywhere; }
+.refs li::marker { font-family: var(--mono); font-size: 13px; color: var(--ink3); }
+footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--rule); padding-top: 16px; max-width: 86ch; }
+
+@media (max-width: 900px) {
+  .mast { grid-template-columns: minmax(0, 1fr); }
+  .cols { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .toc { position: static; max-height: none; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; }
+  .flow { flex-direction: column; }
+  .farrow::before { content: "↓"; }
+  .doc h2 { font-size: 26px; }
+}
+@media (max-width: 480px) {
+  .wrap { padding-inline: 16px; }
+  .abstract { padding: 18px; }
+  .ask { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .ask dd { margin-bottom: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="mast">
+  <div>
+    <p class="eyebrow">Product specification · voice flow · integration strategy</p>
+    <h1>Certo VoiceFlow</h1>
+    <p class="gloss">certo · Latin, with certainty · Italian, sure</p>
+    <p class="lede">Ask the VistA record a question by voice or by typing. Get the record's own answer, the same one every time.</p>
+    <p class="byline">Rafael Richards · 9 October 2026</p>
+  </div>
+  <div>
+    <dl class="ask" aria-label="One question, as Certo handles it">
+      <dt>Heard</dt>
+      <dd class="heard">“trend potassium last seven days”</dd>
+      <dt>Asked</dt>
+      <dd><span class="chips"><b>Labs</b><i>›</i><b>Potassium</b><i>›</i><b>7 days</b></span></dd>
+      <dt>Answer</dt>
+      <dd class="row"><span>Potassium</span><span class="flag">5.8 H</span><span>mmol/L</span><span>10/01 06:40</span><span>Final</span><span>VistA Lab</span></dd>
+      <dd class="cap">The words, the query they became, and VistA's own row. Values are from the mock-ups in section 4, not from a patient.</dd>
+    </dl>
+    <p class="status"><b>A target, not yet a product.</b> Nothing described on this page is built. Certo today takes no spoken input and answers no typed question about a record. Section 5 shows Certo as built on 2 October 2026. Section 4 shows design mock-ups of the voice interface with invented test data.</p>
+  </div>
+</header>
+
+<div class="cols">
+
+<nav class="toc" aria-label="Contents">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#abstract"><span class="n">·</span>Abstract</a></li>
+    <li><a href="#s1"><span class="n">1</span>Background and rationale</a>
+      <ol>
+        <li><a href="#s1-1">Certo today</a></li>
+        <li><a href="#s1-2">Why a spoken or typed question</a></li>
+        <li><a href="#s1-3">Why certainty is the product</a></li>
+      </ol>
+    </li>
+    <li><a href="#s2"><span class="n">2</span>Market research</a>
+      <ol>
+        <li><a href="#s2-1">What the market ships</a></li>
+        <li><a href="#s2-2">What the evidence says</a></li>
+        <li><a href="#s2-3">Where Certo sits beside AI</a></li>
+        <li><a href="#s2-4">The certainty guarantees</a></li>
+        <li><a href="#s2-5">What Certo does not promise</a></li>
+        <li><a href="#s2-6">Governance</a></li>
+      </ol>
+    </li>
+    <li><a href="#s3"><span class="n">3</span>Product specification</a>
+      <ol>
+        <li><a href="#s3-1">Users and tasks</a></li>
+        <li><a href="#s3-2">Scope</a></li>
+        <li><a href="#s3-3">The grammar</a></li>
+        <li><a href="#s3-4">Two routes, one query</a></li>
+        <li><a href="#s3-5">Recognition</a></li>
+        <li><a href="#s3-6">Safety rules</a></li>
+        <li><a href="#s3-7">Fidelity and provenance</a></li>
+        <li><a href="#s3-8">The unit of data</a></li>
+        <li><a href="#s3-9">Platform and approvals</a></li>
+      </ol>
+    </li>
+    <li><a href="#s4"><span class="n">4</span>Voice flow</a></li>
+    <li><a href="#s5"><span class="n">5</span>Certo today, in pictures</a></li>
+    <li><a href="#s6"><span class="n">6</span>Integration strategy</a>
+      <ol>
+        <li><a href="#s6-1">The precondition</a></li>
+        <li><a href="#s6-2">Where each word lands</a></li>
+        <li><a href="#s6-3">The sequence</a></li>
+        <li><a href="#s6-4">What does not change</a></li>
+        <li><a href="#s6-5">Proof and risks</a></li>
+      </ol>
+    </li>
+    <li><a href="#s7"><span class="n">7</span>Decisions to make</a></li>
+    <li><a href="#s8"><span class="n">8</span>References</a></li>
+  </ol>
+</nav>
+
+<article class="doc">
+
+<section class="abstract" id="abstract">
+  <h2>Abstract</h2>
+  <p>Certo is the phone app that reads a patient's VistA record through the same calls CPRS makes, and this page specifies its planned voice and text search. A physician holds a button and says <q>trend potassium, last 7 days</q>, or types it, and lands on the screen that a few taps would have reached. A small fixed grammar turns the words into one structured query. No language model takes part. The answer is VistA's own text, drawn by code, with its date, author and status, and the same question on the same record always gives the same answer. AI scribes and chart assistants cannot make that promise, because they generate their text. The search therefore sits beside them as the place a clinician checks what they produced. This page gives the specification, the market evidence, the voice interface screen by screen, Certo as built, and how the search enters Certo once every domain of its build plan is complete.</p>
+</section>
+
+<section id="s1">
+  <h2><span class="n">1</span>Background and rationale</h2>
+  <p>The app is built and reads VistA on a phone. The search is a design for asking the record a question out loud or by typing. It is the target for Certo once the app's screens are complete.</p>
+
+  <h3 id="s1-1"><span class="n">1.1</span>Certo today</h3>
+  <p>Certo is a web app installed on a phone. It signs a physician on to VistA with their own access and verify codes, as a client of the RPC Broker in the context CPRS uses, and reads the chart through CPRS's own calls. Four rules shape every screen.</p>
+  <ul>
+    <li><strong>Values are VistA's own text, drawn by code.</strong> No model writes, rewrites or retypes a value. The first build has no model at all.</li>
+    <li><strong>Only VistA's own judgements are shown:</strong> its flags and the reference range stored with a result. A derived display is limited to an age, a count of VistA's rows, a grouping or sort, or the previous result with its date.</li>
+    <li><strong>One front door.</strong> A record opens only from patient selection. Nothing inside an open record leads to another patient. This is a patient-safety rule and is never relaxed.</li>
+    <li><strong>CPRS is the baseline.</strong> Every function is measured against CPRS doing the same thing.</li>
+  </ul>
+  <p>Built as of 2 October 2026: sign-on, patient selection, the Alerts page, and an open record's five pages (Glance, Timeline, Notes, Vitals, Labs) with a note reader. Seven of the build plan's 32 steps are done. Still open are the labs page as ruled, imaging and pathology, orders, consults, immunizations, the alert inbox's follow-ups with signing, clinical reminders, what changed, and code status. <a class="c" href="#r40">[40]</a></p>
+
+  <h3 id="s1-2"><span class="n">1.2</span>Why a spoken or typed question</h3>
+  <ul>
+    <li><strong>The work is short.</strong> In the largest study of mobile record use, most sessions lasted about 15 seconds. <a class="c" href="#r27">[27]</a> Certo's own target for one test's latest value, found by its name from a locked phone, is 10 seconds. That target is not yet measured.</li>
+    <li><strong>A phone has room for five pages.</strong> Certo's navigation standard allows five on the bar at the foot of the screen, beside the question control, and the fixed parts of the screen already take 30% of it, 42% with the time window. <a class="c" href="#r37">[37]</a> The build plan adds orders, consults, imaging, pathology, immunizations and reminders, each opened from the Glance. A question goes straight to any of them.</li>
+    <li><strong>Hands and eyes are busy.</strong> On rounds, at the bedside or on a call, a held button and five words cost less than a path of taps.</li>
+    <li><strong>Reading is the largest unassisted share of the work.</strong> Chart review is a fifth to a third of physicians' time in the record, and AI scribes do not touch it (<a href="#s2-2">section 2.2</a>).</li>
+  </ul>
+
+  <h3 id="s1-3"><span class="n">1.3</span>Why certainty is the product</h3>
+  <p>VA has made AI scribes national. Abridge and Knowtex cover primary care, about 986,000 appointments by the vendors' count, under a five-year contract with a shared ceiling of $775.72 million. <a class="c" href="#r1">[1]</a> <a class="c" href="#r2">[2]</a> These tools generate text. Generated text is usually right, and its errors read as plausibly as its facts. A physician who signs a drafted note or acts on a summary needs a fast way to check it against the record.</p>
+  <p>Certo is that check. Its promise is about method: the same record gives the same screen, in VistA's own words. It does not say the record is right. Where two VistA records disagree, Certo shows both, each in its own words with its date.</p>
+  <div class="callout"><p><strong>The position:</strong> AI summarizes. Certo verifies. VistA is the source of truth and Certo is its unaltered view. The claim is <q>a direct, unaltered view of the source of truth</q>, never <q>the source of truth</q>.</p></div>
+</section>
+
+<section id="s2">
+  <h2><span class="n">2</span>Market research</h2>
+  <p>Every voice product for clinicians now on the market answers through a language model. The products that show the record unchanged have no question box, and none of either kind is sold for VistA. Certo takes the empty place: a question box with no model behind it.</p>
+  <p class="note">Sources were read on 22 to 24 September 2026 for Certo's market research, regulatory analysis and Abridge assessment. Peer-reviewed figures were checked against their PubMed abstracts then, and eight were checked again on 2 October 2026. Company-reported figures are labelled.</p>
+
+  <h3 id="s2-1"><span class="n">2.1</span>What the market ships</h3>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Kind</th><th>Examples</th><th>What it produces</th><th>Method</th></tr></thead>
+      <tbody>
+        <tr><th>Ambient scribe</th><td>Abridge and Knowtex at VA; Dragon Copilot, Nabla and Suki elsewhere <a class="c" href="#r1">[1]</a> <a class="c" href="#r15">[15]</a></td><td>A draft visit note from the conversation</td><td>Generative</td></tr>
+        <tr><th>Chart assistant</th><td>Epic Art, Oracle Clinical AI Agent, Suki, Dragon Copilot; Abridge's June 2026 platform <a class="c" href="#r12">[12]</a> <a class="c" href="#r13">[13]</a> <a class="c" href="#r16">[16]</a> <a class="c" href="#r11">[11]</a></td><td>Summaries, spoken chart questions (<q>last three A1c results</q>), drafted orders</td><td>Generative, inside the vendor's own record system</td></tr>
+        <tr><th>Evidence answers</th><td>OpenEvidence <a class="c" href="#r17">[17]</a></td><td>Answers from the literature, with citations</td><td>Generative, cited</td></tr>
+        <tr><th>General chat</th><td>VA GPT, Copilot Chat <a class="c" href="#r6">[6]</a></td><td>Whatever is asked, clinical notes included</td><td>Generative</td></tr>
+        <tr><th>Mobile chart, no AI</th><td>Epic Haiku and Rover <a class="c" href="#r18">[18]</a></td><td>The record itself, by tapping</td><td>Deterministic; Epic only</td></tr>
+        <tr class="certo"><th>Certo <span class="tag">not built</span></th><td>none on the market for VistA</td><td>The VistA record itself, reached by a spoken or typed question</td><td>Deterministic</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul>
+    <li>Ambient notes lead adoption: about one provider organization in five has rolled them out fully and two in five are piloting. <a class="c" href="#r19">[19]</a></li>
+    <li>Operational functions such as chart questions and order drafting exist almost only where the vendor owns the database. Even there the assistant stops at a draft for the clinician to sign.</li>
+    <li>Abridge is moving toward the chart. Its June 2026 platform adds pre-visit summaries and chart context during the visit, and VA's privacy assessment shows it already reads the problem list, labs, medications and notes from VistA. <a class="c" href="#r11">[11]</a> <a class="c" href="#r4">[4]</a> What still separates Certo is VistA's values shown unchanged, with no synthesis.</li>
+    <li>Oracle's nurse agent, announced in September 2026, leads with voice chart navigation and search. <a class="c" href="#r14">[14]</a> Voice search of the chart is now a market expectation, and every shipped version of it is generative.</li>
+  </ul>
+
+  <h3 id="s2-2"><span class="n">2.2</span>What the evidence says</h3>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Question</th><th>Finding</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><th>How accurate are AI scribes?</th><td>In a randomized trial of 238 physicians, clinically significant inaccuracies were noted <q>occasionally</q> (2.7 to 2.8 on a five-point scale). The authors call for ongoing vigilance.</td><td>Lukac 2025 <a class="c" href="#r20">[20]</a></td></tr>
+        <tr><th>How often does a model invent or omit?</th><td>Across 12,999 clinician-annotated sentences of generated clinical notes: a 1.47% hallucination rate and a 3.45% omission rate.</td><td>Asgari 2025 <a class="c" href="#r22">[22]</a></td></tr>
+        <tr><th>Are model summaries as good as physicians'?</th><td>Comparable overall quality and more concise, with more errors per summary (2.91 against 1.82).</td><td>Williams 2025 <a class="c" href="#r23">[23]</a></td></tr>
+        <tr><th>What do scribes change?</th><td>Across 8,581 clinicians at five systems: 16.0 fewer minutes of documentation per 8 scheduled hours. Time in the record outside work hours did not change.</td><td>Rotenstein 2026 <a class="c" href="#r21">[21]</a></td></tr>
+        <tr><th>How much of the work is reading?</th><td>Chart review was 33% of physicians' time in the record at 155,000 Cerner users and 20% of active time across 348 Epic systems.</td><td>Overhage 2020 <a class="c" href="#r25">[25]</a>, Holmgren 2021 <a class="c" href="#r26">[26]</a></td></tr>
+        <tr><th>How good is speech recognition?</th><td>Dictated notes held 7.4 errors per 100 words before review and 0.3 per 100 once signed. The review is what caught them.</td><td>Zhou 2018 <a class="c" href="#r24">[24]</a></td></tr>
+        <tr><th>What has VA's inspector general said?</th><td>Staff used general chat tools for clinical notes and patient-care summaries without the high-impact designation. The report rejects the search-engine comparison because such tools <q>synthesize and transform sources to produce novel content</q>.</td><td>VA OIG, June 2026 <a class="c" href="#r6">[6]</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Three things follow. Generated text carries a small, steady error rate, and omission is the commoner error. Scribes shorten the writing and leave the reading, the inbox and the signing where they were. Reading is a fifth to a third of the time, and it is the part Certo works on.</p>
+
+  <h3 id="s2-3"><span class="n">2.3</span>Where Certo sits beside AI</h3>
+  <p>Certo is not a scribe and never will be. It works at the moments the AI tools leave open, and on the output they hand back.</p>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Moment</th><th>The AI tool</th><th>Certo</th></tr></thead>
+      <tbody>
+        <tr><th>During the visit</th><td>The scribe listens and drafts the note.</td><td>Nothing. This is the scribe's ground.</td></tr>
+        <tr><th>Before signing a drafted note</th><td>The draft states a potassium, a dose, a date.</td><td>One question per fact shows VistA's own row beside the draft's claim.</td></tr>
+        <tr><th>A pre-visit or pre-rounds summary</th><td>The assistant chooses what to mention.</td><td><q>List labs, abnormal</q> and <q>show notes, cardiology</q> show every row the summary was chosen from.</td></tr>
+        <tr><th>An AI answer about the chart</th><td><q>The A1c is rising.</q></td><td><q>Trend A1c</q> shows the values, dates and VistA's flags. The physician judges.</td></tr>
+        <tr><th>Between visits, cross-cover, a call</th><td>No scribe is running.</td><td>The 10 to 20 second look.</td></tr>
+        <tr><th>After the scribe files its note</th><td>The note lands in VistA's notes.</td><td>Certo reads it like any other note, word for word.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="s2-4"><span class="n">2.4</span>The certainty guarantees</h3>
+  <p>Each guarantee is a property of the method, and each is one a generative product cannot give, because its answers are sampled from a model whose output varies with wording, context and version.</p>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Guarantee</th><th>What it means</th><th>How it is held</th></tr></thead>
+      <tbody>
+        <tr><th>Same question, same answer</th><td>A fixed grammar makes one query, and one query makes one read. There is no sampling, no prompt and no model version.</td><td>The parser is a table. Each phrase has a test on recorded replies.</td></tr>
+        <tr><th>Nothing invented</th><td>Every value on the screen is VistA's own text, drawn by code.</td><td>Certo's rule that no model writes, rewrites or retypes a value.</td></tr>
+        <tr><th>Nothing chosen for you</th><td>A question returns every row VistA returns for it, in VistA's order or a named sort, with the count.</td><td>The count is on the screen. A read that fails says so; it is never shown as an empty list.</td></tr>
+        <tr><th>You see what was asked</th><td>The heard words and the query chips stay on every result. Unmatched words show what can be asked. Sound-alike names ask which one.</td><td>Never a guess. A tap on a chip corrects it.</td></tr>
+        <tr><th>Every item carries its source</th><td>Date and time, author, status and where in VistA it came from. Preliminary, pending and unsigned are labelled. Two records that disagree are both shown.</td><td>Certo's rule that contradiction is a state.</td></tr>
+        <tr><th>Checked against CPRS</th><td>Each read is the call CPRS makes, compared with CPRS's own recorded traffic.</td><td>A recorded-reply test in the gate and a live test that the recording still holds.</td></tr>
+        <tr><th>One patient</th><td>A question acts on the open record only. A request for another patient is refused.</td><td>The front door, enforced by the server.</td></tr>
+        <tr><th>The audio stays on the phone</th><td>Speech is recognized on the device and is never stored or sent. Answers are shown and never spoken.</td><td>To be measured before any use with real patient data (<a href="#s6-3">section 6.3</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="s2-5"><span class="n">2.5</span>What Certo does not promise</h3>
+  <ul>
+    <li><strong>That the record is right.</strong> Certo shows what VistA holds.</li>
+    <li><strong>That it heard you right.</strong> A speech recognizer is a statistical model. The certainty starts at the query shown on the screen, which is why the heard words and the chips are always visible.</li>
+    <li><strong>That VistA holds everything.</strong> Imaging's files, remote data and the drug-check service live outside VistA's authority. Where one is involved the screen says what is and is not available.</li>
+    <li><strong>That you asked the right question.</strong> Certo answers the one asked.</li>
+    <li><strong>An interpretation.</strong> Certo never says rising, worse or likely.</li>
+  </ul>
+
+  <h3 id="s2-6"><span class="n">2.6</span>Governance</h3>
+  <p>This is an engineering reading of published policy, not a legal opinion. For a VA deployment, VA's AI intake decides.</p>
+  <ul>
+    <li>OMB's memorandum on federal AI leaves out of its definition <q>systems whose behavior is defined only by human-defined rules</q>. A grammar and a phrase table are such rules. <a class="c" href="#r7">[7]</a></li>
+    <li>The phone's recognizer is a model inside a common commercial product. Whether that counts is VA's call. The accurate claim is that the design may contain no covered AI, not that it avoids AI governance review.</li>
+    <li>Federal law excludes from <q>device</q> software that displays laboratory or device data unchanged, unless it is meant to interpret or analyze. <a class="c" href="#r9">[9]</a> <a class="c" href="#r10">[10]</a></li>
+    <li>VA designated its own scribe high-impact although a clinician reviews every note. <a class="c" href="#r6">[6]</a> Certo's argument is on the other side of the inspector general's line: it synthesizes nothing.</li>
+    <li>Still required for any VA deployment: an authority to operate, a privacy impact assessment, a Section 508 review and a place in VA's managed app catalog.</li>
+  </ul>
+</section>
+
+<section id="s3">
+  <h2><span class="n">3</span>Product specification</h2>
+  <p>This section specifies the search under Certo's four rules.</p>
+
+  <h3 id="s3-1"><span class="n">3.1</span>Users and tasks</h3>
+  <p>Certo serves physicians and the other prescribers who use the chart as physicians do: advanced practice nurses and physician assistants. It stays a physician tool. Nursing's own tools and their VistA contexts are out of scope.</p>
+  <ul>
+    <li>Check new results and trends.</li>
+    <li>Read recent notes.</li>
+    <li>Review this patient's alerts and reminders.</li>
+    <li>Look up active medications, allergies, problems and orders.</li>
+    <li>Check an AI-generated note or summary against the record.</li>
+  </ul>
+
+  <h3 id="s3-2"><span class="n">3.2</span>Scope</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Area</th><th>By voice or typed question</th><th>By touch only</th></tr></thead>
+      <tbody>
+        <tr><th>Verbs</th><td>show, list, trend, find, open, next, back</td><td>Everything else</td></tr>
+        <tr><th>Record domains</th><td>labs, vitals, meds, allergies, problems, notes, orders, alerts, consults, imaging; reminders and immunizations once Certo has them</td><td>The same screens, by Certo's pages</td></tr>
+        <tr><th>Writes</th><td>None. A question only reads.</td><td>Signing a note or an order, clearing an alert, resolving a reminder: each a touch flow under its own ruling in Certo's build plan</td></tr>
+        <tr><th>Patients</th><td>The open record only</td><td>Patient selection: the search, the lists, the Alerts page</td></tr>
+        <tr><th>AI</th><td>None</td><td>None. A model interpreter could enter only by a later ruling.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Certo plans ordering, acknowledging and signing as touch flows that end at the physician's signature code. No write is started by voice in this specification.</p>
+
+  <h3 id="s3-3"><span class="n">3.3</span>The grammar</h3>
+  <p>A question is a verb and a noun, with an optional qualifier and time range. One command per utterance.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Part</th><th>Words</th></tr></thead>
+      <tbody>
+        <tr><th>Verbs</th><td class="m">show · list · trend · find · open · next · back</td></tr>
+        <tr><th>Nouns</th><td class="m">labs · vitals · meds · allergies · problems · notes · orders · alerts · consults · imaging</td></tr>
+        <tr><th>Qualifiers</th><td class="m">last · new · abnormal · pending · active</td></tr>
+        <tr><th>Time</th><td class="m">today · yesterday · this week · last N days or hours · since admission</td></tr>
+        <tr><th>Specifics</th><td>A lab test's name, a drug's name, a note title, a service: VistA's own names, as its reads return them</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Examples: <q>Trend potassium, last 7 days.</q> <q>Show notes, cardiology.</q> <q>List meds, active.</q> On the Labs page, <q>potassium</q> alone is enough.</p>
+  <ul>
+    <li>Each noun has a sensible default when nothing else is said.</li>
+    <li><q>Next</q> and <q>back</q> move through the open record's own list. They never reach another patient.</li>
+    <li>How a time range meets Certo's time window is open (<a href="#s7">section 7</a>). Certo's window zooms charts and never filters a list.</li>
+  </ul>
+
+  <h3 id="s3-4"><span class="n">3.4</span>Two routes, one query</h3>
+  <p>Voice, typing and touch build the same structured query and land on the same screens. Voice is a shortcut through navigation, not a separate mode.</p>
+  <figure>
+    <div class="flow">
+      <div class="fin">
+        <div class="fbox">Speak<small>Hold the button in the page bar. Recognized on the phone.</small></div>
+        <div class="fbox">Type<small>Tap the same button. The same words, with autocomplete.</small></div>
+        <div class="fbox">Tap<small>Certo's pages and controls.</small></div>
+      </div>
+      <div class="farrow" aria-hidden="true"></div>
+      <div class="fbox key">One query<small>Domain, item, qualifier and range, shown as chips.</small></div>
+      <div class="farrow" aria-hidden="true"></div>
+      <div class="fbox">CPRS's own reads<small>As the signed-on person, through the Broker.</small></div>
+      <div class="farrow" aria-hidden="true"></div>
+      <div class="fbox">VistA's text<small>Drawn by code, with date, author and status.</small></div>
+    </div>
+    <figcaption>Three ways in, one query, one read. Nothing after the query differs by route, so the answer cannot either.</figcaption>
+  </figure>
+  <ul>
+    <li><strong>One control.</strong> The question control sits at the centre of the page bar at the foot of the screen. A hold speaks. A tap opens the typed field as a panel. It adds no fixed band to the screen (<a href="#s4">section 4</a>).</li>
+    <li><strong>One query model.</strong> Every navigation state maps to a query. Tapping Labs, Potassium, 7 days and saying <q>trend potassium, last 7 days</q> give the identical screen, history and provenance.</li>
+    <li><strong>Editable chips.</strong> Every result shows its query as chips. Voice fills them, and a tap changes one without speaking again. This is also how a misheard word is corrected.</li>
+    <li><strong>Typed questions.</strong> A field takes the same grammar with autocomplete, for quiet places and for when a patient is near.</li>
+    <li><strong>Teach by doing.</strong> After a path of taps, the screen shows <q>Next time, say: …</q> with the equivalent phrase.</li>
+    <li><strong>The rule.</strong> Anything reachable by voice is also reachable by touch.</li>
+  </ul>
+
+  <h3 id="s3-5"><span class="n">3.5</span>Recognition</h3>
+  <ul>
+    <li>Use only on-device recognition. Audio never leaves the phone and is never stored.</li>
+    <li>Bias recognition with VistA's own vocabulary, then match the transcript to known terms: <q>potassum</q> and <q>K</q> both become Potassium.</li>
+    <li>Choose command words that sound distinct, and test sound-alike drug names such as hydroxyzine and hydralazine.</li>
+    <li>The live transcript shows while the person speaks. A buzz confirms capture. A failure offers tap-to-correct.</li>
+    <li>Keep the parser a separate module with its own tests.</li>
+  </ul>
+
+  <h3 id="s3-6"><span class="n">3.6</span>Safety rules</h3>
+  <ul>
+    <li><strong>A question applies to the open record only.</strong> Asking for another patient is refused, in words, and the open record stays open. To see another patient the person backs out to patient selection, which closes the record.</li>
+    <li><strong>Never a guess.</strong> Unmatched words show what can be asked. Sound-alike names show the candidates and wait.</li>
+    <li><strong>Answers are shown, never spoken.</strong></li>
+    <li><strong>An empty answer says what was searched.</strong> A correct read with a wrong parameter can return nothing for a patient who has results, so the screen states the question it asked.</li>
+    <li><strong>Access is CPRS's.</strong> The same sign-on, keys and note-visibility rules apply. Asking by voice never widens access.</li>
+    <li><strong>The words are never logged.</strong> Certo's usage tap records that a question was asked and how long its answer took. It never holds a search's text or a patient's name.</li>
+  </ul>
+
+  <h3 id="s3-7"><span class="n">3.7</span>Fidelity and provenance</h3>
+  <ul>
+    <li>Every item shows its source type, date and time, author and status.</li>
+    <li>Values appear verbatim, with units, reference ranges and abnormal flags exactly as stored.</li>
+    <li>Incomplete data is labelled: preliminary, pending, unsigned.</li>
+    <li>Nothing is summarized, reworded or inferred.</li>
+    <li>The parsed question stays on the screen, so the person sees exactly what was asked.</li>
+  </ul>
+
+  <h3 id="s3-8"><span class="n">3.8</span>The unit of data</h3>
+  <p>Each row shows one observation in context, and each screen answers one clinical question: one patient, one domain, one view. An observation keeps its value and units, range and flag, time, status, previous result and source together on one line.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Domain</th><th>Unit of data</th><th>Grouped by</th></tr></thead>
+      <tbody>
+        <tr><th>Labs</th><td>One test's series: latest value, flag, previous result with its date, small trend, status</td><td>Panel</td></tr>
+        <tr><th>Vitals</th><td>One time point's set, with a trend per measure</td><td>Time</td></tr>
+        <tr><th>Meds</th><td>One active order: drug, dose, route, schedule, status, start, last given</td><td>Kind</td></tr>
+        <tr><th>Notes</th><td>One document: title, author, signed status, time; then its text word for word</td><td>Title and day, newest first</td></tr>
+        <tr><th>Alerts</th><td>One alert: its message and time</td><td>VistA's urgency</td></tr>
+        <tr><th>Orders</th><td>One order with its status</td><td>Kind</td></tr>
+        <tr><th>Problems</th><td>One problem with status and onset</td><td>Status</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The layout rules rest on evidence: about four groups on an overview, since working memory holds about four chunks; <a class="c" href="#r28">[28]</a> a row complete in one glance; <a class="c" href="#r32">[32]</a> overview first, details on demand; <a class="c" href="#r33">[33]</a> the record organized around the clinical question; <a class="c" href="#r29">[29]</a> <a class="c" href="#r30">[30]</a> and a display that puts the high-value data first, which in an intensive-care trial cut task load and errors of cognition. <a class="c" href="#r31">[31]</a> Sizes, colours and placement follow Certo's two design standards, which are measured on the phone. <a class="c" href="#r37">[37]</a> <a class="c" href="#r38">[38]</a></p>
+
+  <h3 id="s3-9"><span class="n">3.9</span>Platform and approvals</h3>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Matter</th><th>Certo today</th><th>For a VA deployment</th></tr></thead>
+      <tbody>
+        <tr><th>The app</th><td>An installed web app on the operator's private network</td><td>A managed web app pushed by VA's phone management first. A native shell only if VA asks for one.</td></tr>
+        <tr><th>Sign-on</th><td>VistA access and verify codes, through the Broker</td><td>A PIV-derived credential on the phone, exchanged by VA's identity service for a token VistA accepts. The Broker door's token sign-on does not exist yet.</td></tr>
+        <tr><th>Data on the phone</th><td>None kept. The screen clears when the app is hidden, and Hide blanks it on a tap.</td><td>No patient data cached; copy, paste and screenshots blocked where the platform allows</td></tr>
+        <tr><th>Speech</th><td>Not built. Keyboard dictation was measured once on a Pixel 8, on demo data: 8 of 8 phrases came through exactly. <a class="c" href="#r39">[39]</a></td><td>On-device recognition only. iOS 17 and Android 13 are the proposed floor for a native app.</td></tr>
+        <tr><th>Network</th><td>Tailnet only</td><td>A per-app VPN or VA's mobile gateway; never a direct path to VistA</td></tr>
+        <tr><th>Approvals</th><td>None needed on demo systems</td><td>Authority to operate, privacy impact assessment, Section 508, the managed app catalog, VA's AI intake</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s4">
+  <h2><span class="n">4</span>Voice flow</h2>
+  <p>Eight screens carry one question from the held button to the answer and its corrections. The question control sits at the centre of the page bar at the foot of the screen, where the thumb rests. Hold it to speak. Tap it to type. The screens are drawn in Certo's own look, over the pages shown in section 5.</p>
+  <p class="note">Design mock-ups, not pictures of working software. The patient, the values and the notes are invented test data.</p>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+<symbol id="i-bars" viewBox="0 0 24 24"><path d="M3 20h18M6.5 20v-6M10.5 20V8M14.5 20v-9M18.5 20v-4"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 15.5h6M9 19h4"/></symbol>
+<symbol id="i-pulse" viewBox="0 0 24 24"><path d="M2 12h5l2.5-6 4 12 2.5-6h6"/></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 10a1.4 1.4 0 0 0 1.3 2h11.4a1.4 1.4 0 0 0 1.3-2L14 9V3M7.5 15h9"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M8.5 21h7"/></symbol>
+</defs></svg>
+  <div class="phones">
+    <figure>
+      <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: the Glance page of an open record, with a round microphone button labelled Ask at the centre of the page bar at the foot of the screen">
+<div class="pb"><div class="nm"><span>ZZTEST,ALPHA</span><span class="hide">Hide</span></div>
+<div class="ln"><span><b>68 M</b> (3/12/58)</span><span class="mut">xxx-xx-0001</span><span class="rt">read just now</span></div>
+<div class="ln"><span class="ward">4B MED 412-A</span><span>Admitted 9/24/26 · <b>Day 8</b></span></div>
+<div class="ln"><span><span class="mut">Allergies</span> (1) <b>PENICILLIN</b></span></div></div><div class="pm"><div class="band"><span>▾ Latest</span></div>
+<div class="rw"><div class="h">Last visit<span>9/24/26 · 8 d</span></div><div>4B MED · admission · DIRECT</div></div>
+<div class="rw"><div class="h">Latest note<span>10/1/26 · today</span></div><div>CARDIOLOGY CONSULT · PROVIDER,ONE</div></div>
+<div class="rw"><div class="h">Latest vitals<span>10/1/26 · today</span></div><div>BP 142/88 · P 96 · SpO2 95 (ROOM AIR)</div></div>
+<div class="rw"><div class="h">Latest labs<span>10/1/26 · today</span></div><div>4 of 10 flagged: POTASSIUM <span class="fl">5.8 mmol/L H</span></div></div>
+<div class="band"><span>▾ Medications</span><span>14</span></div>
+<div class="g g3"><b>LISINOPRIL</b><span>20MG MOUTH DAILY</span><span>ACTIVE</span></div>
+<div class="g g3"><b>FUROSEMIDE</b><span>40MG MOUTH DAILY</span><span>ACTIVE</span></div>
+<div class="g g3"><b>METOPROLOL</b><span>25MG MOUTH BID</span><span>ACTIVE</span></div>
+<div class="g g3"><b>HYDRALAZINE</b><span>25MG MOUTH TID</span><span>ACTIVE</span></div>
+<div class="g g3"><b>ATORVASTATIN</b><span>40MG MOUTH BEDTIME</span><span>ACTIVE</span></div></div><div class="tb"><span class="t on"><svg><use href="#i-eye"/></svg>Glance</span><span class="t"><svg><use href="#i-bars"/></svg>Timeline</span><span class="t"><svg><use href="#i-doc"/></svg>Notes</span><span class="mic"><i><svg><use href="#i-mic"/></svg></i>Ask</span><span class="t"><svg><use href="#i-pulse"/></svg>Vitals</span><span class="t"><svg><use href="#i-flask"/></svg>Labs</span></div>
+      </div></div>
+      <figcaption><span class="t">1 · Ready</span>Certo's Glance page with the question control at the centre of the page bar. It is the largest target on the bar and sits under the thumb.</figcaption>
+    </figure>
+    <figure>
+      <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: the microphone button held, with a panel showing the words trend potassium, last 7 days and the matched terms Labs, Potassium and 7 days">
+<div class="pb"><div class="nm"><span>ZZTEST,ALPHA</span><span class="hide">Hide</span></div>
+<div class="ln"><span><b>68 M</b> (3/12/58)</span><span class="mut">xxx-xx-0001</span><span class="rt">read just now</span></div>
+<div class="ln"><span class="ward">4B MED 412-A</span><span>Admitted 9/24/26 · <b>Day 8</b></span></div>
+<div class="ln"><span><span class="mut">Allergies</span> (1) <b>PENICILLIN</b></span></div></div><div class="pm"><div class="band"><span>▾ Latest</span></div>
+<div class="rw"><div class="h">Last visit<span>9/24/26 · 8 d</span></div><div>4B MED · admission · DIRECT</div></div>
+<div class="rw"><div class="h">Latest note<span>10/1/26 · today</span></div><div>CARDIOLOGY CONSULT · PROVIDER,ONE</div></div>
+<div class="rw"><div class="h">Latest vitals<span>10/1/26 · today</span></div><div>BP 142/88 · P 96 · SpO2 95 (ROOM AIR)</div></div>
+<div class="rw"><div class="h">Latest labs<span>10/1/26 · today</span></div><div>4 of 10 flagged: POTASSIUM <span class="fl">5.8 mmol/L H</span></div></div>
+<div class="band"><span>▾ Medications</span><span>14</span></div>
+<div class="g g3"><b>LISINOPRIL</b><span>20MG MOUTH DAILY</span><span>ACTIVE</span></div>
+<div class="g g3"><b>FUROSEMIDE</b><span>40MG MOUTH DAILY</span><span>ACTIVE</span></div>
+<div class="g g3"><b>METOPROLOL</b><span>25MG MOUTH BID</span><span>ACTIVE</span></div>
+<div class="g g3"><b>HYDRALAZINE</b><span>25MG MOUTH TID</span><span>ACTIVE</span></div>
+<div class="g g3"><b>ATORVASTATIN</b><span>40MG MOUTH BEDTIME</span><span>ACTIVE</span></div><div class="dim"></div>
+<div class="sheet"><div class="lab">Listening</div><div class="say">trend potassium, last 7 days</div>
+<div class="q"><b>Labs</b><i>›</i><b>Potassium</b><i>›</i><b>7 days</b></div>
+<div class="src">Recognized on this phone. Nothing is recorded or sent.</div>
+<div class="rel">Release to ask · slide away to cancel</div></div></div><div class="tb"><span class="t on"><svg><use href="#i-eye"/></svg>Glance</span><span class="t"><svg><use href="#i-bars"/></svg>Timeline</span><span class="t"><svg><use href="#i-doc"/></svg>Notes</span><span class="mic held"><i><svg><use href="#i-mic"/></svg></i>Listening</span><span class="t"><svg><use href="#i-pulse"/></svg>Vitals</span><span class="t"><svg><use href="#i-flask"/></svg>Labs</span></div>
+      </div></div>
+      <figcaption><span class="t">2 · Listening</span>While the button is held, a panel rises over the page with the words as heard and the terms they match. Release to ask. Slide away to cancel.</figcaption>
+    </figure>
+    <figure>
+      <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: the Labs page showing a potassium trend over one week, the latest value 5.8 flagged high, with the microphone button at the centre of the page bar">
+<div class="pb"><div class="nm"><span>ZZTEST,ALPHA</span><span class="hide">Hide</span></div>
+<div class="ln"><span><b>68 M</b> (3/12/58)</span><span class="mut">xxx-xx-0001</span><span class="rt">read just now</span></div>
+<div class="ln"><span class="ward">4B MED 412-A</span><span>Admitted 9/24/26 · <b>Day 8</b></span></div>
+<div class="ln"><span><span class="mut">Allergies</span> (1) <b>PENICILLIN</b></span></div></div><div class="pm"><div class="heard">Heard: “trend potassium last seven days”</div>
+<div class="q"><b>Labs</b><i>›</i><b>Potassium</b><i>›</i><b>7 days</b></div>
+<div class="ttl">POTASSIUM<span>mmol/L · ref 3.5 – 5.1</span></div>
+<div class="big"><span class="v">5.8<sup>H</sup></span><span>10/1/26 06:40 · Final</span></div>
+<svg viewBox="0 0 366 132" width="366" height="106" preserveAspectRatio="none" style="flex:none" aria-hidden="true">
+<rect x="34" y="54" width="326" height="50.3" fill="#d9e8f6"/>
+<text x="28" y="58" text-anchor="end" font-size="13" fill="#5c6370">5.1</text>
+<text x="28" y="108" text-anchor="end" font-size="13" fill="#5c6370">3.5</text>
+<polyline points="40,85.4 146,76 252,60.3 305,47.7 354,32" fill="none" stroke="#162e51" stroke-width="2"/>
+<circle cx="40" cy="85.4" r="4" fill="#162e51"/><circle cx="146" cy="76" r="4" fill="#162e51"/><circle cx="252" cy="60.3" r="4" fill="#162e51"/>
+<circle cx="305" cy="47.7" r="4.5" fill="#b21d38"/><circle cx="354" cy="32" r="5" fill="#b21d38"/>
+<line x1="34" y1="118" x2="360" y2="118" stroke="#a9aeb1"/>
+<text x="40" y="131" text-anchor="middle" font-size="13" fill="#5c6370">9/25</text>
+<text x="252" y="131" text-anchor="middle" font-size="13" fill="#5c6370">9/29</text>
+<text x="350" y="131" text-anchor="middle" font-size="13" fill="#5c6370">10/1</text>
+</svg><div class="g g4 hd"><span>Collected</span><span>Result</span><span>Flag</span><span>Status</span></div>
+<div class="g g4"><span>10/1/26 06:40</span><b class="fl">5.8</b><b class="fl">H</b><span>Final</span></div>
+<div class="g g4"><span>9/30/26 05:55</span><b class="fl">5.3</b><b class="fl">H</b><span>Final</span></div>
+<div class="g g4"><span>9/29/26 06:10</span><b>4.9</b><span></span><span>Final</span></div>
+<div class="g g4"><span>9/27/26 06:05</span><b>4.4</b><span></span><span>Final</span></div>
+<div class="g g4"><span>9/25/26 06:20</span><b>4.1</b><span></span><span>Final</span></div>
+<div class="src">Previous: <b class="fl">5.3 H</b> on 9/30/26 · VistA Lab · read 10:04</div>
+<div class="spacer"></div><div class="src">7 days fits the 1W window</div><div class="win"><span class="on">1W</span><span>1M</span><span>3M</span><span>1Y</span><span>5Y</span><span>10Y</span><span>All</span></div><div style="height:8px;flex:none"></div></div><div class="tb"><span class="t"><svg><use href="#i-eye"/></svg>Glance</span><span class="t"><svg><use href="#i-bars"/></svg>Timeline</span><span class="t"><svg><use href="#i-doc"/></svg>Notes</span><span class="mic"><i><svg><use href="#i-mic"/></svg></i>Ask</span><span class="t"><svg><use href="#i-pulse"/></svg>Vitals</span><span class="t on"><svg><use href="#i-flask"/></svg>Labs</span></div>
+      </div></div>
+      <figcaption><span class="t">3 · A lab trend, checked</span>The answer is the Labs page. It shows the words heard, the query as chips, VistA's own values and flags, and the time window the range set.</figcaption>
+    </figure>
+    <figure>
+      <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: the Notes page listing three cardiology notes, with one consult note open in fixed-width text">
+<div class="pb"><div class="nm"><span>ZZTEST,ALPHA</span><span class="hide">Hide</span></div>
+<div class="ln"><span><b>68 M</b> (3/12/58)</span><span class="mut">xxx-xx-0001</span><span class="rt">read just now</span></div>
+<div class="ln"><span class="ward">4B MED 412-A</span><span>Admitted 9/24/26 · <b>Day 8</b></span></div>
+<div class="ln"><span><span class="mut">Allergies</span> (1) <b>PENICILLIN</b></span></div></div><div class="pm"><div class="heard">Heard: “show notes cardiology”</div>
+<div class="q"><b>Notes</b><i>›</i><b>Cardiology</b></div>
+<div class="ttl">3 notes<span>newest first</span></div>
+<div class="g gn"><b>CARDIOLOGY CONSULT</b><span>10/1/26 09:12</span><span><span class="tag2">SIGNED</span></span></div>
+<div class="g gn"><b>CARDIOLOGY NOTE</b><span>9/28/26 14:30</span><span><span class="tag2">UNSIGNED</span></span></div>
+<div class="g gn"><b>ECHO REPORT</b><span>9/26/26 11:05</span><span><span class="tag2">SIGNED</span></span></div>
+<div class="mono">LOCAL TITLE: CARDIOLOGY CONSULT
+DATE OF NOTE: OCT 01, 2026@09:12
+AUTHOR: PROVIDER,ONE
+STATUS: COMPLETED
+
+REASON FOR CONSULT: [ ... ]
+ASSESSMENT: [ ... ]
+RECOMMENDATIONS:
+1. [ ... ]
+2. [ ... ]
+
+/es/ ONE PROVIDER, MD
+Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div class="tb"><span class="t"><svg><use href="#i-eye"/></svg>Glance</span><span class="t"><svg><use href="#i-bars"/></svg>Timeline</span><span class="t on"><svg><use href="#i-doc"/></svg>Notes</span><span class="mic"><i><svg><use href="#i-mic"/></svg></i>Ask</span><span class="t"><svg><use href="#i-pulse"/></svg>Vitals</span><span class="t"><svg><use href="#i-flask"/></svg>Labs</span></div>
+      </div></div>
+      <figcaption><span class="t">4 · A note, checked</span>The matching notes with their status, then the chosen note in VistA's own fixed-width text. There is no time chip, because a list is never filtered by date.</figcaption>
+    </figure>
+    <figure>
+      <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: a panel asking which medication was meant, offering hydralazine and hydroxyzine">
+<div class="pb"><div class="nm"><span>ZZTEST,ALPHA</span><span class="hide">Hide</span></div>
+<div class="ln"><span><b>68 M</b> (3/12/58)</span><span class="mut">xxx-xx-0001</span><span class="rt">read just now</span></div>
+<div class="ln"><span class="ward">4B MED 412-A</span><span>Admitted 9/24/26 · <b>Day 8</b></span></div>
+<div class="ln"><span><span class="mut">Allergies</span> (1) <b>PENICILLIN</b></span></div></div><div class="pm"><div class="heard">Heard: “show meds hydro…zine”</div>
+<div class="pane"><div class="hd">Which medication?</div>
+<div>These names sound alike. Certo asks and does not guess.</div>
+<div class="opt"><b>HYDRALAZINE</b><span>25MG MOUTH TID · ACTIVE</span></div>
+<div class="opt"><b>HYDROXYZINE</b><span>No active order</span></div>
+<div class="opt plain"><b>Neither. Ask again.</b></div></div>
+<div class="src">Matched against the medication names VistA returned for this record.</div></div><div class="tb"><span class="t on"><svg><use href="#i-eye"/></svg>Glance</span><span class="t"><svg><use href="#i-bars"/></svg>Timeline</span><span class="t"><svg><use href="#i-doc"/></svg>Notes</span><span class="mic"><i><svg><use href="#i-mic"/></svg></i>Ask</span><span class="t"><svg><use href="#i-pulse"/></svg>Vitals</span><span class="t"><svg><use href="#i-flask"/></svg>Labs</span></div>
+      </div></div>
+      <figcaption><span class="t">5 · Sound-alike check</span>Two names sound alike, so Certo shows both and waits. It never picks one.</figcaption>
+    </figure>
+    <figure>
+      <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: a panel saying a question stays in this record, after the words open patient zztest bravo were heard">
+<div class="pb"><div class="nm"><span>ZZTEST,ALPHA</span><span class="hide">Hide</span></div>
+<div class="ln"><span><b>68 M</b> (3/12/58)</span><span class="mut">xxx-xx-0001</span><span class="rt">read just now</span></div>
+<div class="ln"><span class="ward">4B MED 412-A</span><span>Admitted 9/24/26 · <b>Day 8</b></span></div>
+<div class="ln"><span><span class="mut">Allergies</span> (1) <b>PENICILLIN</b></span></div></div><div class="pm"><div class="heard">Heard: “open patient zztest bravo”</div>
+<div class="pane"><div class="hd">A question stays in this record</div>
+<div>Certo never changes patients from inside a record: not by voice, not by typing, not by a link. <b>ZZTEST,ALPHA</b> is still open.</div>
+<div class="src" style="font-weight:700;color:#162e51">To see another patient</div>
+<div>1. Go back to patient selection. This closes the record.</div>
+<div>2. Search, or pick from your lists.</div>
+<div class="opt solid"><b>Stay on ZZTEST,ALPHA</b></div></div>
+<div class="src">One way into a record. It is a patient-safety rule.</div></div><div class="tb"><span class="t on"><svg><use href="#i-eye"/></svg>Glance</span><span class="t"><svg><use href="#i-bars"/></svg>Timeline</span><span class="t"><svg><use href="#i-doc"/></svg>Notes</span><span class="mic"><i><svg><use href="#i-mic"/></svg></i>Ask</span><span class="t"><svg><use href="#i-pulse"/></svg>Vitals</span><span class="t"><svg><use href="#i-flask"/></svg>Labs</span></div>
+      </div></div>
+      <figcaption><span class="t">6 · Another patient is refused</span>A question acts on the open record only. Asking for another patient is refused in words, and the record stays open.</figcaption>
+    </figure>
+    <figure>
+      <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: a typed question field holding the words trend pot, with suggestions and the phone keyboard">
+<div class="pb"><div class="nm"><span>ZZTEST,ALPHA</span><span class="hide">Hide</span></div>
+<div class="ln"><span><b>68 M</b> (3/12/58)</span><span class="mut">xxx-xx-0001</span><span class="rt">read just now</span></div>
+<div class="ln"><span class="ward">4B MED 412-A</span><span>Admitted 9/24/26 · <b>Day 8</b></span></div>
+<div class="ln"><span><span class="mut">Allergies</span> (1) <b>PENICILLIN</b></span></div></div><div class="pm"><div class="band"><span>▾ Latest</span></div>
+<div class="rw"><div class="h">Last visit<span>9/24/26 · 8 d</span></div><div>4B MED · admission · DIRECT</div></div>
+<div class="rw"><div class="h">Latest note<span>10/1/26 · today</span></div><div>CARDIOLOGY CONSULT · PROVIDER,ONE</div></div>
+<div class="rw"><div class="h">Latest vitals<span>10/1/26 · today</span></div><div>BP 142/88 · P 96 · SpO2 95 (ROOM AIR)</div></div>
+<div class="rw"><div class="h">Latest labs<span>10/1/26 · today</span></div><div>4 of 10 flagged: POTASSIUM <span class="fl">5.8 mmol/L H</span></div></div>
+<div class="band"><span>▾ Medications</span><span>14</span></div>
+<div class="g g3"><b>LISINOPRIL</b><span>20MG MOUTH DAILY</span><span>ACTIVE</span></div>
+<div class="g g3"><b>FUROSEMIDE</b><span>40MG MOUTH DAILY</span><span>ACTIVE</span></div>
+<div class="g g3"><b>METOPROLOL</b><span>25MG MOUTH BID</span><span>ACTIVE</span></div>
+<div class="g g3"><b>HYDRALAZINE</b><span>25MG MOUTH TID</span><span>ACTIVE</span></div>
+<div class="g g3"><b>ATORVASTATIN</b><span>40MG MOUTH BEDTIME</span><span>ACTIVE</span></div><div class="dim"></div>
+<div class="sheet" style="padding-bottom:12px"><div class="fld">trend pot<u></u></div>
+<div class="sug"><span><b>trend potassium</b><i>Labs</i></span><span>trend potassium, 1 month<i>Labs</i></span><span>show potassium<i>Labs</i></span></div>
+<div class="src">The same words as speaking. Nothing here is a guess.</div></div></div><div class="kb"><div><span>q</span><span>w</span><span>e</span><span>r</span><span>t</span><span>y</span><span>u</span><span>i</span><span>o</span><span>p</span></div><div><span>a</span><span>s</span><span>d</span><span>f</span><span>g</span><span>h</span><span>j</span><span>k</span><span>l</span></div><div><span class="w">⇧</span><span>z</span><span>x</span><span>c</span><span>v</span><span>b</span><span>n</span><span>m</span><span class="w">⌫</span></div><div><span class="w">123</span><span class="sp">space</span><span class="go">Ask</span></div></div>
+      </div></div>
+      <figcaption><span class="t">7 · The typed route</span>A tap on the same button opens a field that takes the same words, with suggestions from VistA's own names. The keyboard covers the page bar while it is up.</figcaption>
+    </figure>
+    <figure>
+      <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: the potassium trend reached by touch, the time chip changed to one month, with the line Next time, say trend potassium, one month">
+<div class="pb"><div class="nm"><span>ZZTEST,ALPHA</span><span class="hide">Hide</span></div>
+<div class="ln"><span><b>68 M</b> (3/12/58)</span><span class="mut">xxx-xx-0001</span><span class="rt">read just now</span></div>
+<div class="ln"><span class="ward">4B MED 412-A</span><span>Admitted 9/24/26 · <b>Day 8</b></span></div>
+<div class="ln"><span><span class="mut">Allergies</span> (1) <b>PENICILLIN</b></span></div></div><div class="pm"><div class="heard" style="font-style:normal">Opened by touch: Labs › Potassium</div>
+<div class="q"><b>Labs</b><i>›</i><b>Potassium</b><i>›</i><b class="on">1 month ▾</b></div>
+<div class="pane" style="padding:9px 12px;gap:2px"><span class="mut">Next time, say</span><b style="font-size:18px;color:#162e51">“trend potassium, one month”</b></div>
+<div class="ttl">POTASSIUM<span>mmol/L · ref 3.5 – 5.1</span></div>
+<div class="big"><span class="v">5.8<sup>H</sup></span><span>10/1/26 06:40 · Final</span></div>
+<div class="g g4 hd"><span>Collected</span><span>Result</span><span>Flag</span><span>Status</span></div>
+<div class="g g4"><span>10/1/26 06:40</span><b class="fl">5.8</b><b class="fl">H</b><span>Final</span></div>
+<div class="g g4"><span>9/30/26 05:55</span><b class="fl">5.3</b><b class="fl">H</b><span>Final</span></div>
+<div class="g g4"><span>9/29/26 06:10</span><b>4.9</b><span></span><span>Final</span></div>
+<div class="spacer"></div><div class="src">Time window · 5 results in 1 month</div><div class="win"><span>1W</span><span class="on">1M</span><span>3M</span><span>1Y</span><span>5Y</span><span>10Y</span><span>All</span></div><div style="height:8px;flex:none"></div></div><div class="tb"><span class="t"><svg><use href="#i-eye"/></svg>Glance</span><span class="t"><svg><use href="#i-bars"/></svg>Timeline</span><span class="t"><svg><use href="#i-doc"/></svg>Notes</span><span class="mic"><i><svg><use href="#i-mic"/></svg></i>Ask</span><span class="t"><svg><use href="#i-pulse"/></svg>Vitals</span><span class="t on"><svg><use href="#i-flask"/></svg>Labs</span></div>
+      </div></div>
+      <figcaption><span class="t">8 · Edit a chip, learn the phrase</span>A tap on a chip changes one part of the query without asking again, and the screen shows the words for next time. The spans offered are Certo's time windows.</figcaption>
+    </figure>
+  </div>
+
+  <h3>What every screen holds to</h3>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Rule</th><th>On the screens</th></tr></thead>
+      <tbody>
+        <tr><th>One control, at the centre of the page bar</th><td>A hold speaks and a tap types. It adds no fixed band to the screen. With five pages, three sit to its left and two to its right; a thumb test settles their widths.</td></tr>
+        <tr><th>The banner stays</th><td>The patient's name, age, ward and allergies are on every screen, including while listening.</td></tr>
+        <tr><th>One front door</th><td>Nothing leads from an open record to another patient. A spoken request for one is refused (screen 6).</td></tr>
+        <tr><th>No computed values</th><td>A result may show the previous result with its date, never a difference worked out by Certo.</td></tr>
+        <tr><th>The time window zooms a chart and never filters a list</th><td>Time words act on chart pages only (screens 3 and 8). The notes list takes none (screen 4).</td></tr>
+        <tr><th>Red is VistA's own flag</th><td>Red marks only a value VistA flagged. The button, the chips and the listening state are blue.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s5">
+  <h2><span class="n">5</span>Certo today, in pictures</h2>
+  <p>These are the pages of an open record, after patient selection, as built on 2 October 2026 (the app at <code>eed8475</code>). Certo's questions will land on these screens and on the ones the build plan adds.</p>
+  <p class="note">Taken from the whole app at 485 × 963 over recorded replies from the demo VistA. EIGHT,PATIENT is a test record, not a person.</p>
+  <div class="shots">
+    <figure>
+      <img src="shots/glance.png" width="970" height="1926" loading="lazy" alt="Certo's Glance page: the patient banner with allergies and flags, the latest visit, note, vitals and labs, then medications">
+      <figcaption><span class="t">Glance</span>The banner, then the latest visit, note, vitals and labs, then medications. Problems, clinical reminders and postings follow below.</figcaption>
+    </figure>
+    <figure>
+      <img src="shots/timeline.png" width="970" height="1926" loading="lazy" alt="Certo's Timeline page: visits, notes, vitals and labs as marks along five years, with the time window above the page bar">
+      <figcaption><span class="t">Timeline</span>Visits, notes, vitals and labs along time, with VistA's counts. The time window sits fixed over the page bar.</figcaption>
+    </figure>
+    <figure>
+      <img src="shots/notes.png" width="970" height="1926" loading="lazy" alt="Certo's Notes page: a search field, filters for kind, author, title and place, and notes listed by title and day">
+      <figcaption><span class="t">Notes</span>One row per title per day, with a search over titles, authors and places. This search is the nearest thing to a typed question that exists today.</figcaption>
+    </figure>
+    <figure>
+      <img src="shots/reader.png" width="970" height="1926" loading="lazy" alt="Certo's note reader: a general medicine note shown in VistA's fixed-width text, with previous and next controls">
+      <figcaption><span class="t">A note, read</span>VistA's own text in its fixed-width form. Previous and next move through this patient's notes only.</figcaption>
+    </figure>
+    <figure>
+      <img src="shots/vitals.png" width="970" height="1926" loading="lazy" alt="Certo's Vitals page: a graph per vital sign with the latest value, its date and age, and the time window">
+      <figcaption><span class="t">Vitals</span>A graph per measure, the latest value with its date and age, and oxygen's method and flow in VistA's words.</figcaption>
+    </figure>
+    <figure>
+      <img src="shots/labs.png" width="970" height="1926" loading="lazy" alt="Certo's Labs page: a glucose result flagged high in red, with its date, and the time window">
+      <figcaption><span class="t">Labs</span>The results CPRS's cover sheet returns, VistA's flag in red. The labs page as ruled, with a find field and each test's history, is still to be built.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="s6">
+  <h2><span class="n">6</span>Integration strategy</h2>
+  <p>The search adds nothing to what Certo reads from VistA. It adds a parser, a query model, a field and a button, on top of screens that already exist and are already proven against CPRS. That is why it waits for those screens.</p>
+
+  <h3 id="s6-1"><span class="n">6.1</span>The precondition</h3>
+  <p>Every domain of Certo's build plan is complete before search is built. A question is a shortcut to a screen, and the rule is that anything reachable by voice is reachable by touch. A noun with no screen behind it would be a promise with nothing behind it. Seven of the plan's 32 steps are built, 25 are open, and two of those wait on rulings. <a class="c" href="#r40">[40]</a></p>
+
+  <h3 id="s6-2"><span class="n">6.2</span>Where each word lands</h3>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Said or typed</th><th>Lands on</th><th>Build-plan step</th><th>Today</th></tr></thead>
+      <tbody>
+        <tr><th>vitals</th><td>The Vitals page</td><td>A1</td><td><span class="tag built">built</span></td></tr>
+        <tr><th>notes, a title, a service</th><td>The Notes page and its search</td><td>A8</td><td><span class="tag built">built</span></td></tr>
+        <tr><th>meds, active</th><td>The Glance's medications</td><td>last given: A7</td><td><span class="tag built">built</span> in part</td></tr>
+        <tr><th>problems</th><td>The Glance's problems</td><td></td><td><span class="tag built">built</span></td></tr>
+        <tr><th>allergies</th><td>The banner's allergies and their detail</td><td>detail: A7</td><td><span class="tag built">built</span> in part</td></tr>
+        <tr><th>labs, trend, find, abnormal</th><td>The labs page as ruled: most recent, a test's history, the find field, the flagged view</td><td>A2</td><td><span class="tag">open</span></td></tr>
+        <tr><th>imaging</th><td>The imaging report screen</td><td>A3</td><td><span class="tag">open</span></td></tr>
+        <tr><th>orders, pending</th><td>The orders screen</td><td>A4</td><td><span class="tag">open</span></td></tr>
+        <tr><th>consults</th><td>The consults screen</td><td>A5</td><td><span class="tag">open</span></td></tr>
+        <tr><th>alerts</th><td>This patient's own pending alerts, inside the record</td><td>B1b</td><td><span class="tag">open</span></td></tr>
+        <tr><th>reminders</th><td>The Reminders screen</td><td>C1</td><td><span class="tag">open</span></td></tr>
+        <tr><th>immunizations</th><td>The immunizations reader</td><td>A6</td><td><span class="tag">open</span></td></tr>
+        <tr><th>what changed</th><td>The Glance's band of what is new since a chart event</td><td>A10</td><td><span class="tag">open</span></td></tr>
+        <tr><th>code status</th><td>The banner's code status, from VistA's own records</td><td>A11</td><td><span class="tag">open</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Certo's plan builds screens for the last four nouns, so the grammar carries their words.</p>
+
+  <h3 id="s6-3"><span class="n">6.3</span>The sequence</h3>
+  <p>Typed search comes before voice. It uses the same parser, it is fully deterministic, and it raises no question about where audio goes. Each stage is built test first and proven on recorded replies, then on the phone.</p>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Stage</th><th>What is built</th><th>What it needs first</th></tr></thead>
+      <tbody>
+        <tr><th>Until the build plan is complete</th><td>Nothing for search. The usage tap already counts which screens and controls are used; those counts rank the grammar's defaults.</td><td>Nothing</td></tr>
+        <tr><th>1 · The query model</th><td>One structured query that every navigation state maps to and from, and the chips on each result screen. Library code with its tests. No speech yet.</td><td>Every noun's screen built</td></tr>
+        <tr><th>2 · Typed questions</th><td>The field, the grammar parser as a table, autocomplete from VistA's own names, the list of what can be asked for unmatched words, the sound-alike check, and <q>Next time, type or say</q>.</td><td>The field's panel, walked against the navigation standard</td></tr>
+        <tr><th>3 · Voice through the keyboard</th><td>The phone keyboard's dictation fills the same field. The question is mapped only once the dictation has finished composing.</td><td>A measurement that the keyboard recognizes on the device. Required before real patient data.</td></tr>
+        <tr><th>4 · Hold to speak</th><td>The button at the centre of the page bar, the live transcript, the buzz on capture, slide away to cancel.</td><td>An on-device recognizer that an installed web app can reach, measured on the Pixel and on an iPhone. If the browser cannot give that, a native shell around the same app.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="s6-4"><span class="n">6.4</span>What does not change</h3>
+  <ul>
+    <li>The front door. No word, typed or spoken, opens or changes a patient from inside a record.</li>
+    <li>CPRS as the baseline. Search adds no call that CPRS does not make, and no system but VistA is called.</li>
+    <li>No model. The parser is a table. A model interpreter would need its own ruling and would end the first guarantee.</li>
+    <li>Nothing is spoken aloud, and nothing is forwarded to anyone.</li>
+    <li>The usage tap never holds the words of a question.</li>
+    <li>Certo's colour theme and navigation standard. Every new screen is walked against them before it ships.</li>
+  </ul>
+
+  <h3 id="s6-5"><span class="n">6.5</span>Proof and risks</h3>
+  <p>Each phrase gets a test that reads recorded replies, and a live test that the recording is still what the demo VistA answers. Each stage's phone proof measures the seconds from a locked phone to the answer. The first target is one test's latest value, by its name, in 10 seconds.</p>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Risk</th><th>What holds it</th></tr></thead>
+      <tbody>
+        <tr><th>The wrong patient</th><td>A question acts on the open record only. A request for another is refused.</td></tr>
+        <tr><th>A misheard drug or test</th><td>The heard words and chips stay visible. Sound-alikes ask. A tap corrects.</td></tr>
+        <tr><th>Audio leaves the phone</th><td>On-device recognition only, measured before any real patient data. Typing always works.</td></tr>
+        <tr><th>A silent empty answer</th><td>An empty result says what was searched. A failed read says it failed.</td></tr>
+        <tr><th>Speaking near patients</th><td>Answers are never spoken. The typed route needs no voice.</td></tr>
+        <tr><th>The screen gets more crowded</th><td>The fixed part already costs 30 to 42%. The control sits inside the page bar and adds no band. It is walked and thumb-tested before it ships.</td></tr>
+        <tr><th>The name is already in use</th><td>A trademark search comes before any distribution outside the private network. A web search found a phone-security app and a pectin brand named Certo, and no healthcare software.</td></tr>
+        <tr><th>Drift toward an AI interpreter</th><td>Out of this specification. It would need its own ruling and VA's AI intake.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s7">
+  <h2><span class="n">7</span>Decisions to make</h2>
+  <p>Seven questions are the operator's. Each has a recommendation. None is ruled. The place of the question control is settled: the centre of the page bar.</p>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Question</th><th>Recommended</th></tr></thead>
+      <tbody>
+        <tr><th>How do five pages share the bar with the control?</th><td>Three pages to its left and two to its right, as drawn in section 4, with the left three narrower. A thumb test on the phone sets the widths. The five-pages rule is amended to five pages and the question control.</td></tr>
+        <tr><th>What does a spoken time range do?</th><td>On a chart page it sets the time window to the smallest of Certo's spans that holds it, and says which. On a list it does nothing, since lists are never filtered by time.</td></tr>
+        <tr><th>Where does the vocabulary come from?</th><td>From names Certo's reads already return for the open record and the site: test names, note titles, drug names. No new read is added for search.</td></tr>
+        <tr><th>Does voice work at patient selection?</th><td>Not in the first release. Names are where speech fails worst: EIGHT matched at least 22 patients on the demo system. Patient search stays typed.</td></tr>
+        <tr><th>Which route gives on-device speech?</th><td>Measure first. Keyboard dictation into the field is the first voice. Hold-to-speak follows only on a recognizer proven to stay on the phone.</td></tr>
+        <tr><th>What is the line under the name?</th><td>Undecided. <q>AI summarizes. Certo verifies.</q> makes no claim about time and could stand.</td></tr>
+        <tr><th>What is the overlap with VA's AI quick-review tool?</th><td>Unknown. VA is building one. Its scope should be read before Certo is shown to VA.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s8" class="refs">
+  <h2><span class="n">8</span>References</h2>
+  <p class="note">Web sources were read on 22 to 24 September 2026 unless a later date is given. Items marked PubMed were checked against their PubMed records on 2 October 2026.</p>
+
+  <h3>VA and federal policy</h3>
+  <ol>
+    <li id="r1">Nextgov/FCW. <a href="https://www.nextgov.com/artificial-intelligence/2026/09/va-selects-abridge-ambient-scribe-under-new-enterprise-contract/416140/">VA selects Abridge ambient scribe under new enterprise contract.</a> September 2026.</li>
+    <li id="r2">Nextgov/FCW. <a href="https://www.nextgov.com/artificial-intelligence/2026/09/va-gradually-expand-medical-ai-scribe-following-successful-pilots/415971/">VA to gradually expand medical AI scribe following successful pilots.</a> September 2026.</li>
+    <li id="r3">VA News. <a href="https://news.va.gov/148010/ambient-scribe-reimagining-va-clinic-experience/">Ambient Scribe: reimagining the VA clinic experience.</a></li>
+    <li id="r4">Department of Veterans Affairs. <a href="https://department.va.gov/privacy/wp-content/uploads/sites/5/2026/07/FY26AbridgeAmbientScribePIA.pdf">Privacy Impact Assessment: Abridge Ambient Scribe.</a> 2026.</li>
+    <li id="r5">CDO Magazine. <a href="https://www.cdomagazine.tech/us-federal-news-bureau/va-awards-new-ai-scribe-contract-with-lessons-for-governing-ai-at-scale">VA awards new AI scribe contract.</a> 2026.</li>
+    <li id="r6">VA Office of Inspector General. <a href="https://www.vaoig.gov/sites/default/files/reports/2026-06/vaoig-26-00182-140_-_final.pdf">Review of Generative Artificial Intelligence Chat Tools for Clinical Use.</a> Report 26-00182-140, 11 June 2026.</li>
+    <li id="r7">Office of Management and Budget. <a href="https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf">M-25-21, Accelerating Federal Use of AI through Innovation, Governance, and Public Trust.</a> 3 April 2025.</li>
+    <li id="r8">Department of Veterans Affairs. <a href="https://department.va.gov/ai/department-of-veterans-affairs-compliance-plan-for-omb-memorandum-m-25-21/">Compliance Plan for OMB Memorandum M-25-21.</a></li>
+    <li id="r9"><a href="https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title21-section360j&amp;num=0&amp;edition=prelim">21 U.S.C. §360j(o).</a> Regulation of medical and certain decision support software.</li>
+    <li id="r10">Covington. <a href="https://www.cov.com/news-and-insights/insights/2026/01/5-key-takeaways-from-fdas-revised-clinical-decision-support-cds-software-guidance">Five key takeaways from FDA's revised clinical decision support software guidance.</a> January 2026.</li>
+  </ol>
+
+  <h3>The market</h3>
+  <ol start="11">
+    <li id="r11">Abridge. <a href="https://www.abridge.com/press-release/patient-centered-clinician-intelligence-platform-keynote">Unified clinician intelligence platform.</a> June 2026.</li>
+    <li id="r12">Epic. <a href="https://www.epic.com/epic/post/epic-ai-charting-rolls-out-alongside-an-expanding-set-of-built-in-ai-capabilities/">AI Charting rolls out alongside an expanding set of built-in AI capabilities.</a></li>
+    <li id="r13">Oracle. <a href="https://www.oracle.com/news/announcement/oracle-health-expands-clinical-ai-agent-with-coding-dictation-chart-review-2026-08-19/">Oracle Health expands Clinical AI Agent with coding, dictation and chart review.</a> August 2026.</li>
+    <li id="r14">HIT Consultant. <a href="https://hitconsultant.net/2026/09/14/oracle-health-launches-clinical-ai-agent-for-nurses-inpatient-ehr-documentation/">Oracle Health launches Clinical AI Agent for nurses.</a> September 2026.</li>
+    <li id="r15">Microsoft. <a href="https://www.microsoft.com/en-us/microsoft-cloud/blog/healthcare/2026/03/05/unify-simplify-scale-microsoft-dragon-copilot-meets-the-moment-at-himss-2026/">Dragon Copilot at HIMSS 2026.</a> March 2026.</li>
+    <li id="r16">Suki. <a href="https://www.suki.ai/clinicians/">Suki for clinicians.</a></li>
+    <li id="r17">NBC News. <a href="https://www.nbcnews.com/tech/tech-news/openevidence-ai-doctor-medical-physician-login-app-what-npi-uptodate-rcna341064">OpenEvidence.</a> 2026. Usage figures are the company's.</li>
+    <li id="r18">EpicShare. <a href="https://www.epicshare.org/share-and-learn/epic-mobile-leaders">Epic mobile: Haiku and Rover.</a></li>
+    <li id="r19">Bain &amp; Company and KLAS Research. <a href="https://www.bain.com/about/media-center/press-releases/20252/healthcare-ai-investment-focusing-on-hard-dollar-returns-and-clinical-workflows-amid-shift-from-pilots-to-widespread-productionbain--company-and-klas-research/">Healthcare AI investment.</a> 2025.</li>
+  </ol>
+
+  <h3>Peer-reviewed evidence</h3>
+  <ol start="20">
+    <li id="r20">Lukac PJ, Turner W, Vangala S, et al. Ambient AI Scribes in Clinical Practice: A Randomized Trial. <i>NEJM AI</i>. 2025;2(12). <a href="https://doi.org/10.1056/aioa2501000">doi:10.1056/aioa2501000</a>. PubMed.</li>
+    <li id="r21">Rotenstein LS, Holmgren AJ, Thombley R, et al. Changes in Clinician Time Expenditure and Visit Quantity With Adoption of Artificial Intelligence-Powered Scribes: A Multisite Study. <i>JAMA</i>. 2026;335(16):1408-1417. <a href="https://doi.org/10.1001/jama.2026.2253">doi:10.1001/jama.2026.2253</a>. PubMed.</li>
+    <li id="r22">Asgari E, Montaña-Brown N, Dubois M, et al. A framework to assess clinical safety and hallucination rates of LLMs for medical text summarisation. <i>NPJ Digit Med</i>. 2025;8(1):274. <a href="https://doi.org/10.1038/s41746-025-01670-7">doi:10.1038/s41746-025-01670-7</a>. PubMed.</li>
+    <li id="r23">Williams CYK, et al. Physician- and Large Language Model-Generated Hospital Discharge Summaries. <i>JAMA Intern Med</i>. 2025. <a href="https://doi.org/10.1001/jamainternmed.2025.0821">doi:10.1001/jamainternmed.2025.0821</a>.</li>
+    <li id="r24">Zhou L, Blackley SV, Kowalski L, et al. Analysis of Errors in Dictated Clinical Documents Assisted by Speech Recognition Software and Professional Transcriptionists. <i>JAMA Netw Open</i>. 2018;1(3):e180530. <a href="https://doi.org/10.1001/jamanetworkopen.2018.0530">doi:10.1001/jamanetworkopen.2018.0530</a>. PubMed.</li>
+    <li id="r25">Overhage JM, McCallie D. Physician Time Spent Using the Electronic Health Record During Outpatient Encounters. <i>Ann Intern Med</i>. 2020. <a href="https://doi.org/10.7326/M18-3684">doi:10.7326/M18-3684</a>.</li>
+    <li id="r26">Holmgren AJ, et al. Assessment of Electronic Health Record Use Between US and Non-US Health Systems. <i>JAMA Intern Med</i>. 2021. <a href="https://doi.org/10.1001/jamainternmed.2020.7071">doi:10.1001/jamainternmed.2020.7071</a>.</li>
+    <li id="r27">Soh JY, et al. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6354233/">Mobile electronic medical record usage logs.</a> <i>JMIR Mhealth Uhealth</i>. 2019.</li>
+  </ol>
+
+  <h3>Design literature</h3>
+  <ol start="28">
+    <li id="r28">Cowan N. The magical number 4 in short-term memory: a reconsideration of mental storage capacity. <i>Behav Brain Sci</i>. 2001;24(1):87-114. <a href="https://doi.org/10.1017/s0140525x01003922">doi:10.1017/s0140525x01003922</a>. PubMed.</li>
+    <li id="r29">Weed LL. Medical records that guide and teach. <i>N Engl J Med</i>. 1968;278(11):593-600. <a href="https://doi.org/10.1056/NEJM196803142781105">doi:10.1056/NEJM196803142781105</a>. PubMed.</li>
+    <li id="r30">Bates DW, Kuperman GJ, Wang S, et al. Ten commandments for effective clinical decision support: making the practice of evidence-based medicine a reality. <i>J Am Med Inform Assoc</i>. 2003;10(6):523-530. <a href="https://doi.org/10.1197/jamia.M1370">doi:10.1197/jamia.M1370</a>. PubMed.</li>
+    <li id="r31">Ahmed A, Chandra S, Herasevich V, Gajic O, Pickering BW. The effect of two different electronic health record user interfaces on intensive care provider task load, errors of cognition, and performance. <i>Crit Care Med</i>. 2011;39(7):1626-1634. <a href="https://doi.org/10.1097/CCM.0b013e31821858a0">doi:10.1097/CCM.0b013e31821858a0</a>. PubMed.</li>
+    <li id="r32">Oulasvirta A, et al. Interaction in 4-second bursts. CHI 2005. Not checked against its source for this page.</li>
+    <li id="r33">Shneiderman B. The eyes have it. IEEE Symposium on Visual Languages, 1996. Not checked against its source for this page.</li>
+    <li id="r34">Parhi P, Karlson A, Bederson B. Target size study for one-handed thumb use. MobileHCI 2006. Not checked against its source for this page; Certo's own sizes come from its thumb test.</li>
+    <li id="r35">Belden JL, et al. Inspired EHRs: Designing for Clinicians. 2014. Not checked against its source for this page.</li>
+    <li id="r36">NIST. NISTIR 7804: Technical evaluation, testing and validation of the usability of electronic health records. 2012. Not checked against its source for this page.</li>
+  </ol>
+
+  <h3>Certo's own sources</h3>
+  <ol start="37">
+    <li id="r37"><a href="https://claude.ai/artifact/H6J5zVKU1ZJq2fvcZybZD4">Certo Navigation Design.</a> The standard for layout, sizes and labels.</li>
+    <li id="r38"><a href="https://claude.ai/artifact/Mdaed4qSHC3qGAZSjSgy57">Certo Colour Theme.</a></li>
+    <li id="r39"><a href="https://claude.ai/artifact/1BoPYjvbZ13XhUShQ15kZv">Dictation Probe.</a> Keyboard dictation on a Pixel 8, 23 September 2026.</li>
+    <li id="r40">Certo's decision records, in the certo repository: the proposal, the build plan and build specification, the market research, the regulatory analysis, the Abridge assessment, the front door, the findability review, the usage tap, and distribution and sign-on.</li>
+  </ol>
+</section>
+
+<footer class="end">The search this page describes is not built. Section 4 shows design mock-ups with invented test data. Pictures in section 5 show the app at <code>eed8475</code>. Updated 9 October 2026.</footer>
+
+</article>
+</div>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The collection pages, artifacts/ and prototypes/, generated from the folders
+"""The collection pages, artifacts/, prototypes/ and proposals/, generated from the folders
 under each.
 
 Each folder under a collection is one published page: its own index.html, with
@@ -8,7 +8,7 @@ collection page, <collection>/index.html, lists every folder by name with that
 title and description, and nothing else, so it can neither promise a page that
 is not there nor miss one that is.
 
-    python3 scripts/artifacts_index.py          write both collection pages
+    python3 scripts/artifacts_index.py          write every collection page
     python3 scripts/artifacts_index.py --check  red if a committed page is stale
 """
 
@@ -48,7 +48,14 @@ PROTOTYPES = Collection(
     "Guides to the vista-forge project's prototypes: what each one is and how to try it, with pictures"
     " of the current build. Each page is self-contained and opens on its own.",
 )
-COLLECTIONS = (ARTIFACTS, PROTOTYPES)
+PROPOSALS = Collection(
+    "proposals",
+    "Proposals",
+    "Proposals from the vista-forge project: designs for work not yet built.",
+    "Proposals from the vista-forge project: specifications and designs for work not yet built."
+    " Each page is self-contained and opens on its own.",
+)
+COLLECTIONS = (ARTIFACTS, PROTOTYPES, PROPOSALS)
 
 
 @dataclass(frozen=True)
