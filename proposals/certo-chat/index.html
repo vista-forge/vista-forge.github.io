@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Certo's planned voice and typed search of the VistA record: a fixed grammar and no language model, so the same question on the same record always gives VistA's own answer. The product specification, the market research, the voice flow screen by screen, Certo as built, and the integration strategy. Not yet built.">
+<meta name="description" content="Certo's planned voice and typed search of the VistA record, spoken through the phone's own keyboard into the web app: a fixed grammar and no language model, so the same question on the same record always gives VistA's own answer. The product specification, the market research, the voice flow screen by screen, Certo as built, and the integration strategy. Not yet built.">
 <title>Certo Chat</title>
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=Roboto+Condensed:wght@400;500;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
@@ -96,6 +96,9 @@ body { background: var(--bg); color: var(--ink); font-family: var(--text); font-
 .doc code, .doc .m { font-family: var(--mono); font-size: 0.86em; }
 .doc code { background: var(--chip); border-radius: 4px; padding: 1px 5px; }
 .doc q { quotes: "“" "”"; }
+.doc h4 { font-family: var(--text); font-weight: 700; font-size: 17px; line-height: 1.3; margin: 6px 0 0; color: var(--ink2); }
+.doc pre { margin: 0; max-width: 100%; overflow-x: auto; background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px; font-family: var(--mono); font-size: 14px; line-height: 1.5; }
+.doc pre code { background: none; padding: 0; font-size: inherit; }
 .abstract { background: var(--card); border: 1px solid var(--rule); border-left: 4px solid var(--navy); border-radius: 0 10px 10px 0; padding: 22px 26px; }
 .abstract p { font-size: 18.5px; line-height: 1.55; max-width: 72ch; }
 .abstract h2 { font-size: 15px; font-family: var(--mono); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); }
@@ -214,6 +217,8 @@ figcaption b { color: var(--ink); }
 .kb span.w { flex: 0 0 46px; background: #adb3bb; font-size: 14px; }
 .kb span.sp { flex: 1 1 0; font-size: 14px; color: #5c6370; }
 .kb span.go { flex: 0 0 80px; background: #005ea2; color: #fff; font-size: 15px; font-weight: 600; }
+.kb span.mk.on { background: #005ea2; color: #fff; }
+.kb svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
 /* pictures of Certo as built */
 .shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 32px 24px; align-items: start; }
@@ -298,7 +303,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
         <li><a href="#s3-2">Scope</a></li>
         <li><a href="#s3-3">The grammar</a></li>
         <li><a href="#s3-4">Two routes, one query</a></li>
-        <li><a href="#s3-5">Recognition</a></li>
+        <li><a href="#s3-5">Speech through the keyboard</a></li>
         <li><a href="#s3-6">Safety rules</a></li>
         <li><a href="#s3-7">Fidelity and provenance</a></li>
         <li><a href="#s3-8">The unit of data</a></li>
@@ -325,7 +330,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
 
 <section class="abstract" id="abstract">
   <h2>Abstract</h2>
-  <p>Certo is the phone app that reads a patient's VistA record through the same calls CPRS makes, and this page specifies its planned voice and text search. A physician holds a button and says <q>trend potassium, last 7 days</q>, or types it, and lands on the screen that a few taps would have reached. A small fixed grammar turns the words into one structured query. No language model takes part. The answer is VistA's own text, drawn by code, with its date, author and status, and the same question on the same record always gives the same answer. AI scribes and chart assistants cannot make that promise, because they generate their text. The search therefore sits beside them as the place a clinician checks what they produced. This page gives the specification, the market evidence, the voice interface screen by screen, Certo as built, and how the search enters Certo once every domain of its build plan is complete.</p>
+  <p>Certo is the phone app that reads a patient's VistA record through the same calls CPRS makes, and this page specifies its planned voice and text search. A physician taps a button, says <q>trend potassium, last 7 days</q> into the phone's own keyboard or types it, and lands on the screen that a few taps would have reached. Certo stays a web app and never hears the audio: the keyboard turns the speech into words, and Certo reads the words. A small fixed grammar turns the words into one structured query. No language model takes part. The answer is VistA's own text, drawn by code, with its date, author and status, and the same question on the same record always gives the same answer. AI scribes and chart assistants cannot make that promise, because they generate their text. The search therefore sits beside them as the place a clinician checks what they produced. This page gives the specification, the market evidence, the voice interface screen by screen, Certo as built, and how the search enters Certo once every domain of its build plan is complete.</p>
 </section>
 
 <section id="s1">
@@ -346,7 +351,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
   <ul>
     <li><strong>The work is short.</strong> In the largest study of mobile record use, most sessions lasted about 15 seconds. <a class="c" href="#r27">[27]</a> Certo's own target for one test's latest value, found by its name from a locked phone, is 10 seconds. That target is not yet measured.</li>
     <li><strong>A phone has room for five pages.</strong> Certo's navigation standard allows five on the bar at the foot of the screen, beside the question control, and the fixed parts of the screen already take 30% of it, 42% with the time window. <a class="c" href="#r37">[37]</a> The build plan adds orders, consults, imaging, pathology, immunizations and reminders, each opened from the Glance. A question goes straight to any of them.</li>
-    <li><strong>Hands and eyes are busy.</strong> On rounds, at the bedside or on a call, a held button and five words cost less than a path of taps.</li>
+    <li><strong>Hands and eyes are busy.</strong> On rounds, at the bedside or on a call, two taps and five words cost less than a path of taps.</li>
     <li><strong>Reading is the largest unassisted share of the work.</strong> Chart review is a fifth to a third of physicians' time in the record, and AI scribes do not touch it (<a href="#s2-2">section 2.2</a>).</li>
   </ul>
 
@@ -428,7 +433,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
         <tr><th>Every item carries its source</th><td>Date and time, author, status and where in VistA it came from. Preliminary, pending and unsigned are labelled. Two records that disagree are both shown.</td><td>Certo's rule that contradiction is a state.</td></tr>
         <tr><th>Checked against CPRS</th><td>Each read is the call CPRS makes, compared with CPRS's own recorded traffic.</td><td>A recorded-reply test in the gate and a live test that the recording still holds.</td></tr>
         <tr><th>One patient</th><td>A question acts on the open record only. A request for another patient is refused.</td><td>The front door, enforced by the server.</td></tr>
-        <tr><th>The audio stays on the phone</th><td>Speech is recognized on the device and is never stored or sent. Answers are shown and never spoken.</td><td>To be measured before any use with real patient data (<a href="#s6-3">section 6.3</a>).</td></tr>
+        <tr><th>Certo never hears the audio</th><td>The phone's keyboard turns speech into words, and Certo receives only the words. Certo never opens the microphone. Answers are shown and never spoken.</td><td>A source test and the server's microphone policy (<a href="#s3-5">section 3.5</a>). Whether the keyboard keeps the audio on the phone is a setting of the phone's management, checked before real patient data.</td></tr>
       </tbody>
     </table>
   </div>
@@ -508,8 +513,8 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
   <figure>
     <div class="flow">
       <div class="fin">
-        <div class="fbox">Speak<small>Hold the button in the page bar. Recognized on the phone.</small></div>
-        <div class="fbox">Type<small>Tap the same button. The same words, with autocomplete.</small></div>
+        <div class="fbox">Speak<small>Tap Ask, then the keyboard's microphone. The phone's keyboard writes the words.</small></div>
+        <div class="fbox">Type<small>Tap Ask and type in the same field, with suggestions.</small></div>
         <div class="fbox">Tap<small>Certo's pages and controls.</small></div>
       </div>
       <div class="farrow" aria-hidden="true"></div>
@@ -522,21 +527,71 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
     <figcaption>Three ways in, one query, one read. Nothing after the query differs by route, so the answer cannot either.</figcaption>
   </figure>
   <ul>
-    <li><strong>One control.</strong> The question control sits at the centre of the page bar at the foot of the screen. A hold speaks. A tap opens the typed field as a panel. It adds no fixed band to the screen (<a href="#s4">section 4</a>).</li>
+    <li><strong>One control.</strong> The question control sits at the centre of the page bar at the foot of the screen. A tap opens the question field as a panel, with the phone's keyboard. The keyboard's microphone speaks and its keys type. It adds no fixed band to the screen (<a href="#s4">section 4</a>).</li>
     <li><strong>One query model.</strong> Every navigation state maps to a query. Tapping Labs, Potassium, 7 days and saying <q>trend potassium, last 7 days</q> give the identical screen, history and provenance.</li>
     <li><strong>Editable chips.</strong> Every result shows its query as chips. Voice fills them, and a tap changes one without speaking again. This is also how a misheard word is corrected.</li>
-    <li><strong>Typed questions.</strong> A field takes the same grammar with autocomplete, for quiet places and for when a patient is near.</li>
+    <li><strong>One field for both.</strong> Spoken and typed words land in the same field and can be mixed: a misheard word is fixed by typing over it. Typing serves quiet places and a patient nearby.</li>
     <li><strong>Teach by doing.</strong> After a path of taps, the screen shows <q>Next time, say: …</q> with the equivalent phrase.</li>
     <li><strong>The rule.</strong> Anything reachable by voice is also reachable by touch.</li>
   </ul>
 
-  <h3 id="s3-5"><span class="n">3.5</span>Recognition</h3>
+  <h3 id="s3-5"><span class="n">3.5</span>Speech through the phone's keyboard</h3>
+  <p>Certo stays a web app, with no Android or iPhone code of its own. It takes speech the way any text field on a phone does: the phone's own keyboard has a microphone key, and the keyboard turns what is said into words in the field. Certo never opens the microphone and never receives audio. It reads the words, as it reads typing.</p>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Step</th><th>The person</th><th>Certo</th></tr></thead>
+      <tbody>
+        <tr><th>Open</th><td>Taps Ask at the centre of the page bar.</td><td>In that tap's own handler, shows the question panel and focuses its field. The focus raises the phone's keyboard.</td></tr>
+        <tr><th>Speak</th><td>Taps the keyboard's microphone and speaks. On an iPhone it sits below the keys at the lower right; in Gboard, at the right of the suggestion strip; in Samsung Keyboard, on its voice key.</td><td>Nothing. The keyboard writes the words into the field as it recognizes them. Suggestions follow each finished word.</td></tr>
+        <tr><th>Type</th><td>Types, or fixes a dictated word by typing over it.</td><td>Suggests from VistA's own names.</td></tr>
+        <tr><th>Ask</th><td>Presses the keyboard's Search key, or Ask in the panel.</td><td>Reads the field once, parses it, and opens the answer with the words heard and the query's chips.</td></tr>
+        <tr><th>Cancel</th><td>Presses Back, or taps outside the panel.</td><td>Closes the panel and the keyboard. Nothing was asked.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The cost is one tap: speaking takes Ask and then the keyboard's microphone. A web page cannot start the keyboard's dictation; only the person's own tap on the keyboard does.</p>
+
+  <h4>Why the keyboard</h4>
   <ul>
-    <li>Use only on-device recognition. Audio never leaves the phone and is never stored.</li>
-    <li>Bias recognition with VistA's own vocabulary, then match the transcript to known terms: <q>potassum</q> and <q>K</q> both become Potassium.</li>
-    <li>Choose command words that sound distinct, and test sound-alike drug names such as hydroxyzine and hydralazine.</li>
-    <li>The live transcript shows while the person speaks. A buzz confirms capture. A failure offers tap-to-correct.</li>
-    <li>Keep the parser a separate module with its own tests.</li>
+    <li><strong>Not the browser's speech service.</strong> A page that calls the browser's <code>SpeechRecognition</code> opens the microphone itself, behind a permission prompt, and Certo becomes the program that holds the audio. Chrome sends that audio to a Google service unless the page asks for on-device processing, an option new to the standard and not in every browser. <a class="c" href="#r45">[45]</a> How Safari's works in a home-screen app is not documented.</li>
+    <li><strong>Not a native app.</strong> An app in Kotlin or Swift would reach the same recognizers the keyboards use, at the cost of two more code bases, store distribution and VA's app review. Nothing about speech requires one.</li>
+    <li><strong>The keyboard</strong> works the same in Chrome, in Safari and in the installed web app, asks for no permission, and has been measured: on a Pixel 8, 8 of 8 phrases came through exactly. <a class="c" href="#r39">[39]</a></li>
+  </ul>
+
+  <h4>The field</h4>
+  <pre><code>&lt;form role="search"&gt;
+  &lt;input type="search" enterkeyhint="search" autocomplete="off"
+         autocorrect="off" autocapitalize="none" spellcheck="false"
+         aria-label="Ask this record"&gt;
+&lt;/form&gt;</code></pre>
+  <ul>
+    <li><code>enterkeyhint="search"</code> labels the keyboard's return key Search, so the keyboard itself can ask. Certo's notes and labs searches already set it.</li>
+    <li><code>autocorrect="off"</code> and <code>spellcheck="false"</code> stop the keyboard turning a typed drug or test name into an English word. Dictation is not affected.</li>
+    <li>The field's text is 18 px, Certo's body size. Safari on an iPhone zooms the page when a field under 16 px takes focus.</li>
+  </ul>
+
+  <h4>Opening the keyboard</h4>
+  <ul>
+    <li>The field is shown and focused inside the tap's own handler, never after a timer, an animation or a server's reply. On an iPhone, a focus made by a script raises the keyboard only when a person's gesture caused it. <a class="c" href="#r46">[46]</a></li>
+    <li>Not measured yet: that one tap on Ask raises the keyboard on the Pixel and on an iPhone, in the browser and in the installed app.</li>
+  </ul>
+
+  <h4>Reading the words</h4>
+  <ul>
+    <li>Gboard on the Pixel 8 sends dictation as composition: a start, updates as the words form, then an end. <a class="c" href="#r39">[39]</a> How the iPhone's keyboard sends dictation is not measured. Both may add capitals and punctuation of their own.</li>
+    <li>Suggestions follow the field only between compositions. A question is asked only when the person presses Search or Ask, and a press while words are still forming waits for them to finish. Nothing is asked on a pause.</li>
+    <li>Before parsing, case is ignored, punctuation the keyboard added is dropped, apostrophes are kept, and number words read as numbers: <q>seven days</q> and <q>7 days</q> are one query.</li>
+    <li>A page cannot teach the keyboard VistA's words. Certo matches the finished text against VistA's own names afterwards: <q>potassum</q> and <q>K</q> both become Potassium. Sound-alike names ask which one (screen 5), and command words are chosen to sound distinct.</li>
+    <li>The parser is a separate module with its own tests.</li>
+  </ul>
+
+  <h4>Where the audio goes</h4>
+  <ul>
+    <li><strong>Certo never has it.</strong> Two tests are to hold that, and neither exists yet: one that fails when Certo's code calls <code>getUserMedia</code> or <code>SpeechRecognition</code>, and one that the server sends <code>Permissions-Policy: microphone=()</code>, which tells the browser to refuse Certo the microphone.</li>
+    <li><strong>The keyboard decides whether audio leaves the phone</strong>, by the phone's settings and its management. The page cannot see which.</li>
+    <li><strong>iPhone.</strong> Apple says dictation is processed on the device in many languages, with no connection needed. <a class="c" href="#r41">[41]</a> A management restriction, <code>forceOnDeviceOnlyDictation</code>, stops dictation reaching Apple's servers, <a class="c" href="#r42">[42]</a> and the Defense Department's security guide for iPhones requires it. <a class="c" href="#r43">[43]</a></li>
+    <li><strong>Android.</strong> Gboard can recognize speech without a connection once its offline language pack is installed; the Pixel 8's setting has not been read. No published management setting for Gboard's voice input was found, <a class="c" href="#r44">[44]</a> but a managed phone can be limited to approved keyboards.</li>
+    <li><strong>The rule stands as ruled</strong> (MV-D6, 22 September 2026): any dictation service on the demo systems; real patient data only on phones whose management forces on-device dictation. That is checked in the deployment, not by Certo.</li>
   </ul>
 
   <h3 id="s3-6"><span class="n">3.6</span>Safety rules</h3>
@@ -584,7 +639,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
         <tr><th>The app</th><td>An installed web app on the operator's private network</td><td>A managed web app pushed by VA's phone management first. A native shell only if VA asks for one.</td></tr>
         <tr><th>Sign-on</th><td>VistA access and verify codes, through the Broker</td><td>A PIV-derived credential on the phone, exchanged by VA's identity service for a token VistA accepts. The Broker door's token sign-on does not exist yet.</td></tr>
         <tr><th>Data on the phone</th><td>None kept. The screen clears when the app is hidden, and Hide blanks it on a tap.</td><td>No patient data cached; copy, paste and screenshots blocked where the platform allows</td></tr>
-        <tr><th>Speech</th><td>Not built. Keyboard dictation was measured once on a Pixel 8, on demo data: 8 of 8 phrases came through exactly. <a class="c" href="#r39">[39]</a></td><td>On-device recognition only. iOS 17 and Android 13 are the proposed floor for a native app.</td></tr>
+        <tr><th>Speech</th><td>Not built. Keyboard dictation was measured once on a Pixel 8, on demo data: 8 of 8 phrases came through exactly. <a class="c" href="#r39">[39]</a></td><td>The phone keyboard's dictation, with on-device recognition forced by VA's phone management (<a href="#s3-5">section 3.5</a>). No native app is needed for speech.</td></tr>
         <tr><th>Network</th><td>Tailnet only</td><td>A per-app VPN or VA's mobile gateway; never a direct path to VistA</td></tr>
         <tr><th>Approvals</th><td>None needed on demo systems</td><td>Authority to operate, privacy impact assessment, Section 508, the managed app catalog, VA's AI intake</td></tr>
       </tbody>
@@ -594,7 +649,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
 
 <section id="s4">
   <h2><span class="n">4</span>Voice flow</h2>
-  <p>Eight screens carry one question from the held button to the answer and its corrections. The question control sits at the centre of the page bar at the foot of the screen, where the thumb rests. Hold it to speak. Tap it to type. The screens are drawn in Certo's own look, over the pages shown in section 5.</p>
+  <p>Eight screens carry one question from the tap to the answer and its corrections. The question control sits at the centre of the page bar at the foot of the screen, where the thumb rests. A tap opens the question field and the phone's keyboard, which speaks through its microphone key or types. The screens are drawn in Certo's own look, over the pages shown in section 5.</p>
   <p class="note">Design mock-ups, not pictures of working software. The patient, the values and the notes are invented test data.</p>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></symbol>
@@ -625,7 +680,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
       <figcaption><span class="t">1 · Ready</span>Certo's Glance page with the question control at the centre of the page bar. It is the largest target on the bar and sits under the thumb.</figcaption>
     </figure>
     <figure>
-      <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: the microphone button held, with a panel showing the words trend potassium, last 7 days and the matched terms Labs, Potassium and 7 days">
+      <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: the question field open over the Glance page with the phone's keyboard, its microphone key on, the words trend potassium, last 7 days in the field and the matched terms Labs, Potassium and 7 days below">
 <div class="pb"><div class="nm"><span>ZZTEST,ALPHA</span><span class="hide">Hide</span></div>
 <div class="ln"><span><b>68 M</b> (3/12/58)</span><span class="mut">xxx-xx-0001</span><span class="rt">read just now</span></div>
 <div class="ln"><span class="ward">4B MED 412-A</span><span>Admitted 9/24/26 · <b>Day 8</b></span></div>
@@ -640,12 +695,11 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
 <div class="g g3"><b>METOPROLOL</b><span>25MG MOUTH BID</span><span>ACTIVE</span></div>
 <div class="g g3"><b>HYDRALAZINE</b><span>25MG MOUTH TID</span><span>ACTIVE</span></div>
 <div class="g g3"><b>ATORVASTATIN</b><span>40MG MOUTH BEDTIME</span><span>ACTIVE</span></div><div class="dim"></div>
-<div class="sheet"><div class="lab">Listening</div><div class="say">trend potassium, last 7 days</div>
+<div class="sheet" style="padding-bottom:12px"><div class="lab">Speaking, through the keyboard</div><div class="fld">trend potassium, last 7 days<u></u></div>
 <div class="q"><b>Labs</b><i>›</i><b>Potassium</b><i>›</i><b>7 days</b></div>
-<div class="src">Recognized on this phone. Nothing is recorded or sent.</div>
-<div class="rel">Release to ask · slide away to cancel</div></div></div><div class="tb"><span class="t on"><svg><use href="#i-eye"/></svg>Glance</span><span class="t"><svg><use href="#i-bars"/></svg>Timeline</span><span class="t"><svg><use href="#i-doc"/></svg>Notes</span><span class="mic held"><i><svg><use href="#i-mic"/></svg></i>Listening</span><span class="t"><svg><use href="#i-pulse"/></svg>Vitals</span><span class="t"><svg><use href="#i-flask"/></svg>Labs</span></div>
+<div class="src">Words from the phone's keyboard. Certo never hears the audio.</div></div></div><div class="kb"><div><span>q</span><span>w</span><span>e</span><span>r</span><span>t</span><span>y</span><span>u</span><span>i</span><span>o</span><span>p</span></div><div><span>a</span><span>s</span><span>d</span><span>f</span><span>g</span><span>h</span><span>j</span><span>k</span><span>l</span></div><div><span class="w">⇧</span><span>z</span><span>x</span><span>c</span><span>v</span><span>b</span><span>n</span><span>m</span><span class="w">⌫</span></div><div><span class="w">123</span><span class="sp">space</span><span class="w mk on"><svg><use href="#i-mic"/></svg></span><span class="go">Search</span></div></div>
       </div></div>
-      <figcaption><span class="t">2 · Listening</span>While the button is held, a panel rises over the page with the words as heard and the terms they match. Release to ask. Slide away to cancel.</figcaption>
+      <figcaption><span class="t">2 · Speaking</span>A tap on Ask opens the question field and the phone's keyboard. A tap on the keyboard's microphone speaks, and the words fill the field as the keyboard recognizes them, with the terms they match below. The keyboard's Search key asks. Each phone's keyboard looks its own way; this one is drawn plainly.</figcaption>
     </figure>
     <figure>
       <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: the Labs page showing a potassium trend over one week, the latest value 5.8 flagged high, with the microphone button at the centre of the page bar">
@@ -754,9 +808,9 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
 <div class="g g3"><b>ATORVASTATIN</b><span>40MG MOUTH BEDTIME</span><span>ACTIVE</span></div><div class="dim"></div>
 <div class="sheet" style="padding-bottom:12px"><div class="fld">trend pot<u></u></div>
 <div class="sug"><span><b>trend potassium</b><i>Labs</i></span><span>trend potassium, 1 month<i>Labs</i></span><span>show potassium<i>Labs</i></span></div>
-<div class="src">The same words as speaking. Nothing here is a guess.</div></div></div><div class="kb"><div><span>q</span><span>w</span><span>e</span><span>r</span><span>t</span><span>y</span><span>u</span><span>i</span><span>o</span><span>p</span></div><div><span>a</span><span>s</span><span>d</span><span>f</span><span>g</span><span>h</span><span>j</span><span>k</span><span>l</span></div><div><span class="w">⇧</span><span>z</span><span>x</span><span>c</span><span>v</span><span>b</span><span>n</span><span>m</span><span class="w">⌫</span></div><div><span class="w">123</span><span class="sp">space</span><span class="go">Ask</span></div></div>
+<div class="src">The same words as speaking. Nothing here is a guess.</div></div></div><div class="kb"><div><span>q</span><span>w</span><span>e</span><span>r</span><span>t</span><span>y</span><span>u</span><span>i</span><span>o</span><span>p</span></div><div><span>a</span><span>s</span><span>d</span><span>f</span><span>g</span><span>h</span><span>j</span><span>k</span><span>l</span></div><div><span class="w">⇧</span><span>z</span><span>x</span><span>c</span><span>v</span><span>b</span><span>n</span><span>m</span><span class="w">⌫</span></div><div><span class="w">123</span><span class="sp">space</span><span class="w mk"><svg><use href="#i-mic"/></svg></span><span class="go">Search</span></div></div>
       </div></div>
-      <figcaption><span class="t">7 · The typed route</span>A tap on the same button opens a field that takes the same words, with suggestions from VistA's own names. The keyboard covers the page bar while it is up.</figcaption>
+      <figcaption><span class="t">7 · Typing</span>The same field and keyboard, typed instead of spoken, with suggestions from VistA's own names. Spoken and typed words mix in one field. The keyboard covers the page bar while it is up.</figcaption>
     </figure>
     <figure>
       <div class="shell"><div class="phone" inert role="img" aria-label="Mock-up: the potassium trend reached by touch, the time chip changed to one month, with the line Next time, say trend potassium, one month">
@@ -783,7 +837,7 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
     <table>
       <thead><tr><th>Rule</th><th>On the screens</th></tr></thead>
       <tbody>
-        <tr><th>One control, at the centre of the page bar</th><td>A hold speaks and a tap types. It adds no fixed band to the screen. With five pages, three sit to its left and two to its right; a thumb test settles their widths.</td></tr>
+        <tr><th>One control, at the centre of the page bar</th><td>A tap opens the field and the phone's keyboard, which speaks or types. It adds no fixed band to the screen. With five pages, three sit to its left and two to its right; a thumb test settles their widths.</td></tr>
         <tr><th>The banner stays</th><td>The patient's name, age, ward and allergies are on every screen, including while listening.</td></tr>
         <tr><th>One front door</th><td>Nothing leads from an open record to another patient. A spoken request for one is refused (screen 6).</td></tr>
         <tr><th>No computed values</th><td>A result may show the previous result with its date, never a difference worked out by Certo.</td></tr>
@@ -858,19 +912,19 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
   <p class="note">Certo's plan builds screens for the last four nouns, so the grammar carries their words.</p>
 
   <h3 id="s6-3"><span class="n">6.3</span>The sequence</h3>
-  <p>Typed search comes before voice. It uses the same parser, it is fully deterministic, and it raises no question about where audio goes. Each stage is built test first and proven on recorded replies, then on the phone.</p>
+  <p>Speech and typing arrive together, because the phone's keyboard brings speech to any text field: once the question field exists, dictation reaches it with no code of Certo's own. What follows the field is measuring speech, not building it. Each stage is built test first and proven on recorded replies, then on the phone.</p>
   <div class="tw wide">
     <table>
       <thead><tr><th>Stage</th><th>What is built</th><th>What it needs first</th></tr></thead>
       <tbody>
         <tr><th>Until the build plan is complete</th><td>Nothing for search. The usage tap already counts which screens and controls are used; those counts rank the grammar's defaults.</td><td>Nothing</td></tr>
         <tr><th>1 · The query model</th><td>One structured query that every navigation state maps to and from, and the chips on each result screen. Library code with its tests. No speech yet.</td><td>Every noun's screen built</td></tr>
-        <tr><th>2 · Typed questions</th><td>The field, the grammar parser as a table, autocomplete from VistA's own names, the list of what can be asked for unmatched words, the sound-alike check, and <q>Next time, type or say</q>.</td><td>The field's panel, walked against the navigation standard</td></tr>
-        <tr><th>3 · Voice through the keyboard</th><td>The phone keyboard's dictation fills the same field. The question is mapped only once the dictation has finished composing.</td><td>A measurement that the keyboard recognizes on the device. Required before real patient data.</td></tr>
-        <tr><th>4 · Hold to speak</th><td>The button at the centre of the page bar, the live transcript, the buzz on capture, slide away to cancel.</td><td>An on-device recognizer that an installed web app can reach, measured on the Pixel and on an iPhone. If the browser cannot give that, a native shell around the same app.</td></tr>
+        <tr><th>2 · The question field</th><td>The Ask control, its panel and field (<a href="#s3-5">section 3.5</a>), the grammar parser as a table, suggestions from VistA's own names, the list of what can be asked for unmatched words, the sound-alike check, <q>Next time, type or say</q>, and the two tests that Certo never opens the microphone.</td><td>The panel walked against the navigation standard. One tap on Ask measured to raise the keyboard on both phones.</td></tr>
+        <tr><th>3 · Speech, measured</th><td>The grammar's examples, numbers and sound-alike drug pairs spoken on the Pixel 8 and an iPhone, in the browser and the installed app; what each keyboard sends, with its punctuation and its numbers handled by the parser.</td><td>For real patient data: phones whose management forces on-device dictation.</td></tr>
       </tbody>
     </table>
   </div>
+  <p class="note">Hold-to-speak is not planned. It needs the browser's own speech service, which this design does not use (<a href="#s3-5">section 3.5</a>).</p>
 
   <h3 id="s6-4"><span class="n">6.4</span>What does not change</h3>
   <ul>
@@ -890,7 +944,7 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
       <tbody>
         <tr><th>The wrong patient</th><td>A question acts on the open record only. A request for another is refused.</td></tr>
         <tr><th>A misheard drug or test</th><td>The heard words and chips stay visible. Sound-alikes ask. A tap corrects.</td></tr>
-        <tr><th>Audio leaves the phone</th><td>On-device recognition only, measured before any real patient data. Typing always works.</td></tr>
+        <tr><th>Audio leaves the phone</th><td>Certo never receives audio. Whether the keyboard keeps it on the phone is the phone management's setting, checked before real patient data. Typing always works.</td></tr>
         <tr><th>A silent empty answer</th><td>An empty result says what was searched. A failed read says it failed.</td></tr>
         <tr><th>Speaking near patients</th><td>Answers are never spoken. The typed route needs no voice.</td></tr>
         <tr><th>The screen gets more crowded</th><td>The fixed part already costs 30 to 42%. The control sits inside the page bar and adds no band. It is walked and thumb-tested before it ships.</td></tr>
@@ -903,7 +957,7 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
 
 <section id="s7">
   <h2><span class="n">7</span>Decisions to make</h2>
-  <p>Seven questions are the operator's. Each has a recommendation. None is ruled. The place of the question control is settled: the centre of the page bar.</p>
+  <p>Six questions are the operator's. Each has a recommendation. None is ruled. Two things are settled: the question control sits at the centre of the page bar, and speech comes through the phone's own keyboard into the web app (operator, 9 October 2026).</p>
   <div class="tw wide">
     <table>
       <thead><tr><th>Question</th><th>Recommended</th></tr></thead>
@@ -912,7 +966,6 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
         <tr><th>What does a spoken time range do?</th><td>On a chart page it sets the time window to the smallest of Certo's spans that holds it, and says which. On a list it does nothing, since lists are never filtered by time.</td></tr>
         <tr><th>Where does the vocabulary come from?</th><td>From names Certo's reads already return for the open record and the site: test names, note titles, drug names. No new read is added for search.</td></tr>
         <tr><th>Does voice work at patient selection?</th><td>Not in the first release. Names are where speech fails worst: EIGHT matched at least 22 patients on the demo system. Patient search stays typed.</td></tr>
-        <tr><th>Which route gives on-device speech?</th><td>Measure first. Keyboard dictation into the field is the first voice. Hold-to-speak follows only on a recognizer proven to stay on the phone.</td></tr>
         <tr><th>What is the line under the name?</th><td>Undecided. <q>AI summarizes. Certo verifies.</q> makes no claim about time and could stand.</td></tr>
         <tr><th>What is the overlap with VA's AI quick-review tool?</th><td>Unknown. VA is building one. Its scope should be read before Certo is shown to VA.</td></tr>
       </tbody>
@@ -983,6 +1036,16 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
     <li id="r39">Dictation Probe. Keyboard dictation on a Pixel 8, 23 September 2026.</li>
     <li id="r40">Certo's decision records, in the certo repository: the proposal, the build plan and build specification, the market research, the regulatory analysis, the Abridge assessment, the front door, the findability review, the usage tap, and distribution and sign-on.</li>
   </ol>
+
+  <h3>Phones and browsers</h3>
+  <ol start="41">
+    <li id="r41">Apple. <a href="https://support.apple.com/en-us/HT208343">Dictate text on iPhone.</a> iPhone User Guide. Its statement that dictation is processed on the device in many languages was read through a search engine's extract on 9 October 2026; the page did not load for a direct read.</li>
+    <li id="r42">Ivanti. <a href="https://help.ivanti.com/mi/help/en_us/CORE/12.x/dmgi/DMGfiles/iOS_settingsiOSRestrictions.htm">iOS and tvOS restrictions settings.</a> The <code>forceOnDeviceOnlyDictation</code> restriction, from iOS 14.3. Whether it needs a supervised phone was not confirmed, and Apple's own reference was not read.</li>
+    <li id="r43">Defense Information Systems Agency. <a href="https://www.stigviewer.com/stigs/apple_iosipados_26/2026-05-13/finding/V-278819">Apple iOS/iPadOS 26 STIG, finding V-278819:</a> disable connections to Siri servers for the purpose of dictation. Read through a search engine's extract; the page refused a direct read.</li>
+    <li id="r44">Google. <a href="https://support.google.com/work/android/answer/15128539">Managed configurations in Gboard.</a> Android Enterprise help. The published setting stops Gboard opening other apps.</li>
+    <li id="r45">MDN. <a href="https://developer.mozilla.org/docs/Web/API/SpeechRecognition/processLocally">SpeechRecognition: processLocally.</a></li>
+    <li id="r46">WebKit. <a href="https://bugs.webkit.org/show_bug.cgi?id=195884">Bug 195884.</a> Programmatic focus raises the keyboard only from a user gesture.</li>
+  </ol>
 </section>
 
 <footer class="end">The search this page describes is not built. Section 4 shows design mock-ups with invented test data. Pictures in section 5 show the app at <code>eed8475</code>. Updated 9 October 2026.</footer>
@@ -990,5 +1053,6 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
 </article>
 </div>
 </div>
+
 </body>
 </html>
