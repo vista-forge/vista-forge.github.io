@@ -258,7 +258,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
     <h1>Certo Chat</h1>
     <p class="gloss">certo · Latin, with certainty · Italian, sure</p>
     <p class="lede">Ask the VistA record a question by voice or by typing. Get the record's own answer, the same one every time.</p>
-    <p class="byline">Rafael Richards · 9 October 2026</p>
+    <p class="byline">Rafael Richards · 10 October 2026</p>
   </div>
   <div>
     <dl class="ask" aria-label="One question, as Certo handles it">
@@ -308,6 +308,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
         <li><a href="#s3-7">Fidelity and provenance</a></li>
         <li><a href="#s3-8">The unit of data</a></li>
         <li><a href="#s3-9">Platform and approvals</a></li>
+        <li><a href="#s3-10">No native app</a></li>
       </ol>
     </li>
     <li><a href="#s4"><span class="n">4</span>Voice flow</a></li>
@@ -554,7 +555,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
   <h4>Why the keyboard</h4>
   <ul>
     <li><strong>Not the browser's speech service.</strong> A page that calls the browser's <code>SpeechRecognition</code> opens the microphone itself, behind a permission prompt, and Certo becomes the program that holds the audio. Chrome sends that audio to a Google service unless the page asks for on-device processing, an option new to the standard and not in every browser. <a class="c" href="#r45">[45]</a> How Safari's works in a home-screen app is not documented.</li>
-    <li><strong>Not a native app.</strong> An app in Kotlin or Swift would reach the same recognizers the keyboards use, at the cost of two more code bases, store distribution and VA's app review. Nothing about speech requires one.</li>
+    <li><strong>Not a native app.</strong> An app in Kotlin or Swift would reach the same recognizers the keyboards use, at the cost of two more code bases, store distribution and VA's app review. Nothing about speech requires one, and native clients are rejected outright (<a href="#s3-10">section 3.10</a>).</li>
     <li><strong>The keyboard</strong> works the same in Chrome, in Safari and in the installed web app, asks for no permission, and has been measured: on a Pixel 8, 8 of 8 phrases came through exactly. <a class="c" href="#r39">[39]</a></li>
   </ul>
 
@@ -636,7 +637,7 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
     <table>
       <thead><tr><th>Matter</th><th>Certo today</th><th>For a VA deployment</th></tr></thead>
       <tbody>
-        <tr><th>The app</th><td>An installed web app on the operator's private network</td><td>A managed web app pushed by VA's phone management first. A native shell only if VA asks for one.</td></tr>
+        <tr><th>The app</th><td>An installed web app on the operator's private network</td><td>A managed web app pushed by VA's phone management. No native app and no wrapper (<a href="#s3-10">section 3.10</a>).</td></tr>
         <tr><th>Sign-on</th><td>VistA access and verify codes, through the Broker</td><td>A PIV-derived credential on the phone, exchanged by VA's identity service for a token VistA accepts. The Broker door's token sign-on does not exist yet.</td></tr>
         <tr><th>Data on the phone</th><td>None kept. The screen clears when the app is hidden, and Hide blanks it on a tap.</td><td>No patient data cached; copy, paste and screenshots blocked where the platform allows</td></tr>
         <tr><th>Speech</th><td>Not built. Keyboard dictation was measured once on a Pixel 8, on demo data: 8 of 8 phrases came through exactly. <a class="c" href="#r39">[39]</a></td><td>The phone keyboard's dictation, with on-device recognition forced by VA's phone management (<a href="#s3-5">section 3.5</a>). No native app is needed for speech.</td></tr>
@@ -645,6 +646,41 @@ footer.end { font-size: 14px; color: var(--ink3); border-top: 1px solid var(--ru
       </tbody>
     </table>
   </div>
+
+  <h3 id="s3-10"><span class="n">3.10</span>No native app</h3>
+  <div class="callout"><p><strong>Rejected (operator, 10 October 2026):</strong> no native Android or iPhone client, in Kotlin, Swift or anything else, and no wrapper that packages the web app as a store app. Certo is one web app, installed from the browser or pushed to managed phones by their management. Its desktop form is a web app too.</p></div>
+
+  <h4>Why</h4>
+  <ul>
+    <li><strong>Nothing Certo needs requires one.</strong> Every read is a Broker call made by Certo's server; the phone only draws the replies. Speech comes through the phone's keyboard, which works the same in a browser as in an app (<a href="#s3-5">section 3.5</a>). The two things only native speech adds are not wanted: hold-to-speak is dropped, and forcing on-device recognition is the phone management's job.</li>
+    <li><strong>It multiplies the proof.</strong> Every screen is measured against CPRS, held to the colour theme and the navigation standard, and named in the usage tap's registry, and the gates that hold all of this read the web app's own source. A Kotlin client and a Swift client would each need every screen built and proven again: three implementations to keep identical, by one developer.</li>
+    <li><strong>It slows every change.</strong> A web change reaches every phone at its next load. An app change waits for a build, a signature, a store or catalog review, and each phone's update.</li>
+    <li><strong>It weakens what is easy to prove today.</strong> That nothing about a patient is kept on the phone is shown on one web app with no storage of its own. An installed program brings its own storage to examine. A wrapper that serves the pages from inside the app also calls Certo's server from another origin, which breaks the same-origin session Certo signs on with.</li>
+    <li><strong>The stores do not fit.</strong> Certo's users already hold a VistA account on a network that reaches VistA, so a public listing reaches no one new. Apple's review needs a working demo account and a back end it can reach, and Certo's server is on a private network. Apple asks that a health app be submitted by the organization that provides the service, and rejects an app that is only a repackaged website.</li>
+    <li><strong>VA already has a channel.</strong> VA's phone management can push the installed web app to enrolled phones as a managed web app, with no store, no Mac build and no review cycle. <a class="c" href="#r40">[40]</a></li>
+  </ul>
+
+  <h4>The wrappers, if it is ever reopened</h4>
+  <p>Tools exist that turn a web app into a store app with little or no new code. None gives Certo anything it lacks.</p>
+  <div class="tw wide">
+    <table>
+      <thead><tr><th>Tool</th><th>Android</th><th>iPhone</th><th>What it would give Certo</th></tr></thead>
+      <tbody>
+        <tr><th>PWABuilder (Microsoft)</th><td>A Trusted Web Activity</td><td>An Xcode project around a web view</td><td>Store packages made from the app's address. The most automatic.</td></tr>
+        <tr><th>Bubblewrap (Google)</th><td>A Trusted Web Activity</td><td>None</td><td>Chrome, full screen, on the live site: the browser by another name, with speech exactly as in the browser. The site must publish an ownership file, <code>assetlinks.json</code>, and whether that works on a private-network address is untested.</td></tr>
+        <tr><th>Capacitor (Ionic)</th><td>Yes</td><td>Yes</td><td>The web code shipped inside a native project, with plugins for native features, speech among them. Updates become app releases, and the session breaks as described above.</td></tr>
+        <tr><th>Cordova</th><td>Yes</td><td>Yes</td><td>Capacitor's older predecessor.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">The tools are named from general knowledge, not checked against their current releases for this page. A trial build would confirm one before it was relied on. Building for an iPhone needs Xcode on a Mac.</p>
+
+  <h4>What would reopen it</h4>
+  <ul>
+    <li><strong>VA requires a store-distributed app for Certo</strong>, for something a browser cannot give: its management SDK, a per-app VPN, app attestation or screenshot blocking. Certo's distribution analysis already recommends a native shell only then. <a class="c" href="#r40">[40]</a> The answer would be a Trusted Web Activity for Android and a Capacitor shell for the iPhone around the same web code, never a rewrite.</li>
+    <li><strong>A measurement the web app cannot pass.</strong> The one in view belongs to a different feature: the AI scribe proposal measures whether a browser keeps the microphone through a recorded visit, and proposes a thin native shell only if it does not. Search needs no such measurement.</li>
+  </ul>
+  <p>Either would be a new ruling of its own.</p>
 </section>
 
 <section id="s4">
@@ -934,6 +970,7 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
     <li>Nothing is spoken aloud, and nothing is forwarded to anyone.</li>
     <li>The usage tap never holds the words of a question.</li>
     <li>Certo's colour theme and navigation standard. Every new screen is walked against them before it ships.</li>
+    <li>One web app. No native Android or iPhone client and no wrapper (<a href="#s3-10">section 3.10</a>).</li>
   </ul>
 
   <h3 id="s6-5"><span class="n">6.5</span>Proof and risks</h3>
@@ -957,7 +994,7 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
 
 <section id="s7">
   <h2><span class="n">7</span>Decisions to make</h2>
-  <p>Six questions are the operator's. Each has a recommendation. None is ruled. Two things are settled: the question control sits at the centre of the page bar, and speech comes through the phone's own keyboard into the web app (operator, 9 October 2026).</p>
+  <p>Six questions are the operator's. Each has a recommendation. None is ruled. Three things are settled: the question control sits at the centre of the page bar; speech comes through the phone's own keyboard into the web app (operator, 9 October 2026); and there is no native Android or iPhone client (operator, 10 October 2026; <a href="#s3-10">section 3.10</a>).</p>
   <div class="tw wide">
     <table>
       <thead><tr><th>Question</th><th>Recommended</th></tr></thead>
@@ -1034,7 +1071,7 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
     <li id="r37">Certo Navigation Design. The standard for layout, sizes and labels.</li>
     <li id="r38">Certo Colour Theme.</li>
     <li id="r39">Dictation Probe. Keyboard dictation on a Pixel 8, 23 September 2026.</li>
-    <li id="r40">Certo's decision records, in the certo repository: the proposal, the build plan and build specification, the market research, the regulatory analysis, the Abridge assessment, the front door, the findability review, the usage tap, and distribution and sign-on.</li>
+    <li id="r40">Certo's decision records, in the certo repository: the proposal, the build plan and build specification, the market research, the regulatory analysis, the Abridge assessment, the front door, the findability review, the usage tap, distribution and sign-on, and the AI scribe proposal.</li>
   </ol>
 
   <h3>Phones and browsers</h3>
@@ -1048,7 +1085,7 @@ Signed: 10/01/2026 09:12</div><div style="height:8px;flex:none"></div></div><div
   </ol>
 </section>
 
-<footer class="end">The search this page describes is not built. Section 4 shows design mock-ups with invented test data. Pictures in section 5 show the app at <code>eed8475</code>. Updated 9 October 2026.</footer>
+<footer class="end">The search this page describes is not built. Section 4 shows design mock-ups with invented test data. Pictures in section 5 show the app at <code>eed8475</code>. Updated 10 October 2026.</footer>
 
 </article>
 </div>
