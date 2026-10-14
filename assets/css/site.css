@@ -210,13 +210,24 @@ p code, li code, td code {
 }
 @media (max-width: 560px) {
   .nav { gap: 0.9rem; }
-  .nav a, .menu__btn { font-size: 0.85rem; }
+  .nav a, .nav .menu__btn { font-size: 0.85rem; }
 }
 /* three menus and a brand do not fit a phone at the wrap's
    normal gutter — the last chevron sat a few pixels past the edge */
 @media (max-width: 420px) {
   .site-header .wrap { padding-inline: 1rem; gap: 0.6rem; }
-  .nav { gap: 0.7rem; }
+  .nav { gap: 0.55rem; }
+  .nav .menu__btn { gap: 0.25rem; }
+}
+/* "Home" is wider than "Intro" was (2026-10-14), and the banner already
+   overhung a 375px phone before it: measured, the row needs these to fit
+   a 360px one. `.nav .menu__btn`, not `.menu__btn`: these rules come before
+   the button's own, which won on order and silently undid them. */
+@media (max-width: 380px) {
+  .site-header .wrap { gap: 0.4rem; }
+  .brand { gap: 0.45rem; }
+  .nav { gap: 0.45rem; }
+  .nav a, .nav .menu__btn { font-size: 0.8rem; gap: 0.2rem; }
 }
 
 /* ---------- the megamenus ---------- */
@@ -684,6 +695,82 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   .worth { grid-template-columns: 1fr; }
   .figrow { grid-template-columns: minmax(0, 1fr); }
   .figrow__legend { width: 100%; }
+}
+
+/* ---------- the Explore page (#/explore, operator, 2026-10-14) ---------- */
+
+/* One card per application: what it is, a small drawing with its legend
+   under it, and the link that frames it. The drawings speak the landing
+   page's figure vocabulary (.stack__slab, .stack__t, .ico) so a reader who
+   has learnt one reads the other; only what is new is below. */
+.explore { background: radial-gradient(60rem 26rem at 18% -8%, var(--vista-wash), transparent 68%); }
+.explore__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.xcard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.4rem 1.4rem 1.5rem;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--fm);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+}
+.xcard--v { border-top-color: var(--vista); }
+.xcard__name { margin: 0; font-size: 1.2rem; }
+.xcard__what { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-dim); }
+/* the figure takes the slack, so both buttons sit on the cards' bottom edge */
+.xcard__fig {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin: 0.2rem 0 0;
+}
+/* at most its own viewBox width, so a user unit is a CSS pixel and its
+   labels are the size of the landing page's figure labels */
+.xcard__svg { display: block; width: 100%; max-width: 340px; height: auto; }
+.xcard__go { align-self: flex-start; }
+
+.xmap__tie path {
+  fill: none;
+  stroke: var(--text-faint);
+  stroke-width: 1.4;
+  stroke-dasharray: 3 3;
+}
+.xmap__ptr path,
+.xmap__ok circle,
+.xmap__ok path,
+.xmap__warn path {
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.xmap__ptr path { stroke: var(--fm); }
+.xmap__mono { fill: var(--text); font-family: var(--mono); font-size: 11px; }
+.stack__slab .xmap__cell { fill: var(--bg); stroke: var(--cyan-line); stroke-width: 1.2; }
+.xmap__win { fill: var(--bg); stroke: var(--border-bright); stroke-width: 1.5; }
+.xmap__line path { fill: none; stroke: var(--border); stroke-width: 1.2; }
+.xmap__tab-on { fill: var(--vista-wash); }
+.xmap__tab-mark { fill: none; stroke: var(--vista); stroke-width: 2.5; }
+.xmap__tab-t { fill: var(--vista); font-weight: 650; }
+/* a tick in a circle and a mark in a triangle: told apart by shape, not by
+   colour alone */
+.xmap__ok circle,
+.xmap__ok path { stroke: var(--ok); }
+.xmap__warn path { stroke: var(--vista); }
+.ico--ok { stroke: var(--ok); }
+
+@media (max-width: 900px) {
+  .explore__grid { grid-template-columns: minmax(0, 1fr); }
+}
+/* on a phone the drawing is the thing short of width, not the card's edge */
+@media (max-width: 560px) {
+  .xcard { padding: 1.1rem 1rem 1.2rem; }
 }
 
 

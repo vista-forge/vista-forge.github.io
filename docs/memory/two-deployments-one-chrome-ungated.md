@@ -134,6 +134,15 @@ descendants, **absolutely-positioned ones included**, so a dropdown panel
 inside it is sliced off at the banner's edge. A menu cannot live inside an
 `overflow-x: auto` strip at all.
 
+⚠️ **The phone-width rules for the menu buttons never applied (found
+2026-10-14).** The `@media` blocks that shrink `.menu__btn` sit ABOVE the
+button's own rule in `site.css`, so at equal specificity the base rule won on
+source order and silently undid them: the 560px font-size had never taken
+effect. They now say `.nav .menu__btn`. Renaming Intro to Home (a wider word)
+is what exposed it: the banner overhung a 390px phone by 3px. It had already
+overhung 375px with Intro. Measured fit since: 344px and up. When a responsive
+rule seems to do nothing, check that it actually wins before tuning its values.
+
 **+2026-10-05 (operator): this site has ONE theme, light.** Its toggle, its
 pre-paint scripts (index, cla, licensing) and the dark token block are gone,
 so the `.theme-toggle` row in the table above and the both-keys rule are

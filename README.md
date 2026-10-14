@@ -7,7 +7,7 @@ serves this repo's `main` branch at root, so a push to `main` is a deploy. The
 `.nojekyll` file keeps Pages from running the content through Jekyll.
 
 ```
-index.html            the banner, the landing content, and the frame shell
+index.html            the banner, the landing content, the Explore page, and the frame shell
 assets/css/site.css   all styling; no framework, no CDN
 assets/img/logo.png   the org mark (see "The logo" below)
 .nojekyll             serve files as-is  ⚠️ load-bearing: Astro's _astro/ dies without it
@@ -29,6 +29,7 @@ can be linked to:
 |---|---|
 | `#/architecture` (the default) | the landing content, in the page itself |
 | `#/architecture/<section>` | the same, scrolled to that section, fold opened |
+| `#/explore` | the Explore page, in the page itself: one card per application, each with a small drawing and the link that frames it |
 | `#/explore/vdb-explorer` | the dd-bundle browser, in a frame |
 | `#/explore/cprs-configuration` | the CPRS configuration dashboard, in a frame |
 | `#/docs/forge-reference` | the generated `m`/`v` surface reference, in a frame, opened on its stack map (`/forge-docs/map/`): the whole stack drawn as layers, each part a link into its chapter |
@@ -39,9 +40,23 @@ That last row is load-bearing: the published reference's own nav links back here
 with bare anchors (`#stack`), and so do older links. They keep working; one naming
 a section that is gone (`#repos`, dropped 2026-10-07) opens the page at the top.
 
-**The landing content is still in `index.html`, not in a frame.** Only the three
+**The landing content is still in `index.html`, not in a frame**, and so is the
+Explore page, a second `<main>` hidden until its route shows it. Only the three
 applications are framed, and that is the point: the page a crawler and a reader
 get at the root URL is the same document it always was.
+
+**A menu's button does two things** (operator, 2026-10-14): it loads that menu's
+main page — Home `#/architecture`, Explore `#/explore`, Docs
+`#/docs/forge-reference` (the stack map), each named by the menu's `data-home` —
+and opens the menu over it. Already on that page, a click only opens or shuts
+the menu. The banner marks the menu whose area you are in, its main page
+included. A click inside a frame never reaches this page, so the menu also
+shuts when focus leaves the window, or the Docs menu would stay open over the
+reference it just loaded.
+
+The Explore page's drawing of VistA Explorer uses real files, read from the
+dd-bundle that application is built from (the source comment in `index.html`
+names the fields); like everything else on the page, nothing re-checks it.
 
 ### The frames
 
@@ -196,7 +211,7 @@ The same goes for the header: that repo's `src/components/OrgNav.astro` mirrors
 this one's. The reference has no theme control; it still applies a saved
 `starlight-theme` or `theme` value, and since 2026-10-05 nothing writes either.
 
-**The Docs menu is shaped as Intro's**: on the left the documentation's main
+**The Docs menu is shaped as Home's**: on the left the documentation's main
 page, the reference's stack map; on the right the reference's six books as
 plain links (VistA CLI, VistA Library, M CLI, M Library, M DevBox, VSCode), by
 the labels its own sidebar gives them, which the `forge-docs` repo derives into
@@ -206,7 +221,7 @@ them with the reference: a book renamed, added or removed there is changed
 here too.
 
 ⚠️ **The two navs no longer agree, and the drift is now hidden rather than
-reconciled.** This banner is three menus (Intro / Explore / Docs), each with its icon;
+reconciled.** This banner is three menus (Home / Explore / Docs), each with its icon;
 `OrgNav.astro` is still the five flat links it mirrored before. Inside the Docs
 view that nav is not rendered at all — the whole banner it sits in is hidden
 (see the frames section above) — so a reader never sees the two disagree. They

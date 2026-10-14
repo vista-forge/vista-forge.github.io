@@ -43,6 +43,16 @@ browser holds the old CSS for that window.
    harness HTML into the scratchpad that `<link>`s the real `site.css` and contains
    only that section's markup, then screenshot that.
 
+## The same trap in your own preview: a hash change is not a reload
+
+**2026-10-14.** Every view of this site is a hash route, so in Playwright (or a
+browser tab) `goto('…/#/explore')` from `…/#/architecture` is a
+same-document navigation: no reload, and the stylesheet edited a minute ago is
+never fetched. A CSS fix then "does nothing" and the computed style still shows
+the old value. Go through `about:blank` first (or `page.reload()`) before
+measuring; check `getComputedStyle` of the rule you changed to prove the new
+sheet is in.
+
 ## Robustness option (considered, not taken)
 
 A `?v=<version>` cache-bust on the CSS `<link href>` would force a fresh CSS fetch

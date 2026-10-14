@@ -33,15 +33,16 @@ document.documentElement.className += " js";
       <img class="brand__mark" src="assets/img/mark.png" alt="" width="26" height="26" decoding="async">
       VistA Forge
     </a>
-    <!-- Three menus, and every destination in the banner at every width: the
-         nav scrolls sideways rather than dropping items. Intro's items are
-         sections of THIS page; Explore's and Docs' are separate applications
-         shown in the frame below the banner, under this address. -->
+    <!-- Three menus, and every destination in the banner at every width. Home's
+         items are sections of THIS page; Explore's and Docs' are separate
+         applications shown in the frame below the banner, under this address.
+         A click on a menu's button does two things (operator, 2026-10-14): it
+         loads that menu's main page, data-home, and opens the menu. -->
     <nav class="nav" id="nav" aria-label="Primary">
 
-      <div class="menu" data-menu="architecture">
+      <div class="menu" data-menu="architecture" data-home="#/architecture">
         <button class="menu__btn" type="button" aria-expanded="false" aria-controls="menu-architecture">
-          <svg class="menu__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v11h14V9"/><path d="M10 20v-6h4v6"/></svg>Intro<span class="menu__chev" aria-hidden="true"></span>
+          <svg class="menu__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v11h14V9"/><path d="M10 20v-6h4v6"/></svg>Home<span class="menu__chev" aria-hidden="true"></span>
         </button>
         <div class="menu__panel" id="menu-architecture">
           <div class="menu__cols">
@@ -73,7 +74,7 @@ document.documentElement.className += " js";
         </div>
       </div>
 
-      <div class="menu" data-menu="explore">
+      <div class="menu" data-menu="explore" data-home="#/explore">
         <button class="menu__btn" type="button" aria-expanded="false" aria-controls="menu-explore">
           <svg class="menu__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>Explore<span class="menu__chev" aria-hidden="true"></span>
         </button>
@@ -94,13 +95,13 @@ document.documentElement.className += " js";
         </div>
       </div>
 
-      <div class="menu" data-menu="docs">
+      <div class="menu" data-menu="docs" data-home="#/docs/forge-reference">
         <button class="menu__btn" type="button" aria-expanded="false" aria-controls="menu-docs">
           <svg class="menu__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.4 5.3 8.2 4.75 5.5 4.75H3v13.5h2.5c2.7 0 4.9.55 6.5 1.75 1.6-1.2 3.8-1.75 6.5-1.75H21V4.75h-2.5c-2.7 0-4.9.55-6.5 1.75z"/><path d="M12 6.5v13.5"/></svg>Docs<span class="menu__chev" aria-hidden="true"></span>
         </button>
         <div class="menu__panel" id="menu-docs">
           <div class="menu__cols">
-            <!-- Shaped as Intro's menu (operator, 2026-10-07): the documentation's
+            <!-- Shaped as Home's menu (operator, 2026-10-07): the documentation's
                  main page on the left, the reference's six books as plain links
                  on the right, by the names its own sidebar gives them (forge-docs
                  src/books.json). Restated here by hand, and nothing compares the
@@ -132,9 +133,10 @@ document.documentElement.className += " js";
 
 <!-- ══════════════ the two views ══════════════
      The banner above is permanent. Everything below it is one of two views,
-     chosen by the hash route (#/architecture… or #/explore/… | #/docs/…):
+     chosen by the hash route (#/architecture… | #/explore | #/explore/… | #/docs/…):
 
-       view-doc    this page — the landing content, scrolling normally
+       view-doc    this page — the landing content (#/architecture) or the
+                   Explore page (#/explore), scrolling normally
        view-frame  another application, shown in a frame under this address
 
      The route lives in the hash so the address bar never leaves
@@ -145,7 +147,7 @@ document.documentElement.className += " js";
      dropped 2026-10-07) opens the page at the top. -->
 <div id="view-doc">
 
-<main id="main">
+<main id="main" tabindex="-1">
 
 <!-- ══════════════ hero ══════════════ -->
 <section class="hero">
@@ -959,6 +961,164 @@ document.documentElement.className += " js";
 
 </main>
 
+<!-- ══════════════ the Explore page (#/explore) ══════════════
+     The Explore menu's main page (operator, 2026-10-14): one card per
+     application, each with a small drawing and the link that frames it. A
+     second <main>, hidden until the route shows it, sharing the footer below.
+     The VistA Explorer drawing uses real files, read from the dd-bundle that
+     application is built from (vehu-2026-09-16b): TIU DOCUMENT #8925 .03 VISIT
+     points to VISIT #9000010, whose .22 HOSPITAL LOCATION points to #44, and
+     #8925's .01, .02 and .03 are stored at 0;1, 0;2 and 0;3. Hand-written and
+     ungated, like the rest of the page. -->
+<main id="explore-home" class="explore" tabindex="-1" hidden>
+<section class="section section--flush">
+  <div class="wrap">
+    <p class="section__kicker">Explore</p>
+    <h2>Look inside a working VistA system</h2>
+    <p class="section__intro">
+      Two views of one demonstration VistA system, which holds fictitious patients only.
+      <strong>VistA Explorer</strong> shows what the system stores;
+      <strong>CPRS Explorer</strong> shows how its clinicians&#8217; desktop is set up.
+      Both are built from a snapshot of the system, so neither one touches it while you look.
+    </p>
+
+    <div class="explore__grid">
+
+      <article class="xcard xcard--fm">
+        <h3 class="xcard__name">VistA Explorer</h3>
+        <p class="xcard__what">Everything one VistA system actually stores — the data files and
+        their fields, where each value is kept, how the files point at one another, and the
+        menus and calls on top.</p>
+        <figure class="xcard__fig">
+          <svg class="xcard__svg" viewBox="0 0 340 164" role="img"
+               aria-label="A band labelled menus and calls sits over three files in a row — Note, Visit and Clinic — with an arrow from each to the next. Under Note, one stored record holds its title, patient and visit side by side.">
+            <g class="stack__slab stack__slab--top">
+              <rect x="10" y="8" width="320" height="28" rx="7"/>
+              <text class="stack__t" x="170" y="26.5" text-anchor="middle">Menus and calls</text>
+            </g>
+            <g class="xmap__tie">
+              <path d="M52 36v16"/><path d="M170 36v16"/><path d="M288 36v16"/>
+            </g>
+            <g class="stack__slab stack__slab--mid">
+              <rect x="10" y="52" width="84" height="44" rx="7"/>
+              <rect x="128" y="52" width="84" height="44" rx="7"/>
+              <rect x="246" y="52" width="84" height="44" rx="7"/>
+              <text class="stack__t" x="52" y="71" text-anchor="middle">Note</text>
+              <text class="stack__s" x="52" y="86" text-anchor="middle">file 8925</text>
+              <text class="stack__t" x="170" y="71" text-anchor="middle">Visit</text>
+              <text class="stack__s" x="170" y="86" text-anchor="middle">file 9000010</text>
+              <text class="stack__t" x="288" y="71" text-anchor="middle">Clinic</text>
+              <text class="stack__s" x="288" y="86" text-anchor="middle">file 44</text>
+            </g>
+            <g class="xmap__ptr">
+              <path d="M97 74h26"/><path d="m118 69 5 5-5 5"/>
+              <path d="M215 74h26"/><path d="m236 69 5 5-5 5"/>
+            </g>
+            <g class="xmap__tie"><path d="M52 96v16"/></g>
+            <g class="stack__slab stack__slab--base">
+              <rect x="10" y="112" width="320" height="44" rx="7"/>
+              <text class="xmap__mono" x="22" y="138">^TIU(8925,n,0)</text>
+              <rect class="xmap__cell" x="138" y="122" width="60" height="24" rx="4"/>
+              <rect class="xmap__cell" x="202" y="122" width="60" height="24" rx="4"/>
+              <rect class="xmap__cell" x="266" y="122" width="56" height="24" rx="4"/>
+              <text class="stack__s" x="168" y="138" text-anchor="middle">title</text>
+              <text class="stack__s" x="232" y="138" text-anchor="middle">patient</text>
+              <text class="stack__s" x="294" y="138" text-anchor="middle">visit</text>
+            </g>
+          </svg>
+          <ul class="figrow__legend xcard__legend">
+            <li class="figrow__item">
+              <svg class="ico ico--mid" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="2.5"/></svg>
+              <span class="figrow__name">Files and their fields</span>
+              <span class="figrow__d">Every kind of record the system keeps — notes, visits, clinics and thousands more — and the fields each one holds.</span>
+            </li>
+            <li class="figrow__item">
+              <svg class="ico ico--mid" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16"/><path d="m14 7 5 5-5 5"/></svg>
+              <span class="figrow__name">How they point at one another</span>
+              <span class="figrow__d">A note points to its visit, and the visit to its clinic: the links that make thousands of files one system.</span>
+            </li>
+            <li class="figrow__item">
+              <svg class="ico ico--base" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="8" width="19" height="8" rx="1.5"/><path d="M9 8v8M15 8v8"/></svg>
+              <span class="figrow__name">Where each value is kept</span>
+              <span class="figrow__d">The exact place every value is stored. A note&#8217;s title, patient and visit sit side by side in one record.</span>
+            </li>
+            <li class="figrow__item">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="6" rx="1.5"/><path d="M7 10v4M12 10v4M17 10v4"/></svg>
+              <span class="figrow__name">Menus and calls on top</span>
+              <span class="figrow__d">The menus people work from, and the calls other programs make into the system.</span>
+            </li>
+          </ul>
+        </figure>
+        <a class="btn btn--primary xcard__go" href="#/explore/vdb-explorer">Open VistA Explorer</a>
+      </article>
+
+      <article class="xcard xcard--v">
+        <h3 class="xcard__name">CPRS Explorer</h3>
+        <p class="xcard__what">How the clinician&#8217;s desktop is set up at one site — settings,
+        orders, note titles, reminders, consults and alerts, and whether each one is
+        reachable.</p>
+        <figure class="xcard__fig">
+          <svg class="xcard__svg" viewBox="0 0 340 164" role="img"
+               aria-label="A window with five tabs — Notes, Orders, Reminders, Consults and Alerts — showing four rows from the Notes tab: a note title in use and a template that is reachable, each with a tick, and a note title with no notes written and a template whose name nearly duplicates another, each with a warning mark.">
+            <rect class="xmap__win" x="10" y="8" width="320" height="148" rx="8"/>
+            <rect class="xmap__tab-on" x="11" y="9" width="63" height="25"/>
+            <g class="xmap__line">
+              <path d="M10 34h320"/><path d="M74 8v26M138 8v26M202 8v26M266 8v26"/>
+            </g>
+            <path class="xmap__tab-mark" d="M10 34h64"/>
+            <g>
+              <text class="stack__s xmap__tab-t" x="42" y="25" text-anchor="middle">Notes</text>
+              <text class="stack__s" x="106" y="25" text-anchor="middle">Orders</text>
+              <text class="stack__s" x="170" y="25" text-anchor="middle">Reminders</text>
+              <text class="stack__s" x="234" y="25" text-anchor="middle">Consults</text>
+              <text class="stack__s" x="298" y="25" text-anchor="middle">Alerts</text>
+            </g>
+            <g class="xmap__line"><path d="M22 70h296M22 98h296M22 126h296"/></g>
+            <g>
+              <text class="stack__t" x="24" y="61">Note title</text>
+              <text class="stack__s" x="140" y="61">in use</text>
+              <text class="stack__t" x="24" y="89">Note title</text>
+              <text class="stack__s" x="140" y="89">no notes written</text>
+              <text class="stack__t" x="24" y="117">Note template</text>
+              <text class="stack__s" x="140" y="117">near-duplicate name</text>
+              <text class="stack__t" x="24" y="145">Note template</text>
+              <text class="stack__s" x="140" y="145">reachable</text>
+            </g>
+            <g class="xmap__ok">
+              <circle cx="306" cy="57" r="8"/><path d="m302 57 3 3 5-6"/>
+              <circle cx="306" cy="141" r="8"/><path d="m302 141 3 3 5-6"/>
+            </g>
+            <g class="xmap__warn">
+              <path d="M306 76.5l9 15.5h-18z"/><path d="M306 82.5v4.5M306 89.6v.1"/>
+              <path d="M306 104.5l9 15.5h-18z"/><path d="M306 110.5v4.5M306 117.6v.1"/>
+            </g>
+          </svg>
+          <ul class="figrow__legend xcard__legend">
+            <li class="figrow__item">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M9 5v5M15 5v5"/></svg>
+              <span class="figrow__name">Part by part</span>
+              <span class="figrow__d">Notes, orders, reminders, consults, alerts and more: everything this site has set up, by the part of CPRS a clinician meets it in.</span>
+            </li>
+            <li class="figrow__item">
+              <svg class="ico ico--ok" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m8 12 3 3 5-6"/></svg>
+              <span class="figrow__name">Set up, and nothing wrong</span>
+              <span class="figrow__d">Configured, reachable, and with nothing found against it.</span>
+            </li>
+            <li class="figrow__item">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.4v.1"/></svg>
+              <span class="figrow__name">A finding</span>
+              <span class="figrow__d">Redundant, missing, inconsistent or non-standard — graded by whether a clinician can actually reach it, and naming the VistA option a coordinator opens to put it right.</span>
+            </li>
+          </ul>
+        </figure>
+        <a class="btn btn--primary xcard__go" href="#/explore/cprs-configuration">Open CPRS Explorer</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+</main>
+
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-grid">
@@ -1042,6 +1202,7 @@ document.documentElement.className += " js";
    this origin does not serve.
 
      #/architecture[/<section>]   the document view (the default)
+     #/explore                    the document view's Explore page
      #/explore/<app>              a framed application
      #/docs/<app>                 a framed application
      #<section>                   legacy bare anchor -> the document view
@@ -1081,6 +1242,8 @@ document.documentElement.className += " js";
 
   var body     = document.body;
   var viewDoc  = document.getElementById("view-doc");
+  var landing  = document.getElementById("main");
+  var explore  = document.getElementById("explore-home");
   var viewFrm  = document.getElementById("view-frame");
   var slot     = document.getElementById("frame-slot");
   var fDown    = document.getElementById("frame-down");
@@ -1114,6 +1277,7 @@ document.documentElement.className += " js";
     if (raw.charAt(0) !== "/") return { view: "doc", section: decode(raw) };
     var parts = raw.slice(1).split("/").filter(Boolean).map(decode);
     if (parts[0] === "architecture") return { view: "doc", section: parts[1] || "" };
+    if (parts[0] === "explore" && parts.length === 1) return { view: "explore", section: "" };
     var key = parts.join("/");
     if (FRAMES[key]) return { view: "frame", key: key };
     /* an unknown route is not an error page — it is the landing page */
@@ -1127,10 +1291,13 @@ document.documentElement.className += " js";
   /* Architecture / Repos / Design principles ship COLLAPSED — they are
      reference depth, not the first read. A link to one must still land OPEN,
      or the anchor jumps to a shut summary and the page looks broken. */
-  function showDoc(section) {
+  function showDoc(section, page) {
     body.classList.remove("is-framed");
     viewFrm.hidden = true;
     viewDoc.hidden = false;
+    /* the landing content or the Explore page; the footer under both stays */
+    landing.hidden = page === "explore";
+    explore.hidden = page !== "explore";
     /* Take the frame OUT, rather than blanking it. A hidden frame keeps its
        page alive — timers, sockets, whatever the application is doing — and
        leaves a stale render to flash on the way back in. */
@@ -1248,29 +1415,37 @@ document.documentElement.className += " js";
     var links = document.querySelectorAll(".menu__panel a[href^='#']");
     var r = parse(hash);
     var here = r.view === "frame" ? "#/" + r.key
+             : r.view === "explore" ? "#/explore"
              : "#/" + DEFAULT_ROUTE + (r.section ? "/" + r.section : "");
     for (var i = 0; i < links.length; i++) {
       var on = links[i].getAttribute("href") === here;
       if (on) links[i].setAttribute("aria-current", "true");
       else links[i].removeAttribute("aria-current");
     }
+    /* The menu whose area this is, main page included — not only when one
+       of its panel's links is the current one. Each button loads its menu's
+       main page, so the banner marks where that click left you. */
+    var area = r.view === "frame" ? r.key.split("/")[0]
+             : r.view === "explore" ? "explore" : DEFAULT_ROUTE;
     var menus = document.querySelectorAll(".menu");
     for (var j = 0; j < menus.length; j++) {
-      var within = menus[j].querySelector("[aria-current='true']");
-      menus[j].classList.toggle("is-current", !!within);
+      menus[j].classList.toggle("is-current", menus[j].getAttribute("data-menu") === area);
     }
   }
 
   function route() {
     var r = parse(location.hash);
-    if (r.view === "frame") showFrame(r.key); else showDoc(r.section);
+    if (r.view === "frame") showFrame(r.key); else showDoc(r.section, r.view);
     mark(location.hash);
-    closeMenus();
+    /* a button that just loaded its main page keeps its menu open over it */
+    if (keep) { var m = keep; keep = null; openMenu(m); }
+    else closeMenus();
   }
 
   /* ---------- the menus ---------- */
 
   var open = null;
+  var keep = null;
 
   function closeMenus() {
     if (!open) return;
@@ -1290,8 +1465,14 @@ document.documentElement.className += " js";
   var menus = document.querySelectorAll(".menu");
   for (var i = 0; i < menus.length; i++) (function (menu) {
     var btn = menu.querySelector(".menu__btn");
+    /* Two things on one click (operator, 2026-10-14): load the menu's main
+       page AND open the menu. Already on that page, the click only toggles
+       the menu, so a second click shuts it. The route change is async (it
+       arrives as a hashchange), so the menu to open rides along in `keep`. */
     btn.addEventListener("click", function (e) {
       e.stopPropagation();
+      var home = menu.getAttribute("data-home");
+      if (home && location.hash !== home) { keep = menu; location.hash = home; return; }
       if (open === menu) closeMenus(); else openMenu(menu);
     });
     /* On a pointer device a megamenu is expected to follow the cursor once
@@ -1312,6 +1493,20 @@ document.documentElement.className += " js";
   /* tab out of the panel = close it */
   document.addEventListener("focusin", function (e) {
     if (open && !open.contains(e.target)) closeMenus();
+  });
+  /* A click inside a frame never reaches this document, so the Docs menu,
+     opened by the click that loaded the reference, would stay over it. The
+     click takes focus out of this window, and that this window does hear. */
+  window.addEventListener("blur", closeMenus);
+
+  /* The skip link goes to whatever is showing. Followed as a link, "#main"
+     would be read as a route and take a reader on the Explore page or in a
+     frame back to the landing page. */
+  document.querySelector(".skip").addEventListener("click", function (e) {
+    e.preventDefault();
+    var to = viewDoc.hidden ? slot.querySelector("iframe")
+           : explore.hidden ? landing : explore;
+    if (to) to.focus();
   });
 
   /* ---------- go ---------- */
