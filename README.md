@@ -12,11 +12,23 @@ assets/css/site.css   all styling; no framework, no CDN
 assets/img/logo.png   the org mark (see "The logo" below)
 .nojekyll             serve files as-is  ⚠️ load-bearing: Astro's _astro/ dies without it
 forge-docs/           DEPLOYED ARTIFACT — do not hand-edit
+cprsweb/              DEPLOYED ARTIFACT — the CPRS web mock, from the cprs-web-mock repo's
+                      `make site-publish`; do not hand-edit
 artifacts/            standalone pages, one folder each; index.html GENERATED
 prototypes/           guides to the project's prototypes, the same shape; index.html GENERATED
 proposals/            designs for work not yet built, the same shape; index.html GENERATED
 scripts/artifacts_index.py  generates the three index.html pages from their folders
 ```
+
+## /cprsweb — the CPRS web mock
+
+<https://vista-forge.github.io/cprsweb/> is a clickable mock of CPRS's main window, its ten chart
+tabs and the windows their code can open, laid out from CPRS's Delphi source. It is one
+self-contained page, a plain address outside the hash routes below, and not framed. The
+`cprs-web-mock` repo builds it (`make site-publish` writes `cprsweb/index.html` here) from the docs
+repo's CPRS Navigation Design reference; to update it, rebuild there and commit the new copy here.
+Nothing in this repo's gate reads that repo; if it went away, the page would stay and stop updating
+(CN-D8, the docs repo's cprs-navigation tracker, 2026-10-14).
 
 ## One address, two views
 
