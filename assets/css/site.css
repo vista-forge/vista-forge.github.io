@@ -720,6 +720,14 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
   background: var(--bg-elev);
 }
 .xcard--v { border-top-color: var(--vista); }
+.xcard--c { border-top-color: var(--cyan); }
+/* the third card spans the row; on a wide screen its drawing and legend sit side by side */
+.xcard--wide { grid-column: 1 / -1; }
+@media (min-width: 901px) {
+  .xcard--wide .xcard__fig { flex-direction: row; align-items: flex-start; gap: 1.6rem; }
+  .xcard--wide .xcard__svg { flex: 0 0 340px; }
+  .xcard--wide .xcard__legend { flex: 1 1 auto; min-width: 0; }
+}
 .xcard__name { margin: 0; font-size: 1.2rem; }
 .xcard__what { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-dim); }
 /* the figure takes the slack, so both buttons sit on the cards' bottom edge */
@@ -764,6 +772,12 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
 .xmap__ok path { stroke: var(--ok); }
 .xmap__warn path { stroke: var(--vista); }
 .ico--ok { stroke: var(--ok); }
+/* the CPRS Web Mock drawing: CPRS's window to scale, and the windows opened over it */
+.xmock__bar { fill: var(--cyan); }
+.xmock__zone { fill: var(--cyan-wash); stroke: var(--cyan-line); stroke-width: 1; }
+.xmock__banner { fill: rgba(234, 179, 8, 0.22); stroke: rgba(202, 138, 4, 0.55); stroke-width: 1; }
+.xmock__col { fill: var(--bg); stroke: var(--border); stroke-width: 1; }
+.xmock__dlg { fill: var(--bg-elev); stroke: var(--cyan); stroke-width: 1.4; }
 
 @media (max-width: 900px) {
   .explore__grid { grid-template-columns: minmax(0, 1fr); }

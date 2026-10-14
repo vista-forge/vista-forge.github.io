@@ -24,7 +24,8 @@ scripts/artifacts_index.py  generates the three index.html pages from their fold
 
 <https://vista-forge.github.io/cprsweb/> is a clickable mock of CPRS's main window, its ten chart
 tabs and the windows their code can open, laid out from CPRS's Delphi source. It is one
-self-contained page, a plain address outside the hash routes below, and not framed. The
+self-contained page at its own address, and the Explore page's card frames it at
+`#/explore/cprs-web-mock` (same origin, like Docs). The
 `cprs-web-mock` repo builds it (`make site-publish` writes `cprsweb/index.html` here) from the docs
 repo's CPRS Navigation Design reference; to update it, rebuild there and commit the new copy here.
 Nothing in this repo's gate reads that repo; if it went away, the page would stay and stop updating
@@ -44,6 +45,7 @@ can be linked to:
 | `#/explore` | the Explore page, in the page itself: one card per application, each with a small drawing and the link that frames it |
 | `#/explore/vdb-explorer` | the dd-bundle browser, in a frame |
 | `#/explore/cprs-configuration` | the CPRS configuration dashboard, in a frame |
+| `#/explore/cprs-web-mock` | the CPRS web mock, this site's own `/cprsweb/`, in a frame |
 | `#/docs/forge-reference` | the generated `m`/`v` surface reference, in a frame, opened on its stack map (`/forge-docs/map/`): the whole stack drawn as layers, each part a link into its chapter |
 | `#/docs/forge-reference/<book>` | the same, opened at one of its six books: `v`, `vsl`, `m`, `msl`, `devbox`, `products` (VSCode) |
 | `#<section>` | a bare legacy anchor — read as `#/architecture/<section>` |
@@ -53,7 +55,7 @@ with bare anchors (`#stack`), and so do older links. They keep working; one nami
 a section that is gone (`#repos`, dropped 2026-10-07) opens the page at the top.
 
 **The landing content is still in `index.html`, not in a frame**, and so is the
-Explore page, a second `<main>` hidden until its route shows it. Only the three
+Explore page, a second `<main>` hidden until its route shows it. Only the four
 applications are framed, and that is the point: the page a crawler and a reader
 get at the root URL is the same document it always was.
 
@@ -76,8 +78,9 @@ names the fields); like everything else on the page, nothing re-checks it.
 
 ### The frames
 
-The two **Explore** applications are served from the project's own machine over
-a public Tailscale Funnel (`minty.warg-torino.ts.net`). **Docs frames this
+VistA Explorer and CPRS Explorer are served from the project's own machine over
+a public Tailscale Funnel (`minty.warg-torino.ts.net`). **The CPRS Web Mock is
+this site's own `/cprsweb/`**, framed from the same origin like Docs. **Docs frames this
 site's own `/forge-docs/`** — the copy in this repo, refreshed from the same
 build the publish host serves, so it is the same bytes without an origin
 boundary. That is worth three things: it loads from inside the project's own
@@ -86,7 +89,7 @@ depend on the home server being up; and a choice the reference keeps in
 `localStorage` reaches it, because `localStorage` is per-origin and this is
 now the same origin.
 
-All three are shown under this banner rather than linked away to theirs. Consequences worth knowing before changing
+All four are shown under this banner rather than linked away to theirs. Consequences worth knowing before changing
 anything here:
 
 * **A new frame is built for every view, never `iframe.src = …` on a live one.**
@@ -136,7 +139,7 @@ anything here:
   either side. If the publish origin ever grows one, these views go blank.
 
 Without JavaScript the landing page is unchanged, the menus fall back to
-hover/focus, and a `<noscript>` note links the three applications directly.
+hover/focus, and a `<noscript>` note links the four applications directly.
 
 ## `forge-docs/` — a deployed copy, not source
 

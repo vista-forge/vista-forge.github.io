@@ -92,6 +92,13 @@ document.documentElement.className += " js";
                 <span class="menu__desc">How the clinician&#8217;s desktop is set up at one site — settings, orders, note titles, reminders, consults and alerts, and whether each one is reachable.</span>
               </a>
             </div>
+            <div class="menu__col">
+              <p class="menu__head">Drawn from CPRS&#8217;s source</p>
+              <a class="menu__item" href="#/explore/cprs-web-mock">
+                <span class="menu__name">CPRS Web Mock</span>
+                <span class="menu__desc">CPRS&#8217;s own screens, control for control — the main window, its ten chart tabs and the windows behind them, opened layer by layer.</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -969,8 +976,13 @@ document.documentElement.className += " js";
      The VistA Explorer drawing uses real files, read from the dd-bundle that
      application is built from (vehu-2026-09-16b): TIU DOCUMENT #8925 .03 VISIT
      points to VISIT #9000010, whose .22 HOSPITAL LOCATION points to #44, and
-     #8925's .01, .02 and .03 are stored at 0;1, 0;2 and 0;3. Hand-written and
-     ungated, like the rest of the page. -->
+     #8925's .01, .02 and .03 are stored at 0;1, 0;2 and 0;3. The CPRS Web Mock
+     drawing is to scale (0.1583 of the mock's 1200 × 800 main window), from the
+     CPRS Navigation Design reference's data in the docs repo (its run_layout, the
+     main window laid out at a client size of 1198 × 756): the frame's pnlToolbar,
+     pnlOtherInfo, tabPage and stsArea, the Orders tab's pnlLeft and pnlRight,
+     and TfrmODLab (657 × 334) and TfrmODLabImmedColl (518 × 283) where the mock
+     places them. Hand-written and ungated, like the rest of the page. -->
 <main id="explore-home" class="explore" tabindex="-1" hidden>
 <section class="section section--flush">
   <div class="wrap">
@@ -981,6 +993,8 @@ document.documentElement.className += " js";
       <strong>VistA Explorer</strong> shows what the system stores;
       <strong>CPRS Explorer</strong> shows how its clinicians&#8217; desktop is set up.
       Both are built from a snapshot of the system, so neither one touches it while you look.
+      A third, the <strong>CPRS Web Mock</strong>, needs no system at all: it draws CPRS&#8217;s own
+      screens from CPRS&#8217;s source code.
     </p>
 
     <div class="explore__grid">
@@ -1115,6 +1129,59 @@ document.documentElement.className += " js";
         <a class="btn btn--primary xcard__go" href="#/explore/cprs-configuration">Open CPRS Explorer</a>
       </article>
 
+      <article class="xcard xcard--c xcard--wide">
+        <h3 class="xcard__name">CPRS Web Mock</h3>
+        <p class="xcard__what">CPRS&#8217;s own screens, drawn control for control from its Delphi
+        source: the main window, its ten chart tabs and the 178 windows their code can open,
+        which you open layer by layer. Nothing behind it reaches a VistA system.</p>
+        <figure class="xcard__fig">
+          <svg class="xcard__svg" viewBox="0 0 340 164" role="img"
+               aria-label="CPRS's main window drawn to scale at 1200 by 800, with its patient bar, yellow banner and the Orders tab's two columns; over it, the Order a Lab Test window, and over that the Immediate Collection Times window. Labels on the right name them layer 0 to layer 3.">
+            <rect class="xmap__win" x="6" y="18" width="190" height="126.7" rx="3"/>
+            <rect class="xmock__bar" x="6" y="18" width="190" height="3.5" rx="2"/>
+            <rect class="xmock__zone" x="6.3" y="25" width="189.4" height="9.7"/>
+            <rect class="xmock__banner" x="6.3" y="34.6" width="189.4" height="6.5"/>
+            <rect class="xmock__col" x="6.3" y="41.4" width="18.5" height="94.5" rx="1.5"/>
+            <rect class="xmock__col" x="25.5" y="41.4" width="170.2" height="94.5" rx="1.5"/>
+            <g class="xmap__line"><path d="M25.5 47.1h102.1"/><path d="M6 136.8h190M6 141h190"/></g>
+            <rect class="xmock__dlg" x="49.1" y="54.9" width="104" height="52.9" rx="2.5"/>
+            <rect class="xmock__bar" x="49.1" y="54.9" width="104" height="3.5" rx="2"/>
+            <rect class="xmock__dlg" x="62.8" y="61.9" width="82" height="44.8" rx="2.5"/>
+            <rect class="xmock__bar" x="62.8" y="61.9" width="82" height="3.5" rx="2"/>
+            <g class="xmap__tie">
+              <path d="M196 20H202"/><path d="M196 54H202"/><path d="M153.1 57H172L202 86"/><path d="M144.8 100H172L202 118"/>
+            </g>
+            <text class="stack__t" x="206" y="26">Layer 0</text>
+            <text class="stack__s" x="206" y="39">the main window</text>
+            <text class="stack__t" x="206" y="58">Layer 1</text>
+            <text class="stack__s" x="206" y="71">the Orders tab</text>
+            <text class="stack__t" x="206" y="90">Layer 2</text>
+            <text class="stack__s" x="206" y="103">Order a Lab Test</text>
+            <text class="stack__t" x="206" y="122">Layer 3</text>
+            <text class="stack__s" x="206" y="135">Immediate Collection</text>
+            <text class="stack__s" x="206" y="148">Times</text>
+          </svg>
+          <ul class="figrow__legend xcard__legend">
+            <li class="figrow__item">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 8h18M9 8v12"/></svg>
+              <span class="figrow__name">Every screen, to scale</span>
+              <span class="figrow__d">The main window, the ten chart tabs and each window behind them, laid out from CPRS&#8217;s own form files.</span>
+            </li>
+            <li class="figrow__item">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="13" height="10" rx="1.5"/><rect x="8" y="10" width="13" height="10" rx="1.5"/></svg>
+              <span class="figrow__name">Layer by layer</span>
+              <span class="figrow__d">Open a window from a tab, then the windows it opens, the way a clinician walks into CPRS.</span>
+            </li>
+            <li class="figrow__item">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h4l2 3h10M4 17h6"/><path d="m14 14 3 3-3 3"/></svg>
+              <span class="figrow__name">Each control&#8217;s path</span>
+              <span class="figrow__d">Select anything to see its path from the main window, its standard name, and the windows its code can open.</span>
+            </li>
+          </ul>
+        </figure>
+        <a class="btn btn--primary xcard__go" href="#/explore/cprs-web-mock">Open CPRS Web Mock</a>
+      </article>
+
     </div>
   </div>
 </section>
@@ -1148,7 +1215,7 @@ document.documentElement.className += " js";
 
 </div><!-- /#view-doc -->
 
-<!-- The frame view. The three applications are served from the project's own
+<!-- The frame view. Two of the applications are served from the project's own
      host; they are shown HERE, under this banner and this address, rather than
      linked away to theirs. A cross-origin frame cannot be styled or read from
      here — it carries its own chrome and its own theme — so the banner is the
@@ -1175,6 +1242,7 @@ document.documentElement.className += " js";
     banner, which needs JavaScript. Without it, open them directly:
     <a href="https://minty.warg-torino.ts.net/vdb-explorer/">VistA Explorer</a> ·
     <a href="https://minty.warg-torino.ts.net/cprs-configuration/">CPRS Explorer</a> ·
+    <a href="/cprsweb/">CPRS Web Mock</a> ·
     <a href="/forge-docs/map/">Forge reference</a>.
     Everything on this page works as it is.
   </p>
@@ -1219,6 +1287,9 @@ document.documentElement.className += " js";
   var FRAMES = {
     "explore/vdb-explorer":       { title: "VistA Explorer", url: ORIGIN + "/vdb-explorer/" },
     "explore/cprs-configuration": { title: "CPRS Explorer",     url: ORIGIN + "/cprs-configuration/" },
+    /* SAME ORIGIN: this site's own /cprsweb/, a self-contained page the
+       cprs-web-mock repo builds (CN-D8, 2026-10-14) */
+    "explore/cprs-web-mock":      { title: "CPRS Web Mock",     url: "/cprsweb/" },
     /* SAME ORIGIN, deliberately. This site ships the reference as a
        subdirectory of itself, refreshed from the same build the publish host
        serves, so framing its own copy is not a second source — it is the same
