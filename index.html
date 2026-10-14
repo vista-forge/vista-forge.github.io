@@ -36,8 +36,9 @@ document.documentElement.className += " js";
     <!-- Three menus, and every destination in the banner at every width. Home's
          items are sections of THIS page; Explore's and Docs' are separate
          applications shown in the frame below the banner, under this address.
-         A click on a menu's button does two things (operator, 2026-10-14): it
-         loads that menu's main page, data-home, and opens the menu. -->
+         A menu opens on hover and shuts when the pointer leaves; a click on
+         its button loads that menu's main page, data-home (operator,
+         2026-10-14). -->
     <nav class="nav" id="nav" aria-label="Primary">
 
       <div class="menu" data-menu="architecture" data-home="#/architecture">
@@ -1437,7 +1438,7 @@ document.documentElement.className += " js";
     var r = parse(location.hash);
     if (r.view === "frame") showFrame(r.key); else showDoc(r.section, r.view);
     mark(location.hash);
-    /* a button that just loaded its main page keeps its menu open over it */
+    /* a menu still under the pointer that clicked its button stays open */
     if (keep) { var m = keep; keep = null; openMenu(m); }
     else closeMenus();
   }
@@ -1462,23 +1463,50 @@ document.documentElement.className += " js";
     open = menu;
   }
 
+  /* The megamenus open on HOVER, and only on hover (operator, 2026-10-14):
+     the pointer entering a menu opens it, leaving shuts it. The shut waits
+     a moment, because the panel hangs off the banner a few pixels below its
+     button and the pointer crosses that gap on its way down; entering again
+     in time cancels it. A touch is not a hover, so on a phone a tap only
+     loads the menu's main page, whose own links reach everything the panel
+     lists. A keyboard opens the menu by tabbing onto its button. */
+  var LEAVE_MS = 200;
+  var leaving = null;
+  var quiet = false;
+
+  function isMouse(e) { return e.pointerType === "mouse" || e.pointerType === "pen"; }
+  function stay() { if (leaving) { clearTimeout(leaving); leaving = null; } }
+
   var menus = document.querySelectorAll(".menu");
   for (var i = 0; i < menus.length; i++) (function (menu) {
     var btn = menu.querySelector(".menu__btn");
-    /* Two things on one click (operator, 2026-10-14): load the menu's main
-       page AND open the menu. Already on that page, the click only toggles
-       the menu, so a second click shuts it. The route change is async (it
-       arrives as a hashchange), so the menu to open rides along in `keep`. */
+    menu.addEventListener("pointerenter", function (e) {
+      if (!isMouse(e)) return;
+      stay();
+      openMenu(menu);
+    });
+    menu.addEventListener("pointerleave", function (e) {
+      if (!isMouse(e) || open !== menu) return;
+      stay();
+      leaving = setTimeout(function () { leaving = null; if (open === menu) closeMenus(); }, LEAVE_MS);
+    });
+    /* A click loads the menu's main page, nothing else (operator,
+       2026-10-14): data-home. Clicked where you already are, it loads it
+       again, as a link to the current anchor does. The route change arrives
+       later, as a hashchange, and closes every menu; a menu the pointer is
+       still over rides through in `keep` and stays open. */
     btn.addEventListener("click", function (e) {
       e.stopPropagation();
       var home = menu.getAttribute("data-home");
-      if (home && location.hash !== home) { keep = menu; location.hash = home; return; }
-      if (open === menu) closeMenus(); else openMenu(menu);
+      keep = open === menu ? menu : null;
+      if (location.hash !== home) location.hash = home; else route();
     });
-    /* On a pointer device a megamenu is expected to follow the cursor once
-       one of them is open. It never OPENS on hover from cold — that makes the
-       banner twitch at every pass. */
-    menu.addEventListener("mouseenter", function () { if (open && open !== menu) openMenu(menu); });
+    /* keyboard focus, not the focus a mouse click leaves behind */
+    btn.addEventListener("focus", function () {
+      var keyed = false;
+      try { keyed = btn.matches(":focus-visible"); } catch (err) {}
+      if (keyed && !quiet) openMenu(menu);
+    });
   })(menus[i]);
 
   document.addEventListener("click", function (e) {
@@ -1488,15 +1516,15 @@ document.documentElement.className += " js";
     if (e.key !== "Escape" || !open) return;
     var btn = open.querySelector(".menu__btn");
     closeMenus();
-    btn.focus();
+    /* back to the button, without its focus opening the menu again */
+    quiet = true; btn.focus(); quiet = false;
   });
   /* tab out of the panel = close it */
   document.addEventListener("focusin", function (e) {
     if (open && !open.contains(e.target)) closeMenus();
   });
-  /* A click inside a frame never reaches this document, so the Docs menu,
-     opened by the click that loaded the reference, would stay over it. The
-     click takes focus out of this window, and that this window does hear. */
+  /* A click inside a frame never reaches this document. It takes focus out
+     of this window, though, and that this window does hear. */
   window.addEventListener("blur", closeMenus);
 
   /* The skip link goes to whatever is showing. Followed as a link, "#main"

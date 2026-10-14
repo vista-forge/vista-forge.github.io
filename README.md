@@ -45,14 +45,18 @@ Explore page, a second `<main>` hidden until its route shows it. Only the three
 applications are framed, and that is the point: the page a crawler and a reader
 get at the root URL is the same document it always was.
 
-**A menu's button does two things** (operator, 2026-10-14): it loads that menu's
-main page — Home `#/architecture`, Explore `#/explore`, Docs
-`#/docs/forge-reference` (the stack map), each named by the menu's `data-home` —
-and opens the menu over it. Already on that page, a click only opens or shuts
-the menu. The banner marks the menu whose area you are in, its main page
-included. A click inside a frame never reaches this page, so the menu also
-shuts when focus leaves the window, or the Docs menu would stay open over the
-reference it just loaded.
+**A menu opens on hover, and only on hover** (operator, 2026-10-14): the mouse
+entering a menu opens its panel, leaving shuts it. The shut waits 200 ms,
+because the panel hangs a few pixels below its button and the pointer crosses
+that gap on the way down. **A click on the button loads that menu's main page**
+— Home `#/architecture`, Explore `#/explore`, Docs `#/docs/forge-reference`
+(the stack map), each named by the menu's `data-home` — and nothing else; the
+menu stays open while the pointer is still on it. A touch is not a hover, so on
+a phone a tap only loads the main page, whose own links reach everything the
+panel lists. A keyboard opens a menu by tabbing onto its button, and Escape
+shuts it. The banner marks the menu whose area you are in, its main page
+included. A click inside a frame never reaches this page, so a menu also shuts
+when focus leaves the window.
 
 The Explore page's drawing of VistA Explorer uses real files, read from the
 dd-bundle that application is built from (the source comment in `index.html`
