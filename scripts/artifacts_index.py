@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The collection pages, artifacts/, prototypes/ and proposals/, generated from the folders
+"""The collection pages, artifacts/, prototypes/, proposals/ and research/, generated from the folders
 under each.
 
 Each folder under a collection is one published page: its own index.html, with
@@ -55,7 +55,15 @@ PROPOSALS = Collection(
     "Proposals from the vista-forge project: specifications and designs for work not yet built."
     " Each page is self-contained and opens on its own.",
 )
-COLLECTIONS = (ARTIFACTS, PROTOTYPES, PROPOSALS)
+RESEARCH = Collection(
+    "research",
+    "Research",
+    "Research from the vista-forge project: evidence reviews and design proposals, with their references.",
+    "Research from the vista-forge project: evidence reviews and design proposals written for the"
+    " operator, each with the references it was drafted from. Each page is self-contained and opens on"
+    " its own; what a page describes is not built unless it says so.",
+)
+COLLECTIONS = (ARTIFACTS, PROTOTYPES, PROPOSALS, RESEARCH)
 
 
 @dataclass(frozen=True)
