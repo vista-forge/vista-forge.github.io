@@ -17,10 +17,26 @@ does create a `github-pages` **deployment**, and its status is the answer:
 
 `success` came about 30 s after the push; a WebFetch of the new page in that
 window answered **404**, and the same fetch after `success` answered the page.
-External curl is sandbox-denied, so WebFetch is the live check.
+(Plain `curl https://vista-forge.github.io/…` from the box also works,
+measured 2026-11-03.)
+
+**A 404 that lasts is Pages switched OFF, not a deploy.** Measured
+2026-11-03: the site 404'd with no push in flight, and
+`gh api repos/vista-forge/vista-forge.github.io/pages` answered **404**
+(`has_pages: false`), although the 2026-10-23 deploy had succeeded. Nothing
+on this box touches the Pages setting (the weekly Actions guard only disables
+Actions, which branch Pages does not need), so it was switched off on GitHub
+by hand. The fix:
+
+    gh api -X POST repos/vista-forge/vista-forge.github.io/pages \
+      -f 'source[branch]=main' -f 'source[path]=/' -f build_type=legacy
+
+The site answered 200 within seconds, serving the last deployment again, with
+no new build and no push.
 
 **Why:** a stale builds endpoint reads like a broken deploy, and a 404 right
 after a push reads like a wrong path.
 
 **How to apply:** after a push, poll the deployment's status until `success`,
-then fetch the page once. Related: [[stale-css-cache-not-a-code-bug]].
+then fetch the page once. A 404 with no push in flight: read the `pages`
+endpoint first. Related: [[stale-css-cache-not-a-code-bug]].
