@@ -49,6 +49,7 @@ can be linked to:
 | `#/explore/cprs-web-mock` | the CPRS web mock, this site's own `/cprsweb/`, in a frame |
 | `#/docs/forge-reference` | the generated `m`/`v` surface reference, in a frame, opened on its stack map (`/forge-docs/map/`): the whole stack drawn as layers, each part a link into its chapter |
 | `#/docs/forge-reference/<book>` | the same, opened at one of its six books: `v`, `vsl`, `m`, `msl`, `devbox`, `products` (VSCode) |
+| `#/docs/vdocs` | the VistA Documentation Library — the VA's own manuals, searchable — served live by vdocs-web from the project's host, in a frame |
 | `#<section>` | a bare legacy anchor — read as `#/architecture/<section>` |
 
 That last row is load-bearing: the published reference's own nav links back here
@@ -56,7 +57,7 @@ with bare anchors (`#stack`), and so do older links. They keep working; one nami
 a section that is gone (`#repos`, dropped 2026-10-07) opens the page at the top.
 
 **The landing content is still in `index.html`, not in a frame**, and so is the
-Explore page, a second `<main>` hidden until its route shows it. Only the four
+Explore page, a second `<main>` hidden until its route shows it. Only the five
 applications are framed, and that is the point: the page a crawler and a reader
 get at the root URL is the same document it always was.
 
@@ -80,7 +81,10 @@ names the fields); like everything else on the page, nothing re-checks it.
 ### The frames
 
 VistA Explorer and CPRS Explorer are served from the project's own machine over
-a public Tailscale Funnel (`minty.warg-torino.ts.net`). **The CPRS Web Mock is
+a public Tailscale Funnel (`minty.warg-torino.ts.net`), and so is **the VistA
+Documentation Library, at `/vdocs/`**: vdocs-web, a live server over the
+manuals' 363 MB index rather than a static copy, run as a user service and given
+its own Funnel path (`docs/proposals/vista-documentation-library/`, VL-D1–VL-D3). **The CPRS Web Mock is
 this site's own `/cprsweb/`**, framed from the same origin like Docs. **Docs frames this
 site's own `/forge-docs/`** — the copy in this repo, refreshed from the same
 build the publish host serves, so it is the same bytes without an origin
@@ -90,7 +94,7 @@ depend on the home server being up; and a choice the reference keeps in
 `localStorage` reaches it, because `localStorage` is per-origin and this is
 now the same origin.
 
-All four are shown under this banner rather than linked away to theirs. Consequences worth knowing before changing
+All five are shown under this banner rather than linked away to theirs. Consequences worth knowing before changing
 anything here:
 
 * **A new frame is built for every view, never `iframe.src = …` on a live one.**
@@ -140,7 +144,7 @@ anything here:
   either side. If the publish origin ever grows one, these views go blank.
 
 Without JavaScript the landing page is unchanged, the menus fall back to
-hover/focus, and a `<noscript>` note links the four applications directly.
+hover/focus, and a `<noscript>` note links the five applications directly.
 
 ## `forge-docs/` — a deployed copy, not source
 

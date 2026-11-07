@@ -121,6 +121,12 @@ document.documentElement.className += " js";
                 <span class="menu__desc">A visual navigator to the documentation: the whole stack in one picture, from you and your AI assistant down to the M engine. Every part opens its chapter.</span>
               </a>
               <p class="menu__note">Generated from the tools themselves: every page is assembled from the contract artifacts each tool ships, so it cannot describe a flag that does not exist.</p>
+              <!-- The VA's own manuals, served live by vdocs-web from the project's host (VL-D1,
+                   VL-D2: docs/proposals/vista-documentation-library/). -->
+              <a class="menu__item" href="#/docs/vdocs">
+                <span class="menu__name">VistA Documentation Library</span>
+                <span class="menu__desc">The VA's own VistA manuals, 615 of them from the VA Software Document Library, searchable by keyword. A plain-English name finds its package; open a manual to read it and find within it.</span>
+              </a>
             </div>
             <div class="menu__col menu__col--thin">
               <p class="menu__head">Chapters</p>
@@ -1243,7 +1249,8 @@ document.documentElement.className += " js";
     <a href="https://minty.warg-torino.ts.net/vdb-explorer/">VistA Explorer</a> ·
     <a href="https://minty.warg-torino.ts.net/cprs-configuration/">CPRS Explorer</a> ·
     <a href="/cprsweb/">CPRS Web Mock</a> ·
-    <a href="/forge-docs/map/">Forge reference</a>.
+    <a href="/forge-docs/map/">Forge reference</a> ·
+    <a href="https://minty.warg-torino.ts.net/vdocs/">VistA Documentation Library</a>.
     Everything on this page works as it is.
   </p>
 </noscript>
@@ -1308,6 +1315,10 @@ document.documentElement.className += " js";
     "docs/forge-reference/m":        { title: "Forge reference — M CLI",          url: "/forge-docs/m/" },
     "docs/forge-reference/msl":      { title: "Forge reference — M Library", url: "/forge-docs/msl/" },
     "docs/forge-reference/devbox":   { title: "Forge reference — M DevBox",       url: "/forge-docs/devbox/" },
+    /* NOT the same origin: the VA's manuals, served live by vdocs-web (a non-waterline
+       member, VL-D1) from the project's host under /vdocs/ (VL-D2). A live server over a
+       363 MB index cannot be a copy in this repo the way the reference is. */
+    "docs/vdocs":                    { title: "VistA Documentation Library",      url: ORIGIN + "/vdocs/" },
     "docs/forge-reference/products": { title: "Forge reference — VSCode", url: "/forge-docs/products/" }
   };
   var DEFAULT_ROUTE = "architecture";
