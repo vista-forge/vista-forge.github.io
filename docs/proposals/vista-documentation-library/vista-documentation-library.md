@@ -1,7 +1,7 @@
 ---
 title: "The VistA Documentation Library on the org site"
 status: accepted — ruled by the operator 2026-11-07
-phase: building
+phase: landed
 ---
 
 # The VistA Documentation Library on the org site
@@ -37,14 +37,15 @@ possible, because the site may not depend on a `~/projects` repo.
 
 ## State
 
-Built: the admission, the service, the menu entry and the frame route. Two steps need the
-operator, because they need credentials this session does not hold:
+Landed 2026-11-07. The org mirror `github.com/vista-forge/vdocs-web` exists (private, Actions
+disabled and vulnerability alerts deleted before the first push, as for vdb-explorer), the operator
+added the Funnel path (`sudo tailscale funnel --bg --set-path /vdocs http://127.0.0.1:8146`), and
+the site push `c0dd6fa0` deployed. Checked through Tailscale's public ingress, as a reader off the
+tailnet resolves the name: `https://minty.warg-torino.ts.net/vdocs/` answers 200 with no header
+that refuses framing, its relative `./_app/` assets and its API (`api/meta`, `api/suggest`) answer,
+and `/` still serves the other applications. The live site carries the menu entry and the
+`#/docs/vdocs` route.
 
-- the org mirror `github.com/vista-forge/vdocs-web` (private, Actions disabled and vulnerability
-  alerts deleted before the first push, as for vdb-explorer), which `workspace/repos.txt` names;
-- the Funnel path: `sudo tailscale funnel --bg --set-path /vdocs http://127.0.0.1:8146`
-  (`tailscale serve` changes need root on this host).
-
-Until the Funnel path exists the frame shows the site's own notice with the direct link. From
-inside the tailnet the frame never loads, as for the other two hosted applications
-(`docs/memory/a-tailnet-published-origin-cannot-be-embedded.md`); check it from outside.
+From inside the tailnet the frame never loads, as for the other two hosted applications
+(`docs/memory/a-tailnet-published-origin-cannot-be-embedded.md`); the frame itself was not viewed
+from off the tailnet.
