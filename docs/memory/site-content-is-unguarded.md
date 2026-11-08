@@ -26,7 +26,9 @@ figure was low, some by more than half (3,200+ → 5,445 assertions, 1,300+ → 
 tests, 21 → 34 repos), and the M-test row still said "MSL + VSL" months after
 f-stdlib existed. (It says "MSL + VSL" again since 2026-09-08, for the opposite
 reason: f-stdlib is retired. A hand-written figure is wrong in both directions
-— the row was stale when the band arrived and stale again when it left.)
+— the row was stale when the band arrived and stale again when it left.) The
+same retirement left "69 modules, 579 entry points" and "three standard libraries"
+on the page until 2026-11-08, two months after the band was gone.
 
 **Re-measure, don't copy the profile README** — it is hand-written too, and its
 numbers carry the same staleness. The counting method, validated against
@@ -43,6 +45,7 @@ exactly):
 | gated repos | repos whose `Makefile` has a `check:` target |
 | layer-bearing | repos carrying a `layer` field in `repo.meta.json` |
 | VSL drift gates | prerequisites of v-stdlib's `gates:` target |
+| library modules, entry points | `modules` and the sum of each module's `labels` in `m-stdlib/dist/stdlib-manifest.json` + `v-stdlib/dist/vsl-manifest.json` (published labels only; each repo's `manifest-check` holds them to source) — 38 + 25 = 63 modules, 347 + 233 = 580 entry points on 2026-11-08 |
 
 ⚠️ **A committed measurement artifact can be stale.** `m-stdlib/test-results.json`
 reports 33 suites against 43 `*TST.m` files on disk — it is one run's output, not a
