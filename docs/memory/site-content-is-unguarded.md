@@ -51,3 +51,21 @@ census. Count the tree; use the JSON only to validate the method.
 Related: the page makes **no licensing claim** while the open-core split (decided
 2026-07-08) is pending attorney review — see
 `docs/licensing/open-core-relicense-rollout-tracker.md` in the `docs` repo.
+
+## The VistA Documentation Library's page and menu entry (2026-11-08)
+
+`vdocs-library/index.html` and the Docs menu's description carry hand-written figures measured from
+the published `~/data/vdocs/index.db` (read-only `sqlite3 -readonly`), and nothing checks them:
+
+| Figure | How |
+|---|---|
+| listings, applications, VA catalog sections, lifecycle, format, dispositions | `v_inventory`: `count(*)`, `count(DISTINCT app_code)`, `GROUP BY section` / `app_status` / `format` / `disposition` |
+| "about 6,100 documents" | listings less `disposition = 'covered-by-other-format'` (a Word + PDF pair is two listings) |
+| current manuals, applications, domains, kinds, audiences | `v_documents WHERE is_latest = 1`: `count(*)`, `app_code`, `function_category`, `doc_type` grouped by `v_vocab` kind `doc_type_family`, `doc_user` |
+| sections, words, figures of the current manuals | `v_sections` joined to `is_latest = 1`; `sum(word_count)`, `sum(image_count)` |
+| index totals | `v_documents`, `v_sections`, `v_chunks`, `v_entities` (`GROUP BY type`), `v_inventory` counts, all versions |
+
+**Not** the user's round numbers: "8,000+ documents, 180 applications" were offered on 2026-11-08
+and measured as 9,080 listings and 197 applications (178 have an active listing). The pipeline row
+is `vdocs`'s `cli/app.py:build_stages` (16 stages); the MCP tools are `src/vdocs/server/mcp.py` —
+both in the vdocs project repo, which the page describes but never links (private).
