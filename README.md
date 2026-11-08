@@ -7,7 +7,7 @@ serves this repo's `main` branch at root, so a push to `main` is a deploy. The
 `.nojekyll` file keeps Pages from running the content through Jekyll.
 
 ```
-index.html            the banner, the landing content, the Explore page, and the frame shell
+index.html            the banner, the landing content, the Explore and Docs pages, and the frame shell
 assets/css/site.css   all styling; no framework, no CDN
 assets/img/logo.png   the org mark (see "The logo" below)
 .nojekyll             serve files as-is  ⚠️ load-bearing: Astro's _astro/ dies without it
@@ -46,6 +46,7 @@ can be linked to:
 | `#/architecture` (the default) | the landing content, in the page itself |
 | `#/architecture/<section>` | the same, scrolled to that section, fold opened |
 | `#/explore` | the Explore page, in the page itself: one card per application, each with a small drawing and the link that frames it |
+| `#/docs` | the Docs page, in the page itself: one card per library — VistA Forge Docs and VistA Docs — saying what it is, with its figures, its parts and the link that opens it |
 | `#/explore/vdb-explorer` | the dd-bundle browser, in a frame |
 | `#/explore/cprs-configuration` | the CPRS configuration dashboard, in a frame |
 | `#/explore/cprs-web-mock` | the CPRS web mock, this site's own `/cprsweb/`, in a frame |
@@ -60,8 +61,8 @@ That last row is load-bearing: the published reference's own nav links back here
 with bare anchors (`#stack`), and so do older links. They keep working; one naming
 a section that is gone (`#repos`, dropped 2026-10-07) opens the page at the top.
 
-**The landing content is still in `index.html`, not in a frame**, and so is the
-Explore page, a second `<main>` hidden until its route shows it. Only the five
+**The landing content is still in `index.html`, not in a frame**, and so are the
+Explore and Docs pages, a second and third `<main>` hidden until their routes show them. Only the five
 applications are framed, and that is the point: the page a crawler and a reader
 get at the root URL is the same document it always was.
 
@@ -69,8 +70,8 @@ get at the root URL is the same document it always was.
 entering a menu opens its panel, leaving shuts it. The shut waits 200 ms,
 because the panel hangs a few pixels below its button and the pointer crosses
 that gap on the way down. **A click on the button loads that menu's main page**
-— Home `#/architecture`, Explore `#/explore`, Docs `#/docs/forge-reference`
-(the stack map), each named by the menu's `data-home` — and nothing else; the
+— Home `#/architecture`, Explore `#/explore`, Docs `#/docs`
+(the Docs page), each named by the menu's `data-home` — and nothing else; the
 menu stays open while the pointer is still on it. A touch is not a hover, so on
 a phone a tap only loads the main page, whose own links reach everything the
 panel lists. A keyboard opens a menu by tabbing onto its button, and Escape

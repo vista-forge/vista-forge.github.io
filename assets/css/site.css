@@ -735,6 +735,32 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
    labels are the size of the landing page's figure labels */
 .xcard__svg { display: block; width: 100%; max-width: 340px; height: auto; }
 .xcard__go { align-self: flex-start; }
+/* the Docs page (#/docs, operator, 2026-11-08): a row of figures in each card,
+   where an Explore card has its drawing */
+.xstats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.xstat {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+.xstat__n {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.xcard--v .xstat__n { color: var(--vista-bright); }
+.xcard--c .xstat__n { color: var(--cyan-bright); }
+.xstat__l { display: block; font-size: 0.8rem; line-height: 1.35; color: var(--text-dim); }
 
 .xmap__tie path {
   fill: none;
