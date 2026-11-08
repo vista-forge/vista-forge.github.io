@@ -251,14 +251,10 @@ The same goes for the header: that repo's `src/components/OrgNav.astro` mirrors
 this one's. The reference has no theme control; it still applies a saved
 `starlight-theme` or `theme` value, and since 2026-10-05 nothing writes either.
 
-**The Docs menu is shaped as Home's**: on the left the documentation's main
-page, the reference's stack map; on the right the reference's six books as
-plain links (VistA CLI, VistA Library, M CLI, M Library, M DevBox, VSCode), by
-the labels its own sidebar gives them, which the `forge-docs` repo derives into
-`site/src/books.json`. Each opens the framed reference at that book. The names
-and the six routes are restated by hand in `index.html`, and nothing compares
-them with the reference: a book renamed, added or removed there is changed
-here too.
+**The Docs menu is two entries** (operator, 2026-11-08): *VistA Forge Documentation*, the
+reference's stack map, and *VistA Documentation*, the VistA Documentation Library's orientation page
+(`/vdocs-library/`). The reference's six books are reached from its own map and sidebar; their routes
+(`#/docs/forge-reference/<book>`) stay, so older links keep working.
 
 ⚠️ **The two navs no longer agree, and the drift is now hidden rather than
 reconciled.** This banner is three menus (Home / Explore / Docs), each with its icon;

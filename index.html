@@ -107,17 +107,15 @@ document.documentElement.className += " js";
         <button class="menu__btn" type="button" aria-expanded="false" aria-controls="menu-docs">
           <svg class="menu__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.4 5.3 8.2 4.75 5.5 4.75H3v13.5h2.5c2.7 0 4.9.55 6.5 1.75 1.6-1.2 3.8-1.75 6.5-1.75H21V4.75h-2.5c-2.7 0-4.9.55-6.5 1.75z"/><path d="M12 6.5v13.5"/></svg>Docs<span class="menu__chev" aria-hidden="true"></span>
         </button>
-        <div class="menu__panel" id="menu-docs">
+        <div class="menu__panel menu__panel--one" id="menu-docs">
           <div class="menu__cols">
-            <!-- Shaped as Home's menu (operator, 2026-10-07): the documentation's
-                 main page on the left, the reference's six books as plain links
-                 on the right, by the names its own sidebar gives them (forge-docs
-                 src/books.json). Restated here by hand, and nothing compares the
-                 two: a book renamed or added there is changed here too. -->
+            <!-- Two entries, nothing else (operator, 2026-11-08): the reference's stack map, and
+                 the VistA Documentation Library's orientation page. The reference's six books are
+                 reached from its own map and sidebar; their #/docs/forge-reference/<book> routes
+                 stay. -->
             <div class="menu__col">
-              <p class="menu__head">Documentation</p>
               <a class="menu__item" href="#/docs/forge-reference">
-                <span class="menu__name">VistA Forge stack</span>
+                <span class="menu__name">VistA Forge Documentation</span>
                 <span class="menu__desc">A visual navigator to the documentation: the whole stack in one picture, from you and your AI assistant down to the M engine. Every part opens its chapter.</span>
               </a>
               <!-- The VA's own documentation: this site's /vdocs-library/ orientation page, which
@@ -125,18 +123,9 @@ document.documentElement.className += " js";
                    host (VL-D1, VL-D2: docs/proposals/vista-documentation-library/). The figures are
                    hand-written, measured from the published index 2026-11-08. -->
               <a class="menu__item" href="#/docs/vdocs">
-                <span class="menu__name">VistA Documentation Library</span>
+                <span class="menu__name">VistA Documentation</span>
                 <span class="menu__desc">The VA's own VistA documentation, in two parts: the Inventory searches all 9,080 files the VA Software Document Library lists, across 197 applications; the Library is full-text search over 615 current VistA manuals in 9 domains.</span>
               </a>
-            </div>
-            <div class="menu__col menu__col--thin">
-              <p class="menu__head">Chapters</p>
-              <a class="menu__link" href="#/docs/forge-reference/v">VistA CLI</a>
-              <a class="menu__link" href="#/docs/forge-reference/vsl">VistA Library</a>
-              <a class="menu__link" href="#/docs/forge-reference/m">M CLI</a>
-              <a class="menu__link" href="#/docs/forge-reference/msl">M Library</a>
-              <a class="menu__link" href="#/docs/forge-reference/devbox">M DevBox</a>
-              <a class="menu__link" href="#/docs/forge-reference/products">VSCode</a>
             </div>
           </div>
         </div>
@@ -1310,7 +1299,7 @@ document.documentElement.className += " js";
        table of contents (operator, 2026-10-07); the map links on to the
        reference's front page. */
     "docs/forge-reference":       { title: "Forge reference",    url: "/forge-docs/map/" },
-    /* the same reference, opened at one of its six books (the Docs menu) */
+    /* the same reference, opened at one of its six books (linked from the reference itself) */
     "docs/forge-reference/v":        { title: "Forge reference — VistA CLI",      url: "/forge-docs/v/" },
     "docs/forge-reference/vsl":      { title: "Forge reference — VistA Library", url: "/forge-docs/vsl/" },
     "docs/forge-reference/m":        { title: "Forge reference — M CLI",          url: "/forge-docs/m/" },
