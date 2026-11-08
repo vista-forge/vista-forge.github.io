@@ -51,6 +51,9 @@ and `/` still serves the other applications. The live site carries the menu entr
 and how the web app and the MCP server read one index; its two links open the app at
 `#/docs/vdocs/library` and `#/docs/vdocs/inventory`. The menu's note under the VistA Forge stack was
 removed. The page's figures are hand-written, measured from the published index that day.
+Later that day the operator simplified the menu to two entries with plain generic names, *VistA
+Forge Docs* and *VistA Docs*; the page is titled *VistA Documentation*, names the VA Software Document
+Library (VDL) once as the source, and calls it the catalog after that.
 
 From inside the tailnet the app's frame never loads, as for the other two hosted applications
 (`docs/memory/a-tailnet-published-origin-cannot-be-embedded.md`); the frame itself was not viewed

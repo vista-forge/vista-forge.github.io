@@ -18,7 +18,7 @@ artifacts/            standalone pages, one folder each; index.html GENERATED
 prototypes/           guides to the project's prototypes, the same shape; index.html GENERATED
 proposals/            designs for work not yet built, the same shape; index.html GENERATED
 research/             evidence reviews and proposals with references, the same shape; index.html GENERATED
-vdocs-library/        the VistA Documentation Library's orientation page; hand-written, its figures
+vdocs-library/        VistA Docs' orientation page ("VistA Documentation"); hand-written, its figures
                       measured from the published index.db (2026-11-08) and ungated
 scripts/artifacts_index.py  generates the four index.html pages from their folders
 ```
@@ -51,7 +51,7 @@ can be linked to:
 | `#/explore/cprs-web-mock` | the CPRS web mock, this site's own `/cprsweb/`, in a frame |
 | `#/docs/forge-reference` | the generated `m`/`v` surface reference, in a frame, opened on its stack map (`/forge-docs/map/`): the whole stack drawn as layers, each part a link into its chapter |
 | `#/docs/forge-reference/<book>` | the same, opened at one of its six books: `v`, `vsl`, `m`, `msl`, `devbox`, `products` (VSCode) |
-| `#/docs/vdocs` | the VistA Documentation Library's orientation page, this site's own `/vdocs-library/`, in a frame (same origin): what the Inventory and the Library hold, and how the web app and the MCP server read one index; its two links open the next two routes |
+| `#/docs/vdocs` | VistA Docs' orientation page, titled *VistA Documentation*, this site's own `/vdocs-library/`, in a frame (same origin): what the Inventory and the Library hold, and how the web app and the MCP server read one index; its two links open the next two routes |
 | `#/docs/vdocs/library` | the Library — the VA's own manuals, full-text searchable — served live by vdocs-web from the project's host, in a frame |
 | `#/docs/vdocs/inventory` | the same app opened on its Inventory (`/vdocs/#inventory`): every file the VA Software Document Library lists |
 | `#<section>` | a bare legacy anchor — read as `#/architecture/<section>` |
@@ -85,8 +85,8 @@ names the fields); like everything else on the page, nothing re-checks it.
 ### The frames
 
 VistA Explorer and CPRS Explorer are served from the project's own machine over
-a public Tailscale Funnel (`minty.warg-torino.ts.net`), and so is **the VistA
-Documentation Library, at `/vdocs/`**: vdocs-web, a live server over the
+a public Tailscale Funnel (`minty.warg-torino.ts.net`), and so is **VistA Docs'
+app, at `/vdocs/`**: vdocs-web, a live server over the
 manuals' 363 MB index rather than a static copy, run as a user service and given
 its own Funnel path (`docs/proposals/vista-documentation-library/`, VL-D1–VL-D3). **The CPRS Web Mock is
 this site's own `/cprsweb/`**, framed from the same origin like Docs. **Docs frames this
@@ -251,9 +251,10 @@ The same goes for the header: that repo's `src/components/OrgNav.astro` mirrors
 this one's. The reference has no theme control; it still applies a saved
 `starlight-theme` or `theme` value, and since 2026-10-05 nothing writes either.
 
-**The Docs menu is two entries** (operator, 2026-11-08): *VistA Forge Documentation*, the
-reference's stack map, and *VistA Documentation*, the VistA Documentation Library's orientation page
-(`/vdocs-library/`). The reference's six books are reached from its own map and sidebar; their routes
+**The Docs menu is two entries** (operator, 2026-11-08): *VistA Forge Docs*, the reference's stack
+map, and *VistA Docs*, whose orientation page (`/vdocs-library/`) is titled *VistA Documentation*. Both
+keep plain generic names: the VA Software Document Library (VDL) is named once, as the source, and
+called the catalog after that. The reference's six books are reached from its own map and sidebar; their routes
 (`#/docs/forge-reference/<book>`) stay, so older links keep working.
 
 ⚠️ **The two navs no longer agree, and the drift is now hidden rather than
