@@ -46,6 +46,12 @@ that refuses framing, its relative `./_app/` assets and its API (`api/meta`, `ap
 and `/` still serves the other applications. The live site carries the menu entry and the
 `#/docs/vdocs` route.
 
-From inside the tailnet the frame never loads, as for the other two hosted applications
+2026-11-08, at the operator's request: the menu entry opens an orientation page, this site's own
+`/vdocs-library/` (same origin, so it loads anywhere), drawing what the Inventory and the Library hold
+and how the web app and the MCP server read one index; its two links open the app at
+`#/docs/vdocs/library` and `#/docs/vdocs/inventory`. The menu's note under the VistA Forge stack was
+removed. The page's figures are hand-written, measured from the published index that day.
+
+From inside the tailnet the app's frame never loads, as for the other two hosted applications
 (`docs/memory/a-tailnet-published-origin-cannot-be-embedded.md`); the frame itself was not viewed
 from off the tailnet.

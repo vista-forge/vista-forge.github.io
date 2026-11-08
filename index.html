@@ -120,12 +120,13 @@ document.documentElement.className += " js";
                 <span class="menu__name">VistA Forge stack</span>
                 <span class="menu__desc">A visual navigator to the documentation: the whole stack in one picture, from you and your AI assistant down to the M engine. Every part opens its chapter.</span>
               </a>
-              <p class="menu__note">Generated from the tools themselves: every page is assembled from the contract artifacts each tool ships, so it cannot describe a flag that does not exist.</p>
-              <!-- The VA's own manuals, served live by vdocs-web from the project's host (VL-D1,
-                   VL-D2: docs/proposals/vista-documentation-library/). -->
+              <!-- The VA's own documentation: this site's /vdocs-library/ orientation page, which
+                   opens the Library and the Inventory, served live by vdocs-web from the project's
+                   host (VL-D1, VL-D2: docs/proposals/vista-documentation-library/). The figures are
+                   hand-written, measured from the published index 2026-11-08. -->
               <a class="menu__item" href="#/docs/vdocs">
                 <span class="menu__name">VistA Documentation Library</span>
-                <span class="menu__desc">The VA's own VistA manuals, 615 of them from the VA Software Document Library, searchable by keyword. A plain-English name finds its package; open a manual to read it and find within it.</span>
+                <span class="menu__desc">The VA's own VistA documentation, in two parts: the Inventory searches all 9,080 files the VA Software Document Library lists, across 197 applications; the Library is full-text search over 615 current VistA manuals in 9 domains.</span>
               </a>
             </div>
             <div class="menu__col menu__col--thin">
@@ -1315,10 +1316,15 @@ document.documentElement.className += " js";
     "docs/forge-reference/m":        { title: "Forge reference — M CLI",          url: "/forge-docs/m/" },
     "docs/forge-reference/msl":      { title: "Forge reference — M Library", url: "/forge-docs/msl/" },
     "docs/forge-reference/devbox":   { title: "Forge reference — M DevBox",       url: "/forge-docs/devbox/" },
+    /* SAME ORIGIN: the library's orientation page, this site's own /vdocs-library/ — what
+       is in it and how it works; its two links open the frames below. */
+    "docs/vdocs":                    { title: "VistA Documentation Library",      url: "/vdocs-library/" },
     /* NOT the same origin: the VA's manuals, served live by vdocs-web (a non-waterline
        member, VL-D1) from the project's host under /vdocs/ (VL-D2). A live server over a
-       363 MB index cannot be a copy in this repo the way the reference is. */
-    "docs/vdocs":                    { title: "VistA Documentation Library",      url: ORIGIN + "/vdocs/" },
+       363 MB index cannot be a copy in this repo the way the reference is. The app opens
+       on its Inventory when its own address ends in #inventory. */
+    "docs/vdocs/library":            { title: "VistA Documentation Library — Library",   url: ORIGIN + "/vdocs/" },
+    "docs/vdocs/inventory":          { title: "VistA Documentation Library — Inventory", url: ORIGIN + "/vdocs/#inventory" },
     "docs/forge-reference/products": { title: "Forge reference — VSCode", url: "/forge-docs/products/" }
   };
   var DEFAULT_ROUTE = "architecture";

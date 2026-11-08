@@ -368,18 +368,6 @@ html:not(.js) .menu:focus-within .menu__panel { display: block; }
 .menu__link:hover { background: var(--vista-wash); color: var(--text); text-decoration: none; }
 .menu__link[aria-current="true"] { color: var(--text); background: var(--vista-wash); }
 
-/* a sentence under a thin column's links, saying what they open */
-.menu__note {
-  margin: 0.5rem 0 0;
-  font-size: 0.78rem;
-  line-height: 1.45;
-  color: var(--text-faint);
-}
-/* an entry after a note (Docs: the VistA Documentation Library under the reference's note)
-   starts a new item, not the note's last line */
-.menu__note + .menu__item {
-  margin-top: 0.75rem;
-}
 
 @media (max-width: 720px) {
   .menu__cols { grid-template-columns: minmax(0, 1fr); }

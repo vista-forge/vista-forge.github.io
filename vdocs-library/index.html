@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VistA Documentation Library</title>
+<meta name="description" content="The VA's own VistA documentation, inventoried and searchable: every file the VA Software Document Library lists, and the full text of the current manuals, for people in a browser and for AI assistants over MCP.">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<!-- The site's own stylesheet, for its tokens (palette, fonts); every rule below is
+     this page's own and prefixed vl-. Figures are HTML, not images, as on the
+     landing page: they reflow on a phone and their labels are the page's text.
+     Every figure is hand-written and ungated (docs/memory/site-content-is-unguarded.md);
+     each was measured from the published index.db on 2026-11-08. -->
+<link rel="stylesheet" href="/assets/css/site.css">
+<style>
+  body { background: var(--bg); }
+  .vl { max-width: 980px; margin: 0 auto; padding: 1.75rem 16px 3rem; }
+  .vl-eyebrow { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--vista); margin: 0 0 0.35rem; }
+  .vl h1 { font-size: 1.75rem; margin: 0 0 0.6rem; color: var(--text); }
+  .vl h2 { font-size: 1.35rem; margin: 0 0 0.5rem; color: var(--text); }
+  .vl-lede { color: var(--text-dim); font-size: 1.02rem; line-height: 1.55; margin: 0 0 1.25rem; max-width: 46rem; }
+  .vl-section { margin-top: 3rem; }
+
+  /* the two ways in */
+  .vl-doors { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+  .vl-door { display: block; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem;
+    background: var(--bg-elev); color: var(--text); }
+  .vl-door:hover { text-decoration: none; border-color: var(--vista-line); background: var(--vista-wash); }
+  .vl-door__name { display: block; font-weight: 700; font-size: 1.08rem; color: var(--vista-bright); }
+  .vl-door__desc { display: block; color: var(--text-dim); margin: 0.3rem 0 0.6rem; line-height: 1.45; }
+  .vl-door__go { font-weight: 600; font-size: 0.92rem; color: var(--vista-bright); }
+
+  /* a band: one layer of a stack */
+  .vl-band { border-radius: 14px; padding: 0.9rem; border: 1px solid; }
+  .vl-band--lib { background: var(--cyan-wash); border-color: var(--cyan-line); }
+  .vl-band--inv { background: var(--fm-wash); border-color: var(--fm-line); }
+  .vl-band--you { background: var(--vista-wash); border-color: var(--vista-line); }
+  .vl-band--core { background: var(--fm-wash); border-color: var(--fm-line); }
+  .vl-band--pipe { background: var(--bg-elev-2); border-color: var(--border-bright); }
+  .vl-band--src { background: var(--cyan-wash); border-color: var(--cyan-line); }
+  .vl-band__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; margin: 0 0.15rem 0.7rem; }
+  .vl-band__name { font-weight: 700; font-size: 1.05rem; }
+  .vl-band--lib .vl-band__name, .vl-band--src .vl-band__name { color: var(--cyan-bright); }
+  .vl-band--inv .vl-band__name, .vl-band--core .vl-band__name { color: var(--fm); }
+  .vl-band--you .vl-band__name { color: var(--vista-bright); }
+  .vl-band--pipe .vl-band__name { color: var(--text-dim); }
+  .vl-band__what { color: var(--text-dim); font-size: 0.95rem; }
+  .vl-gap { text-align: center; color: var(--text-faint); font-size: 0.85rem; padding: 0.45rem 0; }
+  .vl-caption { text-align: center; color: var(--text-faint); font-size: 0.85rem; margin: 0.6rem 0 0; }
+
+  /* the big numbers */
+  .vl-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 0.5rem; margin-bottom: 0.6rem; }
+  .vl-stat { background: var(--bg); border-radius: 8px; padding: 0.55rem 0.7rem; }
+  .vl-stat__n { display: block; font-size: 1.35rem; font-weight: 700; color: var(--text); line-height: 1.15; }
+  .vl-stat__l { display: block; font-size: 0.82rem; color: var(--text-dim); }
+
+  /* white cards inside a band */
+  .vl-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.5rem; }
+  .vl-card { background: var(--bg); border-radius: 8px; padding: 0.7rem 0.8rem; }
+  .vl-card__head { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-faint); margin: 0 0 0.45rem; }
+  .vl-card p { margin: 0.2rem 0 0; color: var(--text-dim); font-size: 0.9rem; line-height: 1.45; }
+
+  /* a bar list: one row per value, the bar's width its share of the largest */
+  .vl-bars { list-style: none; margin: 0; padding: 0; }
+  .vl-bars li { display: grid; grid-template-columns: minmax(0, 11rem) 1fr 3.4rem; align-items: center; gap: 0.5rem;
+    font-size: 0.88rem; padding: 0.12rem 0; }
+  .vl-bars__label { color: var(--text); overflow-wrap: anywhere; }
+  .vl-bars__track { height: 0.6rem; background: var(--bg-elev-2); border-radius: 999px; overflow: hidden; }
+  .vl-bars__fill { display: block; height: 100%; border-radius: 999px; }
+  .vl-band--lib .vl-bars__fill { background: var(--cyan); }
+  .vl-band--inv .vl-bars__fill { background: var(--fm); }
+  .vl-bars__n { text-align: right; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+  /* the inventory's one stacked bar: every listing, by what became of it */
+  .vl-split { display: flex; height: 1.6rem; border-radius: 6px; overflow: hidden; margin: 0.15rem 0 0.6rem; }
+  .vl-split span { display: block; height: 100%; }
+  .vl-key { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+  .vl-key li { display: grid; grid-template-columns: 0.8rem 4.2rem 1fr; gap: 0.5rem; align-items: baseline; font-size: 0.88rem; }
+  .vl-key__swatch { width: 0.8rem; height: 0.8rem; border-radius: 3px; align-self: center; }
+  .vl-key__n { font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; text-align: right; }
+  .vl-key__what { color: var(--text-dim); }
+  .vl-key__what strong { color: var(--text); }
+  .vl-held { background: var(--cyan); }
+  .vl-covered { background: #7dd3e6; }
+  .vl-excluded { background: #a5b4fc; }
+  .vl-notvista { background: var(--border-bright); }
+
+  /* the technology stack */
+  .vl-two { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .vl-door2 { background: var(--bg); border-radius: 8px; padding: 0.75rem 0.85rem; }
+  .vl-door2__who { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--vista); }
+  .vl-door2__name { font-weight: 700; color: var(--text); margin: 0.15rem 0 0.35rem; }
+  .vl-door2 ul { margin: 0; padding-left: 1.1rem; color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; }
+  .vl-door2__where { margin: 0.45rem 0 0; font-size: 0.82rem; color: var(--text-faint); }
+  .vl-tools { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.15rem 0 0.35rem; }
+  .vl-chip { font-family: var(--mono); font-size: 0.78rem; padding: 0.1rem 0.45rem; border-radius: 999px;
+    background: var(--bg-elev); border: 1px solid var(--border); color: var(--text); }
+  .vl-arrows { display: grid; grid-template-columns: 1fr 1fr; text-align: center; color: var(--vista); font-size: 1.1rem;
+    line-height: 1; padding: 0.3rem 0; }
+  .vl-flow { display: flex; flex-wrap: wrap; gap: 0.35rem 0.3rem; align-items: center; }
+  .vl-flow .vl-chip { background: var(--bg); }
+  /* a stage and the arrow after it wrap together, so no line starts with an arrow */
+  .vl-step { display: inline-flex; align-items: center; gap: 0.3rem; white-space: nowrap; }
+  .vl-step:not(:last-child)::after { content: "\2192"; color: var(--text-faint); font-size: 0.8rem; }
+
+  .vl-foot { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--text-faint); font-size: 0.85rem; line-height: 1.5; }
+
+  @media (max-width: 640px) {
+    .vl h1 { font-size: 1.45rem; }
+    .vl-doors, .vl-two { grid-template-columns: 1fr; }
+    .vl-arrows { display: none; }
+    .vl-bars li { grid-template-columns: minmax(0, 8.5rem) 1fr 3rem; }
+  }
+</style>
+</head>
+<body>
+<main class="vl">
+
+  <p class="vl-eyebrow">The library</p>
+  <h1>VistA Documentation Library</h1>
+  <p class="vl-lede">The VA's own documentation for VistA, gathered from the VA Software Document Library and made
+    searchable in two ways: an inventory of every file the VA lists, and the full text of the current VistA manuals.</p>
+
+  <div class="vl-doors">
+    <a class="vl-door" href="/#/docs/vdocs/library" target="_top">
+      <span class="vl-door__name">The Library</span>
+      <span class="vl-door__desc">Full-text search over 615 current VistA manuals in 9 domains. Narrow by domain,
+        package, kind of document and reader; open a manual to read it, with its figures and tables.</span>
+      <span class="vl-door__go">Open the Library →</span>
+    </a>
+    <a class="vl-door" href="/#/docs/vdocs/inventory" target="_top">
+      <span class="vl-door__name">The Inventory</span>
+      <span class="vl-door__desc">Search all 9,080 files the VA Software Document Library lists, across 197
+        applications, and see what became of each one, and why.</span>
+      <span class="vl-door__go">Open the Inventory →</span>
+    </a>
+  </div>
+
+  <!-- ===================== what is in it ===================== -->
+  <section class="vl-section" aria-labelledby="vl-content">
+    <p class="vl-eyebrow">What is in it</p>
+    <h2 id="vl-content">The Library stands on the Inventory</h2>
+    <p class="vl-lede">The Inventory is everything the VA lists. The Library is the part of it that is VistA's own
+      manuals, converted to text with every section searchable.</p>
+
+    <div class="vl-band vl-band--lib">
+      <div class="vl-band__head">
+        <span class="vl-band__name">The Library</span>
+        <span class="vl-band__what">the current VistA manuals, in full text</span>
+      </div>
+      <div class="vl-stats">
+        <div class="vl-stat"><span class="vl-stat__n">615</span><span class="vl-stat__l">current manuals</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">109</span><span class="vl-stat__l">applications</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">9</span><span class="vl-stat__l">domains</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">52,393</span><span class="vl-stat__l">sections</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">13.9M</span><span class="vl-stat__l">words</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">12,562</span><span class="vl-stat__l">figures</span></div>
+      </div>
+      <div class="vl-cards">
+        <div class="vl-card">
+          <p class="vl-card__head">Domains</p>
+          <ul class="vl-bars">
+            <li><span class="vl-bars__label">Infrastructure</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:100%"></span></span><span class="vl-bars__n">112</span></li>
+            <li><span class="vl-bars__label">Clinical care</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:98%"></span></span><span class="vl-bars__n">110</span></li>
+            <li><span class="vl-bars__label">Pharmacy</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:80%"></span></span><span class="vl-bars__n">90</span></li>
+            <li><span class="vl-bars__label">Billing &amp; finance</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:65%"></span></span><span class="vl-bars__n">73</span></li>
+            <li><span class="vl-bars__label">Specialty care</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:62%"></span></span><span class="vl-bars__n">69</span></li>
+            <li><span class="vl-bars__label">Registration &amp; scheduling</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:46%"></span></span><span class="vl-bars__n">51</span></li>
+            <li><span class="vl-bars__label">Laboratory</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:46%"></span></span><span class="vl-bars__n">51</span></li>
+            <li><span class="vl-bars__label">Radiology &amp; imaging</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:29%"></span></span><span class="vl-bars__n">33</span></li>
+            <li><span class="vl-bars__label">Admin &amp; quality</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:23%"></span></span><span class="vl-bars__n">26</span></li>
+          </ul>
+        </div>
+        <div class="vl-card">
+          <p class="vl-card__head">Kinds of document</p>
+          <ul class="vl-bars">
+            <li><span class="vl-bars__label">Manuals &amp; guides</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:100%"></span></span><span class="vl-bars__n">399</span></li>
+            <li><span class="vl-bars__label">Technical</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:45%"></span></span><span class="vl-bars__n">181</span></li>
+            <li><span class="vl-bars__label">Admin &amp; security</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:9%"></span></span><span class="vl-bars__n">35</span></li>
+          </ul>
+          <p class="vl-card__head" style="margin-top:0.9rem">Written for</p>
+          <ul class="vl-bars">
+            <li><span class="vl-bars__label">Clinicians</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:100%"></span></span><span class="vl-bars__n">229</span></li>
+            <li><span class="vl-bars__label">Developers</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:84%"></span></span><span class="vl-bars__n">193</span></li>
+            <li><span class="vl-bars__label">System administrators</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:38%"></span></span><span class="vl-bars__n">88</span></li>
+            <li><span class="vl-bars__label">Business &amp; fiscal staff</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:23%"></span></span><span class="vl-bars__n">53</span></li>
+            <li><span class="vl-bars__label">Clinical administrators</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:23%"></span></span><span class="vl-bars__n">52</span></li>
+          </ul>
+        </div>
+        <div class="vl-card">
+          <p class="vl-card__head">Named in the text</p>
+          <ul class="vl-bars">
+            <li><span class="vl-bars__label">Globals</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:100%"></span></span><span class="vl-bars__n">3,596</span></li>
+            <li><span class="vl-bars__label">Routines</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:54%"></span></span><span class="vl-bars__n">1,954</span></li>
+            <li><span class="vl-bars__label">FileMan files</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:12%"></span></span><span class="vl-bars__n">447</span></li>
+            <li><span class="vl-bars__label">KIDS builds</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:9%"></span></span><span class="vl-bars__n">306</span></li>
+            <li><span class="vl-bars__label">RPCs</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:4%"></span></span><span class="vl-bars__n">159</span></li>
+            <li><span class="vl-bars__label">Options and more</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:5%"></span></span><span class="vl-bars__n">163</span></li>
+          </ul>
+          <p>Search for one by its exact name, such as a routine or a file number, and the sections that
+            name it come back.</p>
+        </div>
+        <div class="vl-card">
+          <p class="vl-card__head">Versions and years</p>
+          <p>The Library searches each manual's newest version. 425 earlier versions are kept in the index
+            beside them, 1,040 documents in all. The current manuals were published between 1989 and 2026.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="vl-gap">↑ the VistA manuals the Inventory holds become the Library</p>
+
+    <div class="vl-band vl-band--inv">
+      <div class="vl-band__head">
+        <span class="vl-band__name">The Inventory</span>
+        <span class="vl-band__what">every file the VA Software Document Library lists</span>
+      </div>
+      <div class="vl-stats">
+        <div class="vl-stat"><span class="vl-stat__n">9,080</span><span class="vl-stat__l">listings</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">~6,100</span><span class="vl-stat__l">documents</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">197</span><span class="vl-stat__l">applications</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">5</span><span class="vl-stat__l">VA catalog sections</span></div>
+      </div>
+      <div class="vl-cards">
+        <div class="vl-card" style="grid-column: 1 / -1">
+          <p class="vl-card__head">What became of each listing</p>
+          <div class="vl-split" role="img" aria-label="Of 9,080 listings: 1,280 held, 2,916 covered by another format, 1,656 excluded by policy, 3,228 not VistA">
+            <span class="vl-held" style="width:14.1%"></span>
+            <span class="vl-covered" style="width:32.1%"></span>
+            <span class="vl-excluded" style="width:18.2%"></span>
+            <span class="vl-notvista" style="width:35.6%"></span>
+          </div>
+          <ul class="vl-key">
+            <li><span class="vl-key__swatch vl-held"></span><span class="vl-key__n">1,280</span><span class="vl-key__what"><strong>Held</strong>: in the Library, or admitted to it.</span></li>
+            <li><span class="vl-key__swatch vl-covered"></span><span class="vl-key__n">2,916</span><span class="vl-key__what"><strong>Covered by another format</strong>: the Library holds the same document as Word or PDF.</span></li>
+            <li><span class="vl-key__swatch vl-excluded"></span><span class="vl-key__n">1,656</span><span class="vl-key__what"><strong>Excluded by policy</strong>: a genuine VistA document of a kind the Library does not keep.</span></li>
+            <li><span class="vl-key__swatch vl-notvista"></span><span class="vl-key__n">3,228</span><span class="vl-key__what"><strong>Not VistA</strong>: a benefits form, a VA reference, or an application that is not VistA software.</span></li>
+          </ul>
+        </div>
+        <div class="vl-card">
+          <p class="vl-card__head">VA catalog sections</p>
+          <ul class="vl-bars">
+            <li><span class="vl-bars__label">Clinical</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:100%"></span></span><span class="vl-bars__n">5,927</span></li>
+            <li><span class="vl-bars__label">Financial / administrative</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:26%"></span></span><span class="vl-bars__n">1,528</span></li>
+            <li><span class="vl-bars__label">GUI / Windows client</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:14%"></span></span><span class="vl-bars__n">842</span></li>
+            <li><span class="vl-bars__label">Infrastructure</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:13%"></span></span><span class="vl-bars__n">781</span></li>
+            <li><span class="vl-bars__label">Monograph</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:0.5%"></span></span><span class="vl-bars__n">2</span></li>
+          </ul>
+        </div>
+        <div class="vl-card">
+          <p class="vl-card__head">Lifecycle</p>
+          <ul class="vl-bars">
+            <li><span class="vl-bars__label">Active</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:100%"></span></span><span class="vl-bars__n">5,509</span></li>
+            <li><span class="vl-bars__label">Archive</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:63%"></span></span><span class="vl-bars__n">3,447</span></li>
+            <li><span class="vl-bars__label">Decommissioned</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:2%"></span></span><span class="vl-bars__n">124</span></li>
+          </ul>
+          <p class="vl-card__head" style="margin-top:0.9rem">Format</p>
+          <ul class="vl-bars">
+            <li><span class="vl-bars__label">PDF</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:100%"></span></span><span class="vl-bars__n">5,214</span></li>
+            <li><span class="vl-bars__label">Word</span><span class="vl-bars__track"><span class="vl-bars__fill" style="width:74%"></span></span><span class="vl-bars__n">3,866</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="vl-caption">A document the VA publishes in both Word and PDF is two listings; counted once, the 9,080
+        listings are about 6,100 documents.</p>
+    </div>
+  </section>
+
+  <!-- ===================== how it works ===================== -->
+  <section class="vl-section" aria-labelledby="vl-stack">
+    <p class="vl-eyebrow">How it works</p>
+    <h2 id="vl-stack">One index, two front doors</h2>
+    <p class="vl-lede">People and AI assistants read the same index, the same way: the same search rules, the same
+      everyday names for packages, the same sections under the same ids.</p>
+
+    <div class="vl-band vl-band--you">
+      <div class="vl-two">
+        <div class="vl-door2">
+          <div class="vl-door2__who">You, in a browser</div>
+          <div class="vl-door2__name">The web app</div>
+          <ul>
+            <li>the Library and the Inventory, side by side</li>
+            <li>facets to narrow, suggestions as you type</li>
+            <li>a reading pane with figures and tables, and find within a manual</li>
+          </ul>
+          <p class="vl-door2__where">Served on this site.</p>
+        </div>
+        <div class="vl-door2">
+          <div class="vl-door2__who">Your AI assistant</div>
+          <div class="vl-door2__name">The MCP server</div>
+          <div class="vl-tools">
+            <span class="vl-chip">orientation</span><span class="vl-chip">search</span><span class="vl-chip">read</span><span class="vl-chip">lookup</span><span class="vl-chip">query</span>
+          </div>
+          <ul>
+            <li>five read-only tools, over the Model Context Protocol</li>
+            <li>every answer cites the section it came from</li>
+          </ul>
+          <p class="vl-door2__where">Runs beside a copy of the index; not served from this site.</p>
+        </div>
+      </div>
+    </div>
+    <div class="vl-arrows" aria-hidden="true"><span>↓</span><span>↓</span></div>
+
+    <div class="vl-band vl-band--core">
+      <div class="vl-band__head">
+        <span class="vl-band__name">One search</span>
+        <span class="vl-band__what">the same rules at every front door</span>
+      </div>
+      <div class="vl-cards">
+        <div class="vl-card">
+          <p class="vl-card__head">Keywords</p>
+          <p>Every keyword must appear; <code>"quotes"</code> for an exact phrase; <code>OR</code> between
+            alternatives; <code>NOT</code> to exclude a word. One set of 32 test cases that every front door passes.</p>
+        </div>
+        <div class="vl-card">
+          <p class="vl-card__head">Everyday names</p>
+          <p>One table of plain-English names, read by every front door: <code>blood bank</code> finds the
+            Laboratory package and VBECS, <code>email</code> finds MailMan.</p>
+        </div>
+      </div>
+    </div>
+    <div class="vl-gap" aria-hidden="true">↓</div>
+
+    <div class="vl-band vl-band--core">
+      <div class="vl-band__head">
+        <span class="vl-band__name">One index</span>
+        <span class="vl-band__what">a single SQLite file with full-text search, read-only, no network needed</span>
+      </div>
+      <div class="vl-stats">
+        <div class="vl-stat"><span class="vl-stat__n">1,040</span><span class="vl-stat__l">documents</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">84,159</span><span class="vl-stat__l">sections</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">58,240</span><span class="vl-stat__l">searchable passages</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">6,625</span><span class="vl-stat__l">named things</span></div>
+        <div class="vl-stat"><span class="vl-stat__n">9,080</span><span class="vl-stat__l">inventory rows</span></div>
+      </div>
+      <p class="vl-caption" style="text-align:left;margin:0 0.15rem">Beside it, the manuals themselves as text,
+        with their figures and tables. Every front door reads them through one published contract.</p>
+    </div>
+    <div class="vl-gap" aria-hidden="true">↓</div>
+
+    <div class="vl-band vl-band--pipe">
+      <div class="vl-band__head">
+        <span class="vl-band__name">The pipeline</span>
+        <span class="vl-band__what">sixteen stages, each one's output checked before the next</span>
+      </div>
+      <div class="vl-flow">
+        <span class="vl-step"><span class="vl-chip">crawl</span></span>
+        <span class="vl-step"><span class="vl-chip">catalog</span></span>
+        <span class="vl-step"><span class="vl-chip">inventory</span></span>
+        <span class="vl-step"><span class="vl-chip">fetch</span></span>
+        <span class="vl-step"><span class="vl-chip">convert</span></span>
+        <span class="vl-step"><span class="vl-chip">discover</span></span>
+        <span class="vl-step"><span class="vl-chip">enrich</span></span>
+        <span class="vl-step"><span class="vl-chip">normalize</span></span>
+        <span class="vl-step"><span class="vl-chip">consolidate</span></span>
+        <span class="vl-step"><span class="vl-chip">index</span></span>
+        <span class="vl-step"><span class="vl-chip">relate</span></span>
+        <span class="vl-step"><span class="vl-chip">resolve</span></span>
+        <span class="vl-step"><span class="vl-chip">merge</span></span>
+        <span class="vl-step"><span class="vl-chip">manifest</span></span>
+        <span class="vl-step"><span class="vl-chip">validate</span></span>
+        <span class="vl-step"><span class="vl-chip">doctor</span></span>
+      </div>
+      <p class="vl-caption" style="text-align:left;margin:0.6rem 0.15rem 0">It reads the VA's catalog, decides which
+        listings are VistA manuals to keep, converts each Word document to text, strips the boilerplate, and builds
+        the index. The last stage reports the whole library green or red.</p>
+    </div>
+    <div class="vl-gap" aria-hidden="true">↓</div>
+
+    <div class="vl-band vl-band--src">
+      <div class="vl-band__head">
+        <span class="vl-band__name">The source</span>
+        <span class="vl-band__what">the VA Software Document Library: the VA's public catalog of its software
+          documentation, in Word and PDF</span>
+      </div>
+    </div>
+    <p class="vl-caption">Everything above builds on what is below.</p>
+  </section>
+
+  <footer class="vl-foot">
+    Figures measured from the published index on 8 November 2026. The documents are the VA's: this library
+    inventories them, converts them to text and indexes them, and the Inventory links each listing to the
+    original on the VA's site.
+  </footer>
+
+</main>
+<script>
+  /* Framed in the site (same origin), a door changes only the site's #route, so the
+     site's router swaps the frame without reloading the page around it — whatever
+     else the site's own address carries. Opened on its own, or without script, the
+     plain link goes to the same route. */
+  document.querySelectorAll('a[target="_top"][href^="/#/"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (window.top === window.self) return;
+      try {
+        window.top.location.hash = a.getAttribute('href').slice(1);
+        e.preventDefault();
+      } catch (err) { /* not the same origin: let the link do it */ }
+    });
+  });
+</script>
+</body>
+</html>

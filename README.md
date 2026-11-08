@@ -18,6 +18,8 @@ artifacts/            standalone pages, one folder each; index.html GENERATED
 prototypes/           guides to the project's prototypes, the same shape; index.html GENERATED
 proposals/            designs for work not yet built, the same shape; index.html GENERATED
 research/             evidence reviews and proposals with references, the same shape; index.html GENERATED
+vdocs-library/        the VistA Documentation Library's orientation page; hand-written, its figures
+                      measured from the published index.db (2026-11-08) and ungated
 scripts/artifacts_index.py  generates the four index.html pages from their folders
 ```
 
@@ -49,7 +51,9 @@ can be linked to:
 | `#/explore/cprs-web-mock` | the CPRS web mock, this site's own `/cprsweb/`, in a frame |
 | `#/docs/forge-reference` | the generated `m`/`v` surface reference, in a frame, opened on its stack map (`/forge-docs/map/`): the whole stack drawn as layers, each part a link into its chapter |
 | `#/docs/forge-reference/<book>` | the same, opened at one of its six books: `v`, `vsl`, `m`, `msl`, `devbox`, `products` (VSCode) |
-| `#/docs/vdocs` | the VistA Documentation Library — the VA's own manuals, searchable — served live by vdocs-web from the project's host, in a frame |
+| `#/docs/vdocs` | the VistA Documentation Library's orientation page, this site's own `/vdocs-library/`, in a frame (same origin): what the Inventory and the Library hold, and how the web app and the MCP server read one index; its two links open the next two routes |
+| `#/docs/vdocs/library` | the Library — the VA's own manuals, full-text searchable — served live by vdocs-web from the project's host, in a frame |
+| `#/docs/vdocs/inventory` | the same app opened on its Inventory (`/vdocs/#inventory`): every file the VA Software Document Library lists |
 | `#<section>` | a bare legacy anchor — read as `#/architecture/<section>` |
 
 That last row is load-bearing: the published reference's own nav links back here
