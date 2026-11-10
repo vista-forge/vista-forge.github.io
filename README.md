@@ -89,7 +89,7 @@ VistA Explorer and CPRS Explorer are served from the project's own machine over
 a public Tailscale Funnel (`minty.warg-torino.ts.net`), and so is **VistA Docs'
 app, at `/vdocs/`**: vdocs-web, a live server over the
 manuals' 363 MB index rather than a static copy, run as a user service and given
-its own Funnel path (`docs/proposals/vista-documentation-library/`, VL-D1–VL-D3). **The CPRS Web Mock is
+its own Funnel path (`docs/proposals/completed/vista-documentation-library/`, VL-D1–VL-D3). **The CPRS Web Mock is
 this site's own `/cprsweb/`**, framed from the same origin like Docs. **Docs frames this
 site's own `/forge-docs/`** — the copy in this repo, refreshed from the same
 build the publish host serves, so it is the same bytes without an origin

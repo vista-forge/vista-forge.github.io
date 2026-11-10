@@ -1,6 +1,6 @@
 ---
 title: "The VistA Documentation Library on the org site"
-status: accepted — ruled by the operator 2026-11-07
+status: completed — accepted, ruled by the operator 2026-11-07
 phase: landed
 ---
 
