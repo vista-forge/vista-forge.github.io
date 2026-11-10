@@ -3,12 +3,12 @@
 # The page is hand-written. The repo tables that were generated from the
 # ecosystem registry left with their section (operator, 2026-10-07), and
 # site-gen.py, its snapshot and its two gates went with them.
-.PHONY: help check artifacts artifacts-check serve
+.PHONY: help check artifacts artifacts-check docs-gate serve
 
 help: ## show this help
 	@grep -E '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
 
-check: artifacts-check ## THE gate — local, reaches no network (no CI; run before every push)
+check: artifacts-check docs-gate ## THE gate — local, reaches no network (no CI; run before every push)
 
 artifacts: ## regenerate artifacts/, prototypes/, proposals/ and research/ index.html from the folders under each
 	python3 scripts/artifacts_index.py
@@ -16,6 +16,10 @@ artifacts: ## regenerate artifacts/, prototypes/, proposals/ and research/ index
 artifacts-check: ## red-gate artifacts/, prototypes/, proposals/ and research/ index.html against their folders (and the tests)
 	python3 -m unittest scripts/test_artifacts_index.py
 	python3 scripts/artifacts_index.py --check
+
+docs-gate: ## link + layout of docs/ and README.md (the org's checkers in ../.github)
+	python3 ../.github/scripts/link-check.py docs README.md
+	python3 ../.github/scripts/layout-check.py docs
 
 serve: ## preview at http://127.0.0.1:8000
 	python3 -m http.server 8000 --bind 127.0.0.1
