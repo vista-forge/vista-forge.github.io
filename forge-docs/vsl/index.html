@@ -172,10 +172,15 @@ vectors were not compared with it; pass tests/STDCRYPTOTST.m beside this
 suite to compare them". In that run a suite printed its line once for each
 skipped case. Since m-cli <code dir="auto">b1f0eaa</code>, made after the run, a reason several
 cases gave is printed once, as <code dir="auto">skipped &lt;n&gt; cases in &lt;suite&gt;: &lt;reason&gt;</code>.</p>
-<p>The suites left data behind. VSL POLICY held no declaration before or
-after them. VSL AUDIT gained 24 records each time all the suites ran, and
-no suite removed them; taking <code dir="auto">VSL*1.0*100</code> off again removed the file
-with them.</p>
+<p>In that run the suites left data behind. VSL POLICY held no declaration
+before or after them. VSL AUDIT gained 24 records each time all the suites
+ran, and no suite removed them; taking <code dir="auto">VSL*1.0*100</code> off again removed the
+file with them. Since a change made later the same day, each test that
+files a VSL AUDIT record removes it at its end and asserts that none is
+left. The fourteen suites that file records were then run through the
+container route on vehu and on an IRIS VistA, and each engine's VSL AUDIT
+count was the same afterwards as before (1,998 and 1). The web-access run
+above was not repeated after the change.</p>
 <div class="sl-heading-wrapper level-h2"><h2 id="the-modules">The modules</h2><a class="sl-anchor-link" href="#the-modules"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “The modules”</span></a></div>
 <p>Every module the library ships, each a page of its own.</p>
 <table>
