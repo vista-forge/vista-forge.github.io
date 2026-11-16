@@ -123,7 +123,11 @@ descent (measured 2026-09-07: three distinct faults on that step over remote,
 none over docker). The container name comes from the driver's environment
 (<code dir="auto">M_IRIS_CONTAINER</code>), never from a guess.</p>
 <p>The profile name is resolved by the engine-selection ladder — the <code dir="auto">--engine</code>
-flag wins, then <code dir="auto">$V_ENGINE</code>, then the default <code dir="auto">vehu</code>. A name neither rung can
+flag wins, then <code dir="auto">$V_ENGINE</code>, then the default <code dir="auto">vehu</code>. When neither rung names
+an engine and <code dir="auto">$M_YDB_CONTAINER</code> names a container other than <code dir="auto">vehu</code>'s, the
+default is <code dir="auto">ydb</code> instead, which reaches that container: a person who set
+their own container meant it (measured 2026-11-16: the default answered from
+a container called <code dir="auto">vehu</code> whatever the variable said). A name neither rung can
 resolve is a <strong>usage refusal, exit 2 <code dir="auto">UNKNOWN_ENGINE</code></strong>, and the hint says
 which rung supplied it; a profile that resolves but whose driver or engine is
 unreachable <strong>refuses with exit 4 <code dir="auto">ENGINE_UNRESOLVED</code></strong>. Transport and

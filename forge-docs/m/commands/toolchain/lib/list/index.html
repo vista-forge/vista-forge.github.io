@@ -88,6 +88,12 @@
 <td>Engine: YottaDB (ydb), or IRIS (iris) against a container (--docker); rsm keeps routines as rows and is refused. Else $M_ENGINE, else [instance] engine; refuses (exit 4) if unresolved.</td>
 </tr>
 <tr>
+<td><code dir="auto">--transport</code></td>
+<td><code dir="auto">local</code> | <code dir="auto">docker</code> | <code dir="auto">remote</code></td>
+<td>—</td>
+<td>Driver transport: local (an engine on this machine) or docker (the container named with --docker, which implies it). remote is refused: m lib does not run on an engine reached over the network.</td>
+</tr>
+<tr>
 <td><code dir="auto">--docker</code></td>
 <td><code dir="auto">string</code></td>
 <td>—</td>

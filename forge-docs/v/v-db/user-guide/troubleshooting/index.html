@@ -89,8 +89,9 @@ different index or enumerate.</p>
 <p><strong>A verb refuses with exit 4 and <code dir="auto">ENGINE_UNRESOLVED</code></strong> — the engine the
 command chose could not be reached (its driver is not on <code dir="auto">PATH</code>, or its
 container is not up). The engine is chosen by the <code dir="auto">--engine</code> flag, then
-<code dir="auto">$V_ENGINE</code>, then the default <code dir="auto">vehu</code>; when the default was taken, the hint says
-so. Name the engine you mean: <code dir="auto">--engine vehu</code>, <code dir="auto">--engine foia</code>, or
+<code dir="auto">$V_ENGINE</code>, then the default <code dir="auto">vehu</code> (<code dir="auto">ydb</code> instead when <code dir="auto">$M_YDB_CONTAINER</code>
+names another container). When the default was taken, the hint says so, and
+names the container it tried. Name the engine you mean: <code dir="auto">--engine vehu</code>, <code dir="auto">--engine foia</code>, or
 <code dir="auto">--engine iris --transport remote</code> for an IRIS VistA over its web interface.</p>
 <p><strong><code dir="auto">U-VSL-ROW-POLICY</code> on a write — "file 19 is not declared writable - v db
 changes no record in a file until that file is declared writable"</strong> — the
