@@ -261,10 +261,10 @@ native helpers fail (STDCAPDOCTST, STDCOMPRESSTST, STDCRYPTOTST,
 STDJWTTST, STDS3TST and STDSIGV4TST); a case that stops names the
 missing helper, for example <code dir="auto">U-STDCRYPTO-CALLOUT-MISSING</code>. Run
 <code dir="auto">m callouts install</code> as above and run the suites again.</li>
-<li><code dir="auto">m test</code> without <code dir="auto">--docker &lt;container&gt;</code> is refused, because with no
-container named it looks for a YottaDB installed on your own machine
-(<code dir="auto">no global directory: $ydb_gbldir is unset</code>); the hint names
-<code dir="auto">--docker</code>.</li>
+<li>A suite run before its library is installed fails with <code dir="auto">routine STDASSERT is not on the engine, and this run did not stage it</code>; the
+hint says m-stdlib may not be installed yet. Install the build and
+run the suite again.</li>
+<li><code dir="auto">m test</code> without <code dir="auto">--docker &lt;container&gt;</code> is refused with <code dir="auto">no engine is named for this run</code>; the hint says to add <code dir="auto">--docker &lt;container&gt;</code>.</li>
 <li>No <code dir="auto">--engine</code> on a <code dir="auto">v</code> command: <code dir="auto">v pkg</code> refuses with <code dir="auto">missing flags: --engine=PROFILE</code> and shows its usage; <code dir="auto">v db</code> answers from the
 container named in <code dir="auto">M_YDB_CONTAINER</code>. Give <code dir="auto">--engine ydb</code> every time
 all the same: it is the form typed above.</li>
@@ -275,7 +275,8 @@ the command that starts it, <code dir="auto">m engine up --engine ydb --docker &
 <li>A command run from the wrong folder: <code dir="auto">v pkg</code> refuses with
 <code dir="auto">open VSL.kids: no such file or directory</code>. Go back to the folder
 holding the builds and run it again.</li>
-<li><code dir="auto">v db</code> after VSL is off the engine refuses with <code dir="auto">did not answer the VSL handshake</code> and the hint <code dir="auto">is the VSL build installed?</code>.</li>
+<li><code dir="auto">v db</code> after VSL is off the engine refuses with <code dir="auto">VSL is not installed on engine ydb, or only in part</code> and the hint to install
+VSL's build file with <code dir="auto">v pkg install</code>.</li>
 <li><code dir="auto">v pkg verify</code> of a build that is not installed exits 3: it lists
 every part as missing, says <code dir="auto">✗ MSL*0.1*16 does not match: no install record; 38 of 38 routines missing</code>, and closes with a hint to install
 it.</li>

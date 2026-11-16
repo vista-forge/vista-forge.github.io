@@ -96,6 +96,14 @@ than on output text:</p>
 not mean the tool broke. <code dir="auto">verify</code> exiting <code dir="auto">3</code> is a successful measurement of an
 unsuccessful install. Treating <code dir="auto">3</code> as a crash loses the finding; treating it as
 success ships a bad build.</p>
+<p>One exit sits off the ladder: <code dir="auto">130</code>, <strong>stopped at your request</strong>. <code dir="auto">install</code>,
+<code dir="auto">uninstall</code> and <code dir="auto">restore</code> exit <code dir="auto">130</code> when you press Ctrl-C (or the process is
+sent SIGTERM), after one line on stderr: "stopped at your request; run the
+command again when ready". Before it exits, the command clears what it had
+staged on the engine and releases the engine for the next command. Its record
+in the ledger stays open, as for any run that did not finish; <code dir="auto">v pkg adopt</code>
+reconciles it. A caller should treat <code dir="auto">130</code> as "not done", never as success or
+as a failure of the engine.</p>
 <p>Every typed refusal carries a <strong>code</strong> and a <strong>next action</strong>, and every code is
 gated to have one. When a verb refuses, the hint is the authority on what to do
 next — not this document, which cannot see your instance.</p>
