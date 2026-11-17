@@ -215,11 +215,11 @@ a quarter minutes.</p>
 install, which overwrote nothing, it deletes what the install added.
 VSL's runs its own reversal code first. With <code dir="auto">--verify</code> each reads
 everything it deleted back in a fresh process and closes with
-<code dir="auto">✓ verify: delete confirmed — all 37 read back gone</code> for VSL and
-<code dir="auto">all 39</code> for MSL (the install record and every routine, component
-record and file). Each took well under a minute (30 and 41 seconds).
+<code dir="auto">✓ verify: delete confirmed — all 63 read back gone</code> for VSL and
+<code dir="auto">all 77</code> for MSL (the install record and every routine, ROUTINE file
+entry, component record and file). Each took well under a minute (30 and 41 seconds).
 <code dir="auto">m engine status</code> then says <code dir="auto">m-stdlib not installed</code>.</p>
-<p>Two things stay:</p>
+<p>Three things stay:</p>
 <ul>
 <li>MSL's native helpers, <code dir="auto">/opt/stdlib</code> and
 <code dir="auto">/etc/profile.d/stdlib-callouts.sh</code>. No command takes them off:
@@ -229,6 +229,8 @@ them.</li>
 written by its suites. Its purge date is the day it was written, so
 Kernel's clean-up option (Clean old Job Nodes in XUTL) deletes it at
 its first run after that day.</li>
+<li><code dir="auto">^XTMP("XPDI")</code>, the one-line header of KIDS's own install area. Its
+purge date is seven days on, and the same option deletes it then.</li>
 </ul>
 <p><code dir="auto">m engine down --engine ydb</code> stops your container; it is not part of
 backing out. It first stops every YottaDB process in the container with
