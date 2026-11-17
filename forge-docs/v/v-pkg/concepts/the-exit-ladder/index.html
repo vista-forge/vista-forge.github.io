@@ -96,16 +96,30 @@ than on output text:</p>
 not mean the tool broke. <code dir="auto">verify</code> exiting <code dir="auto">3</code> is a successful measurement of an
 unsuccessful install. Treating <code dir="auto">3</code> as a crash loses the finding; treating it as
 success ships a bad build.</p>
-<p>One exit sits off the ladder: <code dir="auto">130</code>, <strong>stopped at your request</strong>. <code dir="auto">install</code>
-(an install preview included), <code dir="auto">uninstall</code>, <code dir="auto">restore</code> and <code dir="auto">verify</code> exit <code dir="auto">130</code>
-when you press Ctrl-C (or the process is sent SIGTERM), after one line on
-stderr: "stopped at your request; run the command again when ready". Before it
-exits, the command clears what it had staged on the engine, deletes the helper
-routine it had put there for the step it was on, and releases the engine for
-the next command. A command that had opened a record in the ledger leaves it
-open, as for any run that did not finish; <code dir="auto">v pkg adopt</code> reconciles it. A caller
-should treat <code dir="auto">130</code> as "not done", never as success or as a failure of the
-engine.</p>
+<p>Two exits sit off the ladder: <code dir="auto">130</code> and <code dir="auto">129</code>, <strong>stopped at your request</strong>.
+<code dir="auto">install</code> (an install preview included), <code dir="auto">uninstall</code>, <code dir="auto">restore</code> and <code dir="auto">verify</code>
+exit <code dir="auto">130</code> when you press Ctrl-C (or the process is sent SIGTERM), after one
+line on stderr: "stopped at your request; run the command again when ready".
+Closing the terminal the command runs in, or losing the ssh session, sends it
+SIGHUP: it stops the same way and exits <code dir="auto">129</code> (the line goes nowhere if the
+terminal has gone). Before it exits, the command clears what it had staged on
+the engine, deletes the helper routine it had put there for the step it was
+on, and releases the engine for the next command. A command that had opened a
+record in the ledger leaves it open, as for any run that did not finish;
+<code dir="auto">v pkg adopt</code> reconciles it. A caller should treat <code dir="auto">130</code> and <code dir="auto">129</code> as "not
+done", never as success or as a failure of the engine.</p>
+<p>A command killed outright (SIGKILL), or whose request the engine's web server
+ended, cannot clean up: it leaves its helper routine (named <code dir="auto">ZVINS</code>, <code dir="auto">ZVVFY</code>,
+<code dir="auto">ZVUNI</code>, <code dir="auto">ZVRD</code>, <code dir="auto">ZVHL</code> or <code dir="auto">ZVCAP</code> and eight hex digits) and, for an install,
+what it had staged. The next <code dir="auto">v pkg</code> command that takes the engine for itself
+removes them before it starts its own work, and says so on stderr in one line,
+for instance "removed 2 helper routines an earlier v pkg command left on this
+engine". It removes them only once the engine shows that command's job has
+ended: a job can keep running on the engine after its request was ended, and
+while it runs its helper and staging are left alone and not counted, to be
+removed by a later command. A preview, <code dir="auto">verify</code> or <code dir="auto">diff</code> ends the line with
+"; nothing else was changed", since its own closing lines say the engine was
+not modified. A command running inside another's hold on the engine (<code dir="auto">m runlock hold</code>) removes nothing, since a command beside it may still be running.</p>
 <p>Every typed refusal carries a <strong>code</strong> and a <strong>next action</strong>, and every code is
 gated to have one. When a verb refuses, the hint is the authority on what to do
 next — not this document, which cannot see your instance.</p>
